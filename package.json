@@ -1,0 +1,23 @@
+{
+  "name": "dkjs",
+  "version": "2.0.0",
+  "description": "dk widgets and more..",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": "git+https://github.com/thebjorn/dkjs.git",
+  "author": "Bjorn Pettersen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thebjorn/dkjs/issues"
+  },
+  "homepage": "https://github.com/thebjorn/dkjs#readme",
+  "private": true,
+  "devDependencies": {
+    "jest": "^23.4.1"
+  },
+  "dependencies": {
+    "babel-preset-env": "^1.7.0"
+  }
+}
