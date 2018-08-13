@@ -1,4 +1,4 @@
-
+/* global test, expect */
 // const Class = require('../dk-class');
 import Class from "../dk-class";
 
@@ -44,14 +44,14 @@ test('Class with init', () => {
 
     let q = new Person({
         init (props) {
-            this.p = 42
+            this.p = 42;
         }
     });
     expect(q.p).toBe(42);
     
     let p = Person.create({
         init (props) {
-            this.p = 3.14
+            this.p = 3.14;
         }
     });
     expect(p.p).toBe(3.14);

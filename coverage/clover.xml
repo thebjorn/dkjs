@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1533476896897" clover="3.2.0">
+  <project timestamp="1533476896898" name="All files">
+    <metrics statements="87" coveredstatements="87" conditionals="60" coveredconditionals="59" methods="17" coveredmethods="17" elements="164" coveredelements="163" complexity="0" loc="87" ncloc="87" packages="1" files="2" classes="2">
+      <file name="dk-class.js" path="C:\work\github\dkjs\src\boot\dk-class.js">
+        <metrics statements="25" coveredstatements="25" conditionals="9" coveredconditionals="9" methods="8" coveredmethods="8"/>
+        <line num="32" count="10" type="stmt"/>
+        <line num="42" count="12" type="stmt"/>
+        <line num="43" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="53" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="54" count="1" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="63" count="7" type="stmt"/>
+        <line num="64" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="65" count="7" type="stmt"/>
+        <line num="69" count="9" type="stmt"/>
+        <line num="70" count="9" type="stmt"/>
+        <line num="72" count="9" type="stmt"/>
+        <line num="73" count="9" type="stmt"/>
+        <line num="75" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="77" count="9" type="stmt"/>
+        <line num="80" count="9" type="stmt"/>
+        <line num="81" count="5" type="stmt"/>
+        <line num="82" count="5" type="stmt"/>
+        <line num="86" count="9" type="stmt"/>
+        <line num="87" count="3" type="stmt"/>
+        <line num="91" count="9" type="stmt"/>
+        <line num="92" count="9" type="stmt"/>
+      </file>
+      <file name="dk-namespace.js" path="C:\work\github\dkjs\src\boot\dk-namespace.js">
+        <metrics statements="62" coveredstatements="62" conditionals="51" coveredconditionals="50" methods="9" coveredmethods="9"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="22" count="4" type="stmt"/>
+        <line num="23" count="4" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="25" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="29" count="8" type="stmt"/>
+        <line num="32" count="17" type="stmt"/>
+        <line num="34" count="4" type="stmt"/>
+        <line num="44" count="2" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="47" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="2" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="69" count="1" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="81" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="84" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="86" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="89" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="96" count="1" type="stmt"/>
+        <line num="99" count="8" type="stmt"/>
+        <line num="100" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="101" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="102" count="3" type="stmt"/>
+        <line num="104" count="4" type="stmt"/>
+        <line num="107" count="7" type="stmt"/>
+        <line num="108" count="6" type="cond" truecount="4" falsecount="0"/>
+        <line num="109" count="4" type="stmt"/>
+        <line num="112" count="7" type="stmt"/>
+        <line num="115" count="1" type="stmt"/>
+        <line num="119" count="1" type="stmt"/>
+        <line num="120" count="17" type="cond" truecount="5" falsecount="0"/>
+        <line num="121" count="1" type="stmt"/>
+        <line num="123" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="124" count="1" type="stmt"/>
+        <line num="126" count="15" type="cond" truecount="4" falsecount="0"/>
+        <line num="127" count="4" type="stmt"/>
+        <line num="129" count="11" type="cond" truecount="4" falsecount="0"/>
+        <line num="130" count="1" type="stmt"/>
+        <line num="132" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="133" count="1" type="stmt"/>
+        <line num="135" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="136" count="8" type="stmt"/>
+        <line num="139" count="1" type="stmt"/>
+        <line num="142" count="1" type="stmt"/>
+        <line num="143" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="144" count="1" type="stmt"/>
+        <line num="145" count="16" type="stmt"/>
+        <line num="146" count="16" type="stmt"/>
+        <line num="147" count="16" type="stmt"/>
+        <line num="148" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="149" count="14" type="stmt"/>
+        <line num="152" count="14" type="stmt"/>
+      </file>
+    </metrics>
+  </project>
+</coverage>

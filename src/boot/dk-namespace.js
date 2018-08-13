@@ -1,3 +1,5 @@
+/* global require, module */
+
 const _ = require('lodash');
 
 
