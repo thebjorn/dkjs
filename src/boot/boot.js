@@ -128,12 +128,12 @@ module.exports = namespace.update(dk, {
     // //
     // if (!globals.$ && !dkjstag['hide-jquery']) {
     //     // Prevent export of jquery by adding a hide-jquery attribute to the script tag:
-    //     // <script hide-jquery src="/dkjs/dist/dk.js"></script>
+    //     // <script hide-jquery src="/dkjs/dist/index.js"></script>
     //     globals.$ = $;
     //     globals.jQuery = $;
     // }
     //
     // if (!globals._ && !dkjstag['hide-underscore']) {
-    //     // <script hide-underscore src="/dkjs/dist/dk.js"></script>
+    //     // <script hide-underscore src="/dkjs/dist/index.js"></script>
     //     globals._ = _;
     // }

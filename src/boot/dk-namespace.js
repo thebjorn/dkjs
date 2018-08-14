@@ -1,9 +1,10 @@
 /* global require, module */
 
-const _ = require('lodash');
+import _ from 'lodash';
+// const _ = require('lodash');
 
 
-module.exports = {
+export default {
 
     /*
      *  Create sub-namespaces.
