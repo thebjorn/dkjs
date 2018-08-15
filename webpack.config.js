@@ -10,6 +10,7 @@ module.exports = {
         libraryTarget: "var"
     },
     externals: {
+	jquery: 'jQuery',
         lodash: {
             commonjs: 'lodash',
             commonjs2: 'lodash',
