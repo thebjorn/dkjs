@@ -1,8 +1,24 @@
 
-import _ from 'lodash';
-import jQuery from 'jquery';
-
+import dkglobal from './dkglobal';
 import __version__ from './version';
+
+// make sure we're not imported again..
+if (dkglobal && dkglobal.dk) {
+    let cver = dkglobal.dk.__version__ || 'unknown';
+    let myver = __version__ || 'unknown';
+    throw `Trying to import dk.js (v${myver}), but dk.js (v${cver}) is already imported.`;
+}
+
+import _ from 'lodash';
+// const _lodash_version = _.VERSION;     // e.g. "4.16.6"
+
+import jQuery from 'jquery';
+const _jq_version = jQuery.fn.jquery;  // e.g. "3.1.0"
+
+// import "@webcomponents/webcomponentsjs";
+// import DkIcon from "./xtags/dk-icon";
+
+
 import Class from './boot/dk-class';
 import namespace from './boot/dk-namespace';
 
@@ -18,6 +34,8 @@ Object.assign(dk, {
     __version__: __version__,
     Class: Class,
     namespace: namespace,
+    
+    // DkIcon: DkIcon,
 
     all(selector) {
         return  document.querySelectorAll(selector);
@@ -28,25 +46,11 @@ Object.assign(dk, {
     }
 });
 
-// module.exports = dk;
-export default dk;
+// customElements.define('dk-icon', new dk.DkIcon());
 
-//
-// const getGlobal = function () {
-//     // the only reliable means to get the global object is
-//     // `Function('return this')()`
-//     // However, this causes CSP violations in Chrome apps.
-//     if (typeof self !== 'undefined') { return self; }
-//     if (typeof window !== 'undefined') { return window; }
-//     if (typeof global !== 'undefined') { return global; }
-//     throw new Error('unable to locate global object');
-// };
-// const dkglobal = getGlobal();  // var is intended here!
-//
-// dkglobal.dk = function (selector) { return document.querySelector(selector); };
-//
-//
-//
-// export default namespace.update(dkglobal.dk, {
+// (function __init__dk() {
+//     dk.lodash_version = _.VERSION;
+// })();
 
-// });
+module.exports = dk;    // must use commonjs syntax here
+// export default dk;   // es6 syntax
