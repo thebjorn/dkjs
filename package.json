@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "dk widgets and more..",
   "main": "dist/dk.js",
-  "module": "src/index.js",
+  "module": "src/index2.js",
   "scripts": {
     "test": "jest",
     "build": "webpack"

@@ -3,7 +3,7 @@ if (!String.prototype.title) {
     String.prototype.title = function () {
         // from http://stackoverflow.com/a/6475125/75103
 
-        var i, str, lowers, uppers;
+        let i, str, lowers, uppers;
         str = this.replace(/([^\W_]+[^\s-]*) */g, function (txt) {
             return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         });
