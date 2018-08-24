@@ -1,6 +1,24 @@
 # javascript
 node_modules/
 
+# PyCharm
+.idea/misc.xml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dataSources.ids
+.idea/datasources.xml
+.idea/dbnavigator.xml
+.idea/codeStyles
+.idea/*.iml
+.idea/dictionaries
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+.idea/gradle.xml
+.idea/libraries
+.idea/mongoSettings.xml
+.idea/deployment.xml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -105,3 +123,4 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+/dist/dk.js

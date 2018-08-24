@@ -16,6 +16,10 @@
     <!--<script src="./dk-icon.js"></script>-->
 </head>
 <body>
+<script type="module">
+    import {html} from '@polymer/lit-element';
+    console.log(html`hello world`);
+</script>
 <script>
     // We define an ES6 class that extends HTMLElement
     class CounterElement extends HTMLElement {
