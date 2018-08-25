@@ -5,7 +5,7 @@ const path = require('path');
 
 module.exports = {
     mode: 'development',   // production, none
-    // devtool: 'eval',
+    devtool: 'eval-source-map',
     target: 'web',
     // target: 'node',
     
@@ -17,9 +17,6 @@ module.exports = {
         filename: 'dk.js',
         library: 'dk',
         libraryTarget: "var"
-        // libraryExport: 'default',
-        // umdNamedDefine: true,
-        // libraryTarget: "umd"                 // dk.default
     },
     
     // plugins: [

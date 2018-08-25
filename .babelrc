@@ -2,7 +2,7 @@
   "presets": [
     ["env", {
       "targets": {
-        "browsers": ["last 1 versions"],
+        "browsers": ["last 1 versions", "IE >= 11"],
         "node": "current"
       }
     }]

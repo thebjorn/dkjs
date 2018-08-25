@@ -12,7 +12,7 @@ if (!String.prototype.title) {
         // they are the first or last words in the string
         lowers = ['A', 'An', 'The', 'And', 'But', 'Or', 'For', 'Nor', 'As', 'At',
             'By', 'For', 'From', 'In', 'Into', 'Near', 'Of', 'On', 'Onto', 'To', 'With'];
-        var tolower = function (txt) {
+        const tolower = function (txt) {
             return txt.toLowerCase();
         };
         for (i = 0; i < lowers.length; i++)
@@ -55,15 +55,16 @@ if (!String.prototype.format) {
 
     /*! sprintf.js | Copyright (c) 2007-2013 Alexandru Marasteanu <hello at alexei dot ro> | 3 clause BSD license */
     const _vsprintf = (function () {
-        var sprintf = function () {
+        const sprintf = function () {
             if (!sprintf.cache.hasOwnProperty(arguments[0])) {
                 sprintf.cache[arguments[0]] = sprintf.parse(arguments[0]);
             }
             return sprintf.format.call(null, sprintf.cache[arguments[0]], arguments);
         };
-
+    
         sprintf.format = function (parse_tree, argv) {
-            var cursor = 1, tree_length = parse_tree.length, node_type = '', arg, output = [], i, k, match, pad, pad_character, pad_length;
+            let cursor = 1, tree_length = parse_tree.length, node_type = '', arg, output = [], i, k,
+                match, pad, pad_character, pad_length;
             for (i = 0; i < tree_length; i++) {
                 node_type = get_type(parse_tree[i]);
                 if (node_type === 'string') {
@@ -84,7 +85,7 @@ if (!String.prototype.format) {
                         arg = argv[cursor++];
                     }
                     // [bp] added %r option..
-                    if (/[^rs]/.test(match[8]) && (get_type(arg) != 'number')) {
+                    if (/[^rs]/.test(match[8]) && (get_type(arg) !== 'number')) {
                         throw('[sprintf] expecting number but found ' + get_type(arg));
                     }
                     switch (match[8]) {
@@ -123,7 +124,7 @@ if (!String.prototype.format) {
                             break;
                     }
                     arg = (/[def]/.test(match[8]) && match[3] && arg >= 0? '+' + arg: arg);
-                    pad_character = match[4]? match[4] == '0'? '0': match[4].charAt(1): ' ';
+                    pad_character = match[4]? match[4] === '0'? '0': match[4].charAt(1): ' ';
                     pad_length = match[6] - String(arg).length;
                     pad = match[6]? str_repeat(pad_character, pad_length): '';
                     output.push(match[5]? arg + pad: pad + arg);
@@ -135,7 +136,7 @@ if (!String.prototype.format) {
         sprintf.cache = {};
 
         sprintf.parse = function (fmt) {
-            var _fmt = fmt, match = [], parse_tree = [], arg_names = 0;
+            let _fmt = fmt, match = [], parse_tree = [], arg_names = 0;
             while (_fmt) {
                 if ((match = /^[^\x25]+/.exec(_fmt)) !== null) {
                     parse_tree.push(match[0]);
@@ -144,7 +145,7 @@ if (!String.prototype.format) {
                 } else if ((match = /^\x25(?:([1-9]\d*)\$|\(([^\)]+)\))?(\+)?(0|'[^$])?(-)?(\d+)?(?:\.(\d+))?([b-forsuxX])/.exec(_fmt)) !== null) {
                     if (match[2]) {
                         arg_names |= 1;
-                        var field_list = [], replacement_field = match[2], field_match = [];
+                        let field_list = [], replacement_field = match[2], field_match = [];
                         if ((field_match = /^([a-z_][a-z_\d]*)/i.exec(replacement_field)) !== null) {
                             field_list.push(field_match[1]);
                             while ((replacement_field = replacement_field.substring(field_match[0].length)) !== '') {
@@ -198,7 +199,7 @@ if (!String.prototype.format) {
         return vsprintf;
     })();
 
-    /*
+    /*  [2018-08-24] we should move to template strings with substitutions!
      *  yes, I know this is evil, but it's also amazingly convenient:
      *
      *      "hello %s, pi = %.2f.".format('world', Math.PI);
@@ -207,6 +208,7 @@ if (!String.prototype.format) {
      *   Template strings should now be used instead.
      */
     String.prototype.format = function () {
+        console.warn('"".format(..) is deprecated, use template strings with substitutions instead.');
         return _vsprintf(this, Array.prototype.slice.call(arguments));
     };
 }

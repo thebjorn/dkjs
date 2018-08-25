@@ -2,130 +2,27 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
 
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.core.js"-->
-            <!--integrity="sha256-Qqd/EfdABZUcAxjOkMi8eGEivtdTkh3b65xCZL4qAQA="-->
-            <!--crossorigin="anonymous"></script>-->
-    <!--<script-->
-        <!--src="https://code.jquery.com/jquery-3.1.0.js"-->
-        <!--integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="-->
-        <!--crossorigin="anonymous"></script>-->
+    <!-- polyfills -->
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/webcomponents-bundle.js"></script>
+    <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/custom-elements-es5-adapter.js"></script>-->
+    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Object.entries,Element.prototype.remove"></script>
 
-    <!--<script src="custom-elements-es5-adapter.js"></script>-->
-    <script src="webcomponents-bundle.js"></script>
-    <!--<script src="./dk-icon.js"></script>-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.core.js" integrity="sha256-Qqd/EfdABZUcAxjOkMi8eGEivtdTkh3b65xCZL4qAQA=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+
+    <script DEBUG crossorigin="anonymous" src="./dk.js"></script>
 </head>
 <body>
-<script type="module">
-    import {html} from '@polymer/lit-element';
-    console.log(html`hello world`);
-</script>
-<script>
-    // We define an ES6 class that extends HTMLElement
-    class CounterElement extends HTMLElement {
-        constructor() {
-            super();
 
-            // Initialise the counter value
-            this.counter = 0;
-
-            // We attach an open shadow root to the custom element
-            const shadowRoot= this.attachShadow({mode: 'open'});
-
-            // We define some inline styles using a template string
-            const styles=`
-                :host {
-                    position: relative;
-                    font-family: sans-serif;
-                }
-
-                #counter-increment, #counter-decrement {
-                    width: 60px;
-                    height: 30px;
-                    margin: 20px;
-                    background: none;
-                    border: 1px solid black;
-                }
-
-                #counter-value {
-                    font-weight: bold;
-                }
-            `;
-
-            // We provide the shadow root with some HTML
-            shadowRoot.innerHTML = `
-                <style>${styles}</style>
-                <h3>Counter</h3>
-                <slot name='counter-content'>Button</slot>
-                <button id='counter-increment'> - </button>
-                <span id='counter-value'>; 0 </span>;
-                <button id='counter-decrement'> + </button>
-            `;
-
-            // We can query the shadow root for internal elements
-            // in this case the button
-            this.incrementButton = this.shadowRoot.querySelector('#counter-increment');
-            this.decrementButton = this.shadowRoot.querySelector('#counter-decrement');
-            this.counterValue = this.shadowRoot.querySelector('#counter-value');
-
-            // We can bind an event which references one of the class methods
-            this.incrementButton.addEventListener("click", this.decrement.bind(this));
-            this.decrementButton.addEventListener("click", this.increment.bind(this));
-
-        }
-
-        increment() {
-            this.counter++
-            this.invalidate();
-        }
-
-        decrement() {
-            this.counter--
-            this.invalidate();
-        }
-
-        // Call when the counter changes value
-        invalidate() {
-            this.counterValue.innerHTML = this.counter;
-        }
-    }
-
-    // This is where the actual element is defined for use in the DOM
-    customElements.define('counter-element', CounterElement);
-
-    class DkIcon extends HTMLElement {
-        constructor() {
-            super();
-            const root = this.attachShadow({mode: 'open'});
-            const style = `
-                :host { font-family: monospace; }
-                #icon { font-size: 20px; border: 3px solid red; padding: 4px; }
-            `;
-            this.src = 'check';
-            root.innerHTML = `
-                <style>${style}</style>
-                <i id="icon" class="fa fa-${this.src}">icon-${this.src}</i>
-            `;
-
-            this.icon = root.querySelector('#icon');
-        }
-
-        invalidate() {
-            this.icon.setAttribute('src', this.src);
-        }
-
-    }
-
-    customElements.define('dk-icon', DkIcon);
-</script>
+    <h1>hello world</h1>
+    <dk-icon value="check"></dk-icon>
 
 
-<h1>hello world</h1>
-<dk-icon src="check"></dk-icon>
-<counter-element></counter-element>
 
 
-<script crossorigin="anonymous" src="dk.js"></script>
 <script>
     dk.ready(function () {
         dk('h1').innerText = 'so long and thanks for all the fish';
