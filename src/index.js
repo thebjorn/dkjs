@@ -1,8 +1,65 @@
+/*
+ *  This file defines the boot-up sequence, ensuring that all fundamental components are
+ *  loaded in the correct order.
+ *
+ *  To be included here, a module must be both free of internal dependencies (besides the ones
+ *  that have been carefully ordered here), and generally useful (i.e. would have been imported
+ *  in most modules), or cause unwanted import requirements if they were located elsewhere.
+ *
+ *  This file exports the `dk` namespace.
+ *
+ *  Note on JS scoping:
+ *
+ *  Function declarations/statements  (hoisted/global)
+ *  --------------------------------------------------
+ *
+ *  They are hoisted and become properties of the global object.
+ *
+ *      fn();                           // No error
+ *      function fn() {}
+ *      console.log('fn' in window);    // true
+ *
+ *  Function expressions with ``var`` (hoisted/global)
+ *  --------------------------------------------------
+ *
+ *  They are not hoisted, but a variable declared in the global scope always
+ *  becomes a property of the global object.
+ *
+ *      fn();                           // TypeError
+ *      var fn = function () {};
+ *      console.log('fn' in window);    // true
+ *
+ *  Function expressions with ``let`` (!hoisted/!global/is module-global)
+ *  ---------------------------------------------------------------------------
+ *
+ *  They are not hoisted, they do not become properties of the global object,
+ *  but you can assign another value to your variable. Since JavaScript is
+ *  loosely typed, your function could be replaced by a string, a number,
+ *  or anything else.
+ *
+ *      fn();                           // ReferenceError
+ *      let fn = () => {};
+ *      console.log('fn' in window);    // false
+ *      fn = 'Foo';                     // No error
+ *
+ *  Function expressions with ``const`` (!hoisted/!global/is module-global)
+ *  -------------------------------
+ *
+ *  They are not hoisted, they do not become properties of the global object
+ *  and you cannot change them through re-assignment. Indeed, a constant
+ *  cannot be redeclared.
+ *
+ *      fn();                           // ReferenceError
+ *      const fn = () => {};
+ *      console.log('fn' in window);    // false
+ *      fn = 'Foo';                     // TypeError
+ *
+ */
 
 import Lifecycle from "./lifecycle";
 
-// import dkglobal from './dkglobal';
-// import __version__ from './version';
+import __version__ from './version';
+
 //
 // // make sure we're not imported again..
 // if (dkglobal && dkglobal.dk) {
@@ -27,6 +84,13 @@ import Lifecycle from "./lifecycle";
 var dk = function dk(selector) {
     return document.querySelector(selector);
 };
+Object.assign(dk, {
+    __version__,
+    
+    all(selector) {
+        return document.querySelectorAll(selector);
+    }
+});
 
 new Lifecycle(dk, {
     ensure: {
@@ -47,18 +111,7 @@ Object.assign(dk, {
     $: jQuery,
 //     _: _,
 //
-//     __version__: __version__,
-//     Class: Class,
-//     namespace: namespace,
-//
 //     // DkIcon: DkIcon,
-//
-//     all(selector) {
-//         return  document.querySelectorAll(selector);
-//     },
-//
-    
-    // lifecycle: lifecycle,
     
     ready(fn) {
         jQuery(fn);
@@ -67,5 +120,19 @@ Object.assign(dk, {
 
 // customElements.define('dk-icon', new dk.DkIcon());
 
+// //
+// // export global jQuery/underscore..
+// //
+// if (!globals.$ && !env['hide-jquery']) {
+//     // Prevent export of jquery by adding a hide-jquery attribute to the script tag:
+//     // <script hide-jquery src="/dkjs/dist/index.js"></script>
+//     globals.$ = $;
+//     globals.jQuery = $;
+// }
+//
+// if (!globals._ && !env['hide-underscore']) {
+//     // <script hide-underscore src="/dkjs/dist/index.js"></script>
+//     globals._ = _;
+// }
 
 module.exports = dk;    // must use commonjs syntax here

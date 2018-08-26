@@ -8,6 +8,8 @@ import _ from 'lodash';
 import {parse_src} from "./uri";
 import dkglobal from './dkglobal';
 import setup_console from './browser/dk-console';
+import Class from './boot/dk-class';
+import namespace from './boot/dk-namespace';
 
 
 class Lifecycle {
@@ -30,9 +32,9 @@ class Lifecycle {
         if (typeof DEBUG !== 'undefined') this.env.debug = DEBUG;
         if (typeof LOGLEVEL !== 'undefined') this.env.loglevel = LOGLEVEL;
 
-        Object.assign(dk, this.env);
-        
-        setup_console(dk);
+        Object.assign(dk, this.env);            // add dkjs tag attributes
+        setup_console(dk);                      // add console
+        Object.assign(dk, {Class, namespace});  // add Class and namespace
         
         dk.lifecycle = this;
     }
