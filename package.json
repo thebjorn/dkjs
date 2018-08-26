@@ -29,6 +29,7 @@
   "dependencies": {
     "@polymer/lit-element": "^0.5.2",
     "@webcomponents/webcomponentsjs": "^2.0.4",
+    "babel-polyfill": "^6.26.0",
     "lodash": "^4.17.10"
   }
 }

@@ -56,6 +56,8 @@
  *
  */
 
+
+import "babel-polyfill";
 import Lifecycle from "./lifecycle";
 
 import __version__ from './version';

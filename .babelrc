@@ -2,10 +2,17 @@
   "presets": [
     ["env", {
       "targets": {
-        "browsers": ["last 1 versions", "IE >= 11"],
+        "browsers": [
+          "last 1 versions",
+          "IE >= 11"
+        ],
+        "useBuiltIns": true,
         "node": "current"
       }
     }]
+  ],
+  "ignore": [
+    "node_modules"
   ],
   "plugins": [
     "add-module-exports"

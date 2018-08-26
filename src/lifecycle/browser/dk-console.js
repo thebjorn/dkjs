@@ -27,7 +27,7 @@ export default function setup_console(dk) {
     });
     
     const _nullfn = function () {};
-    let loglevel = dk.loglevel;
+    let loglevel = dk.LOGLEVEL;
     dk.error = _nullfn;
     dk.warn = _nullfn;
     dk.log = _nullfn;

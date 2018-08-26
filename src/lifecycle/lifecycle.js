@@ -10,6 +10,7 @@ import dkglobal from './dkglobal';
 import setup_console from './browser/dk-console';
 import Class from './boot/dk-class';
 import namespace from './boot/dk-namespace';
+import setup_signals from "./boot/dk-signals";
 
 
 class Lifecycle {
@@ -21,20 +22,21 @@ class Lifecycle {
         let LOGLEVEL = dkglobal.LOGLEVEL;
         
         this.env = {
-            debug: false,
-            loglevel: null,
+            DEBUG: false,
+            LOGLEVEL: null,
             crossorigin: null,
             globals: dkglobal
         };
 
         this.parse_script_tag();
         // global vars override script tag vars
-        if (typeof DEBUG !== 'undefined') this.env.debug = DEBUG;
-        if (typeof LOGLEVEL !== 'undefined') this.env.loglevel = LOGLEVEL;
+        if (typeof DEBUG !== 'undefined') this.env.DEBUG = DEBUG;
+        if (typeof LOGLEVEL !== 'undefined') this.env.LOGLEVEL = LOGLEVEL;
 
         Object.assign(dk, this.env);            // add dkjs tag attributes
         setup_console(dk);                      // add console
         Object.assign(dk, {Class, namespace});  // add Class and namespace
+        setup_signals(dk, dk.debug ? dk.ERROR : dk.INFO);
         
         dk.lifecycle = this;
     }
@@ -57,11 +59,11 @@ class Lifecycle {
         
         _.each(dk.attributes, attr => {  // node.attributes cannot for-of on IE
             switch (attr.name) {
-                case 'debug':
+                case 'DEBUG':
                     // <script debug src=..> => debug===4
-                    this.env.debug = true;
+                    this.env.DEBUG = true;
                     break;
-                case 'loglevel':
+                case 'LOGLEVEL':
                     // <script debug src=..> => debug===4
                     this.env.loglevel = parseInt(attr.value || "4", 10);
                     break;
@@ -80,8 +82,8 @@ class Lifecycle {
                     break;
             }
         });
-        if (this.env.loglevel === null) {
-            this.env.loglevel = this.env.debug ? 4 : 0;
+        if (this.env.LOGLEVEL === null) {
+            this.env.LOGLEVEL = this.env.DEBUG ? 4 : 0;
         }
     }
 
