@@ -83,7 +83,7 @@ var globals = getGlobal();  // var is intended here!
 // require('../../external/base64.js');
 // require('./dk-shims.js');
 //
-// const dkjstag = require('./dk-dkjsinclude.js');
+// const env = require('./dk-dkjsinclude.js');
 // const console = require('./dk-console.js');
 // const namespace = require('./dk-namespace.js');
 // const publish = require('./dk-publish.js');
@@ -94,7 +94,7 @@ global.dk.all = function (x) { return document.querySelectorAll(x); };
 module.exports = namespace.update(dk, {
     // $: $,
     // _: _,
-    // dkjstag: dkjstag,
+    // env: env,
     // version: require('../version.js'),
     // globals: globals,
     //
@@ -126,14 +126,14 @@ module.exports = namespace.update(dk, {
     // //
     // // export global jQuery/underscore..
     // //
-    // if (!globals.$ && !dkjstag['hide-jquery']) {
+    // if (!globals.$ && !env['hide-jquery']) {
     //     // Prevent export of jquery by adding a hide-jquery attribute to the script tag:
     //     // <script hide-jquery src="/dkjs/dist/index.js"></script>
     //     globals.$ = $;
     //     globals.jQuery = $;
     // }
     //
-    // if (!globals._ && !dkjstag['hide-underscore']) {
+    // if (!globals._ && !env['hide-underscore']) {
     //     // <script hide-underscore src="/dkjs/dist/index.js"></script>
     //     globals._ = _;
     // }

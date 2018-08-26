@@ -10,7 +10,7 @@
  */
 
 
-export default function parse_uri(uri, argopts) {
+export function parse_uri(uri, argopts) {
     const defopts = {
         strictMode: false,
         key: [
@@ -55,4 +55,35 @@ export default function parse_uri(uri, argopts) {
     if (res.file) res.name = res.file.replace(/\.\w*$/, '');
 
     return res;
+}
+
+function find_version(uriobj) {
+    let match = /[-.@\/](\d+\.\d+\.\d+)[.\/]/.exec(uriobj.name);
+    if (match) return match[1];
+    
+    match = /[-.@\/](\d+\.\d+\.\d+)[.\/]/.exec(uriobj.path);
+    if (match) return match[1];
+    
+    match = /\/v(\d)\//.exec(uriobj.name);
+    if (match) return match[1];
+    
+    return null;
+}
+
+function is_minified(uriobj) {
+    return /[-.]min[-.]/.test(uriobj.name);
+}
+
+function plain_name(urlobj) {
+    let res = urlobj.name.replace(/[-.]min[-.]/, '.');
+    res = res.replace(/[-.@\/](\d+\.\d+\.\d+)[.\/]?/, '');
+    return res;
+}
+
+export function parse_src(uri) {
+    const src = parse_uri(uri);
+    src.version = find_version(src);
+    src.libname = plain_name(src);
+    src.minified = is_minified(src);
+    return src;
 }

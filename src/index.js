@@ -1,5 +1,5 @@
 
-import lifecycle from "./lifecycle";
+import Lifecycle from "./lifecycle";
 
 // import dkglobal from './dkglobal';
 // import __version__ from './version';
@@ -28,6 +28,20 @@ var dk = function dk(selector) {
     return document.querySelector(selector);
 };
 
+new Lifecycle(dk, {
+    ensure: {
+        css: [
+            {
+                name: 'font-awesome',
+                version: '470',
+                sources: [
+                    "https://static.datakortet.no/font/fa470/css/font-awesome.css"
+                ]
+            }
+        ]
+    }
+});
+
 Object.assign(dk, {
     // external hooks
     $: jQuery,
@@ -44,7 +58,7 @@ Object.assign(dk, {
 //     },
 //
     
-    lifecycle: lifecycle,
+    // lifecycle: lifecycle,
     
     ready(fn) {
         jQuery(fn);
