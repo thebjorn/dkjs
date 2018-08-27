@@ -18,7 +18,7 @@ export default function setup_signals(dk, debuglevel) {
      *  return value of fn is substituted for the return value of obj.method().
      */
     dk.after = function (obj, method, fn) {
-        var _meth = obj[method];
+        let _meth = obj[method];
         obj[method] = function () {
             obj[method] = _meth;
             return fn(obj[method](arguments));
@@ -69,7 +69,7 @@ export default function setup_signals(dk, debuglevel) {
         if (obj[listeners]) {
             args = Array.prototype.slice.call(arguments, 2);
             if (obj[listeners][signal]) {
-                obj[listeners][signal].forEach(function (fn, i) {
+                obj[listeners][signal].forEach(function (fn) {
                     if (fn.name) {
                         dk.debug(`    run: ${fn.name}(${args})`);
                     }
@@ -87,12 +87,12 @@ export default function setup_signals(dk, debuglevel) {
      * @param fn
      */
     dk.subscribe = function (obj, signal, fn) {
-        dk.warn("dk.subscribe is deprecated, use dk.on(obj, signal, fn) instead.")
+        dk.warn("dk.subscribe is deprecated, use dk.on(obj, signal, fn) instead.");
         return dk.on(obj, signal, fn);
     };
     
     dk.publish = function (obj, signal, ...args) {
-        dk.warn("dk.publish is deprecated, use dk.trigger(obj, signal, ...args) instead.")
+        dk.warn("dk.publish is deprecated, use dk.trigger(obj, signal, ...args) instead.");
         return dk.trigger(obj, signal, ...args);
     };
     
