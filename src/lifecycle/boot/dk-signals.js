@@ -40,10 +40,10 @@ export default function setup_signals(dk, debuglevel) {
     dk.on = function (obj, signal, optfn) {
         if (obj === null) return {run: function () {}};
         if (dk.DEBUG && dk.LOGLEVEL >= BINDING_NOTIFY_LEVEL) {
-            if (obj && signal && fn) {
-                dk.debug(`dk.on(${obj.toString()}, "${signal}").run(${fn.toString()})`);
+            if (obj && signal && optfn) {
+                dk.debug(`dk.on(${obj.toString()}, "${signal}").run(${optfn.toString()})`);
             } else {
-                dk.error("subscribe argument error:", obj, signal, fn);
+                dk.error("subscribe argument error:", obj, signal, optfn);
                 throw new Error("Cannot listen on undefined object: " + obj);
             }
         }

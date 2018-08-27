@@ -83,10 +83,15 @@ import __version__ from './version';
 // import Class from './lifecycle/boot/dk-class';
 // import namespace from './lifecycle/boot/dk-namespace';
 
+
+// here..?
 var dk = function dk(selector) {
     return document.querySelector(selector);
 };
-Object.assign(dk, {
+
+
+// probably not here..?
+Object.assign({
     __version__,
     
     all(selector) {
@@ -108,9 +113,11 @@ new Lifecycle(dk, {
     }
 });
 
-Object.assign(dk, {
+// Object.assign(dk, {
+dk.add({
     // external hooks
     $: jQuery,
+    __version__: 43,
 //     _: _,
 //
 //     // DkIcon: DkIcon,
