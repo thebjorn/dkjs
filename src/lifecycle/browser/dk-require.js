@@ -12,7 +12,9 @@ const _url2name = function (url) {
     return url.split('/').slice(-1)[0];
 };
 
-
+/**
+ * load script tags to state
+ */
 $('head>script[src]').each(function () {
     const src = $(this).attr('src');
     state[_url2name(src)] = {
@@ -24,6 +26,9 @@ $('head>script[src]').each(function () {
 });
 
 
+/**
+ * Load stylesheets (.css) to state
+ */
 $('head>link[rel=stylesheet]').each(function () {
     const url = $(this).attr('href');
     state[_url2name(url)] = {

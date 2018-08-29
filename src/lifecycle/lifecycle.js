@@ -11,35 +11,89 @@ import setup_console from './browser/dk-console';
 import Class from './boot/dk-class';
 import namespace from './boot/dk-namespace';
 import setup_signals from "./boot/dk-signals";
+import discover_initial_environment from "./lifecycle-discover-initial-environment";
+
+const array_intersection = (a, b) => {
+    const bs = new Set(b);
+    return new Set(a.filter(x => bs.has(x)));
+};
+const set_empty = s => s.size === 0;
 
 
 class Lifecycle {
     constructor(dk, attrs) {
-        this.page = {scripts: {}, css: []};
+        dk.stats.lifecycle0 = performance.now();
+        
+        discover_initial_environment(dk, attrs);
         
         // save global vars (or undefined)
         let DEBUG = dkglobal.DEBUG;
         let LOGLEVEL = dkglobal.LOGLEVEL;
         
-        this.env = {
+        this.scripttag_attributes = {
             DEBUG: false,
             LOGLEVEL: null,
             crossorigin: null,
-            globals: dkglobal
+            // globals: dkglobal
         };
 
-        this.parse_script_tag();
+        this.parse_script_tag(dk, attrs);
+        
         // global vars override script tag vars
-        if (typeof DEBUG !== 'undefined') this.env.DEBUG = DEBUG;
-        if (typeof LOGLEVEL !== 'undefined') this.env.LOGLEVEL = LOGLEVEL;
+        if (typeof DEBUG !== 'undefined') this.scripttag_attributes.DEBUG = DEBUG;
+        if (typeof LOGLEVEL !== 'undefined') this.scripttag_attributes.LOGLEVEL = LOGLEVEL;
         
-        const array_intersection = (a, b) => {
-            b = new Set(b);
-            return new Set(a.filter(x => b.has(x)));
-        };
-        const set_empty = s => s.size === 0;
+
         
-        Object.assign(dk, this.env);            // add dkjs tag attributes
+        Object.assign(dk, this.scripttag_attributes);            // add dkjs tag attributes
+        
+        
+        this.prepare_dk_object(dk, attrs);
+
+
+        setup_console(dk);                      // add console
+        Object.assign(dk, {Class, namespace});  // add Class and namespace
+        setup_signals(dk, dk.debug ? dk.ERROR : dk.INFO);
+        
+        dk.lifecycle = this;
+    }
+    
+
+
+    parse_script_tag(dk, attrs) {
+        let tag = dk.webpage.scripts.dk.tag;
+        
+        _.each(tag.attributes, attr => {  // node.attributes cannot for-of on IE
+            switch (attr.name) {
+                case 'DEBUG':
+                    // <script debug src=..> => debug===4
+                    this.scripttag_attributes.DEBUG = true;
+                    break;
+                case 'LOGLEVEL':
+                    // <script debug src=..> => debug===4
+                    this.scripttag_attributes.loglevel = parseInt(attr.value || "4", 10);
+                    break;
+                case 'crossorigin':
+                    this.scripttag_attributes.crossorigin = attr.value;
+                    break;
+                case 'data-main':
+                    let val = attr.value;
+                    if (val.slice(-val.length) !== '.js') {
+                        val += '.js';
+                    }
+                    this.scripttag_attributes[attr.name] = val;
+                    break;
+                default:
+                    this.scripttag_attributes[attr.name] = attr.value;
+                    break;
+            }
+        });
+        if (this.scripttag_attributes.LOGLEVEL === null) {
+            this.scripttag_attributes.LOGLEVEL = this.scripttag_attributes.DEBUG ? 4 : 0;
+        }
+    }
+    
+    prepare_dk_object(dk, attrs) {
         if (dk.DEBUG || true) {
             dk.add = function (attrs) {
                 let common = array_intersection(Object.keys(dk), Object.keys(attrs));
@@ -51,59 +105,9 @@ class Lifecycle {
         } else {
             dk.add = attrs => Object.assign(dk, attrs);
         }
-
-        setup_console(dk);                      // add console
-        Object.assign(dk, {Class, namespace});  // add Class and namespace
-        setup_signals(dk, dk.debug ? dk.ERROR : dk.INFO);
-        
-        dk.lifecycle = this;
     }
     
-    parse_script_tag() {
-        // node.attributes cannot for-of on IE
-        _.each(document.scripts, script => {
-            let stag = parse_src(script.getAttribute('src'));
-            stag.script = script;
-            if (stag.libname in this.page.scripts) {
-                throw `Script included multiple times:
-                    ${stag.source}
-                    ${this.page.scripts[stag.libname].source}
-                `;
-            }
-            this.page.scripts[stag.libname] = stag;
-        });
-        
-        let dk = this.page.scripts.dk.script;
-        
-        _.each(dk.attributes, attr => {  // node.attributes cannot for-of on IE
-            switch (attr.name) {
-                case 'DEBUG':
-                    // <script debug src=..> => debug===4
-                    this.env.DEBUG = true;
-                    break;
-                case 'LOGLEVEL':
-                    // <script debug src=..> => debug===4
-                    this.env.loglevel = parseInt(attr.value || "4", 10);
-                    break;
-                case 'crossorigin':
-                    this.env.crossorigin = attr.value;
-                    break;
-                case 'data-main':
-                    let val = attr.value;
-                    if (val.slice(-val.length) !== '.js') {
-                        val += '.js';
-                    }
-                    this.env[attr.name] = val;
-                    break;
-                default:
-                    this.env[attr.name] = attr.value;
-                    break;
-            }
-        });
-        if (this.env.LOGLEVEL === null) {
-            this.env.LOGLEVEL = this.env.DEBUG ? 4 : 0;
-        }
-    }
+
 
     
     // verify_resources() {}

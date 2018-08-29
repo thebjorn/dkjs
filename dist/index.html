@@ -7,7 +7,10 @@
     <!-- polyfills -->
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/webcomponents-bundle.js"></script>
     <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/custom-elements-es5-adapter.js"></script>-->
-    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Object.entries,Element.prototype.remove"></script>
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default-3.6"></script>-->
+    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=es6"></script>
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.js?features=default-3.6"></script>-->
+    <!--<script src="https://cdn.polyfill.io/v2/polyfill.js?features=Object.entries,Element.prototype.remove,Array.from,NodeList.@@iterator"></script>-->
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.core.js" integrity="sha256-Qqd/EfdABZUcAxjOkMi8eGEivtdTkh3b65xCZL4qAQA=" crossorigin="anonymous"></script>
@@ -28,7 +31,9 @@
     dk.ready(function () {
         h1 = dk('h1');
         dk('h1').innerText = 'so long and thanks for all the fish';
-        dk.on(h1, 'foo', () => console.log("got foo'd"));
+        dk.on(h1, 'foo', function () { console.log("got foo'd"); });
+        // dk.on(h1, 'foo', () => console.log("got foo'd"));
+        console.log("STATS:", dk.stats);
     });
 </script>
 </body>

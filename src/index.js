@@ -56,6 +56,7 @@
  *
  */
 
+const stats = {init: performance.now()};
 
 import "babel-polyfill";
 import Lifecycle from "./lifecycle";
@@ -70,10 +71,10 @@ import __version__ from './version';
 //     throw `Trying to import dk.js (v${myver}), but dk.js (v${cver}) is already imported.`;
 // }
 //
-// import _ from 'lodash';
+import _ from 'lodash';
 // // const _lodash_version = _.VERSION;     // e.g. "4.16.6"
 //
-// import jQuery from 'jquery';
+import jQuery from 'jquery';
 // const _jq_version = jQuery.fn.jquery;  // e.g. "3.1.0"
 //
 // // import "@webcomponents/webcomponentsjs";
@@ -88,18 +89,24 @@ import __version__ from './version';
 var dk = function dk(selector) {
     return document.querySelector(selector);
 };
+dk.stats = stats;
+dk.stats.made_dk = performance.now();
 
 
-// probably not here..?
-Object.assign({
-    __version__,
-    
-    all(selector) {
-        return document.querySelectorAll(selector);
-    }
-});
+//
+// // probably not here..?
+// Object.assign(dk, {
+//     __version__,
+//
+//     all(selector) {
+//         return document.querySelectorAll(selector);
+//     }
+// });
 
 new Lifecycle(dk, {
+    externals: {
+        jQuery, _
+    },
     ensure: {
         css: [
             {
@@ -132,14 +139,14 @@ dk.add({
 // //
 // // export global jQuery/underscore..
 // //
-// if (!globals.$ && !env['hide-jquery']) {
+// if (!globals.$ && !scripttag_attributes['hide-jquery']) {
 //     // Prevent export of jquery by adding a hide-jquery attribute to the script tag:
 //     // <script hide-jquery src="/dkjs/dist/index.js"></script>
 //     globals.$ = $;
 //     globals.jQuery = $;
 // }
 //
-// if (!globals._ && !env['hide-underscore']) {
+// if (!globals._ && !scripttag_attributes['hide-underscore']) {
 //     // <script hide-underscore src="/dkjs/dist/index.js"></script>
 //     globals._ = _;
 // }

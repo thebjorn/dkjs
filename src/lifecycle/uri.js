@@ -67,6 +67,9 @@ function find_version(uriobj) {
     match = /\/v(\d)\//.exec(uriobj.name);
     if (match) return match[1];
     
+    match = /fa(\d+)/.exec(uriobj.source);
+    if (match) return match[1];
+    
     return null;
 }
 
@@ -81,7 +84,9 @@ function plain_name(urlobj) {
 }
 
 export function parse_src(uri) {
+    // console.info("parsing:", uri);
     const src = parse_uri(uri);
+    console.info("parsed:", src);
     src.version = find_version(src);
     src.libname = plain_name(src);
     src.minified = is_minified(src);
