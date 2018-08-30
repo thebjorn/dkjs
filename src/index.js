@@ -89,8 +89,21 @@ import jQuery from 'jquery';
 var dk = function dk(selector) {
     return document.querySelector(selector);
 };
-dk.stats = stats;
-dk.stats.made_dk = performance.now();
+
+dk.performance = tag => {
+    const now = performance.now();
+    let prev = now;
+    if (dk.performance.events.length >= 1) {
+        prev = dk.performance.events[0][1];
+        // prev = dk.performance.events[dk.performance.events.length - 1][1];
+    }
+    dk.performance.events.push([tag, now, now-prev]);
+};
+dk.performance.events = [];
+dk.performance.toString = () => {
+    dk.performance.events.forEach(([tag, now, duration]) => console.log("PERF-EVT:", tag, now, duration));
+};
+dk.performance('made-dk');
 
 
 //
@@ -133,6 +146,8 @@ dk.add({
         jQuery(fn);
     }
 });
+
+console.log("PERFORMANCE:", dk.performance.toString());
 
 // customElements.define('dk-icon', new dk.DkIcon());
 

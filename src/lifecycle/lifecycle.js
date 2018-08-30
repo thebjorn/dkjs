@@ -12,6 +12,8 @@ import Class from './boot/dk-class';
 import namespace from './boot/dk-namespace';
 import setup_signals from "./boot/dk-signals";
 import discover_initial_environment from "./lifecycle-discover-initial-environment";
+import parse_script_tag from "./lifecycle-parse-script-tag";
+
 
 const array_intersection = (a, b) => {
     const bs = new Set(b);
@@ -21,76 +23,20 @@ const set_empty = s => s.size === 0;
 
 
 class Lifecycle {
-    constructor(dk, attrs) {
-        dk.stats.lifecycle0 = performance.now();
-        
-        discover_initial_environment(dk, attrs);
-        
-        // save global vars (or undefined)
-        let DEBUG = dkglobal.DEBUG;
-        let LOGLEVEL = dkglobal.LOGLEVEL;
-        
-        this.scripttag_attributes = {
-            DEBUG: false,
-            LOGLEVEL: null,
-            crossorigin: null,
-            // globals: dkglobal
-        };
-
-        this.parse_script_tag(dk, attrs);
-        
-        // global vars override script tag vars
-        if (typeof DEBUG !== 'undefined') this.scripttag_attributes.DEBUG = DEBUG;
-        if (typeof LOGLEVEL !== 'undefined') this.scripttag_attributes.LOGLEVEL = LOGLEVEL;
-        
+    constructor(dk, ctx) {
+        dk.performance('lifecycle-start');
 
         
-        Object.assign(dk, this.scripttag_attributes);            // add dkjs tag attributes
+        discover_initial_environment(dk, ctx);      // dk.globals, .webpage.scripts, .webpage.stylesheets
+        parse_script_tag(dk, ctx);                  // dk.DEBUG, .LOGLEVEL, .scripttag_attributes
         
-        
-        this.prepare_dk_object(dk, attrs);
-
+        this.prepare_dk_object(dk, ctx);
 
         setup_console(dk);                      // add console
         Object.assign(dk, {Class, namespace});  // add Class and namespace
         setup_signals(dk, dk.debug ? dk.ERROR : dk.INFO);
         
         dk.lifecycle = this;
-    }
-    
-
-
-    parse_script_tag(dk, attrs) {
-        let tag = dk.webpage.scripts.dk.tag;
-        
-        _.each(tag.attributes, attr => {  // node.attributes cannot for-of on IE
-            switch (attr.name) {
-                case 'DEBUG':
-                    // <script debug src=..> => debug===4
-                    this.scripttag_attributes.DEBUG = true;
-                    break;
-                case 'LOGLEVEL':
-                    // <script debug src=..> => debug===4
-                    this.scripttag_attributes.loglevel = parseInt(attr.value || "4", 10);
-                    break;
-                case 'crossorigin':
-                    this.scripttag_attributes.crossorigin = attr.value;
-                    break;
-                case 'data-main':
-                    let val = attr.value;
-                    if (val.slice(-val.length) !== '.js') {
-                        val += '.js';
-                    }
-                    this.scripttag_attributes[attr.name] = val;
-                    break;
-                default:
-                    this.scripttag_attributes[attr.name] = attr.value;
-                    break;
-            }
-        });
-        if (this.scripttag_attributes.LOGLEVEL === null) {
-            this.scripttag_attributes.LOGLEVEL = this.scripttag_attributes.DEBUG ? 4 : 0;
-        }
     }
     
     prepare_dk_object(dk, attrs) {

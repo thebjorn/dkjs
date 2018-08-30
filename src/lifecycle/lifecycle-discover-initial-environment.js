@@ -9,7 +9,7 @@ import {parse_src} from "./uri";
  * @param attrs
  */
 export default function discover_initial_environment(dk, attrs) {
-    dk.stats.discover_initial_environment_start = performance.now();
+    dk.performance('discover-initial-environment-start');
     dk.app = {state: {}};
     dk.webpage = {scripts: {}, stylesheets: {}};
     dk.globals = dkglobal;
@@ -32,6 +32,6 @@ export default function discover_initial_environment(dk, attrs) {
     const style_links = document.querySelectorAll('link[href][rel=stylesheet]');
     Array.from(style_links)
          .forEach(lnk => save_url(lnk.getAttribute('href'), 'stylesheets', lnk));
-    dk.stats.discover_initial_environment_end = performance.now();
-   
+    
+    dk.performance('discover-initial-environment-end');
 }
