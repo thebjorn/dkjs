@@ -6,6 +6,9 @@ const path = require('path');
 module.exports = {
     mode: 'development',   // production, none
     devtool: 'eval-source-map',
+    // mode: "production",
+    // devtool: 'source-map',
+
     target: 'web',
     // target: 'node',
     
@@ -40,15 +43,24 @@ module.exports = {
             }
         ]
     },
-    
     // externals: {
-    //     jquery: 'jQuery',
-    //     lodash: {
-    //         commonjs: 'lodash',
-    //         commonjs2: 'lodash',
-    //         amd: 'lodash',
-    //         root: '_'
-    //     }
+    //     $: "jquery",
+    //     _: "loadash"
     // }
+    
+    externals: {
+        jquery: {
+            commonjs: 'jQuery',
+            commonjs2: 'jQuery',
+            amd: 'jQuery',
+            root: '$'
+        },
+        lodash: {
+            commonjs: 'lodash',
+            commonjs2: 'lodash',
+            amd: 'lodash',
+            root: '_'
+        }
+    }
     
 };

@@ -1,4 +1,4 @@
-import _ from "lodash";
+// import _ from "lodash";
 import dkglobal from "./dkglobal";
 
 /**
@@ -15,22 +15,27 @@ import dkglobal from "./dkglobal";
 export default function parse_script_tag(dk, attrs) {
     dk.performance('parse-script-tag-start');
     // we've got all the script tags under dk.webpage.scripts
-    let tag = dk.webpage.scripts.dk.tag;
+    // let tag = dk.webpage.scripts.dk.tag;
+    let tag = dk('script[DK]');
+    if (tag === null) {
+        throw `dk.js script tag now need the DK attribute:
+            <script DK src="...dk.js"...>
+        `;
+    }
     
     const scripttag_attributes = {
         DEBUG: false,
         LOGLEVEL: null,
         crossorigin: null,
-        // globals: dkglobal
     };
     
-    _.each(tag.attributes, attr => {  // node.attributes cannot for-of on IE
-        switch (attr.name) {
-            case 'DEBUG':
+    Array.from(tag.attributes, attr => {  // node.attributes cannot for-of on IE
+        switch (attr.name.toLowerCase()) {
+            case 'debug':
                 // <script debug src=..> => debug===4
                 scripttag_attributes.DEBUG = true;
                 break;
-            case 'LOGLEVEL':
+            case 'loglevel':
                 // <script debug src=..> => debug===4
                 scripttag_attributes.loglevel = parseInt(attr.value || "4", 10);
                 break;

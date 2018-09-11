@@ -56,12 +56,14 @@
  *
  */
 
+import {set_difference} from "./lifecycle/set-ops";
+
 const stats = {init: performance.now()};
 
 import "babel-polyfill";
 import Lifecycle from "./lifecycle";
 
-import __version__ from './version';
+import version from './version';
 
 //
 // // make sure we're not imported again..
@@ -79,16 +81,28 @@ import jQuery from 'jquery';
 //
 // // import "@webcomponents/webcomponentsjs";
 // // import DkIcon from "./xtags/dk-icon";
-//
-//
-// import Class from './lifecycle/boot/dk-class';
-// import namespace from './lifecycle/boot/dk-namespace';
 
 
 // here..?
 var dk = function dk(selector) {
     return document.querySelector(selector);
 };
+
+Object.assign(dk, {
+    version,
+    _: _,
+    $: jQuery,
+
+    all(selector) {
+        return document.querySelectorAll(selector);
+    }
+});
+
+// dk.version = version;
+// jQuery(() => {
+//     dk._jquery_loaded = true;
+// });
+
 
 dk.performance = tag => {
     const now = performance.now();
@@ -105,16 +119,6 @@ dk.performance.toString = () => {
 };
 dk.performance('made-dk');
 
-
-//
-// // probably not here..?
-// Object.assign(dk, {
-//     __version__,
-//
-//     all(selector) {
-//         return document.querySelectorAll(selector);
-//     }
-// });
 
 new Lifecycle(dk, {
     externals: {
@@ -135,13 +139,6 @@ new Lifecycle(dk, {
 
 // Object.assign(dk, {
 dk.add({
-    // external hooks
-    $: jQuery,
-    __version__: 43,
-//     _: _,
-//
-//     // DkIcon: DkIcon,
-    
     ready(fn) {
         jQuery(fn);
     }
@@ -165,5 +162,18 @@ console.log("PERFORMANCE:", dk.performance.toString());
 //     // <script hide-underscore src="/dkjs/dist/index.js"></script>
 //     globals._ = _;
 // }
+
+
+const originaldk = new Set([
+    '$','Class','ColumnDef','DataFilter','DataGrid','DataTable','DataTableLayout','Date','DateTime',
+    'Duration','PagerWidget','PostnrLookupWidget','ResultSet','SearchWidget','SortDirection',
+    'TableCell','TableHeader','TableRow','VDataTable','Widget','_','after','ajax','all','bind',
+    'cls2id','combine','core','count','counter','ctor_apply','cursor','data','debug','dedent',
+    'dir','dkjstag','dom','error','filter','find','format','format_value','forms','globals','help',
+    'here','icon','id','id2name','import','info','initialize','jason','json','layout','log','merge',
+    'namespace','on','one','panel','parse_uri','publish','ready','require','subscribe','sys',
+    'table','traverse','tree','unsorted','update','version','warn','web','widget']);
+console.warn("MISSING:", Array.from(set_difference(originaldk, new Set(dk.keys()))).sort());
+
 
 module.exports = dk;    // must use commonjs syntax here

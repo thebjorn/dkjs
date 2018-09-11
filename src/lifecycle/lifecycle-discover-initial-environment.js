@@ -1,5 +1,6 @@
 import dkglobal from "./dkglobal";
 import {parse_src} from "./uri";
+// import define_lazy_value from "./define-lazy-value";
 
 
 /**
@@ -14,24 +15,57 @@ export default function discover_initial_environment(dk, attrs) {
     dk.webpage = {scripts: {}, stylesheets: {}};
     dk.globals = dkglobal;
     
-    function save_url(uri, kind, tag) {
+    function save_url(node, uri, obj, field) {
         if (/polyfill\.io/.test(uri)) return;
         let url_info = parse_src(uri);
-        url_info.tag = tag;
-        let db = dk.webpage[kind];
+        url_info.tag = node;
+        let db = obj[field];        // infinite recursion?
         if (url_info.libname in db) {
             throw `Script included multiple times:
                 ${url_info.source}
-                ${dk.webpage[kind][url_info.libname].source}
+                ${db[url_info.libname].source}
             `;
         }
-        dk.webpage[kind][url_info.libname] = url_info;
+        db[url_info.libname] = url_info;
     }
     
-    Array.from(document.scripts, script => save_url(script.getAttribute('src'), 'scripts', script));
-    const style_links = document.querySelectorAll('link[href][rel=stylesheet]');
-    Array.from(style_links)
-         .forEach(lnk => save_url(lnk.getAttribute('href'), 'stylesheets', lnk));
+    function save_from_nodes(nodes, attr, obj, field) {
+        let anodes = Array.from(nodes);
+        anodes.forEach(n => {
+            let uri = n.getAttribute(attr);
+            save_url(n, uri, obj, field);
+            
+        });
+    }
+    save_from_nodes(
+        document.scripts,
+        'src',
+        dk.webpage, 'scripts'
+    );
+    save_from_nodes(
+        document.querySelectorAll('link[href][rel=stylesheet]'),
+        'href',
+        dk.webpage, 'stylesheets'
+    );
+    
+    // define_lazy_value(
+    //     dk.webpage,
+    //     'scripts',
+    //     () => save_from_nodes(document.scripts, 'src', dk.webpage, 'scripts'),
+    //     false
+    // );
+    // define_lazy_value(
+    //     dk.webpage,
+    //     'stylesheets',
+    //     () => save_from_nodes(
+    //         document.querySelectorAll('link[href][rel=stylesheet]'),
+    //         'href',
+    //         dk.webpage, 'stylesheets'
+    //     ),
+    //     false       // writable
+    // );
+    
+
     
     dk.performance('discover-initial-environment-end');
 }

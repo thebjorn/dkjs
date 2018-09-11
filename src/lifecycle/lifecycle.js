@@ -4,55 +4,46 @@
  *
  *     1.
  */
-import _ from 'lodash';
-import {parse_src} from "./uri";
-import dkglobal from './dkglobal';
+// import _ from 'lodash';
+// import {parse_src} from "./uri";
+// import dkglobal from './dkglobal';
 import setup_console from './browser/dk-console';
 import Class from './boot/dk-class';
 import namespace from './boot/dk-namespace';
 import setup_signals from "./boot/dk-signals";
 import discover_initial_environment from "./lifecycle-discover-initial-environment";
 import parse_script_tag from "./lifecycle-parse-script-tag";
-
-
-const array_intersection = (a, b) => {
-    const bs = new Set(b);
-    return new Set(a.filter(x => bs.has(x)));
-};
-const set_empty = s => s.size === 0;
+import create_debug_environment from "./lifecycle-create-debug-environment";
+// import require from "./browser/dk-require";
+import setup_loaders from "./lifecycle-setup-loaders";
+import sys from "../sys";
+import core from "../core";
 
 
 class Lifecycle {
     constructor(dk, ctx) {
         dk.performance('lifecycle-start');
 
-        
         discover_initial_environment(dk, ctx);      // dk.globals, .webpage.scripts, .webpage.stylesheets
         parse_script_tag(dk, ctx);                  // dk.DEBUG, .LOGLEVEL, .scripttag_attributes
-        
-        this.prepare_dk_object(dk, ctx);
 
+        console.info('dk.DEBUG = ', dk.DEBUG);
+        if (dk.DEBUG) {
+            create_debug_environment(dk);
+        }
         setup_console(dk);                      // add console
-        Object.assign(dk, {Class, namespace});  // add Class and namespace
+        Object.assign(dk, {
+            Class,
+            namespace
+        });  // add Class and namespace
         setup_signals(dk, dk.debug ? dk.ERROR : dk.INFO);
+        setup_loaders(dk, ctx);
+        dk.sys = sys;
+        dk.core = core;
         
         dk.lifecycle = this;
     }
-    
-    prepare_dk_object(dk, attrs) {
-        if (dk.DEBUG || true) {
-            dk.add = function (attrs) {
-                let common = array_intersection(Object.keys(dk), Object.keys(attrs));
-                if (!set_empty(common)) {
-                    throw `ERROR: trying to add existing property: ${[...common]}`;
-                }
-                Object.assign(dk, attrs);
-            };
-        } else {
-            dk.add = attrs => Object.assign(dk, attrs);
-        }
-    }
-    
+
 
 
     

@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.core.js" integrity="sha256-Qqd/EfdABZUcAxjOkMi8eGEivtdTkh3b65xCZL4qAQA=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
 
-    <script DEBUG LOGLEVEL="4" crossorigin="anonymous" src="./dk.js"></script>
+    <script DEBUG DK LOGLEVEL="4" crossorigin="anonymous" src="./dk.js"></script>
 </head>
 <body>
 
@@ -34,6 +34,11 @@
         dk.on(h1, 'foo', function () { console.log("got foo'd"); });
         // dk.on(h1, 'foo', () => console.log("got foo'd"));
         console.log("STATS:", dk.stats);
+
+        // dk.keys().forEach(k => console.log("dk." + k));
+        // console.log('dk.keys():', dk.keys());
+
+
     });
 </script>
 </body>

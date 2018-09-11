@@ -1,6 +1,7 @@
 
-const $ = require('jquery');
-const _ = require('lodash');
+import $ from 'jquery';
+import _ from 'lodash';
+
 const dkconsole = require('./dk-console.js');
 const _p = require('./dk-publish.js');
 
@@ -104,7 +105,7 @@ const load_all = function load_all (loader, urls, fn) {
 };
 
 
-module.exports = {
+export default {
     _loadstate: state,
 
     css: function (url, fn) {

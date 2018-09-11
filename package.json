@@ -6,7 +6,8 @@
   "module": "src/index2.js",
   "scripts": {
     "test": "jest",
-    "build": "webpack && wc -c dist/*"
+    "build": "webpack --cache --progress && wc -c dist/*",
+    "watch": "webpack --cache --watch --progress"
   },
   "repository": "git+https://github.com/thebjorn/dkjs.git",
   "author": "Bjorn Pettersen",
