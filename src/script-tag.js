@@ -4,12 +4,12 @@
  *  dk initialization tasks should be performed in lifecycle.initialize().
  *  (notably, it can not use dkconsole...!)
  */
-var $ = require('jquery');
+const $ = require('jquery');
 
 
 // don't need to wait for document ready since we're only accessing header
 // tags..
-var node = $('head>script[src$="dk.js"]');
+let node = $('head>script[src$="dk.js"]');
 if (node.length === 0) node = $('head>script[src$="dk.min.js"]');
 if (node.length === 0) node = $('head>script[src*="dk.min"]');
 if (node.length === 0) node = $('head>script[src*="dk.max"]');

@@ -73,10 +73,10 @@ import version from './version';
 //     throw `Trying to import dk.js (v${myver}), but dk.js (v${cver}) is already imported.`;
 // }
 //
-import _ from 'lodash';
-// // const _lodash_version = _.VERSION;     // e.g. "4.16.6"
+// import _ from 'lodash';
+const _lodash_version = _.VERSION;     // e.g. "4.16.6"
 //
-import jQuery from 'jquery';
+// import jQuery from 'jquery';
 // const _jq_version = jQuery.fn.jquery;  // e.g. "3.1.0"
 //
 // // import "@webcomponents/webcomponentsjs";

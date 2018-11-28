@@ -1,5 +1,6 @@
 
-var jqp = require('./dk-jqplugins.js');
+// TODO: remember me..
+// var jqp = require('./dk-jqplugins.js');
 
 
 /*

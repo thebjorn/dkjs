@@ -78,7 +78,7 @@ function is_minified(uriobj) {
 }
 
 function plain_name(urlobj) {
-    let res = urlobj.name.replace(/[-.]min[-.]/, '.');
+    let res = urlobj.name.replace(/[-.]min[-.]?/, '.');
     res = res.replace(/[-.@\/](\d+\.\d+\.\d+)[.\/]?/, '');
     return res;
 }

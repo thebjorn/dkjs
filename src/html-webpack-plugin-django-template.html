@@ -1,0 +1,5 @@
+{% load staticfiles %}
+<% const path = require('path'); %>
+<% for (var jsfile in htmlWebpackPlugin.files.js) { %>
+    <script src="{% static "dkjs/<%= path.basename(htmlWebpackPlugin.files.js[jsfile]) %>" %}"></script>
+<% } %>
