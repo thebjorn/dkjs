@@ -1,3 +1,5 @@
+// LVL:1
+
 import {create_dom} from "./dom";
 
 /**
@@ -14,4 +16,5 @@ function require_css(uri) {
     if (typeof link === "undefined") throw "Failed to create link node";
 
     document.getElementsByTagName("head")[0].appendChild(link);
+    // TODO: trigger event when loaded..?
 }

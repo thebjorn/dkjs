@@ -6,6 +6,7 @@
   "module": "src/index2.js",
   "scripts": {
     "test": "jest --coverage && start coverage/index.html",
+    "docs": "jsdoc -r -P ./package.json -R ./README.md src -d ./out --verbose && start out/index.html",
     "build": "webpack --cache --progress && wc -c dist/*",
     "watch": "webpack --cache --watch --progress"
   },

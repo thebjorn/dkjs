@@ -1,27 +1,4 @@
-
-// TODO: remember me..
-// var jqp = require('./dk-jqplugins.js');
-
-
-/*
- *  Return a unique counter value.
- *  The optional ``name`` parameter, will create a label
- *  ``name``<counter>, where the counter starts from startval
- *  (default 1).
- */
-const _counters = {
-    _default: 1
-};
-
-export function counter(name, startval) {
-    if (!name && !startval) return _counters._default++;
-    if (!_counters[name]) {
-        if (!startval) startval = 1;
-        _counters[name] = startval;
-    }
-    return name + _counters[name]++;
-}
-
+// LVL:0
 
 /**
  * Convert ``id`` to a valid javascript identifier.
@@ -58,18 +35,18 @@ export function count_char(s, letter) {
  * Similar to Python's textwrap.dedent(), which removes common/leading
  *  whitespace from the left of each line in txt.
  *
- * @param txt
- * @returns {*}
+ * @param {string} txt - the text to dedent.
+ * @returns {string}
  */
 export function dedent(txt) {
     if (!txt) return "";
-    var lines = txt.split('\n');
-    var indents = lines.map(function (line) {
-        var m = line.match(/(^[ \t]*)[^ \t\n]/);
+    const lines = txt.split('\n');
+    let indents = lines.map(line => {
+        const m = line.match(/(^[ \t]*)[^ \t\n]/);
         return m ? m[1] : "";
     });
-    indents = indents.filter(function (spc) { return spc > ""; });
-    var margin = null;
+    indents = indents.filter(spc => spc > "");  // function (spc) { return spc > ""; });
+    let margin = null;
     indents.forEach(function (indent) {
         if (margin === null) {
             margin = indent;
@@ -88,16 +65,3 @@ export function dedent(txt) {
     return txt;
 }
 
-
-export default {
-    // help: jqp.help,
-    // lifecycle: require('./dk-lifecycle.js'),
-    // counter: require('./dk-counter.js')
-    counter,
-    text: {
-        id2name: id2name,
-        cls2id: cls2id,
-        count: count_char,
-        dedent: dedent
-    }
-};

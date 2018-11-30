@@ -143,6 +143,7 @@ const originaldk = new Set([
     'namespace','on','one','panel','parse_uri','publish','ready','require','subscribe','sys',
     'table','traverse','tree','unsorted','update','version','warn','web','widget']);
 console.warn("MISSING:", Array.from(set_difference(originaldk, new Set(dk.keys()))).sort());
+console.warn("EXTRA:", Array.from(set_difference(new Set(dk.keys()), originaldk)).sort());
 
 
 module.exports = dk;    // must use commonjs syntax here

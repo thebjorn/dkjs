@@ -1,6 +1,6 @@
 
 
-/*
+/**
  *   `apply` for ctor functions, e.g.  dk.ctor_apply(Date, [1970, 5, 2]);
  */
 export default function ctor_apply(ctor, args) {

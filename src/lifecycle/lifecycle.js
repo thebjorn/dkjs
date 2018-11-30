@@ -18,7 +18,7 @@ import performance from "../performance-timer";
 // import require from "./browser/dk-require";
 import setup_loaders from "./lifecycle-setup-loaders";
 import sys from "../sys";
-import core from "../core";
+// import core from "../core";
 
 
 class Lifecycle {
@@ -39,7 +39,7 @@ class Lifecycle {
         // setup_signals(dk, dk.debug ? dk.ERROR : dk.INFO);
         setup_loaders(dk, ctx);
         dk.sys = sys;
-        dk.core = core;
+        // dk.core = core;
         
         dk.lifecycle = this;
     }

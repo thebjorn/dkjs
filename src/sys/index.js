@@ -40,7 +40,8 @@ export function throttle(delay, callback, debounce_mode) {
         }
         timeout_id = setTimeout(
             debounce_mode ? clear : exec,
-            debounce_mode === undefined ? delay - elapsed : delay);
+            debounce_mode === undefined ? delay - elapsed : delay
+        );
     }
     
     return debounce_function;
@@ -69,7 +70,7 @@ export function mcall(obj, method, ...args) {
     return result;
 }
 
-/*
+/**
  *  Convert instance to plain old javascript object.
  */
 export function cls2pojo(obj) {
