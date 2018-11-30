@@ -11,9 +11,9 @@ import {parse_src} from "./uri";
  */
 export default function discover_initial_environment(dk, attrs) {
     dk.performance('discover-initial-environment-start');
-    dk.app = {state: {}};
+    // dk.app = {state: {}};
     dk.webpage = {scripts: {}, stylesheets: {}};
-    dk.globals = dkglobal;
+    // dk.globals = dkglobal;
     
     function save_url(node, uri, obj, field) {
         if (/polyfill\.io/.test(uri)) return;

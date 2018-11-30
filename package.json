@@ -5,7 +5,7 @@
   "main": "dist/dk.js",
   "module": "src/index2.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage && start coverage/index.html",
     "build": "webpack --cache --progress && wc -c dist/*",
     "watch": "webpack --cache --watch --progress"
   },

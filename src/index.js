@@ -55,68 +55,37 @@
  *      fn = 'Foo';                     // TypeError
  *
  */
+import dk from "./dk-obj";
 
+import performance from "./performance-timer";
 import {set_difference} from "./lifecycle/set-ops";
-
-const stats = {init: performance.now()};
+performance('loaded-set-ops');
 
 import "babel-polyfill";
+performance('loaded-babel-polyfill');
+
 import Lifecycle from "./lifecycle";
+performance('loaded-Lifecycle');
 
-import version from './version';
-
-//
 // // make sure we're not imported again..
 // if (dkglobal && dkglobal.dk) {
 //     let cver = dkglobal.dk.__version__ || 'unknown';
 //     let myver = __version__ || 'unknown';
 //     throw `Trying to import dk.js (v${myver}), but dk.js (v${cver}) is already imported.`;
 // }
-//
-// import _ from 'lodash';
-const _lodash_version = _.VERSION;     // e.g. "4.16.6"
-//
-// import jQuery from 'jquery';
-// const _jq_version = jQuery.fn.jquery;  // e.g. "3.1.0"
-//
+
 // // import "@webcomponents/webcomponentsjs";
 // // import DkIcon from "./xtags/dk-icon";
 
 
-// here..?
-var dk = function dk(selector) {
-    return document.querySelector(selector);
-};
-
-Object.assign(dk, {
-    version,
-    _: _,
-    $: jQuery,
-
-    all(selector) {
-        return document.querySelectorAll(selector);
-    }
+dk.$(document).ready(function () {
+    dk.debug("document ready");
+    dk.performance('jquery-loaded');
+    dk._jquery_loaded = true;
 });
 
-// dk.version = version;
-// jQuery(() => {
-//     dk._jquery_loaded = true;
-// });
 
 
-dk.performance = tag => {
-    const now = performance.now();
-    let prev = now;
-    if (dk.performance.events.length >= 1) {
-        prev = dk.performance.events[0][1];
-        // prev = dk.performance.events[dk.performance.events.length - 1][1];
-    }
-    dk.performance.events.push([tag, now, now-prev]);
-};
-dk.performance.events = [];
-dk.performance.toString = () => {
-    dk.performance.events.forEach(([tag, now, duration]) => console.log("PERF-EVT:", tag, now, duration));
-};
 dk.performance('made-dk');
 
 

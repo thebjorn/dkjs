@@ -1,4 +1,8 @@
 
+/*
+ *  Javascript has defined Set objects, but no operations...?
+ *
+ */
 // empty set?
 export const set_empty = s => s.size === 0;
 

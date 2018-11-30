@@ -45,7 +45,7 @@ export default function define_lazy_value(obj, prop, initializer, writable) {
                 value: undefined,
                 writable: true
             });
-            var value = initializer.call(this, obj, prop);
+            const value = initializer.call(this, obj, prop);
             Object.defineProperty(this, prop, {
                 value: value,
                 writable: !!writable

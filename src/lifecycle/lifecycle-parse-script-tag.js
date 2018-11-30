@@ -1,5 +1,6 @@
 // import _ from "lodash";
 import dkglobal from "./dkglobal";
+import dk from "../dk-obj";
 
 /**
  * The script tag (<script src="dk.js" ..) can have additional attributes:
@@ -10,9 +11,8 @@ import dkglobal from "./dkglobal";
  *      data-main
  *
  * @param dk
- * @param attrs
  */
-export default function parse_script_tag(dk, attrs) {
+export default function parse_script_tag(dk) {
     dk.performance('parse-script-tag-start');
     // we've got all the script tags under dk.webpage.scripts
     // let tag = dk.webpage.scripts.dk.tag;

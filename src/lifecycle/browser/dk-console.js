@@ -15,6 +15,8 @@
  *
  */
 
+import performance from "../../performance-timer";
+
 /* global window */
 export default function setup_console(dk) {
     // attach log levels directly onto dk
@@ -69,4 +71,5 @@ export default function setup_console(dk) {
         };
     }
     dk.info(`set LOGLEVEL attribute on script tag to a smaller value to reduce logging, currently LOGLEVEL == ${loglevel}`);
+    performance('dk-console');
 }

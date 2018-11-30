@@ -4,16 +4,17 @@
  *
  *     1.
  */
+import performance from "../performance-timer";
+
 // import _ from 'lodash';
 // import {parse_src} from "./uri";
 // import dkglobal from './dkglobal';
-import setup_console from './browser/dk-console';
-import Class from './boot/dk-class';
-import namespace from './boot/dk-namespace';
-import setup_signals from "./boot/dk-signals";
-import discover_initial_environment from "./lifecycle-discover-initial-environment";
-import parse_script_tag from "./lifecycle-parse-script-tag";
-import create_debug_environment from "./lifecycle-create-debug-environment";
+// import setup_console from './browser/dk-console';
+// import namespace from './boot/dk-namespace';
+// import setup_signals from "./boot/dk-signals";
+// import discover_initial_environment from "./lifecycle-discover-initial-environment";
+// import parse_script_tag from "./lifecycle-parse-script-tag";
+// import create_debug_environment from "./lifecycle-create-debug-environment";
 // import require from "./browser/dk-require";
 import setup_loaders from "./lifecycle-setup-loaders";
 import sys from "../sys";
@@ -24,19 +25,18 @@ class Lifecycle {
     constructor(dk, ctx) {
         dk.performance('lifecycle-start');
 
-        discover_initial_environment(dk, ctx);      // dk.globals, .webpage.scripts, .webpage.stylesheets
-        parse_script_tag(dk, ctx);                  // dk.DEBUG, .LOGLEVEL, .scripttag_attributes
+        // discover_initial_environment(dk, ctx);      // dk.globals, .webpage.scripts, .webpage.stylesheets
+        // parse_script_tag(dk);                  // dk.DEBUG, .LOGLEVEL, .scripttag_attributes
 
-        console.info('dk.DEBUG = ', dk.DEBUG);
-        if (dk.DEBUG) {
-            create_debug_environment(dk);
-        }
-        setup_console(dk);                      // add console
-        Object.assign(dk, {
-            Class,
-            namespace
-        });  // add Class and namespace
-        setup_signals(dk, dk.debug ? dk.ERROR : dk.INFO);
+        // console.info('dk.DEBUG = ', dk.DEBUG);
+        // if (dk.DEBUG) {
+        //     create_debug_environment(dk);
+        // }
+        // setup_console(dk);                      // add console
+        // Object.assign(dk, {
+        //     namespace
+        // });  // add Class and namespace
+        // setup_signals(dk, dk.debug ? dk.ERROR : dk.INFO);
         setup_loaders(dk, ctx);
         dk.sys = sys;
         dk.core = core;
@@ -56,6 +56,7 @@ class Lifecycle {
     
 }
 
+performance('lifecycle');
 export default Lifecycle;
 
 // const lifecycle = new Lifecycle();

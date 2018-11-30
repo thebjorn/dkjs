@@ -1,3 +1,4 @@
+// LVL:0
 // "use strict";
 /*
 Start of es2015 version of dk base class.
@@ -21,6 +22,8 @@ Usage::
     });
 
 */
+
+import performance from "../../performance-timer";
 
 /**
  * Set the name property of obj.
@@ -93,3 +96,4 @@ export default class Class {
     }
 }
 
+performance('dk-class');
