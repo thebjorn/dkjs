@@ -9,7 +9,8 @@
         "useBuiltIns": true,
         "node": "current"
       }
-    }]
+    }],
+    ["flow"]
   ],
   "ignore": [
     "node_modules"
