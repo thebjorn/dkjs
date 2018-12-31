@@ -2,5 +2,15 @@
   "esversion": 6,
   "node": true,
   "module": true,
-  "globals": ["customElements", "document", "performance", "$", "jQuery", "_"]
+  "globals": {
+    "customElements": true,
+    "document": true,
+    "performance": true,
+    "$": true,
+    "jQuery": true,
+    "_": true,
+    "test": true,
+    "expect": true,
+    "jest": true
+  }
 }

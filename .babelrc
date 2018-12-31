@@ -16,6 +16,7 @@
     "node_modules"
   ],
   "plugins": [
-    "add-module-exports"
+    "add-module-exports",
+    "transform-es2015-for-of"
   ]
 }

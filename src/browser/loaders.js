@@ -7,7 +7,7 @@ import {create_dom} from "./dom";
  *
  * @param uri
  */
-function require_css(uri) {
+export default function require_css(uri) {
     let link = create_dom('link', {
         rel: "stylesheet",
         type: 'text/css',

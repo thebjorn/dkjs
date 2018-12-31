@@ -13,7 +13,7 @@ const _performance = tag => {
 };
 _performance.events = [];
 _performance.toString = () => {
-    _performance.events.forEach(([tag, now, duration]) => console.log("PERF-EVT:", duration, tag));
+    _performance.events.forEach(([tag, now, duration]) => console.log("PERF-EVT:", Math.round(duration, 6), tag));
 };
 _performance('loaded-stats-timer');
 

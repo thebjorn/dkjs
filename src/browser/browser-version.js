@@ -1,6 +1,6 @@
-var $ = require('jquery');
-var _ = require('lodash');
-var dk = require('../boot');
+import $ from 'jquery';
+import dkglobal from "../lifecycle/dkglobal";
+
 
 if (typeof window === "undefined") {
     // running under node.js
@@ -12,10 +12,10 @@ if (typeof window === "undefined") {
 }
 
 
-module.exports.browser =  (function () {
+export default (function () {
     // $.browser disappeared in jQuery 1.9
     if ($.browser) return $.browser;
-    if (dk.globals._browser) return this._browser;
+    if (dkglobal._browser) return this._browser;
 
     // from jquery.dynatree.js with modifications
     var matched, browser;

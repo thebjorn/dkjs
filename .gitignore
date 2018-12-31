@@ -1,6 +1,10 @@
 # javascript
 node_modules/
 
+build/
+coverage/
+out/
+
 # PyCharm
 .idea/misc.xml
 .idea/workspace.xml
@@ -124,3 +128,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 /dist/dk.js
+*.md5

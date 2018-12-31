@@ -35,7 +35,7 @@ export function count_char(s: string, letter: string): number {
 
 /**
  * Similar to Python's textwrap.dedent(), which removes common/leading
- *  whitespace from the left of each line in txt.
+ * whitespace from the left of each line in txt.
  *
  * @param {string} txt - the text to dedent.
  * @returns {string}
@@ -43,13 +43,23 @@ export function count_char(s: string, letter: string): number {
 export function dedent(txt: string): string {
     if (!txt) return "";
     const lines = txt.split('\n');
+    
+    // handle first line
+    if (lines[0].match(/^\s*$/)) {
+        lines[0] = '';
+    }
+    // handle last line
+    if (lines[lines.length-1].match(/^\s*$/)) {
+        lines[lines.length-1] = ''
+    }
+    
     let indents = lines.map(line => {
         const m = line.match(/(^[ \t]*)[^ \t\n]/);
         return m ? m[1] : "";
     });
     indents = indents.filter(spc => spc > "");  // function (spc) { return spc > ""; });
     let margin = null;
-    indents.forEach(function (indent) {
+    indents.forEach(indent => {
         if (margin === null) {
             margin = indent;
         } else if (indent.startsWith(margin)) {
@@ -62,7 +72,7 @@ export function dedent(txt: string): string {
     });
     
     if (margin) {
-        txt = txt.replace(new RegExp("^" + margin, "mg"), "");
+        txt = lines.join('\n').replace(new RegExp("^" + margin, "mg"), "");
     }
     return txt;
 }
