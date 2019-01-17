@@ -1,6 +1,6 @@
 // import _ from "lodash";
-import dkglobal from "./dkglobal";
-import dk from "../dk-obj";
+import dkglobal from "../dkglobal";
+import dk from "../../dk-obj";
 
 /**
  * The script tag (<script src="dk.js" ..) can have additional attributes:
@@ -71,5 +71,6 @@ export default function parse_script_tag(dk) {
     delete scripttag_attributes.LOGLEVEL;
     
     dk.scripttag_attributes = scripttag_attributes;
+    
     dk.performance('parse-script-tag-end');
 }

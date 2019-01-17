@@ -1,4 +1,4 @@
-import {array_intersection, set_empty} from "./set-ops";
+import {array_intersection, set_empty} from "../set-ops";
 
 
 export default function create_debug_environment(dk) {

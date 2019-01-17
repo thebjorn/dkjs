@@ -2,7 +2,7 @@
 import $ from 'jquery';
 import _ from 'lodash';
 
-const dkconsole = require('./dk-console.js');
+const dkconsole = require('../dkboot/dk-console.js');
 const _p = require('./dk-publish.js');
 
 

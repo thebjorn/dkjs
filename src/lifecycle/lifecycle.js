@@ -25,20 +25,10 @@ class Lifecycle {
     constructor(dk, ctx) {
         dk.performance('lifecycle-start');
 
-        // discover_initial_environment(dk, ctx);      // dk.globals, .webpage.scripts, .webpage.stylesheets
-        // parse_script_tag(dk);                  // dk.DEBUG, .LOGLEVEL, .scripttag_attributes
+        // dk.globals, .webpage.scripts, .webpage.stylesheets
+        // discover_initial_environment(dk, ctx);      
 
-        // console.info('dk.DEBUG = ', dk.DEBUG);
-        // if (dk.DEBUG) {
-        //     create_debug_environment(dk);
-        // }
-        // setup_console(dk);                      // add console
-        // Object.assign(dk, {
-        //     namespace
-        // });  // add Class and namespace
-        // setup_signals(dk, dk.debug ? dk.ERROR : dk.INFO);
         setup_loaders(dk, ctx);
-        dk.sys = sys;
         // dk.core = core;
         
         dk.lifecycle = this;

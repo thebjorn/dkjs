@@ -5,15 +5,15 @@ import * as text from "./core/text-utils";
 import counter from "./core/counter";
 import * as dom from "./browser/dom";
 import {shallow_observer, deep_observer} from "./data/observable";
-import {require_css} from "./browser/loaders";
+import require_css from "./browser/loaders";
 import dkglobal from "./lifecycle/dkglobal";
-import Class from "./lifecycle/boot/dk-class";
+import Class from "./lifecycle/coldboot/dk-class";
 import version from "./version";
-import parse_script_tag from "./lifecycle/lifecycle-parse-script-tag";
-import setup_console from "./lifecycle/browser/dk-console";
-import create_debug_environment from "./lifecycle/lifecycle-create-debug-environment";
-import namespace from "./lifecycle/boot/dk-namespace";
-import setup_signals from "./lifecycle/boot/dk-signals";
+import parse_script_tag from "./lifecycle/dkboot/lifecycle-parse-script-tag";
+import setup_console from "./lifecycle/dkboot/dk-console";
+import create_debug_environment from "./lifecycle/dkboot/lifecycle-create-debug-environment";
+import namespace from "./lifecycle/coldboot/dk-namespace";
+import setup_signals from "./lifecycle/dkboot/dk-signals";
 
 
 const dk = function dk(selector) {

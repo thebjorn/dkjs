@@ -67,6 +67,12 @@ performance('loaded-babel-polyfill');
 import Lifecycle from "./lifecycle";
 performance('loaded-Lifecycle');
 
+import sys from "./sys";
+performance('loaded-sys');
+
+// import core from "./core";
+// performance('core');
+
 // // make sure we're not imported again..
 // if (dkglobal && dkglobal.dk) {
 //     let cver = dkglobal.dk.__version__ || 'unknown';
@@ -78,16 +84,7 @@ performance('loaded-Lifecycle');
 // // import DkIcon from "./xtags/dk-icon";
 
 
-dk.$(document).ready(function () {
-    dk.debug("document ready");
-    dk.performance('jquery-loaded');
-    dk._jquery_loaded = true;
-});
-
-
-
 dk.performance('made-dk');
-
 
 new Lifecycle(dk, {
     externals: {
@@ -108,11 +105,15 @@ new Lifecycle(dk, {
 
 // Object.assign(dk, {
 dk.add({
+    sys,
+    // core,
+    
     ready(fn) {
-        jQuery(fn);
+        dk.$(fn);
     }
 });
 
+// print out all startup performance metrics 
 console.log("PERFORMANCE:", dk.performance.toString());
 
 // customElements.define('dk-icon', new dk.DkIcon());
@@ -145,5 +146,10 @@ const originaldk = new Set([
 console.warn("MISSING:", Array.from(set_difference(originaldk, new Set(dk.keys()))).sort());
 console.warn("EXTRA:", Array.from(set_difference(new Set(dk.keys()), originaldk)).sort());
 
+dk.info('dk loaded');
 
 module.exports = dk;    // must use commonjs syntax here
+
+dk.ready(function () {
+    dk.info('dk-fully-loaded');
+});

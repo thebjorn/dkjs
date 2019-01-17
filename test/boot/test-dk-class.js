@@ -1,6 +1,6 @@
 
 
-const Class = require('../../src/lifecycle/boot/dk-class');
+const Class = require('../../src/lifecycle/coldboot/dk-class');
 // import { Class } from '../../src/boot/dk-class';
 
 QUnit.test('Class.create ctor', (assert) => {
