@@ -1,6 +1,6 @@
 // import _ from "lodash";
 import dkglobal from "../dkglobal";
-import dk from "../../dk-obj";
+// import dk from "../../dk-obj";
 
 /**
  * The script tag (<script src="dk.js" ..) can have additional attributes:

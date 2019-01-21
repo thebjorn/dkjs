@@ -70,6 +70,9 @@ performance('loaded-babel-polyfill');
 import sys from "./sys";
 performance('loaded-sys');
 
+import State from "./browser/dk-state";
+performance('loaded-dk-state');
+
 // import core from "./core";
 // performance('core');
 
@@ -107,6 +110,7 @@ dk.performance('made-dk');
 dk.add({
     sys,
     // core,
+    State,
     
     ready(fn) {
         dk.$(fn);

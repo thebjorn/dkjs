@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const path = require('path');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const FlowWebpackPlugin = require('flow-webpack-plugin');
 
 
 const common_settings = {
@@ -46,7 +47,12 @@ const common_settings = {
             filename: path.resolve(__dirname, 'dkjs/templates/dkjs/include-scripts.html'),
             inject: false,
             template: path.resolve(__dirname, 'src/html-webpack-plugin-django-template.html')
-        })
+        }),
+        // new FlowWebpackPlugin({
+        //     verbose: true,
+        //     printFlowOutput: true,
+        //     reportingSeverity: 'warning'
+        // })
     ],
     externals: {
         jquery: {

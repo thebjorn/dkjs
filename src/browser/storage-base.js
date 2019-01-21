@@ -2,9 +2,8 @@
 
 
 class Storage {
-    values: any;
     constructor() {
-        this.values = {};
+        // this.values:any = {};
     }
     
     get_item<T>(key: string, defaultValue: T): T { return defaultValue; }
@@ -13,4 +12,5 @@ class Storage {
     
     // save_widget(w) {}
     // restore_widget(w) {}
+
 }
