@@ -24,7 +24,7 @@
 </head>
 <body>
 
-    <h1>hello world</h1>
+    <h1 id="id-title">hello world</h1>
     <dk-icon value="check"></dk-icon>
 
 
@@ -35,7 +35,13 @@
     dk.ready(function () {
         h1 = dk('h1');
         dk('h1').innerText = 'so long and thanks for all the fish';
-        dk.on(h1, 'foo', function () { console.log("got foo'd"); });
+        dk.on(h1, 'foo', function (a, b, c) {
+            console.log("got foo'd:", a, b, c);
+            dk.$(h1).append(' got foo-d');
+        });
+        dk.$('h1').on('click', function () {
+            dk.trigger(h1, 'foo', 'with', 'some', 'args');
+        });
         // dk.on(h1, 'foo', () => console.log("got foo'd"));
         console.log("STATS:", dk.stats);
 

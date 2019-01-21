@@ -64,8 +64,8 @@ performance('loaded-set-ops');
 import "babel-polyfill";
 performance('loaded-babel-polyfill');
 
-import Lifecycle from "./lifecycle";
-performance('loaded-Lifecycle');
+// import Lifecycle from "./lifecycle";
+// performance('loaded-Lifecycle');
 
 import sys from "./sys";
 performance('loaded-sys');
@@ -86,22 +86,22 @@ performance('loaded-sys');
 
 dk.performance('made-dk');
 
-new Lifecycle(dk, {
-    externals: {
-        jQuery, _
-    },
-    ensure: {
-        css: [
-            {
-                name: 'font-awesome',
-                version: '470',
-                sources: [
-                    "https://static.datakortet.no/font/fa470/css/font-awesome.css"
-                ]
-            }
-        ]
-    }
-});
+// new Lifecycle(dk, {
+//     externals: {
+//         jQuery, _
+//     },
+//     ensure: {
+//         css: [
+//             {
+//                 name: 'font-awesome',
+//                 version: '470',
+//                 sources: [
+//                     "https://static.datakortet.no/font/fa470/css/font-awesome.css"
+//                 ]
+//             }
+//         ]
+//     }
+// });
 
 // Object.assign(dk, {
 dk.add({

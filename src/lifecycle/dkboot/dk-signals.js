@@ -7,10 +7,31 @@
  *  xx/emit
  *
  */
+
+function _debugstr(obj) {
+    let res = "";
+    if (obj.tagName) {
+        res += obj.tagName;
+        if (obj.id) {
+            res += '#' + obj.id;
+        }
+        return res;
+    }
+    return obj.toString();
+}
+
+
+const listeners = Symbol('listeners');
+
+function _attach_listener(obj, signal, fn) {
+    if (obj[listeners] === undefined) obj[listeners] = {};
+    if (obj[listeners][signal] === undefined) obj[listeners][signal] = [];
+    obj[listeners][signal].push(fn);
+}
+
+
 export default function setup_signals(dk, debuglevel) {
-    
     const BINDING_NOTIFY_LEVEL = debuglevel;
-    const listeners = Symbol('listeners');
     
     /*
      *  Execute `fn` once after next time obj.method() is called.
@@ -25,25 +46,16 @@ export default function setup_signals(dk, debuglevel) {
         };
     };
     
-
-    function _attach_listener(obj, signal, fn) {
-        if (obj[listeners] === undefined) obj[listeners] = {};
-        if (obj[listeners][signal] === undefined) obj[listeners][signal] = [];
-        obj[listeners][signal].push(fn);
-    }
-    
     /*
-     *  Easier to read version:
-     *
      *      dk.on(velrep, 'draw-end').run(velrep.FN('reset_bs_titles');
      */
     dk.on = function (obj, signal, optfn) {
         if (obj === null) return {run: function () {}};
         if (dk.DEBUG && dk.LOGLEVEL >= BINDING_NOTIFY_LEVEL) {
             if (obj && signal && optfn) {
-                dk.debug(`dk.on(${obj.toString()}, "${signal}").run(${optfn.toString()})`);
+                dk.debug(`dk.on(${_debugstr(obj)}, "${signal}", run: ${optfn.toString()})`);
             } else {
-                dk.error("subscribe argument error:", obj, signal, optfn);
+                dk.error("dk.on argument error:", obj, signal, optfn);
                 throw new Error("Cannot listen on undefined object: " + obj);
             }
         }
@@ -61,13 +73,13 @@ export default function setup_signals(dk, debuglevel) {
         }
     };
     
+
     
     dk.trigger = dk.globals.$trigger = function (obj, signal, ...args) {
         if (dk.DEBUG && dk.LOGLEVEL >= BINDING_NOTIFY_LEVEL + 1) {
-            dk.debug(`dk.publish(${obj.toString()}, "${signal}") arguments: ${arguments}`);
+            dk.debug(`dk.trigger(${_debugstr(obj)}, "${signal}", [${args}])`);
         }
         if (obj[listeners]) {
-            args = Array.prototype.slice.call(arguments, 2);
             if (obj[listeners][signal]) {
                 obj[listeners][signal].forEach(function (fn) {
                     if (fn.name) {
@@ -95,8 +107,5 @@ export default function setup_signals(dk, debuglevel) {
         dk.warn("dk.publish is deprecated, use dk.trigger(obj, signal, ...args) instead.");
         return dk.trigger(obj, signal, ...args);
     };
-    
-    
-
     
 }

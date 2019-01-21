@@ -14,6 +14,7 @@ import setup_console from "./lifecycle/dkboot/dk-console";
 import create_debug_environment from "./lifecycle/dkboot/lifecycle-create-debug-environment";
 import namespace from "./lifecycle/coldboot/dk-namespace";
 import setup_signals from "./lifecycle/dkboot/dk-signals";
+import setup_loaders from "./lifecycle/lifecycle-setup-loaders";
 
 
 const dk = function dk(selector) {
@@ -62,6 +63,7 @@ parse_script_tag(dk);
 create_debug_environment(dk);
 setup_console(dk);
 setup_signals(dk, dk.DEBUG ? dk.ERROR : dk.INFO);
+setup_loaders(dk);
 
 performance('created-dk-obj');
 export default dk;

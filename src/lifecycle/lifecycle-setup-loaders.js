@@ -2,7 +2,7 @@
 const state = {};
 
 
-export default function setup_loaders(dk, ctx) {
+export default function setup_loaders(dk) {
     dk.performance('setup-loaders-start');
     
     const _url2name = function (url) {
