@@ -1,189 +1,118 @@
 /* global window */
 
+import {CookieStorage, HashStorage, LocalStorage, SessionStorage} from "./storage-engines";
 
-import _ from 'lodash';
-
-
-export class CookieStorage {
-    // mostly from https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage
-    // compatible with ancient ie.
-    constructor() {
-        this.name = 'CookieStorage';
-        this.length = 0;
-    }
-    
-    get_item(key, defaultValue) {
-        if (!key || !this.has_key(key)) {
-            return defaultValue;
-        }
-        return decodeURIComponent(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + encodeURIComponent(key).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
-    }
-    
-    set_item(key, value) {
-        if (!key) {
-            return;
-        }
-        document.cookie = encodeURIComponent(key) + "=" + encodeURIComponent(value) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/";
-        this.length = document.cookie.match(/=/g).length;
-    }
-    
-    key(nKeyId) {
-        return decodeURIComponent(document.cookie.replace(/\s*=(?:.(?!;))*$/, "").split(/\s*=(?:[^;](?!;))*[^;]?;\s*/)[nKeyId]);
-    }
-    
-    remove_item(key) {
-        if (!key || !this.has_key(key)) {
-            return;
-        }
-        document.cookie = encodeURIComponent(key) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/";
-        this.length--;
-    }
-    
-    has_key(key) {
-        return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(key).replace(/[\-.+*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
-    }
-}
-
-
-export class LocalStorage {
-    constructor(engine) {
-        this.name = 'LocalStorage';
-        this.engine = engine || window.localStorage;
-    }
-
-    set_item(key, value) {
-        try {
-            this.engine.setItem(key, window.JSON.stringify(value));
-        } catch (e) {}
-    }
-
-    get_item(key, defaultValue) {
-        const value = this.engine.getItem(key);
-        return value ? JSON.parse(value) : (defaultValue || undefined);
-    }
-}
-
-
-export class SessionStorage extends LocalStorage {
-    constructor(engine) {
-        super(engine || window.sessionStorage);
-        this.name = 'SessionStorage';
-    }
-}
-
-
-export class HashStorage {
-    constructor() {
-        this.name = 'HashStorage';
-        this.values = {};
-    }
-    
-    encode(val) {
-        return JSON.stringify(val);
-        return window.btoa(JSON.stringify(val));
-        // let res = "";
-        // if (_.isString(val)) {
-        //     return val;
-        // } else if (_.isNumber(val)) {
-        //     return "" + val;
-        // } else if (_.isArray(val)) {
-        //     return '[' + val.map(v => this.encode(v)).join("|") + ']';
-        // } else if (_.isObject(val)) {
-        //     res += '{';
-        //     for (const attr in val) if (val.hasOwnProperty(attr)) {
-        //         res += attr + '=' + this.encode(val[attr]) + ';';
-        //     }
-        //     return res + '}';
-        // } else {
-        //     return JSON.stringify(val);
-        // }
-    }
-    
-    decode(val) {
-        return JSON.parse(val);
-        return JSON.parse(window.atob(val));
-    }
-    
-    set_item(key, value) {
-        if (!key || typeof key !== "string") {
-            throw `dk.State.set_item: key (${key}) must be strings, not ${typeof key}`;
-        }
-        this.values[key] = value;
-        //var strval = this.encode(this.values);
-        //document.location.hash = encodeURIComponent(strval);
-        //document.location.hash = decodeURIComponent($.param(item));
-        //document.location.hash = encodeURIComponent(JSON.stringify(values));
-        document.location.hash = this.encode(this.values);
-    }
-    
-    get_item(key, defaultValue) {
-        const h = document.location.hash.substring(1);
-        const s = decodeURIComponent(h);
-        const v = JSON.parse(s || '{}');
-        return v[key] || defaultValue;
-    }
-}
-
-
+/**
+ * The State class enables pages (and especially widgets on pages) to save and restore
+ * the page state from last visit. The underlying storage engines (which are pluggable)
+ * have different features. E.g. the HashStorage engine stores the state in the browser's
+ * url hash fragment, making it possible to send a link to someone else that lands them 
+ * in the state you're seeing (this requires special care from the developer of course).
+ * 
+ * Initial state is created using the default parameter to get_item(key, defaultValue)::
+ * 
+ *     dk.state = new dk.State({engine: dk.State.CookieStorage, name: 'pagename'});
+ *     this.color = dk.state.get_item('color', 'blue');
+ */
 export class State {
-    constructor(engine, name) {
-        console.info("ENGINE:", engine, "NAME:", name, "TP:", typeof engine);
+    
+    /**
+     * Create a new state object, typically::
+     * 
+     *     dk.state = new State({engine: State.HashStorage});
+     *     
+     * @param engine
+     * @param name
+     */
+    constructor({engine, name}) {
         this.name = name;
-        this.state = {};
-        this._laststate = null;
-        this.engine = engine || (new LocalStorage());
-        console.info("THIS:ENGINE:", this.engine);
+        this._values = null;
+        this._engine_state = "null";
+        this.engine = engine ? (new engine()) : (new LocalStorage());
     }
     
-    get_item(key, defaultValue) {
-        const val = this.engine.get_item(key, defaultValue);
-        // console.info("VAL:", val, "KEY:", key);
-        if (val === defaultValue) {
-            this.engine.set_item(key, val);
+    toString() {
+        return `STATE[${this.name}: ${this._values}]`;
+    }
+    
+    get values() {
+        if (this._values === null) {
+            this._values = this.engine.values;
+            this._engine_state = JSON.stringify(this._values);
         }
-        this.state[key] = val;
+        return this._values;
+    }
+
+    /**
+     * Get a top-level, named, state object.
+     * 
+     * Note: this operation does not save to storage.
+     * 
+     * @param {string} name - the name of the state object to return 
+     * @returns {*} - a state object
+     */
+    get_name(name) {
+        let obj = this.values[name];
+        if (obj === undefined) {
+            obj = {};
+            this._values[name] = obj;
+        }
+        return obj;
+    }
+
+    /**
+     * Usage::
+     * 
+     *     let color = dk.state.get_item('MyWidget1', 'color', 'yellow');
+     * 
+     * @param {string} name - Name of the object to store the value in
+     * @param {string} key  - The key on the object to store the value on.
+     * @param {any} defaultValue - JSON serializable value 
+     * @returns {*}  The value stored on state[name][key]
+     */
+    get_item(name, key, defaultValue) {
+        const obj = this.get_name(name);
+        let val = obj[key];
+        if (val === undefined) {
+            val = this.set_item(name, key, defaultValue);
+        }
         return val;
     }
     
-    set_item(key, val) {
-        this.engine.set_item(key, val);
-        this.state[key] = val;
+    set_item(name, key, val) {
+        const obj = this.get_name(name);
+        obj[key] = val;
+        this.save();
+        return val;
     }
     
-
-    substate(name) {
-        const self = this;
-        const state = this.engine.get_item(name, {});
-        this.engine.set_item(name, state);
-        return {
-            set: function (k, v) {
-                state[k] = v;
-                self.engine.set_item(name, state);
-            },
-            get: function (k) {
-                return state[k];
-            }
-        };
+    save_widget(w) {
+        const name = w.name;
+        Object.entries(w.get_state()).forEach(([key, val]) => {
+            this.set_item(name, key, val);
+        });
     }
+    
+    restore_widget(w) {
+        w.set_state(this.get_name(w.name));
+    }
+    
     changed() {
-        return this._laststate !== JSON.stringify(this.state);
+        return this._engine_state !== JSON.stringify(this._values);
     }
-    set_state(s) {
-        this.state = s;
-        this.save();
-    }
+    
     save() {
+        console.debug("State.save()");
         if (this.changed()) {
-            this.engine.set_item(this.name || 'dk_state', this.state);
-            this._laststate = JSON.stringify(this.state);
+            console.debug("CHANGED");
+            this.engine.save_values(this.name, this._values);
+            this._engine_state = JSON.stringify(this._values);
+        } else {
+            console.debug("NOT_CHANGED");
         }
     }
-    restore() {
-        this.state = this.engine.get_item(this.name || 'dk_state', {});
-        this._laststate = JSON.stringify(this.state);
-        return this.state;
-    }
 }
+State.engines = {CookieStorage, HashStorage, LocalStorage, SessionStorage};
 
 
 export default {

@@ -1,5 +1,7 @@
+/* global: expect */
 
-import {CookieStorage, LocalStorage, SessionStorage, HashStorage, State} from '../dk-state';
+import {State} from '../dk-state';
+import {CookieStorage, HashStorage, LocalStorage, SessionStorage} from "../storage-engines";
 const engines = {
     CookieStorage,
     LocalStorage,
@@ -21,39 +23,39 @@ test("HashStorage.encode", () => {
 
 
 test("State.get|set_item", () => {
-    console.info("State.get|set_item");
+    
     Object.entries(engines).forEach(([name, engine]) => {
-        const state = new State(new engine(), 's0');
+        console.info("State.get|set_item", name);
+        const state = new State({engine: engine, name: 's0'});
 
-        // console.info('engine', engine.name, typeof state.state, state.state.toString());
-
-        const val = state.get_item('hello', 'world');
+        const val = state.get_item('my-widget-1', 'hello', 'world');
         expect(val).toBe('world');
-        expect(state.state['hello']).toBe('world');
+        expect(state._values).toMatchObject({"my-widget-1": {"hello": "world"}});
+        // expect(document.location.hash).toBe("#%7B%22my-widget-1%22%3A%7B%22hello%22%3A%22world%22%7D%7D");
         
-        // state.set_item('hello', 'world');
-        // expect(state.get_item('hello')).toBe('world');
-        //
-        // expect(state.get_item('hello', 'NOTFOUND')).toBe('NOTFOUND');
+        state.set_item('my-widget-1', 'hello', 'world');
+        expect(state.get_item('my-widget-1', 'hello')).toBe('world');
+
+        expect(state.get_item('my-widget-1', 'hello', 'NOTFOUND')).toBe('world');
     });
 });
 
 
 test("State.changed", () => {
+    // state should always be changed() == false from the outside.
     console.info("State.changed");
     Object.entries(engines).forEach(([name, engine]) => {
-        const state = new State(new engine(), 's0');
-
-        // console.info('engine', engine.name, typeof state.state, state.state.toString());
-
-        const val = state.get_item('hello', 'world');
-        expect(val).toBe('world');
-        expect(state.state['hello']).toBe('world');
+        const state = new State({engine: engine, name: 's1'});
         
-        // state.set_item('hello', 'world');
-        // expect(state.get_item('hello')).toBe('world');
-        //
-        // expect(state.get_item('hello', 'NOTFOUND')).toBe('NOTFOUND');
+        expect(state._values).toBe(null);
+        expect(state._engine_state).toBe("null");
+        expect(state.changed()).toBe(false);
+        expect(state.engine.values).toMatchObject({});
+
+        const val = state.get_item('my-widget-1', 'hello', 'world');
+        expect(state.changed()).toBe(false);
+        expect(state.engine.values).toMatchObject({"my-widget-1": {"hello": "world"}});
+        // expect(document.cookie).toBe('')
     });
 });
 
@@ -61,7 +63,7 @@ test("State.changed", () => {
 test("State.save|restore", () => {
     console.info("State.save|restore");
     Object.entries(engines).forEach(([name, engine]) => {
-        const state = new State(new engine(), 's0');
+        const state = new State({engine: engine, name: 's2'});
         // console.info('engine', engine.name, state.changed(), state._laststate, state.state);
         state.save();
         state.set_item('hello', 'world');
