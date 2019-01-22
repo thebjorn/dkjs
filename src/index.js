@@ -88,6 +88,7 @@ performance('loaded-dk-state');
 
 
 dk.performance('made-dk');
+import cookie from "./browser/dk-cookie";
 
 // new Lifecycle(dk, {
 //     externals: {
@@ -111,6 +112,10 @@ dk.add({
     sys,
     // core,
     State,
+    
+    web: {
+        cookie
+    }, 
     
     ready(fn) {
         dk.$(fn);
@@ -137,18 +142,20 @@ console.log("PERFORMANCE:", dk.performance.toString());
 //     globals._ = _;
 // }
 
+import old_vs_new from "./dk-old-vs-new";
+old_vs_new(dk);
 
-const originaldk = new Set([
-    '$','Class','ColumnDef','DataFilter','DataGrid','DataTable','DataTableLayout','Date','DateTime',
-    'Duration','PagerWidget','PostnrLookupWidget','ResultSet','SearchWidget','SortDirection',
-    'TableCell','TableHeader','TableRow','VDataTable','Widget','_','after','ajax','all','bind',
-    'cls2id','combine','core','count','counter','ctor_apply','cursor','data','debug','dedent',
-    'dir','dkjstag','dom','error','filter','find','format','format_value','forms','globals','help',
-    'here','icon','id','id2name','import','info','initialize','jason','json','layout','log','merge',
-    'namespace','on','one','panel','parse_uri','publish','ready','require','subscribe','sys',
-    'table','traverse','tree','unsorted','update','version','warn','web','widget']);
-console.warn("MISSING:", Array.from(set_difference(originaldk, new Set(dk.keys()))).sort());
-console.warn("EXTRA:", Array.from(set_difference(new Set(dk.keys()), originaldk)).sort());
+// const originaldk = new Set([
+//     '$','Class','ColumnDef','DataFilter','DataGrid','DataTable','DataTableLayout','Date','DateTime',
+//     'Duration','PagerWidget','PostnrLookupWidget','ResultSet','SearchWidget','SortDirection',
+//     'TableCell','TableHeader','TableRow','VDataTable','Widget','_','after','ajax','all','bind',
+//     'cls2id','combine','core','count','counter','ctor_apply','cursor','data','debug','dedent',
+//     'dir','dkjstag','dom','error','filter','find','format','format_value','forms','globals','help',
+//     'here','icon','id','id2name','import','info','initialize','jason','json','layout','log','merge',
+//     'namespace','on','one','panel','parse_uri','publish','ready','require','subscribe','sys',
+//     'table','traverse','tree','unsorted','update','version','warn','web','widget']);
+// console.warn("MISSING:", Array.from(set_difference(originaldk, new Set(dk.keys()))).sort());
+// console.warn("EXTRA:", Array.from(set_difference(new Set(dk.keys()), originaldk)).sort());
 
 dk.info('dk loaded');
 

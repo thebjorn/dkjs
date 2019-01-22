@@ -4,28 +4,25 @@
  *   - values (get/set dict value)
  */
 // import Storage from "./storage-base";
+import cookie from "./dk-cookie";
 
-
-function encode_value(val) {
+export function encode_url_value(val) {
     return encodeURIComponent(JSON.stringify(val));
 }
 
-function decode_value(val) {
+export function decode_url_value(val) {
     try {
         return JSON.parse(decodeURIComponent(val));
     } catch (e) {
-        console.error(`VALUE: [${val}] (${typeof val})`);
+        // console.error(`VALUE: [${val}] (${typeof val})`);
         throw e;
     }
 }
 
 
 export class CookieStorage {
-    // mostly from https://developer.mozilla.org/en-US/docs/Web/Guide/API/DOM/Storage
-    // compatible with ancient ie.
     constructor() {
         this.name = 'CookieStorage';
-        this.length = 0;
     }
 
     get values() {
@@ -40,15 +37,15 @@ export class CookieStorage {
         if (!key || !this.has_key(key)) {
             return defaultValue;
         }
-        return decode_value(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + encodeURIComponent(key).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
+        return decode_url_value(cookie.get(key, {raw: true}));
+        // return decode_url_value(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + encodeURIComponent(key).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
     }
 
     set_item(key, value) {
-        if (!key) {
-            return;
-        }
-        document.cookie = encodeURIComponent(key) + "=" + encode_value(value) + "; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/";
-        this.length = document.cookie.match(/=/g).length;
+        if (!key) return;
+        cookie.set(key, encode_url_value(value), {expires: "Tue, 19 Jan 2038 03:14:07 GMT", path:"/", raw: true});
+        // document.cookie = `${encodeURIComponent(key)}=${encode_url_value(value)}; expires=Tue, 19 Jan 2038 03:14:07 GMT; path=/`;
+        // this.length = document.cookie.match(/=/g).length;
     }
 
     key(nKeyId) {
@@ -120,12 +117,12 @@ export class HashStorage {
     get values() {
         const hash_fragment = document.location.hash.substring(1);
         if (hash_fragment === "") return {};
-        return decode_value(hash_fragment);
+        return decode_url_value(hash_fragment);
     }
     
     save_values(name, vals) {
         // name is not used in the HashStorage engine.
-        document.location.hash = encode_value(vals);
+        document.location.hash = encode_url_value(vals);
     }
 
     get_item(key, defaultValue) {
@@ -136,6 +133,6 @@ export class HashStorage {
         if (!key || typeof key !== "string") {
             throw `dk.State.set_item: key (${key}) must be strings, not ${typeof key}`;
         }
-        document.location.hash = encode_value(this.values);  // XXX: fixme
+        document.location.hash = encode_url_value(this.values);  // XXX: fixme
     }
 }

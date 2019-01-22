@@ -1,7 +1,7 @@
 /* global: expect */
 
 import {State} from '../dk-state';
-import {CookieStorage, HashStorage, LocalStorage, SessionStorage} from "../storage-engines";
+import {CookieStorage, HashStorage, LocalStorage, SessionStorage, encode_url_value, decode_url_value} from "../storage-engines";
 const engines = {
     CookieStorage,
     LocalStorage,
@@ -10,15 +10,14 @@ const engines = {
 };
 
 
-test("HashStorage.encode", () => {
-    console.info("HashStorage.encode");
-    const h = new HashStorage();
-    expect(h.encode(42)).toBe('42');
-    expect(h.encode('fourtwo')).toBe('"fourtwo"');
-    expect(h.encode([])).toBe('[]');
-    expect(h.encode({})).toBe('{}');
-    expect(h.encode({a:42})).toBe('{"a":42}');
-    expect(h.encode([1, 2])).toBe('[1,2]');
+test("encode_url_value", () => {
+    console.info("encode_url_value");
+    expect(encode_url_value(42)).toBe('42');
+    expect(encode_url_value('fourtwo')).toBe('%22fourtwo%22');
+    expect(encode_url_value([])).toBe('%5B%5D');
+    expect(encode_url_value({})).toBe('%7B%7D');
+    expect(encode_url_value({a:42})).toBe("%7B%22a%22%3A42%7D");
+    expect(encode_url_value([1, 2])).toBe('%5B1%2C2%5D');
 });
 
 
@@ -56,22 +55,5 @@ test("State.changed", () => {
         expect(state.changed()).toBe(false);
         expect(state.engine.values).toMatchObject({"my-widget-1": {"hello": "world"}});
         // expect(document.cookie).toBe('')
-    });
-});
-
-
-test("State.save|restore", () => {
-    console.info("State.save|restore");
-    Object.entries(engines).forEach(([name, engine]) => {
-        const state = new State({engine: engine, name: 's2'});
-        // console.info('engine', engine.name, state.changed(), state._laststate, state.state);
-        state.save();
-        state.set_item('hello', 'world');
-        expect(state.get_item('hello')).toBe('world');
-        // console.info('engine', state.changed(), state._laststate, state.state);
-        expect(state.changed()).toBe(true);
-        state.restore();
-        // console.info("STATE:", state.state, typeof state.state);
-        // expect(state.get_item('hello', 'NOTFOUND')).toBe('"world"');
     });
 });

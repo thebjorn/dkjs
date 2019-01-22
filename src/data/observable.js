@@ -34,19 +34,19 @@ export function deep_observer(obj, fn, original_obj) {
     switch (type_name(obj)) {
         case 'Object':
             Object.keys(obj).forEach(k => {
-                if (is_nested(obj[k])) obj[k] = global.deep_observer(obj[k], fn, original_obj)
+                if (is_nested(obj[k])) obj[k] = deep_observer(obj[k], fn, original_obj);
             });
             break;
         case 'Array':
             obj.forEach((v, i) => {
-                if (is_nested(v)) obj[i] = global.deep_observer(v, fn , original_obj);
+                if (is_nested(v)) obj[i] = deep_observer(v, fn , original_obj);
             });
             break;
     }
     
     return new Proxy(obj, {
         set(target, name, val) {
-            if (is_nested(val)) val = global.deep_observer(val, fn, original_obj);
+            if (is_nested(val)) val = deep_observer(val, fn, original_obj);
             target[name] = val;
             if (fn) fn(original_obj, target, name, val);
             return true;

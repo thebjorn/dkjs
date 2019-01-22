@@ -102,13 +102,13 @@ export class State {
     }
     
     save() {
-        console.debug("State.save()");
+        // console.debug("State.save()");
         if (this.changed()) {
-            console.debug("CHANGED");
+            // console.debug("CHANGED");
             this.engine.save_values(this.name, this._values);
             this._engine_state = JSON.stringify(this._values);
         } else {
-            console.debug("NOT_CHANGED");
+            // console.debug("NOT_CHANGED");
         }
     }
 }
