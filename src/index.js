@@ -89,6 +89,7 @@ performance('loaded-dk-state');
 
 dk.performance('made-dk');
 import cookie from "./browser/dk-cookie";
+import format from "./data/datacore/dk-format";
 
 // new Lifecycle(dk, {
 //     externals: {
@@ -112,6 +113,7 @@ dk.add({
     sys,
     // core,
     State,
+    format,
     
     web: {
         cookie
