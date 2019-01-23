@@ -17,7 +17,8 @@ const common_settings = {
         path: path.resolve(__dirname, 'dkjs/static/dkjs/js'),
         filename: '[name].[contenthash].min.js',
         chunkFilename: '[name].bundle.js',
-        library: 'dk',
+        // library: '',
+        library: '_dk',
         libraryTarget: "var"
     },
     
@@ -30,13 +31,13 @@ const common_settings = {
     module: {
         rules: [
             {
-                test: /\.jsx?$/,
+                test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        cacheDirectory: true,
-                        presets: ['env']
+                        cacheDirectory: true
+                        // presets: ["@babel/preset-env"]
                     }
                 }
             }

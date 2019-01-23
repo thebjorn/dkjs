@@ -42,7 +42,7 @@ function _set_name(obj, name) {
 
 export default class Class {
     constructor(props) {
-        Object.assign(this, props);
+        Object.assign(this, props || {});
         if (this.init !== undefined) this.init(props);
     }
     

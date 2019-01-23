@@ -1,22 +1,23 @@
 {
   "presets": [
-    ["env", {
+    ["@babel/preset-env", {
       "targets": {
         "browsers": [
           "last 1 versions",
           "IE >= 11"
-        ],
-        "useBuiltIns": true,
-        "node": "current"
-      }
+        ]
+      },
+      "useBuiltIns": "entry"
     }],
-    ["flow"]
+    ["@babel/preset-flow"]
   ],
   "ignore": [
     "node_modules"
   ],
   "plugins": [
-    "add-module-exports",
-    "transform-es2015-for-of"
+    "@babel/plugin-transform-flow-strip-types",
+    "@babel/plugin-transform-for-of",
+    ["@babel/plugin-proposal-decorators", {"decoratorsBeforeExport": true}],
+    "@babel/plugin-proposal-class-properties"
   ]
 }

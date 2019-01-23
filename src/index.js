@@ -55,14 +55,12 @@
  *      fn = 'Foo';                     // TypeError
  *
  */
-import dk from "./dk-obj";
+import "@babel/polyfill"; // must be first
+
+import _dk from "./dk-obj";
 
 import performance from "./performance-timer";
-import {set_difference} from "./lifecycle/set-ops";
-performance('loaded-set-ops');
 
-import "babel-polyfill";
-performance('loaded-babel-polyfill');
 
 // import Lifecycle from "./lifecycle";
 // performance('loaded-Lifecycle');
@@ -78,16 +76,16 @@ performance('loaded-dk-state');
 
 // // make sure we're not imported again..
 // if (dkglobal && dkglobal.dk) {
-//     let cver = dkglobal.dk.__version__ || 'unknown';
+//     let cver = dkglobal._dk.__version__ || 'unknown';
 //     let myver = __version__ || 'unknown';
-//     throw `Trying to import dk.js (v${myver}), but dk.js (v${cver}) is already imported.`;
+//     throw `Trying to import _dk.js (v${myver}), but _dk.js (v${cver}) is already imported.`;
 // }
 
 // // import "@webcomponents/webcomponentsjs";
 // // import DkIcon from "./xtags/dk-icon";
 
 
-dk.performance('made-dk');
+_dk.performance('made-dk');
 import cookie from "./browser/dk-cookie";
 import format from "./data/datacore/dk-format";
 
@@ -109,7 +107,7 @@ import format from "./data/datacore/dk-format";
 // });
 
 // Object.assign(dk, {
-dk.add({
+_dk.add({
     sys,
     // core,
     State,
@@ -120,14 +118,14 @@ dk.add({
     }, 
     
     ready(fn) {
-        dk.$(fn);
+        _dk.$(fn);
     }
 });
 
 // print out all startup performance metrics 
-console.log("PERFORMANCE:", dk.performance.toString());
+console.log("PERFORMANCE:", _dk.performance.toString());
 
-// customElements.define('dk-icon', new dk.DkIcon());
+// customElements.define('dk-icon', new _dk.DkIcon());
 
 // //
 // // export global jQuery/underscore..
@@ -145,24 +143,12 @@ console.log("PERFORMANCE:", dk.performance.toString());
 // }
 
 import old_vs_new from "./dk-old-vs-new";
-old_vs_new(dk);
+old_vs_new(_dk);
 
-// const originaldk = new Set([
-//     '$','Class','ColumnDef','DataFilter','DataGrid','DataTable','DataTableLayout','Date','DateTime',
-//     'Duration','PagerWidget','PostnrLookupWidget','ResultSet','SearchWidget','SortDirection',
-//     'TableCell','TableHeader','TableRow','VDataTable','Widget','_','after','ajax','all','bind',
-//     'cls2id','combine','core','count','counter','ctor_apply','cursor','data','debug','dedent',
-//     'dir','dkjstag','dom','error','filter','find','format','format_value','forms','globals','help',
-//     'here','icon','id','id2name','import','info','initialize','jason','json','layout','log','merge',
-//     'namespace','on','one','panel','parse_uri','publish','ready','require','subscribe','sys',
-//     'table','traverse','tree','unsorted','update','version','warn','web','widget']);
-// console.warn("MISSING:", Array.from(set_difference(originaldk, new Set(dk.keys()))).sort());
-// console.warn("EXTRA:", Array.from(set_difference(new Set(dk.keys()), originaldk)).sort());
-
-dk.info('dk loaded');
-
-module.exports = dk;    // must use commonjs syntax here
-
-dk.ready(function () {
-    dk.info('dk-fully-loaded');
+_dk.info('dk loaded');
+_dk.ready(function () {
+    _dk.info('dk-fully-loaded');
 });
+_dk.globals.dk = _dk;
+export default _dk;    // must export default
+
