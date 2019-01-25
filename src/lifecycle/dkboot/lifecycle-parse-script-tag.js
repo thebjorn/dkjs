@@ -72,5 +72,29 @@ export default function parse_script_tag(dk) {
     
     dk.scripttag_attributes = scripttag_attributes;
     
+    // XXX: backward compatibility
+    dk.dkjstag = {
+        get src() {
+            console.warn("dk.dkjstag.src is deprecated, use dk.scripttag_attributes.src");
+            return scripttag_attributes.src;
+        },
+        get loglevel() {
+            console.warn("dk.dkjstag.loglevel is deprecated, use dk.LOGLEVEL");
+            return scripttag_attributes.loglevel;
+        },
+        get debug() {
+            console.warn("dk.dkjstag.debug is deprecated, use dk.DEBUG");
+            return scripttag_attributes.DEBUG;
+        },
+        get main() {
+            console.warn("dk.dkjstag.main is deprecated, use dk.scripttag['data-main']");
+            return scripttag_attributes['data-main'];
+        },
+        get tag() {
+            console.warn("dk.dkjstag.tag is deprecated and shouldn't be used anymore.");
+            return tag;  // XXX: dk.$(tag) ?
+        }
+    };
+    
     dk.performance('parse-script-tag-end');
 }

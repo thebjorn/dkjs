@@ -112,9 +112,11 @@ _dk.add({
     // core,
     State,
     format,
+    format_value: format.value,
     
     web: {
-        cookie
+        cookie,
+        uri: parse_uri
     }, 
     
     ready(fn) {
@@ -143,6 +145,7 @@ console.log("PERFORMANCE:", _dk.performance.toString());
 // }
 
 import old_vs_new from "./dk-old-vs-new";
+import {parse_uri} from "./lifecycle/uri";
 old_vs_new(_dk);
 
 _dk.info('dk loaded');
