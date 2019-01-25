@@ -113,6 +113,17 @@ _dk.add({
     State,
     format,
     format_value: format.value,
+    Date: DkDate,
+    DateTime,
+    Duration,
+    
+    data: {
+        datatype: {
+            Date: DkDate,
+            DateTime,
+            Duration
+        }
+    },
     
     web: {
         cookie,
@@ -146,6 +157,7 @@ console.log("PERFORMANCE:", _dk.performance.toString());
 
 import old_vs_new from "./dk-old-vs-new";
 import {parse_uri} from "./lifecycle/uri";
+import {DateTime, DkDate, Duration} from "./data/datacore/dk-datatypes";
 old_vs_new(_dk);
 
 _dk.info('dk loaded');
