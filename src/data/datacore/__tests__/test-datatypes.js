@@ -1,5 +1,5 @@
 
-import {datatype, DkDate} from "../dk-datatypes";
+import {datatype, DateTime, DkDate, Duration} from "../dk-datatypes";
 
 
 test("DkDate.tag", () => {
@@ -78,6 +78,7 @@ test("DkDate", () => {
     console.log("NAME:", DkDate.name);
     
     expect(a.toString('Y-m-d')).toEqual('2019-01-23');
+    expect(a.toString('y-n-j')).toEqual('19-1-23');
     expect(a.toString()).toEqual('2019-01-23');
     expect(a.toJSON()).toEqual('@date:2019-01-23');
     
@@ -89,3 +90,40 @@ test("DkDate", () => {
 });
 
 
+test("Duration", () => {
+    const a = new Duration('@duration:3890');
+    expect(a.toString()).toBe('1:04:50');
+    expect(a.toJSON()).toBe('@duration:3890');
+});
+
+
+test("Duration.ctor", () => {
+    const a = new Duration('@duration:3890');
+    expect(a.toString()).toBe('1:04:50');
+    const b = new Duration(3890);
+    expect(b.toString()).toBe('1:04:50');
+    const c = new Duration(b);
+    expect(c.toString()).toBe('1:04:50');
+    const d = new Duration('1:04:50');
+    expect(d.value).toBe(3890);
+});
+
+
+test("DateTime", () => {
+    const a = new DateTime("@datetime:2019-01-26T18:43:42.123456");
+    expect(a.toJSON()).toBe("@datetime:2019-01-26T18:43:42.123");
+    expect(a.toString()).toBe("2019-01-26 18:43:42");
+    expect(a.toString('Y-m-d')).toBe("2019-01-26");
+    expect(a.toString('W')).toBe("4");
+    expect(a.toString('w')).toBe("lørdag");
+    expect(a.toString('j')).toBe("26");
+    expect(a.toString('G')).toBe("18");
+    expect(a.toString('g')).toBe("6");
+    expect(a.toString('h')).toBe("06");
+    expect(a.toString('a')).toBe("p.m.");
+    expect(a.toString('A')).toBe("P.M.");
+    expect(a.toString('n')).toBe("1");
+    expect(a.toString('y')).toBe("19");
+    
+    expect((new DateTime(2019, 0, 26, 19, 46).toString())).toBe('2019-01-26 19:46:00');
+});

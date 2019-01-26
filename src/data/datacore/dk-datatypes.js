@@ -25,7 +25,6 @@ export class datatype extends Class {
     static extend(props) {
         const SubClass = super.extend(props);
         _datatypes[SubClass.tag] = SubClass;
-        // SubClass.extend = this.extend;
         return SubClass;
     }
     get tag() { return this.constructor.tag; }
@@ -51,25 +50,18 @@ export function dkdatatype({tag}) {
                     enumerable: true,
                     writable: false
                 },
-                initializer: () => v
+                // initialize: () => v  // version=jan-2019 
+                initializer: () => v    // version=nov-2018
             });
         });
-        // cls.elements.push({
-        //     kind: 'hook',
-        //     placement: 'static',
-        //     finish(cls) {
-        //         _datatypes[tag] = cls;
-        //     }
-        // });
         return {
             kind: 'class',
             // kind: 'hook',
             elements: cls.elements,
-            finisher(cls) {
+            finisher(cls) {             // version=nov-2018
                 _datatypes[tag] = cls;
             }
-            // extras: []
-            // extras: [{
+            // extras: [{               // version=jan-2019
             //     kind: 'hook',
             //     placement: 'static',
             //     finish(cls) {
@@ -83,6 +75,8 @@ export function dkdatatype({tag}) {
 
 @dkdatatype({tag: '@date:'})
 export class DkDate extends datatype {
+    days = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
+    
     constructor(...args) {
         super();
         if (this._has_my_tag(args)) {
@@ -93,14 +87,23 @@ export class DkDate extends datatype {
             // this.value = new Date(y, m-1, d);
         }
     }
+    get weeknum() {  // NOTE: ISO week number!
+        const d = new Date(Date.UTC(this.value.getFullYear(), this.value.getMonth(), this.value.getDate()));
+        const dayNum = d.getUTCDay() || 7;
+        d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+        const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+        return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+    }
     toString(fmt) {
         // if (!fmt) return this.value.toISOString();
         if (!fmt) fmt = 'Y-m-d';
         let res = '';
-        _.toArray(fmt).forEach((ch) => {
+        Array.from(fmt).forEach(ch => {
             switch (ch) {
                 case 'Y': res += this.value.getFullYear(); break;
                 case 'y': res += (this.value.getFullYear()%100); break;
+                case 'W': res += this.weeknum; break;
+                case 'w': res += this.days[this.value.getDay()]; break;
                 case 'n': res += this.value.getMonth() + 1; break;
                 case 'm': res += format.twodigits(this.value.getMonth() + 1); break;
                 case 'j': res += this.value.getDate(); break;
@@ -119,7 +122,7 @@ export class DkDate extends datatype {
 
 
 @dkdatatype({tag: '@datetime:'})
-export class DateTime extends datatype {
+export class DateTime extends DkDate {
     constructor(...args) {
         // '2014-03-11T08:18:07.543000'
         super();
@@ -138,13 +141,16 @@ export class DateTime extends datatype {
             throw(e);
         }
     }
+
     toString(fmt) {
         if (!fmt) fmt = 'Y-m-d H:i:s';
         let res = '';
-        _.toArray(fmt).forEach(function (ch) {
+        Array.from(fmt).forEach(ch => {
             switch (ch) {
                 case 'Y': res += this.value.getFullYear(); break;
                 case 'y': res += (this.value.getFullYear()%100); break;
+                case 'W': res += this.weeknum; break;
+                case 'w': res += this.days[this.value.getDay()]; break;
                 case 'n': res += this.value.getMonth() + 1; break;
                 case 'm': res += format.twodigits(this.value.getMonth() + 1); break;
                 case 'j': res += this.value.getDate(); break;
@@ -155,15 +161,15 @@ export class DateTime extends datatype {
                 case 'H': res += format.twodigits(this.value.getHours()); break;
                 case 'g': res += this.value.getHours()%12; break;
                 case 'h': res += format.twodigits(this.value.getHours()%12); break;
-                case 'a': res += this.value.getHours()%12 < 12 ? 'a.m.' : 'p.m.'; break;
-                case 'A': res += this.value.getHours()%12 < 12? 'A.M.': 'P.M.'; break;
+                case 'a': res += this.value.getHours() < 12 ? 'a.m.' : 'p.m.'; break;
+                case 'A': res += this.value.getHours() < 12? 'A.M.': 'P.M.'; break;
                 default: res += ch; break;
             }
         });
         return res;
     }
     toJSON() {
-        return this.tag + this.value.toISOString();
+        return this.tag + this.toString("Y-m-dTH:i:s") + "." + this.value.getMilliseconds();
     }
 }
 // _datatypes[DateTime.tag] = DkDate;

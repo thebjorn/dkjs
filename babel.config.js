@@ -1,4 +1,4 @@
-{
+module.exports = {
   "presets": [
     ["@babel/preset-env", {
       "targets": {
@@ -8,6 +8,7 @@
         ]
       },
       "useBuiltIns": "entry"
+      // "useBuiltIns": "usage"
     }],
     ["@babel/preset-flow"]
   ],
@@ -17,7 +18,10 @@
   "plugins": [
     "@babel/plugin-transform-flow-strip-types",
     "@babel/plugin-transform-for-of",
-    ["@babel/plugin-proposal-decorators", {"decoratorsBeforeExport": true}],
+    ["@babel/plugin-proposal-decorators", {
+      "decoratorsBeforeExport": true,
+      "version": "jan-2019"
+    }],
     "@babel/plugin-proposal-class-properties",
     [
       "@babel/plugin-transform-runtime",
@@ -26,7 +30,8 @@
         "helpers": true,
         "regenerator": true,
         "useESModules": false
+        // "useESModules": true
       }
     ]
   ]
-}
+};
