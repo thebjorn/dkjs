@@ -54,9 +54,28 @@ export function dkdatatype({tag}) {
                 initializer: () => v
             });
         });
+        // cls.elements.push({
+        //     kind: 'hook',
+        //     placement: 'static',
+        //     finish(cls) {
+        //         _datatypes[tag] = cls;
+        //     }
+        // });
         return {
             kind: 'class',
-            elements: cls.elements
+            // kind: 'hook',
+            elements: cls.elements,
+            finisher(cls) {
+                _datatypes[tag] = cls;
+            }
+            // extras: []
+            // extras: [{
+            //     kind: 'hook',
+            //     placement: 'static',
+            //     finish(cls) {
+            //         _datatypes[tag] = cls;
+            //     }
+            // }]
         };
     };
 }
@@ -96,7 +115,7 @@ export class DkDate extends datatype {
         return this.tag + this.value.toISOString().slice(0, 10);
     }
 }
-_datatypes[DkDate.tag] = DkDate;
+// _datatypes[DkDate.tag] = DkDate;
 
 
 @dkdatatype({tag: '@datetime:'})
@@ -147,7 +166,7 @@ export class DateTime extends datatype {
         return this.tag + this.value.toISOString();
     }
 }
-_datatypes[DateTime.tag] = DkDate;
+// _datatypes[DateTime.tag] = DkDate;
 
 
 @dkdatatype({tag: '@duration:'})
@@ -207,7 +226,7 @@ export class Duration extends datatype {
         return this.tag + this.value;
     }
 }
-_datatypes[Duration.tag] = Duration;
+// _datatypes[Duration.tag] = Duration;
 
 
 export default {
