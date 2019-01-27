@@ -88,6 +88,7 @@ performance('loaded-dk-state');
 _dk.performance('made-dk');
 import cookie from "./browser/dk-cookie";
 import format from "./data/datacore/dk-format";
+import jason from "./data/datacore/dk-json";
 
 // new Lifecycle(dk, {
 //     externals: {
@@ -116,6 +117,7 @@ _dk.add({
     Date: DkDate,
     DateTime,
     Duration,
+    jason,
     
     data: {
         datatype: {

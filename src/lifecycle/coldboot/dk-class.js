@@ -49,7 +49,7 @@ function _set_name(obj, name) {
  */
 export function classattrs(props) {
     return function decorator(cls) {
-        if (cls.kind !== 'class') throw `not class ${kind}`;
+        if (cls.kind !== 'class') throw `not class ${cls.kind}`;
         Object.entries(props).forEach(([k, v]) => {
             cls.elements.push({
                 kind: 'field',
@@ -117,6 +117,7 @@ export default class Class {
         
         // make class attributes of everything defined in `classattrs`.
         for (let cattr in classattrs) {
+            // noinspection JSUnfilteredForInLoop
             SubClass[cattr] = classattrs[cattr];
         }
         
