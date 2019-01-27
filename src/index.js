@@ -55,7 +55,7 @@
  *      fn = 'Foo';                     // TypeError
  *
  */
-import "@babel/polyfill"; // must be first
+// import "@babel/polyfill"; // must be first
 
 import _dk from "./dk-obj";
 
