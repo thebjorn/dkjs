@@ -24,13 +24,13 @@ import performance from "../../performance-timer";
 export default function setup_console(dk) {
     
     // attach log levels directly onto dk
-    Object.assign(dk, {
+    dk.loglevels = {
         ERROR: 0,
         WARN: 1,
         LOG: 2,
         INFO: 3,
         DEBUG: 4
-    });
+    };
     
     const _nullfn = function () {};
     let loglevel = dk.LOGLEVEL;
@@ -41,27 +41,27 @@ export default function setup_console(dk) {
     dk.debug = _nullfn;
     dk.dir = _nullfn;
     
-    if (loglevel >= dk.ERROR) {
+    if (loglevel >= dk.loglevels.ERROR) {
         try {
             dk.error = window.console.error.bind(window.console);
         } catch (e) {}
     }
-    if (loglevel >= dk.WARN) {
+    if (loglevel >= dk.loglevels.WARN) {
         try {
             dk.warn = window.console.warn.bind(window.console);
         } catch (e) {}
     }
-    if (loglevel >= dk.LOG) {
+    if (loglevel >= dk.loglevels.LOG) {
         try {
             dk.log = window.console.log.bind(window.console);
         } catch (e) {}
     }
-    if (loglevel >= dk.INFO) {
+    if (loglevel >= dk.loglevels.INFO) {
         try {
             dk.info = window.console.info.bind(window.console);
         } catch (e) {}
     }
-    if (loglevel >= dk.DEBUG) {
+    if (loglevel >= dk.loglevels.DEBUG) {
         try {
             dk.debug = window.console.debug.bind(window.console);
         } catch (e) {}
