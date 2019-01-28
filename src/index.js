@@ -89,25 +89,10 @@ _dk.performance('made-dk');
 import cookie from "./browser/dk-cookie";
 import format from "./data/datacore/dk-format";
 import jason from "./data/datacore/dk-json";
+import {parse_uri} from "./lifecycle/uri";
+import {DateTime, DkDate, Duration} from "./data/datacore/dk-datatypes";
 
-// new Lifecycle(dk, {
-//     externals: {
-//         jQuery, _
-//     },
-//     ensure: {
-//         css: [
-//             {
-//                 name: 'font-awesome',
-//                 version: '470',
-//                 sources: [
-//                     "https://static.datakortet.no/font/fa470/css/font-awesome.css"
-//                 ]
-//             }
-//         ]
-//     }
-// });
 
-// Object.assign(dk, {
 _dk.add({
     sys,
     // core,
@@ -130,7 +115,30 @@ _dk.add({
     web: {
         cookie,
         uri: parse_uri
-    }, 
+    },
+
+    // dkjstag: {
+    //     get src() {
+    //         console.warn("dk.dkjstag.src is deprecated, use dk.scripttag_attributes.src");
+    //         return scripttag_attributes.src;
+    //     },
+    //     get loglevel() {
+    //         console.warn("dk.dkjstag.loglevel is deprecated, use dk.LOGLEVEL");
+    //         return scripttag_attributes.loglevel;
+    //     },
+    //     get debug() {
+    //         console.warn("dk.dkjstag.debug is deprecated, use dk.DEBUG");
+    //         return scripttag_attributes.DEBUG;
+    //     },
+    //     get main() {
+    //         console.warn("dk.dkjstag.main is deprecated, use dk.scripttag['data-main']");
+    //         return scripttag_attributes['data-main'];
+    //     },
+    //     get tag() {
+    //         console.warn("dk.dkjstag.tag is deprecated and shouldn't be used anymore.");
+    //         return tag;  // XXX: dk.$(tag) ?
+    //     }
+    // },
     
     ready(fn) {
         _dk.$(fn);
@@ -158,8 +166,6 @@ console.log("PERFORMANCE:", _dk.performance.toString());
 // }
 
 import old_vs_new from "./dk-old-vs-new";
-import {parse_uri} from "./lifecycle/uri";
-import {DateTime, DkDate, Duration} from "./data/datacore/dk-datatypes";
 old_vs_new(_dk);
 
 _dk.info('dk loaded');

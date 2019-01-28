@@ -28,7 +28,9 @@ module.exports = {
     "rules": {
         "indent": [
             "error",
-            4
+            4, {
+                SwitchCase: 1   // case statments should be indented 1 level
+            }
         ],
         "linebreak-style": [
             "off",
