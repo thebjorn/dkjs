@@ -42,8 +42,11 @@ export default function old_vs_new(dk) {
     ]);
 
     const res = Object.keys(dk).map(k => `dk.${k}`);
-    const roots = Object.keys(dk).filter(k => k !== 'globals' && _.isObject(dk[k]) && dk[k].name !== "SubClass" && !_.isFunction(dk[k]));
-    roots.forEach(r => res.push(...Object.keys(dk[r]).map(k => `dk.${r}.${k}`)))
+    function is_object(k) {
+        return k !== 'globals' && _.isObject(dk[k]) && dk[k].name !== "SubClass" && !_.isFunction(dk[k])
+    }
+    const roots = Object.keys(dk).filter(is_object);
+    roots.forEach(r => res.push(...Object.keys(dk[r]).map(k => `dk.${r}.${k}`)));
     const dkattrs = new Set(res);
     
     console.warn("MISSING:", Array.from(set_difference(originaldk, dkattrs)).sort());
