@@ -1,3 +1,6 @@
+/* eslint-disable no-empty,no-console */
+/* global window */
+
 /*
  *  Wrappers for console.log|warn|info|debug
  *
@@ -17,8 +20,9 @@
 
 import performance from "../../performance-timer";
 
-/* global window */
+
 export default function setup_console(dk) {
+    
     // attach log levels directly onto dk
     Object.assign(dk, {
         ERROR: 0,

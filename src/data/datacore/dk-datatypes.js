@@ -3,133 +3,183 @@
  *  These data types contain functionality to serialize complex data over JSON.
  */
 
-var _ = require('lodash');
-var dk = require('../../boot/boot');
-var format = require('./dk-format.js').format;
+// var dk = require('../../boot/boot');
+import _ from 'lodash';
+import format from "./dk-format";
+import Class from "../../lifecycle/coldboot/dk-class";
 
-var _datatypes = {};
+const _datatypes = {};
 
 
-var datatype = dk.Class.extend({
-    _value: undefined,
-    ctor: function () {
-        var self = this;
-        Object.defineProperty(this, 'value', {
-            enumerable: true,
-            get: function () {
-                return self._value;
-            },
-            set: function (v) {
-                self._value = v;
-                return  v;
-            }
-        });
+export class datatype extends Class {
+    constructor() {
+        super();
+        this._value = undefined;
     }
-});
+    _has_my_tag(args) {
+        return (args.length > 0 && 
+                typeof args[0] === 'string' && 
+                args[0].startsWith(this.tag));
+    }
+    static get_datatypes() { return _datatypes; }
+    static extend(props) {
+        const SubClass = super.extend(props);
+        _datatypes[SubClass.tag] = SubClass;
+        return SubClass;
+    }
+    get tag() { return this.constructor.tag; }
+    
+    get value() { return this._value; }
+    set value(v) {
+        this._value = v;
+        return v;
+    }
+}
 
-datatype.extend = function (props) {
-    var SubClass = dk.Class.extend.call(this, props);
-    _datatypes[SubClass.tag] = SubClass;
-    SubClass.extend = this.extend;
-    return SubClass;
-};
 
-var DkDate = datatype.extend({
-    classattrs: {
-        tag: '@date:'
-    },
-    ctor: function (v) {
-        this._super();
-        if (typeof v === 'string' && v.startsWith(this.__class__.tag)) {
-            this.value = new Date(v.substr(this.__class__.tag.length));
+export function dkdatatype({tag}) {
+    return function decorator(cls) {
+        if (cls.kind !== 'class') throw `not class ${cls.kind}`;
+        Object.entries({tag}).forEach(([k, v]) => {
+            cls.elements.push({
+                kind: 'field',
+                key: k,
+                placement: 'static', 
+                descriptor: {
+                    configurable: false,
+                    enumerable: true,
+                    writable: false
+                },
+                // initialize: () => v  // version=jan-2019 
+                initializer: () => v    // version=nov-2018
+            });
+        });
+        return {
+            kind: 'class',
+            // kind: 'hook',
+            elements: cls.elements,
+            finisher(cls) {             // version=nov-2018
+                _datatypes[tag] = cls;
+            }
+            // extras: [{               // version=jan-2019
+            //     kind: 'hook',
+            //     placement: 'static',
+            //     finish(cls) {
+            //         _datatypes[tag] = cls;
+            //     }
+            // }]
+        };
+    };
+}
+
+
+@dkdatatype({tag: '@date:'})
+export class DkDate extends datatype {
+    days = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
+    
+    constructor(...args) {
+        super();
+        if (this._has_my_tag(args)) {
+            this.value = new Date(args[0].substr(this.tag.length));
         } else {
-            this.value = dk.ctor_apply(Date, arguments);
+            let [y, m, d] = [...args];
+            this.value = new Date(y, m, d);
+            // this.value = new Date(y, m-1, d);
         }
-    },
-    toString: function (fmt) {
-        var self = this;
-        if (!fmt) return this.value.toISOString().slice(0, 10);
-        var res = '';
-        _.toArray(fmt).forEach(function (ch) {
+    }
+    get weeknum() {  // NOTE: ISO week number!
+        const d = new Date(Date.UTC(this.value.getFullYear(), this.value.getMonth(), this.value.getDate()));
+        const dayNum = d.getUTCDay() || 7;
+        d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+        const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+        return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+    }
+    toString(fmt) {
+        // if (!fmt) return this.value.toISOString();
+        if (!fmt) fmt = 'Y-m-d';
+        let res = '';
+        Array.from(fmt).forEach(ch => {
             switch (ch) {
-                case 'Y': res += self.value.getFullYear(); break;
-                case 'y': res += (self.value.getFullYear()%100); break;
-                case 'n': res += self.value.getMonth() + 1; break;
-                case 'm': res += format.twodigits(self.value.getMonth() + 1); break;
-                case 'j': res += self.value.getDate(); break;
-                case 'd': res += format.twodigits(self.value.getDate()); break;
+                case 'Y': res += this.value.getFullYear(); break;
+                case 'y': res += (this.value.getFullYear()%100); break;
+                case 'W': res += this.weeknum; break;
+                case 'w': res += this.days[this.value.getDay()]; break;
+                case 'n': res += this.value.getMonth() + 1; break;
+                case 'm': res += format.twodigits(this.value.getMonth() + 1); break;
+                case 'j': res += this.value.getDate(); break;
+                case 'd': res += format.twodigits(this.value.getDate()); break;
                 default: res += ch; break;
             }
         });
         return res;
-    },
-    toJSON: function () {
-        // dk.debug('date tag', dk.Date.tag);
-        return this.__class__.tag + this.value.toISOString().slice(0, 10);
     }
-});
+    toJSON() {
+        // dk.debug('date tag', dk.Date.tag);
+        return this.tag + this.value.toISOString().slice(0, 10);
+    }
+}
+// _datatypes[DkDate.tag] = DkDate;
 
 
-var DateTime = datatype.extend({
-    classattrs: {
-        tag: '@datetime:'
-    },
-    ctor: function (v) {
+@dkdatatype({tag: '@datetime:'})
+export class DateTime extends DkDate {
+    constructor(...args) {
         // '2014-03-11T08:18:07.543000'
-        this._super();
-        if (typeof v === 'string' && v.startsWith(this.__class__.tag)) {
-            this.value = this.parseISOstring(v);
+        super();
+        if (this._has_my_tag(args)) {
+            this.value = this.parseISOstring(args[0]);
         } else {
-            this.value = dk.ctor_apply(Date, arguments);
+            this.value = new Date(...args);
         }
-    },
-    parseISOstring: function (s) {
+    }
+    parseISOstring(s) {
         try {
             // '@datetime:2014-03-11T08:18:07.543000+00:00'
-            return new Date(s.slice("@datetime:".length));
+            return new Date(s.slice(this.tag.length));
         } catch (e) {
-            dk.error('Cannot parse: ' + s);
+            dk.error('Cannot parse: ' + s);     // FIXME: need to import dk...
             throw(e);
         }
-    },
-    toString: function (fmt) {
-        var self = this;
+    }
+
+    toString(fmt) {
         if (!fmt) fmt = 'Y-m-d H:i:s';
-        var res = '';
-        _.toArray(fmt).forEach(function (ch) {
+        let res = '';
+        Array.from(fmt).forEach(ch => {
             switch (ch) {
-                case 'Y': res += self.value.getFullYear(); break;
-                case 'y': res += (self.value.getFullYear()%100); break;
-                case 'n': res += self.value.getMonth() + 1; break;
-                case 'm': res += format.twodigits(self.value.getMonth() + 1); break;
-                case 'j': res += self.value.getDate(); break;
-                case 'd': res += format.twodigits(self.value.getDate()); break;
-                case 's': res += format.twodigits(self.value.getSeconds()); break;
-                case 'i': res += format.twodigits(self.value.getMinutes()); break;
-                case 'G': res += self.value.getHours(); break;
-                case 'H': res += format.twodigits(self.value.getHours()); break;
-                case 'g': res += self.value.getHours()%12; break;
-                case 'h': res += format.twodigits(self.value.getHours()%12); break;
-                case 'a': res += self.value.getHours()%12 < 12 ? 'a.m.' : 'p.m.'; break;
-                case 'A': res += self.value.getHours()%12 < 12? 'A.M.': 'P.M.'; break;
+                case 'Y': res += this.value.getFullYear(); break;
+                case 'y': res += (this.value.getFullYear()%100); break;
+                case 'W': res += this.weeknum; break;
+                case 'w': res += this.days[this.value.getDay()]; break;
+                case 'n': res += this.value.getMonth() + 1; break;
+                case 'm': res += format.twodigits(this.value.getMonth() + 1); break;
+                case 'j': res += this.value.getDate(); break;
+                case 'd': res += format.twodigits(this.value.getDate()); break;
+                case 's': res += format.twodigits(this.value.getSeconds()); break;
+                case 'i': res += format.twodigits(this.value.getMinutes()); break;
+                case 'G': res += this.value.getHours(); break;
+                case 'H': res += format.twodigits(this.value.getHours()); break;
+                case 'g': res += this.value.getHours()%12; break;
+                case 'h': res += format.twodigits(this.value.getHours()%12); break;
+                case 'a': res += this.value.getHours() < 12 ? 'a.m.' : 'p.m.'; break;
+                case 'A': res += this.value.getHours() < 12? 'A.M.': 'P.M.'; break;
                 default: res += ch; break;
             }
         });
         return res;
-    },
-    toJSON: function () {
-        return this.__class__.tag + this.value.toISOString();
     }
-});
+    toJSON() {
+        return this.tag + this.toString("Y-m-dTH:i:s") + "." + this.value.getMilliseconds();
+    }
+}
+// _datatypes[DateTime.tag] = DkDate;
 
 
-var Duration = datatype.extend({
-    classattrs: {
-        tag: '@duration:'
-    },
-    ctor: function (v) {
-        this._super();
-        if (v instanceof dk.Duration) {
+@dkdatatype({tag: '@duration:'})
+export class Duration extends datatype {
+    constructor(v) {
+        super();
+        if (v instanceof Duration) {
             this.value = v.value;
             return;
         }
@@ -137,30 +187,30 @@ var Duration = datatype.extend({
             this.value = v;
             return;
         }
-        if (typeof v === 'string' && v.startsWith(dk.Duration.tag)) {
-            this.value = parseInt(v.substr(dk.Duration.tag.length), 10);
+        if (this._has_my_tag([v])) {
+            this.value = parseInt(v.substr(this.tag.length), 10);
             return;
         }
         this.parse(v);
-    },
+    }
     /*
      *  toString() formats as 3:14:03, with an optional leading minus sign.
      */
-    toString: function () {
-        var seconds = this.value;
-        var sign = seconds < 0 ? -1: 1;
+    toString() {
+        let seconds = this.value;
+        const sign = seconds < 0 ? -1: 1;
         seconds = seconds * sign;
-        var secs = seconds % 60;
-        var mins = Math.floor((seconds - secs) / 60);
-        var minutes = mins % 60;
-        var hours = Math.floor((mins - minutes) / 60);
+        const secs = seconds % 60;
+        const mins = Math.floor((seconds - secs) / 60);
+        const minutes = mins % 60;
+        const hours = Math.floor((mins - minutes) / 60);
         return (sign < 0? '-': '') + hours + ':' + format.twodigits(minutes) + ':' + format.twodigits(secs);
-    },
-    parse: function (s) {
+    }
+    parse(s) {
         this.value = 0;
         if (!s) return;
 
-        var sign = 1,
+        let sign = 1,
             seconds,
             minutes,
             hours;
@@ -169,7 +219,7 @@ var Duration = datatype.extend({
             sign = -1;
             s = s.slice(1);
         }
-        var parts = s.split(':');
+        const parts = s.split(':');
         seconds = parseInt(parts.slice(-1), 10);
         minutes = parseInt(parts.slice(-2, -1), 10);  // will be NaN if string doesn't contain minutes
         hours = parseInt(parts.slice(-3, -2), 10);
@@ -177,14 +227,15 @@ var Duration = datatype.extend({
         if (!_.isNaN(minutes)) this.value += 60 * minutes;
         if (!_.isNaN(hours)) this.value += 60 * 60 * hours;
         this.value *= sign;
-    },
-    toJSON: function () {
-        return dk.Duration.tag + this.value;
     }
-});
+    toJSON() {
+        return this.tag + this.value;
+    }
+}
+// _datatypes[Duration.tag] = Duration;
 
 
-module.exports = {
+export default {
     _datatypes: _datatypes,
     Date: DkDate,
     DateTime: DateTime,

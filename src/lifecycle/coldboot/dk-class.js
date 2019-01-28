@@ -40,6 +40,36 @@ function _set_name(obj, name) {
     });
 }
 
+
+/**
+ * class decorator to add class attributes.
+ * 
+ * @param props
+ * @returns {function(*): {kind: string, elements: (*|HTMLCollection|HTMLFormControlsCollection|ActiveX.ISchemaItemCollection)}}
+ */
+export function classattrs(props) {
+    return function decorator(cls) {
+        if (cls.kind !== 'class') throw `not class ${cls.kind}`;
+        Object.entries(props).forEach(([k, v]) => {
+            cls.elements.push({
+                kind: 'field',
+                key: k,
+                placement: 'static',
+                descriptor: {
+                    configurable: true,
+                    enumerable: true,
+                    writable: true
+                },
+                initializer: () => v
+            });
+        });
+        return {
+            kind: 'class',
+            elements: cls.elements
+        };
+    };
+}
+
 export default class Class {
     constructor(props) {
         Object.assign(this, props || {});
@@ -87,6 +117,7 @@ export default class Class {
         
         // make class attributes of everything defined in `classattrs`.
         for (let cattr in classattrs) {
+            // noinspection JSUnfilteredForInLoop
             SubClass[cattr] = classattrs[cattr];
         }
         
