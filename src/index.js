@@ -68,7 +68,7 @@ import performance from "./performance-timer";
 import sys from "./sys";
 performance('loaded-sys');
 
-import State from "./browser/dk-state";
+import {State} from "./browser/dk-state";
 performance('loaded-dk-state');
 
 // import core from "./core";
@@ -124,7 +124,9 @@ _dk.add({
             Date: DkDate,
             DateTime,
             Duration
-        }
+        },
+        format: {format},
+        jason
     },
     
     web: {

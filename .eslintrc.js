@@ -30,6 +30,7 @@ module.exports = {
             "error",
             4
         ],
+        "no-unused-vars": ["off"],
         "linebreak-style": [
             "off",
             "windows"
