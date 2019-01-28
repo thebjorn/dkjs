@@ -1,11 +1,9 @@
 /* eslint-disable no-console */
 
-
 import {set_difference} from "./lifecycle/set-ops";
 
 export default function old_vs_new(dk) {
     const _ = dk._;
-    
 
     function list_contents(obj, pth) {
         function _list_contents(obj, path, result) {
@@ -335,22 +333,7 @@ export default function old_vs_new(dk) {
     
     );
 
-    // const res = Object.keys(dk).map(k => `dk.${k}`);
-    // const roots = Object.keys(dk).filter(is_object);
-    // roots.forEach(r => res.push(...Object.keys(dk[r]).map(k => `dk.${r}.${k}`)));
-    // const res = [];
-    // list_contents(dk, 'dk', res);
     const dkattrs = new Set(list_contents(dk));
-    
-    // const xoriginaldk = new Set([
-    //     '$', 'Class', 'ColumnDef', 'DataFilter', 'DataGrid', 'DataTable', 'DataTableLayout', 'Date', 'DateTime',
-    //     'Duration', 'PagerWidget', 'PostnrLookupWidget', 'ResultSet', 'SearchWidget', 'SortDirection',
-    //     'TableCell', 'TableHeader', 'TableRow', 'VDataTable', 'Widget', '_', 'after', 'ajax', 'all', 'bind',
-    //     'cls2id', 'combine', 'core', 'count', 'counter', 'ctor_apply', 'cursor', 'data', 'debug', 'dedent',
-    //     'dir', 'dkjstag', 'dom', 'error', 'filter', 'find', 'format', 'format_value', 'forms', 'globals', 'help',
-    //     'here', 'icon', 'id', 'id2name', 'import', 'info', 'initialize', 'jason', 'json', 'layout', 'log', 'merge',
-    //     'namespace', 'on', 'one', 'panel', 'parse_uri', 'publish', 'ready', 'require', 'subscribe', 'sys',
-    //     'table', 'traverse', 'tree', 'unsorted', 'update', 'version', 'warn', 'web', 'widget']);
     console.warn("MISSING:", Array.from(set_difference(originaldk, dkattrs)).sort());
     console.warn("EXTRA:", Array.from(set_difference(dkattrs, originaldk)).sort());
 }
