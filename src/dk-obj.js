@@ -1,10 +1,15 @@
 // import and attach LVL:0-1 modules
 
+// jest needs these, webpack craps from them..
+// import _ from 'lodash';
+// import jQuery from 'jquery';
+
+
 import performance from "./performance-timer";
 import {env} from "./lifecycle/dkboot/lifecycle-parse-script-tag";
 import * as text from "./core/text-utils";
 import counter from "./core/counter";
-import dom from "./browser/dom";
+
 import {shallow_observer, deep_observer} from "./data/observable";
 import require_css from "./browser/loaders";
 import dkglobal from "./lifecycle/dkglobal";
@@ -28,11 +33,9 @@ Object.assign(dk, {
     globals: dkglobal,
     env,
     namespace,
-    dom,
+
     ...dkconsole,
-    node: dom.create_dom,
-    here: dom.here,
-    
+
     shallow_observer,
     deep_observer,
     

@@ -68,7 +68,7 @@ import performance from "./performance-timer";
 import sys from "./sys";
 performance('loaded-sys');
 
-import {State} from "./browser/dk-state";
+import state from "./browser/dk-state";
 performance('loaded-dk-state');
 
 // import core from "./core";
@@ -91,19 +91,27 @@ import format from "./data/datacore/dk-format";
 import jason from "./data/datacore/dk-json";
 import {parse_uri} from "./lifecycle/uri";
 import {DateTime, DkDate, Duration} from "./data/datacore/dk-datatypes";
+import dom from "./browser/dom";
+import {Template, DomItem} from "./browser/dk-dom-template";
 
 
 _dk.add({
     sys,
     // core,
-    State,
+    State: state.State,
     format,
     format_value: format.value,
     Date: DkDate,
     DateTime,
     Duration,
     jason,
-    
+    parse_uri,
+    dom,
+    Template,
+    DomItem,
+    node: dom.create_dom,
+    here: dom.here,
+
     data: {
         datatype: {
             Date: DkDate,
@@ -116,7 +124,13 @@ _dk.add({
     
     web: {
         cookie,
-        uri: parse_uri
+        uri: {parse: parse_uri},
+        dom: {
+            ...dom,
+            Template: Template,
+            DomItem: DomItem
+        },
+        state
     },
 
     ready(fn) {

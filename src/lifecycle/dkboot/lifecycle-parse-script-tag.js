@@ -56,6 +56,7 @@ export const env = {
         }
 
         const tag = dkglobal._dk_script_tag;
+        if (tag === null) return loglevels.DEBUG;  // running under e.g. jest
         const tag_loglevel = tag.getAttribute('loglevel');
         if (tag_loglevel !== null) return parseInt(tag_loglevel, 10);
 
@@ -71,6 +72,7 @@ export const env = {
     _get_debug() {
         if (dkglobal.DEBUG !== undefined) return dkglobal.DEBUG;
         const tag = dkglobal._dk_script_tag;
+        if (tag === null) return true;   // running under e.g. jest
         const tag_debug = tag.getAttribute('debug');
         if (tag_debug !== null) return !!tag_debug;
         return false;

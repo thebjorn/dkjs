@@ -1,12 +1,14 @@
 
 import _ from "lodash";
 import Class from "../lifecycle/coldboot/dk-class";
-import {dom} from "./dom";
+import dom from "./dom";
+import dk from "../dk-obj";
+
 
 /*
  *  Define a structured hierarchial dom tree.
  */
-class Template extends Class {
+export class Template extends Class {
 
     constructor(props, domtemplates, name, position) {
         super(props);
@@ -120,7 +122,7 @@ class Template extends Class {
 }
 
 
-class DomItem extends Class {
+export class DomItem extends Class {
     /*
      *  Instantiate template/structure onto dom object..
      *  (sets order, accounts for items already present, etc.)
@@ -171,7 +173,7 @@ class DomItem extends Class {
     }
 
     _make_item(creator) {
-        const maker = (creator && creator.layout)? creator.layout: {make: function (t) { return $(t); }};
+        const maker = (creator && creator.layout)? creator.layout: {make: function (t) { return dk.$(t); }};
         const item = maker.make(this.template.template);
         return this._construct_item(item);
     }
@@ -205,7 +207,7 @@ class DomItem extends Class {
     }
 
     append(location, creator) {
-        this.location = (location && location.jquery)? location: $(location);
+        this.location = (location && location.jquery)? location: dk.$(location);
         let item = this._make_item(creator);
 
         const accessor = this.accessor || {};
@@ -228,7 +230,7 @@ class DomItem extends Class {
 
     construct(location, creator, level) {
         if (level === undefined) level = 0;
-        this.location = (location && location.jquery)? location: $(location);
+        this.location = (location && location.jquery)? location: dk.$(location);
         let item = this.location;
 
         if (this.is_root) {
@@ -262,7 +264,7 @@ class DomItem extends Class {
     //
     //    construct: function (location, creator, level) {
     //        if (level === undefined) level = 0;
-    //        this.location = (location && location.jquery)? location: $(location);
+    //        this.location = (location && location.jquery)? location: dk.$(location);
     //        // dk.info(indent(level), 'constructing:', this.template.template, this.toString(), this.location);
     //        // dk.info(indent(level+1), 'get_location', this.get_location());
     //        var item = this.location;
