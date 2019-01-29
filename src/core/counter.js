@@ -14,7 +14,7 @@ const _counters = {
  * @param {int}     startval - the starting value (default=1).
  * @returns {string}
  */
-function counter(name, startval) {
+function counter(name, startval=0) {
     if (!name && !startval) return _counters._default++;
     if (!_counters[name]) {
         if (!startval) startval = 1;
