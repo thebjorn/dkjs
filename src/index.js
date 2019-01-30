@@ -68,7 +68,7 @@ import performance from "./performance-timer";
 import sys from "./sys";
 performance('loaded-sys');
 
-import State from "./browser/dk-state";
+import state from "./browser/dk-state";
 performance('loaded-dk-state');
 
 // import core from "./core";
@@ -89,55 +89,57 @@ _dk.performance('made-dk');
 import cookie from "./browser/dk-cookie";
 import format from "./data/datacore/dk-format";
 import jason from "./data/datacore/dk-json";
+import {parse_uri} from "./lifecycle/uri";
+import {DateTime, DkDate, Duration} from "./data/datacore/dk-datatypes";
+import dom from "./browser/dom";
+import {Template, DomItem} from "./browser/dk-dom-template";
 
-// new Lifecycle(dk, {
-//     externals: {
-//         jQuery, _
-//     },
-//     ensure: {
-//         css: [
-//             {
-//                 name: 'font-awesome',
-//                 version: '470',
-//                 sources: [
-//                     "https://static.datakortet.no/font/fa470/css/font-awesome.css"
-//                 ]
-//             }
-//         ]
-//     }
-// });
 
-// Object.assign(dk, {
 _dk.add({
     sys,
     // core,
-    State,
+    State: state.State,
     format,
     format_value: format.value,
     Date: DkDate,
     DateTime,
     Duration,
     jason,
-    
+    parse_uri,
+    dom,
+    Template,
+    DomItem,
+    node: dom.create_dom,
+    here: dom.here,
+
     data: {
         datatype: {
             Date: DkDate,
             DateTime,
             Duration
-        }
+        },
+        format: {format},
+        jason
     },
     
     web: {
         cookie,
-        uri: parse_uri
-    }, 
-    
+        uri: {parse: parse_uri},
+        dom: {
+            ...dom,
+            Template: Template,
+            DomItem: DomItem
+        },
+        state
+    },
+
     ready(fn) {
         _dk.$(fn);
     }
 });
 
 // print out all startup performance metrics 
+// eslint-disable-next-line no-console
 console.log("PERFORMANCE:", _dk.performance.toString());
 
 // customElements.define('dk-icon', new _dk.DkIcon());
@@ -158,14 +160,16 @@ console.log("PERFORMANCE:", _dk.performance.toString());
 // }
 
 import old_vs_new from "./dk-old-vs-new";
-import {parse_uri} from "./lifecycle/uri";
-import {DateTime, DkDate, Duration} from "./data/datacore/dk-datatypes";
+import {jq_links2popup} from "./browser/jquery-plugins";
 old_vs_new(_dk);
 
 _dk.info('dk loaded');
 _dk.ready(function () {
+    jq_links2popup(_dk);
     _dk.info('dk-fully-loaded');
 });
+
+// because webpack makes simple things difficult..
 _dk.globals.dk = _dk;
 export default _dk;    // must export default
 

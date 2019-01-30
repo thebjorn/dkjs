@@ -1,5 +1,3 @@
-/* eslint-disable no-empty,no-console */
-/* global window */
 
 /*
  *  Wrappers for console.log|warn|info|debug
@@ -18,62 +16,75 @@
  *
  */
 
-import performance from "../../performance-timer";
+import dkglobal from "../dkglobal";
+import {env, loglevels} from "./lifecycle-parse-script-tag";
 
 
-export default function setup_console(dk) {
-    
-    // attach log levels directly onto dk
-    Object.assign(dk, {
-        ERROR: 0,
-        WARN: 1,
-        LOG: 2,
-        INFO: 3,
-        DEBUG: 4
-    });
-    
-    const _nullfn = function () {};
-    let loglevel = dk.LOGLEVEL;
-    dk.error = _nullfn;
-    dk.warn = _nullfn;
-    dk.log = _nullfn;
-    dk.info = _nullfn;
-    dk.debug = _nullfn;
-    dk.dir = _nullfn;
-    
-    if (loglevel >= dk.ERROR) {
-        try {
-            dk.error = window.console.error.bind(window.console);
-        } catch (e) {}
+export const dkconsole = {
+    error(...args) {
+        if (env.LOGLEVEL >= loglevels.ERROR && dkglobal.console && dkglobal.console.error) dkglobal.console.error(...args);
+    },
+    warn(...args) {
+        if (env.LOGLEVEL >= loglevels.WARN && dkglobal.console && dkglobal.console.warn) dkglobal.console.warn(...args);
+    },
+    log(...args) {
+        if (env.LOGLEVEL >= loglevels.LOG && dkglobal.console && dkglobal.console.log) dkglobal.console.log(...args);
+    },
+    info(...args) {
+        if (env.LOGLEVEL >= loglevels.INFO && dkglobal.console && dkglobal.console.info) dkglobal.console.info(...args);
+    },
+    debug(...args) {
+        if (env.LOGLEVEL >= loglevels.DEBUG && dkglobal.console && dkglobal.console.debug) dkglobal.console.debug(...args);
+    },
+    dir(...args) {
+        if (env.LOGLEVEL >= loglevels.DEBUG && dkglobal.console && dkglobal.console.dir) {
+            if (!dkglobal.console.group || args.length === 0) {
+                dkglobal.console.dir(...args);
+            } else {
+                let [label, ...rest] = args;
+                dkglobal.console.group(typeof label === 'string'? label: '');
+                const obj = args.length === 1 ? label : rest;
+                dkglobal.console.dir(obj);
+                dkglobal.console.groupEnd();
+            }
+        }
     }
-    if (loglevel >= dk.WARN) {
-        try {
-            dk.warn = window.console.warn.bind(window.console);
-        } catch (e) {}
-    }
-    if (loglevel >= dk.LOG) {
-        try {
-            dk.log = window.console.log.bind(window.console);
-        } catch (e) {}
-    }
-    if (loglevel >= dk.INFO) {
-        try {
-            dk.info = window.console.info.bind(window.console);
-        } catch (e) {}
-    }
-    if (loglevel >= dk.DEBUG) {
-        try {
-            dk.debug = window.console.debug.bind(window.console);
-        } catch (e) {}
-        dk.dir = function dir(label, obj) {
-            try {
-                console.group(typeof label === 'string'? label: '');
-                obj = arguments.length === 1 ? label : obj;
-                console.dir(obj);
-                console.groupEnd();
-            } catch (e) {}
-        };
-    }
-    dk.info(`set LOGLEVEL attribute on script tag to a smaller value to reduce logging, currently LOGLEVEL == ${loglevel}`);
-    performance('dk-console');
-}
+};
+
+// export default function setup_console() {
+//     let loglevel = env.LOGLEVEL;
+//     const dkconsole = {
+//         error: _nullfn,
+//         warn: _nullfn,
+//         log: _nullfn,
+//         info: _nullfn,
+//         debug: _nullfn,
+//         dir: _nullfn
+//     };
+//    
+//     if (loglevel >= loglevels.ERROR && window.console.error) {
+//         dkconsole.error = window.console.error.bind(window.console);
+//     }
+//     if (loglevel >= loglevels.WARN && window.console.warn) {
+//         dkconsole.warn = window.console.warn.bind(window.console);
+//     }
+//     if (loglevel >= loglevels.LOG && window.console.log) {
+//         dkconsole.log = window.console.log.bind(window.console);
+//     }
+//     if (loglevel >= loglevels.INFO && window.console.info) {
+//         dkconsole.info = window.console.info.bind(window.console);
+//     }
+//     if (loglevel >= loglevels.DEBUG && window.console.debug) {
+//         dkconsole.debug = window.console.debug.bind(window.console);
+//         dkconsole.dir = function dir(label, obj) {
+//             try {
+//                 console.group(typeof label === 'string'? label: '');
+//                 obj = arguments.length === 1 ? label : obj;
+//                 console.dir(obj);
+//                 console.groupEnd();
+//             } catch (e) {}
+//         };
+//     }
+//     dkconsole.info(`set LOGLEVEL attribute on script tag to a smaller value to reduce logging, currently LOGLEVEL == ${loglevel}`);
+//     performance('dk-console');
+// }

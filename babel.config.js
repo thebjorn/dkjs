@@ -20,7 +20,8 @@ module.exports = {
         "@babel/plugin-transform-for-of",
         ["@babel/plugin-proposal-decorators", {
             "decoratorsBeforeExport": true,
-            "version": "jan-2019"
+            "version": "nov-2018"
+            // "version": "jan-2019"
         }],
         "@babel/plugin-proposal-class-properties",
         [

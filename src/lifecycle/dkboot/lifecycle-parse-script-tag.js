@@ -1,100 +1,95 @@
-// import _ from "lodash";
-import dkglobal from "../dkglobal";
-// import dk from "../../dk-obj";
+/* eslint-disable no-console */
 
-/**
- * The script tag (<script src="dk.js" ..) can have additional attributes:
- *
- *      DEBUG
- *      LOGLEVEL
- *      crossorigin
- *      data-main
- *
- * @param dk
- */
-export default function parse_script_tag(dk) {
-    dk.performance('parse-script-tag-start');
-    // we've got all the script tags under dk.webpage.scripts
-    // let tag = dk.webpage.scripts.dk.tag;
-    let tag = dk('script[DK]');
-    if (tag === null) {
-        throw `dk.js script tag now need the DK attribute:
-            <script DK src="...dk.js"...>
-        `;
-    }
+import dkglobal from "../dkglobal";
+
+export const loglevels = {
+    ERROR: 0,
+    WARN: 1,
+    LOG: 2,
+    INFO: 3,
+    DEBUG: 4
+};
+
+
+export const env = {
+    _loglevel: null,
+    _debug: null,
+    _attrs: null,
     
-    const scripttag_attributes = {
-        DEBUG: false,
-        LOGLEVEL: null,
-        crossorigin: null,
-    };
+    _get_attrs() {
+        const tag = dkglobal._dk_script_tag;
+
+        const _attrs = {  // defaults
+            crossorigin: null,
+            main: null
+        };
+
+        Array.from(tag.attributes, attr => {
+            let val;
+            switch (attr.name.toLowerCase()) {
+                case 'debug': break;
+                case 'loglevel': break;
+                case 'crossorigin':
+                    _attrs.crossorigin = attr.value;
+                    break;
+                case 'data-main':
+                    val = attr.value;
+                    if (val.slice(-val.length) !== '.js') {
+                        val += '.js';
+                    }
+                    _attrs[attr.name] = val;
+                    break;
+                default:
+                    // console.debug("default:attr.name", attr.name, "attr.value", attr.value);
+                    _attrs[attr.name] = attr.value;
+                    break;
+            }
+        });
+        return _attrs;
+    },
     
-    Array.from(tag.attributes, attr => {  // node.attributes cannot for-of on IE
-        switch (attr.name.toLowerCase()) {
-            case 'debug':
-                // <script debug src=..> => debug===4
-                scripttag_attributes.DEBUG = true;
-                break;
-            case 'loglevel':
-                // <script debug src=..> => debug===4
-                scripttag_attributes.loglevel = parseInt(attr.value || "4", 10);
-                break;
-            case 'crossorigin':
-                scripttag_attributes.crossorigin = attr.value;
-                break;
-            case 'data-main':
-                let val = attr.value;
-                if (val.slice(-val.length) !== '.js') {
-                    val += '.js';
-                }
-                scripttag_attributes[attr.name] = val;
-                break;
-            default:
-                scripttag_attributes[attr.name] = attr.value;
-                break;
+    _get_loglevel() {
+        if (dkglobal.LOGLEVEL !== undefined) return dkglobal.LOGLEVEL;
+        if (dkglobal.DEBUG !== undefined) {
+            this._debug = dkglobal.DEBUG;
+            return loglevels.DEBUG;
         }
-    });
-    if (scripttag_attributes.LOGLEVEL === null) {
-        scripttag_attributes.LOGLEVEL = scripttag_attributes.DEBUG ? 4 : 0;
-    }
-    
-    // global vars override script tag vars
-    let DEBUG = dkglobal.DEBUG;
-    let LOGLEVEL = dkglobal.LOGLEVEL;
-    if (typeof DEBUG !== 'undefined') scripttag_attributes.DEBUG = DEBUG;
-    if (typeof LOGLEVEL !== 'undefined') scripttag_attributes.LOGLEVEL = LOGLEVEL;
-    
-    dk.DEBUG = scripttag_attributes.DEBUG;
-    dk.LOGLEVEL = scripttag_attributes.LOGLEVEL;
-    
-    delete scripttag_attributes.DEBUG;
-    delete scripttag_attributes.LOGLEVEL;
-    
-    dk.scripttag_attributes = scripttag_attributes;
-    
-    // XXX: backward compatibility
-    dk.dkjstag = {
-        get src() {
-            console.warn("dk.dkjstag.src is deprecated, use dk.scripttag_attributes.src");
-            return scripttag_attributes.src;
-        },
-        get loglevel() {
-            console.warn("dk.dkjstag.loglevel is deprecated, use dk.LOGLEVEL");
-            return scripttag_attributes.loglevel;
-        },
-        get debug() {
-            console.warn("dk.dkjstag.debug is deprecated, use dk.DEBUG");
-            return scripttag_attributes.DEBUG;
-        },
-        get main() {
-            console.warn("dk.dkjstag.main is deprecated, use dk.scripttag['data-main']");
-            return scripttag_attributes['data-main'];
-        },
-        get tag() {
-            console.warn("dk.dkjstag.tag is deprecated and shouldn't be used anymore.");
-            return tag;  // XXX: dk.$(tag) ?
+
+        const tag = dkglobal._dk_script_tag;
+        if (tag === null) return loglevels.DEBUG;  // running under e.g. jest
+        const tag_loglevel = tag.getAttribute('loglevel');
+        if (tag_loglevel !== null) return parseInt(tag_loglevel, 10);
+
+        const tag_debug = tag.getAttribute('debug');
+        if (tag_debug !== null) {
+            this._debug = !!tag_debug;
+            return loglevels.DEBUG;  // level == 4
         }
-    };
+
+        return loglevels.ERROR;  // level == 0
+    },
     
-    dk.performance('parse-script-tag-end');
-}
+    _get_debug() {
+        if (dkglobal.DEBUG !== undefined) return dkglobal.DEBUG;
+        const tag = dkglobal._dk_script_tag;
+        if (tag === null) return true;   // running under e.g. jest
+        const tag_debug = tag.getAttribute('debug');
+        if (tag_debug !== null) return !!tag_debug;
+        return false;
+    },
+    
+    get attrs() {
+        if (this._attrs === null) this._attrs = this._get_attrs();
+        return this._attrs;
+    },
+    
+    get LOGLEVEL() {
+        if (this._loglevel === null) this._loglevel = this._get_loglevel();           
+        return this._loglevel;
+    },
+
+    get DEBUG() {
+        if (this._debug === null) this._debug = this._get_debug();
+        return this._debug;
+    }
+};
