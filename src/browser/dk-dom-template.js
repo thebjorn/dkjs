@@ -1,5 +1,4 @@
 
-import _ from "lodash";
 import Class from "../lifecycle/coldboot/dk-class";
 import dom from "./dom";
 import dk from "../dk-obj";
@@ -33,11 +32,11 @@ export class Template extends Class {
 
         this.structure = props.structure || {};
 
-        const subitems = _.difference(Object.keys(props), Object.keys(this));
+        const subitems = dk._.difference(Object.keys(props), Object.keys(this));
         subitems.forEach((item, position) => {
             this.structure[item] = Template.create(props[item], domtemplates, item.replace('-', '_'), position);
         });
-        if (_.isEmpty(this.structure)) delete this.structure;
+        if (dk._.isEmpty(this.structure)) delete this.structure;
     }
 
     /*
@@ -113,11 +112,11 @@ export class Template extends Class {
     }
 
     toString() {
-        return JSON.stringify(_.pick(this, 'name', 'css', 'classes', 'create', 'query', 'template', 'structure'), null, '    ');
+        return JSON.stringify(dk._.pick(this, 'name', 'css', 'classes', 'create', 'query', 'template', 'structure'), null, '    ');
     }
 
     toStringNonRecursive() {
-        return JSON.stringify(_.pick(this, 'name', 'css', 'classes', 'create', 'query', 'template'), null, '    ');
+        return JSON.stringify(dk._.pick(this, 'name', 'css', 'classes', 'create', 'query', 'template'), null, '    ');
     }
 }
 
@@ -154,7 +153,7 @@ export class DomItem extends Class {
             const vals = this.keys.map(key => {
                 return DomItem.create(template.structure[key], self);
             });
-            this.subitems = _.object(this.keys, vals);
+            this.subitems = dk._.object(this.keys, vals);
             this._subitems = this.keys.map(function (key) {
                 return self.subitems[key].item;
             });
@@ -212,7 +211,7 @@ export class DomItem extends Class {
 
         const accessor = this.accessor || {};
 
-        _.each(this.subitems, function (subitem, key) {
+        dk._.each(this.subitems, function (subitem, key) {
             item[key] = subitem.construct(item, creator);
             accessor[key] = item[key];
         });
@@ -248,7 +247,7 @@ export class DomItem extends Class {
         }
 
         const accessor = this.accessor || {};
-        _.each(this.subitems, function (subitem, key) {
+        dk._.each(this.subitems, function (subitem, key) {
             item[key] = subitem.construct(item, creator, level + 1);
             accessor[key] = item[key];
         });
@@ -306,7 +305,7 @@ export class DomItem extends Class {
     //        }
     //
     //        var accessor = this.accessor || {};
-    //        _.each(this.subitems, function (subitem, key) {
+    //        dk._.each(this.subitems, function (subitem, key) {
     //            item[key] = subitem.construct(item, creator, level+1);
     //            accessor[key] = item[key];
     //        });
@@ -324,6 +323,6 @@ export class DomItem extends Class {
          } */
         subnodes += ']';
         return "DomItem(%s, [%s])".format(this.template.template, this.keys);
-        //return JSON.stringify(_.pick(this, '_templatestring', 'classes', 'position', 'query', 'subitems'), null, '    ');
+        //return JSON.stringify(dk._.pick(this, '_templatestring', 'classes', 'position', 'query', 'subitems'), null, '    ');
     }
 }

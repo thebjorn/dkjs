@@ -4,7 +4,6 @@
  */
 
 // var dk = require('../../boot/boot');
-import _ from 'lodash';
 import format from "./dk-format";
 import Class from "../../lifecycle/coldboot/dk-class";
 
@@ -224,8 +223,8 @@ export class Duration extends datatype {
         minutes = parseInt(parts.slice(-2, -1), 10);  // will be NaN if string doesn't contain minutes
         hours = parseInt(parts.slice(-3, -2), 10);
         this.value += seconds;
-        if (!_.isNaN(minutes)) this.value += 60 * minutes;
-        if (!_.isNaN(hours)) this.value += 60 * 60 * hours;
+        if (!Number.isNaN(minutes)) this.value += 60 * minutes;
+        if (!Number.isNaN(hours)) this.value += 60 * 60 * hours;
         this.value *= sign;
     }
     toJSON() {

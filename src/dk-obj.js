@@ -1,8 +1,8 @@
 // import and attach LVL:0-1 modules
 
 // jest needs these, webpack craps from them..
-// import _ from 'lodash';
-// import jQuery from 'jquery';
+import lodash from 'lodash';
+import jQuery from 'jquery';
 
 
 import performance from "./performance-timer";
@@ -51,10 +51,10 @@ Object.assign(dk, {
     dedent: text.dedent,
     
     // externals
-    _,
+    _: lodash,
     $: jQuery,
     _jquery_version: jQuery.fn.jquery,
-    _lodash_version: _.VERSION,
+    _lodash_version: lodash.VERSION,
 
     // locally defined
     all(selector) {
