@@ -82,6 +82,7 @@ const dom = {
      *  and also adds a newline to the html source (very useful for debugging).
      */
     dkitem(item) {
+        if (!item.jquery) throw "item must be a jquery object";
         item.appendln = function (...args) {
             item.append('\n\t\t');
             const res = item.append(...args);
@@ -97,8 +98,12 @@ const dom = {
      *  );
      */
     find(selector, location) {
-        const found = document.querySelector(`${location} ${selector}`);
-        return found ? this.dkitem(found) : null;
+        const found = location.find.call(location, selector + ':eq(0)');
+        if (found.length > 0) {
+            return this.dkitem(found);
+        } else {
+            return null;
+        }
     },
 
     id(v) {
@@ -118,13 +123,23 @@ const dom = {
      *  then finding it, and finally getting its .parent(). Sets the id
      *  of the parent to a unique identifier if it doesn't have an id
      *  attribute already.
+     *  
+     *  Usage:
+     *  
+     *      <div id="foo">
+     *          <script>
+     *              const parent = dk.here();  // ==> #foo
+     *          </script>
+     *      </div>
+     *      
      */
-    here(name) {
+    here(name, doc=null) {
         const _unique = counter(name || 'dk-here-');
-        document.write(`<div id="${_unique}"></div>`);
-        const sentinel = document.getElementById(_unique);
+        doc = doc || document;
+        doc.write(`<div id="${_unique}"></div>`);
+        const sentinel = doc.getElementById(_unique);
         const parent = sentinel.parentNode;
-        if (parent) throw "Couldn't attach to parent.."; 
+        if (!parent) throw "Couldn't attach to parent.."; 
         parent.removeChild(sentinel);
         const id = parent.id;
         if (!id) parent.id = _unique;

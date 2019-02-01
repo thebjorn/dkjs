@@ -93,6 +93,8 @@ import {parse_uri} from "./lifecycle/uri";
 import {DateTime, DkDate, Duration} from "./data/datacore/dk-datatypes";
 import dom from "./browser/dom";
 import {Template, DomItem} from "./browser/dk-dom-template";
+import utidy from "./browser/dk-html";
+import css from "./browser/dk-css";
 
 
 _dk.add({
@@ -106,12 +108,15 @@ _dk.add({
     Duration,
     jason,
     parse_uri,
-    dom,
+    ...dom,
     Template,
     DomItem,
     node: dom.create_dom,
-    here: dom.here,
+    // here: dom.here,
+    utidy,
+    css,
 
+    update(...args) { return Object.assign(...args); },
     data: {
         datatype: {
             Date: DkDate,
@@ -130,7 +135,16 @@ _dk.add({
             Template: Template,
             DomItem: DomItem
         },
+        html: {
+            tidy: utidy
+        },
+        css,
         state
+    },
+    dom: {
+        ...dom,
+        DomItem,
+        Template
     },
 
     ready(fn) {

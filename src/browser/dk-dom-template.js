@@ -7,10 +7,10 @@ import dk from "../dk-obj";
 /*
  *  Define a structured hierarchial dom tree.
  */
-export class Template extends Class {
+export class Template {
 
     constructor(props, domtemplates, name, position) {
-        super(props);
+        // super(props);
         if (props.name && typeof props.name !== "string") {
             throw "Syntax Error: structure.name must be a string (the tag-type of the dom-object).";
         }
@@ -27,14 +27,14 @@ export class Template extends Class {
         this.template = '<div/>';
         let tmptemplate = props.template;
         if (!tmptemplate && domtemplates) tmptemplate = domtemplates[this.name];
-        if (!tmptemplate && dom.is_tag(this.name)) tmptemplate = '<%s/>'.format(this.name);
+        if (!tmptemplate && dom.is_tag(this.name)) tmptemplate =  `<${this.name}/>`;
         if (tmptemplate) this.template = tmptemplate;
 
         this.structure = props.structure || {};
 
         const subitems = dk._.difference(Object.keys(props), Object.keys(this));
         subitems.forEach((item, position) => {
-            this.structure[item] = Template.create(props[item], domtemplates, item.replace('-', '_'), position);
+            this.structure[item] = new Template(props[item], domtemplates, item.replace('-', '_'), position);
         });
         if (dk._.isEmpty(this.structure)) delete this.structure;
     }
@@ -105,7 +105,7 @@ export class Template extends Class {
     append_to(location, creator, accessor) {
         if (accessor === undefined) accessor = {};
         Object.keys(this.structure).forEach(key => {
-            const domitem = DomItem.create(self.structure[key]);
+            const domitem = DomItem.create(this.structure[key]);
             accessor[key] = domitem.append_to(location, creator, accessor);
         });
         return accessor;
@@ -151,11 +151,11 @@ export class DomItem extends Class {
         if (this.template.structure) {
             this.keys = Object.keys(template.structure || {});
             const vals = this.keys.map(key => {
-                return DomItem.create(template.structure[key], self);
+                return DomItem.create(template.structure[key], this);
             });
-            this.subitems = dk._.object(this.keys, vals);
-            this._subitems = this.keys.map(function (key) {
-                return self.subitems[key].item;
+            this.subitems = dk.zip_object(this.keys, vals);
+            this._subitems = this.keys.map(key => {
+                return this.subitems[key].item;
             });
         }
     }

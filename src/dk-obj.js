@@ -56,6 +56,14 @@ Object.assign(dk, {
     _jquery_version: jQuery.fn.jquery,
     _lodash_version: lodash.VERSION,
 
+    zip_object(keys, vals) {
+        if (lodash.object) {
+            return lodash.object(keys, vals);
+        } else {
+            return lodash.zipObject(keys, vals);
+        }
+    },
+
     // locally defined
     all(selector) {
         return document.querySelectorAll(selector);
