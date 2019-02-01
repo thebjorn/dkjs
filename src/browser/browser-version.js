@@ -43,9 +43,9 @@ export default (function () {
                 [];
 
         return {
-                browser: match[ 3 ] || match[ 1 ] || "",
-                version: match[ 2 ] || "0",
-                platform: platform_match[0] || ""
+            browser: match[ 3 ] || match[ 1 ] || "",
+            version: match[ 2 ] || "0",
+            platform: platform_match[0] || ""
         };
     };
     matched = uaMatch(window.navigator.userAgent);

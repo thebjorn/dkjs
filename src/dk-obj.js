@@ -1,10 +1,15 @@
 // import and attach LVL:0-1 modules
 
+// jest needs these, webpack craps from them..
+import lodash from 'lodash';
+import jQuery from 'jquery';
+
+
 import performance from "./performance-timer";
 import {env} from "./lifecycle/dkboot/lifecycle-parse-script-tag";
 import * as text from "./core/text-utils";
 import counter from "./core/counter";
-import * as dom from "./browser/dom";
+
 import {shallow_observer, deep_observer} from "./data/observable";
 import require_css from "./browser/loaders";
 import dkglobal from "./lifecycle/dkglobal";
@@ -15,6 +20,7 @@ import namespace from "./lifecycle/coldboot/dk-namespace";
 import setup_signals from "./lifecycle/dkboot/dk-signals";
 import setup_loaders from "./lifecycle/lifecycle-setup-loaders";
 import {dkconsole} from "./lifecycle/dkboot/dk-console";
+import {dkwarning} from "./lifecycle/coldboot/dkwarning";
 
 
 const dk = function dk(selector) {
@@ -27,10 +33,9 @@ Object.assign(dk, {
     globals: dkglobal,
     env,
     namespace,
-    dom,
+
     ...dkconsole,
-    node: dom.create_dom,
-    
+
     shallow_observer,
     deep_observer,
     
@@ -46,10 +51,18 @@ Object.assign(dk, {
     dedent: text.dedent,
     
     // externals
-    _,
+    _: lodash,
     $: jQuery,
     _jquery_version: jQuery.fn.jquery,
-    _lodash_version: _.VERSION,
+    _lodash_version: lodash.VERSION,
+
+    zip_object(keys, vals) {
+        if (lodash.object) {
+            return lodash.object(keys, vals);
+        } else {
+            return lodash.zipObject(keys, vals);
+        }
+    },
 
     // locally defined
     all(selector) {
@@ -66,24 +79,24 @@ dk.LOGLEVEL = env.LOGLEVEL;
 
 dk.dkjstag = {
     get src() {
-        dkconsole.warn("dk.dkjstag.src is deprecated, use dk.scripttag_attributes.src");
+        dkwarning("dk.dkjstag.src is deprecated, use dk.scripttag_attributes.src");
         return env.attrs.src;
     },
     get loglevel() {
-        dkconsole.warn("dk.dkjstag.loglevel is deprecated, use dk.LOGLEVEL");
+        dkwarning("dk.dkjstag.loglevel is deprecated, use dk.LOGLEVEL");
         return env.LOGLEVEL;
     },
     get debug() {
-        dkconsole.warn("dk.dkjstag.debug is deprecated, use dk.DEBUG");
+        dkwarning("dk.dkjstag.debug is deprecated, use dk.DEBUG");
         return env.DEBUG;
     },
     get main() {
-        dkconsole.warn("dk.dkjstag.main is deprecated, use dk.scripttag['data-main']");
+        dkwarning("dk.dkjstag.main is deprecated, use dk.scripttag['data-main']");
         return env.attrs['data-main'];
     },
     get tag() {
-        dkconsole.warn("dk.dkjstag.tag is deprecated and shouldn't be used anymore.");
-        return env.null;  // XXX: dk.$(tag) ?
+        dkwarning("dk.dkjstag.tag is deprecated and shouldn't be used anymore.");
+        return dkglobal._dk_script_tag;
     }
 };
 

@@ -56,18 +56,20 @@ const common_settings = {
         // })
     ],
     externals: {
-        jquery: {
-            commonjs: 'jQuery',
-            commonjs2: 'jQuery',
-            amd: 'jQuery',
-            root: '$'
-        },
-        lodash: {
-            commonjs: 'lodash',
-            commonjs2: 'lodash',
-            amd: 'lodash',
-            root: '_'
-        }
+        jquery: 'jQuery',
+        loadash: 'lodash'
+        // jquery: {
+        //     commonjs: 'jQuery',
+        //     commonjs2: 'jQuery',
+        //     amd: 'jQuery',
+        //     root: '$'
+        // },
+        // lodash: {
+        //     commonjs: 'lodash',
+        //     commonjs2: 'lodash',
+        //     amd: 'lodash',
+        //     root: '_'
+        // }
     }
 };
 

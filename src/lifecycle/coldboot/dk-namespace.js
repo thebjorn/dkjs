@@ -141,15 +141,13 @@ export default {
             return b;
         };
 
-        return function () {
-            if (arguments.length === 0)
+        return function (...args) {
+            if (args.length === 0)
                 return undefined;
-            let res = arguments[0];
-            for (let i=1; i<arguments.length; i++) {
+            let res = args[0];
+            for (let i=1; i<args.length; i++) {
                 let from_obj = arguments[i];
-                if (from_obj) {
-                    res = _merge_ab(res, from_obj);
-                }
+                if (from_obj) res = _merge_ab(res, from_obj);
             }
             return res;
         };

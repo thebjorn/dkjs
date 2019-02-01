@@ -11,23 +11,15 @@ export const loglevels = {
 };
 
 
-function find_dk_script_tag() {
-    // all but IE
-    if (document.currentScript !== undefined) return document.currentScript;
-    // ..for IE (get the last executed script -- oh, so hackish, but the alternatives are worse)
-    const scripts = document.getElementsByTagName('script');
-    return scripts[scripts.length - 1];
-}
-
 export const env = {
     _loglevel: null,
     _debug: null,
     _attrs: null,
     
     _get_attrs() {
-        const tag = find_dk_script_tag();
+        const tag = dkglobal._dk_script_tag;
 
-        this._attrs = {  // defaults
+        const _attrs = {  // defaults
             crossorigin: null,
             main: null
         };
@@ -38,20 +30,22 @@ export const env = {
                 case 'debug': break;
                 case 'loglevel': break;
                 case 'crossorigin':
-                    this._attrs.crossorigin = attr.value;
+                    _attrs.crossorigin = attr.value;
                     break;
                 case 'data-main':
                     val = attr.value;
                     if (val.slice(-val.length) !== '.js') {
                         val += '.js';
                     }
-                    this._attrs[attr.name] = val;
+                    _attrs[attr.name] = val;
                     break;
                 default:
-                    this._attrs[attr.name] = attr.value;
+                    // console.debug("default:attr.name", attr.name, "attr.value", attr.value);
+                    _attrs[attr.name] = attr.value;
                     break;
             }
         });
+        return _attrs;
     },
     
     _get_loglevel() {
@@ -61,7 +55,8 @@ export const env = {
             return loglevels.DEBUG;
         }
 
-        const tag = find_dk_script_tag();
+        const tag = dkglobal._dk_script_tag;
+        if (tag === null) return loglevels.DEBUG;  // running under e.g. jest
         const tag_loglevel = tag.getAttribute('loglevel');
         if (tag_loglevel !== null) return parseInt(tag_loglevel, 10);
 
@@ -76,7 +71,8 @@ export const env = {
     
     _get_debug() {
         if (dkglobal.DEBUG !== undefined) return dkglobal.DEBUG;
-        const tag = find_dk_script_tag();
+        const tag = dkglobal._dk_script_tag;
+        if (tag === null) return true;   // running under e.g. jest
         const tag_debug = tag.getAttribute('debug');
         if (tag_debug !== null) return !!tag_debug;
         return false;

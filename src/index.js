@@ -68,7 +68,7 @@ import performance from "./performance-timer";
 import sys from "./sys";
 performance('loaded-sys');
 
-import {State} from "./browser/dk-state";
+import state from "./browser/dk-state";
 performance('loaded-dk-state');
 
 // import core from "./core";
@@ -91,19 +91,32 @@ import format from "./data/datacore/dk-format";
 import jason from "./data/datacore/dk-json";
 import {parse_uri} from "./lifecycle/uri";
 import {DateTime, DkDate, Duration} from "./data/datacore/dk-datatypes";
+import dom from "./browser/dom";
+import {Template, DomItem} from "./browser/dk-dom-template";
+import utidy from "./browser/dk-html";
+import css from "./browser/dk-css";
 
 
 _dk.add({
     sys,
     // core,
-    State,
+    State: state.State,
     format,
     format_value: format.value,
     Date: DkDate,
     DateTime,
     Duration,
     jason,
-    
+    parse_uri,
+    ...dom,
+    Template,
+    DomItem,
+    node: dom.create_dom,
+    // here: dom.here,
+    utidy,
+    css,
+
+    update(...args) { return Object.assign(...args); },
     data: {
         datatype: {
             Date: DkDate,
@@ -116,38 +129,31 @@ _dk.add({
     
     web: {
         cookie,
-        uri: parse_uri
+        uri: {parse: parse_uri},
+        dom: {
+            ...dom,
+            Template: Template,
+            DomItem: DomItem
+        },
+        html: {
+            tidy: utidy
+        },
+        css,
+        state
+    },
+    dom: {
+        ...dom,
+        DomItem,
+        Template
     },
 
-    // dkjstag: {
-    //     get src() {
-    //         console.warn("dk.dkjstag.src is deprecated, use dk.scripttag_attributes.src");
-    //         return scripttag_attributes.src;
-    //     },
-    //     get loglevel() {
-    //         console.warn("dk.dkjstag.loglevel is deprecated, use dk.LOGLEVEL");
-    //         return scripttag_attributes.loglevel;
-    //     },
-    //     get debug() {
-    //         console.warn("dk.dkjstag.debug is deprecated, use dk.DEBUG");
-    //         return scripttag_attributes.DEBUG;
-    //     },
-    //     get main() {
-    //         console.warn("dk.dkjstag.main is deprecated, use dk.scripttag['data-main']");
-    //         return scripttag_attributes['data-main'];
-    //     },
-    //     get tag() {
-    //         console.warn("dk.dkjstag.tag is deprecated and shouldn't be used anymore.");
-    //         return tag;  // XXX: dk.$(tag) ?
-    //     }
-    // },
-    
     ready(fn) {
         _dk.$(fn);
     }
 });
 
 // print out all startup performance metrics 
+// eslint-disable-next-line no-console
 console.log("PERFORMANCE:", _dk.performance.toString());
 
 // customElements.define('dk-icon', new _dk.DkIcon());
@@ -168,12 +174,16 @@ console.log("PERFORMANCE:", _dk.performance.toString());
 // }
 
 import old_vs_new from "./dk-old-vs-new";
+import {jq_links2popup} from "./browser/jquery-plugins";
 old_vs_new(_dk);
 
 _dk.info('dk loaded');
 _dk.ready(function () {
+    jq_links2popup(_dk);
     _dk.info('dk-fully-loaded');
 });
+
+// because webpack makes simple things difficult..
 _dk.globals.dk = _dk;
 export default _dk;    // must export default
 
