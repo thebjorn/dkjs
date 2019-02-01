@@ -2,7 +2,7 @@
 
 import $ from "jquery";
 import {Template} from "../dk-dom-template";
-import dom from "../dom";
+import utidy from "../dk-html";
 
 /**
  * The simplest form of creating a structure using dk.dom.Template().
@@ -28,8 +28,13 @@ test("dk.dom.Template(), depth=1, using accessors", () => {
     obj.h3.text('hello');
     obj.content.text('world');
 
-    expect(dom.equal(obj, `
+    console.log("obj:", utidy(obj.html()));
+    console.log("txt:", utidy(`
+        <h3>hello</h3>
+        <div class="content">world</div>`));
+    
+    expect(utidy(obj.html())).toEqual(utidy(`
         <h3>hello</h3>
         <div class="content">world</div>`
-    )).toBeTruthy();
+    ));
 });

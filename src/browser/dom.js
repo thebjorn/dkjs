@@ -72,8 +72,11 @@ const dom = {
                 ++cur;
             }
             return true;
-        } else {
+        } else if (a.isEqualNode) {
             return a.isEqualNode(b);
+        } else {
+            dkconsole.debug("cannot compare:", a, b);
+            return false;
         }
     },
 
