@@ -8,14 +8,6 @@ import template from "lodash.template";
 import jason from "../data/datacore/dk-json";
 import {cls2id} from "../core/text-utils";
 
-// const $ = require('jquery');
-// const dk = require('../boot');
-// const page = require('./dk-page.js');
-// const Layout = require('../layout/dk-layout.js');
-// const counter = require('../core/dk-counter.js');
-// const text = require('../core/dk-text.js');
-// const widgetmap = require('./dk-widgetmap.js');
-// const datacore = require('../data/datacore');
 
 //
 // widget super class (sub-module).
@@ -104,7 +96,7 @@ export class Widget extends Class{
             if (locid) {
                 this.set_widget_id(locid);
             } else {
-                const widgetid = this.__class__.next_widget_id();
+                const widgetid = this.constructor.next_widget_id();
                 location.on.prop('id', widgetid);
                 this.set_widget_id(widgetid);
             }
@@ -161,7 +153,7 @@ export class Widget extends Class{
         }
         id = dom.prop('id');
         if (!id) {
-            id = this.__class__.next_widget_id();
+            id = this.constructor.next_widget_id();
             dom.prop('id', id);
         }
         this.set_widget_id(id);
@@ -190,7 +182,7 @@ export class Widget extends Class{
                 // Layout.init sets widget.layout
                 this.layout = Layout.create(this, location, template, structure);
             } catch (e) {
-                throw "in class: " + this.__class__.type + " :: " + e;
+                throw "in class: " + this.constructor.name + " :: " + e;
             }
 
         } else {
@@ -436,116 +428,90 @@ export class Widget extends Class{
             }
         });
     }
+    
+    static extend(props) {
+        if (props.template) props.template = dk.merge(this.template, props.template);
+        if (props.structure) props.structure = dk.merge(this.structure, props.structure);
+        if (props.defaults) props.defaults = dk.merge(this.defaults, props.defaults);
+        const SubClass = Class.extend.call(this, props);
+        SubClass.type = props.type || this.name;  // this can assign undefined
+
+        if (SubClass.type) {
+            //SubClass.type = SubClass.type.replace(/\./, '-');
+            widgetmap.add(SubClass);
+            SubClass.toString = function () {
+                return this.type + " (ctor)";
+            };
+        } else {
+            dk.debug('SubClass without type', SubClass);
+        }
+
+        return SubClass;
+    }
+    
+    static next_widget_id() {
+        return counter(cls2id(this.name) + '-');
+    }
+
+    /*
+     *  Create an instance of this Widget class.
+     *  I.e., create_onto this.widget(). Which means we must ensure we
+     *        have an id.
+     */
+    static create() {
+        let location, attrs;
+        if (arguments.length >= 2) {
+            location = arguments[0];
+            Array.prototype.shift.call(arguments);
+        } else {
+            location = dk.$('body');
+        }
+        attrs = arguments[0];
+        return this.create_on(location, attrs);
+    }
+
+    static create_on(location, attrs) {
+        // we _must_ generate an id for this widget, so that
+        // this.widget() works.
+        try {
+            const w = Class.create.call(this, attrs);
+            if (typeof location === 'string') location = dk.$(location);
+            page.create_widget(w, {on: location});
+            return w;
+        } catch (e) {
+            dk.error(e);
+        }
+    }
+
+
+    static create_inside(location, attrs) {
+        // we must not generate an id for this widget until we
+        // get to the widget's construct() method.
+        try {
+            const w = dk.Class.create.call(this, attrs);
+            if (typeof location === 'string') location = dk.$(location);
+            page.create_widget(w, {inside: location});
+            return w;
+        } catch (e) {
+            dk.error(e);
+        }
+    }
+
+    static append_to(location, attrs) {
+        // we must not generate an id for this widget until we
+        // get to the widget's construct() method.
+        try {
+            const w = dk.Class.create.call(this, attrs);
+            if (typeof location === 'string') location = dk.$(location);
+            page.create_widget(w, {inside: location, append: true});
+            return w;
+        } catch (e) {
+            dk.error(e);
+        }
+    }
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Widget.type = 'Widget';
-
-/*
- *  Class methods
- */
-Widget.extend = function (props) {
-    if (props.template) props.template = dk.merge(this.template, props.template);
-    if (props.structure) props.structure = dk.merge(this.structure, props.structure);
-    if (props.defaults) props.defaults = dk.merge(this.defaults, props.defaults);
-    const SubClass = dk.Class.extend.call(this, props);
-    //const SubClass = this.__super__.extend.call(this, props);
-    SubClass.type = props.type;  // this can assign undefined
-
-    if (SubClass.type) {
-        //SubClass.type = SubClass.type.replace(/\./, '-');
-        widgetmap.add(SubClass);
-        SubClass.toString = function () {
-            return this.type + " (ctor)";
-        };
-    } else {
-        dk.debug('SubClass without type', SubClass);
-    }
-
-    return SubClass;
-};
-
-Widget.next_widget_id = function () {
-    const tmp = counter(cls2id(this.type) + '-');
-    return tmp;
-};
-
-/*
- *  Create an instance of this Widget class.
- *  I.e., create_onto this.widget(). Which means we must ensure we
- *        have an id.
- */
-Widget.create = function () {
-    let location, attrs;
-    if (arguments.length >= 2) {
-        location = arguments[0];
-        Array.prototype.shift.call(arguments);
-    } else {
-        location = dk.$('body');
-    }
-    attrs = arguments[0];
-    return this.create_on(location, attrs);
-};
-
-Widget.create_on = function (location, attrs) {
-    // we _must_ generate an id for this widget, so that
-    // this.widget() works.
-    try {
-        const w = dk.Class.create.call(this, attrs);
-        if (typeof location === 'string') location = dk.$(location);
-        page.create_widget(w, {on: location});
-        return w;
-    } catch (e) {
-        dk.error(e);
-    }
-};
-
-Widget.create_inside = function (location, attrs) {
-    // we must not generate an id for this widget until we
-    // get to the widget's construct() method.
-    try {
-        const w = dk.Class.create.call(this, attrs);
-        if (typeof location === 'string') location = dk.$(location);
-        page.create_widget(w, {inside: location});
-        return w;
-    } catch (e) {
-        dk.error(e);
-    }
-};
-
-Widget.append_to = function (location, attrs) {
-    // we must not generate an id for this widget until we
-    // get to the widget's construct() method.
-    try {
-        const w = dk.Class.create.call(this, attrs);
-        if (typeof location === 'string') location = dk.$(location);
-        page.create_widget(w, {inside: location, append: true});
-        return w;
-    } catch (e) {
-        dk.error(e);
-    }
-};
 //
 // /*
 //  *  jQuery plugin to create widgets onto selectors.
