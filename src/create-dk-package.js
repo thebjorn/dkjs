@@ -97,6 +97,9 @@ import css from "./browser/dk-css";
 import old_vs_new from "./dk-old-vs-new";
 import {jq_links2popup} from "./browser/jquery-plugins";
 import page from "./widgetcore/dk-page";
+import widgetmap from "./widgetcore/dk-widgetmap";
+import Layout from "./layout/dk-layout";
+
 
 (function () {
     dk.add({
@@ -117,9 +120,14 @@ import page from "./widgetcore/dk-page";
         // here: dom.here,
         utidy,
         css,
+        
+        layout: {
+            Layout
+        },
 
         widget: {
-            page
+            page,
+            widgetmap
         },
         
         update(...args) {

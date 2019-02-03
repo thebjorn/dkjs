@@ -1,6 +1,3 @@
 # dkjs
 
-- `src/lifecycle/lifecycle.js.__doc__`
-  - verify that none of the included scripts are included multiple times
-  - read attributes from dk.js script tag
-  - set up console (dk.log, dk.info, etc.)
+[![Build Status](https://travis-ci.com/thebjorn/dkjs.svg?token=oyDpnpqkMhhKsLJcbRKH&branch=master)](https://travis-ci.com/thebjorn/dkjs)
