@@ -54,6 +54,7 @@
     "@webcomponents/webcomponentsjs": "^2.2.4",
     "lit-element": "^2.0.0-rc.5",
     "lodash.debounce": "^4.0.8",
+    "lodash.template": "^4.4.0",
     "lodash.throttle": "^4.1.1",
     "terser": "^3.14.1"
   }

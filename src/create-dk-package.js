@@ -58,7 +58,7 @@
 // import "@babel/polyfill"; // must be first
 
 import dk from "./dk-obj";
-import performance from "./performance-timer";
+// import performance from "./performance-timer";
 
 
 // import Lifecycle from "./lifecycle";
