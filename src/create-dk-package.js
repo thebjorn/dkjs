@@ -98,7 +98,7 @@ import old_vs_new from "./dk-old-vs-new";
 import {jq_links2popup} from "./browser/jquery-plugins";
 import page from "./widgetcore/dk-page";
 import widgetmap from "./widgetcore/dk-widgetmap";
-import Layout from "./layout/dk-layout";
+import {Layout} from "./layout/dk-layout";
 
 
 (function () {
