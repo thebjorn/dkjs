@@ -96,6 +96,7 @@ import utidy from "./browser/dk-html";
 import css from "./browser/dk-css";
 import old_vs_new from "./dk-old-vs-new";
 import {jq_links2popup} from "./browser/jquery-plugins";
+import page from "./widgetcore/dk-page";
 
 (function () {
     dk.add({
@@ -117,6 +118,10 @@ import {jq_links2popup} from "./browser/jquery-plugins";
         utidy,
         css,
 
+        widget: {
+            page
+        },
+        
         update(...args) {
             return Object.assign(...args);
         },

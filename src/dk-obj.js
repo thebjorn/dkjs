@@ -16,13 +16,12 @@ import Class from "./lifecycle/coldboot/dk-class";
 import version from "./version";
 import create_debug_environment from "./lifecycle/dkboot/lifecycle-create-debug-environment";
 import namespace from "./lifecycle/coldboot/dk-namespace";
-import setup_signals from "./lifecycle/dkboot/dk-signals";
 import setup_loaders from "./lifecycle/lifecycle-setup-loaders";
 import {dkconsole} from "./lifecycle/dkboot/dk-console";
 import {dkwarning} from "./lifecycle/coldboot/dkwarning";
 import {pick, zip_object} from "./pick";
 import is from "./is";
-
+import {after, on, trigger, publish, subscribe} from "./lifecycle/dkboot/dk-signals";
 
 const dk = function (selector) {
     return document.querySelector(selector);
@@ -34,6 +33,11 @@ Object.assign(dk, {
     globals: dkglobal,
     env,
     namespace,
+    on,
+    trigger,
+    after,
+    publish,
+    subscribe,
 
     ...dkconsole,
 
@@ -95,10 +99,8 @@ dk.dkjstag = {
     }
 };
 
-// dk_script_tag(dk);
 create_debug_environment(dk);
-// setup_console(dk);
-setup_signals(dk, dk.DEBUG ? dk.ERROR : dk.INFO);
+
 setup_loaders(dk);
 
 performance('created-dk-obj');
