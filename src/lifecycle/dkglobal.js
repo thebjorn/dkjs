@@ -13,7 +13,6 @@ const dkglobal = (function () {
 
 // eslint-disable-next-line no-console
 console.debug("dkjs loaded from:", document.currentScript);
-console.dir(window);
 
 
 dkglobal._dk_script_tag = (function find_dk_script_tag() {
