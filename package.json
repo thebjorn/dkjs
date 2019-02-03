@@ -40,6 +40,7 @@
     "flow-bin": "^0.92.0",
     "flow-webpack-plugin": "^1.2.0",
     "html-webpack-plugin": "^3.2.0",
+    "graceful-fs": "git+https://github.com/mekwall/node-graceful-fs.git#patch-1",
     "jest": ">23",
     "jquery": "^3.3.1",
     "require": "^2.4.20",
