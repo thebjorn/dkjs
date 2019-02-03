@@ -1,7 +1,6 @@
 // import and attach LVL:0-1 modules
 
 // jest needs these, webpack craps from them..
-import lodash from 'lodash';
 import jQuery from 'jquery';
 
 
@@ -21,9 +20,11 @@ import setup_signals from "./lifecycle/dkboot/dk-signals";
 import setup_loaders from "./lifecycle/lifecycle-setup-loaders";
 import {dkconsole} from "./lifecycle/dkboot/dk-console";
 import {dkwarning} from "./lifecycle/coldboot/dkwarning";
+import {pick, zip_object} from "./pick";
+import is from "./is";
 
 
-const dk = function dk(selector) {
+const dk = function (selector) {
     return document.querySelector(selector);
 };
 
@@ -51,18 +52,12 @@ Object.assign(dk, {
     dedent: text.dedent,
     
     // externals
-    _: lodash,
     $: jQuery,
     _jquery_version: jQuery.fn.jquery,
-    _lodash_version: lodash.VERSION,
 
-    zip_object(keys, vals) {
-        if (lodash.object) {
-            return lodash.object(keys, vals);
-        } else {
-            return lodash.zipObject(keys, vals);
-        }
-    },
+    is,
+    pick,
+    zip_object,
 
     // locally defined
     all(selector) {

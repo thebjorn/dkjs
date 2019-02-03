@@ -1,32 +1,47 @@
-
+/* global __dirname process */
 const webpack = require('webpack');
 const path = require('path');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const FlowWebpackPlugin = require('flow-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
+const LIBRARY_NAME = 'dk';
 
 const common_settings = {
     entry: {
         dk: './src/index.js'
-        // "dk-external": './src/externals.js'
     },
     target: 'web',
 
     output: {
         path: path.resolve(__dirname, 'dkjs/static/dkjs/js'),
-        filename: '[name].[contenthash].min.js',
+        filename: '[name].min.js',
         chunkFilename: '[name].bundle.js',
-        // library: '',
-        library: '_dk',
-        libraryTarget: "var"
+        library: LIBRARY_NAME,
+        libraryTarget: "var",
+        
+        libraryExport: 'default',
+        
+        // libraryTarget: "umd",
+        // umdNamedDefine: true,
+        // globalObject: `(typeof self !== 'undefined' ? self : this)`,
     },
     
-    // optimization: {
-    //     splitChunks: {
-    //         chunks: 'all'
-    //     }
-    // },
+    optimization: {
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    output: {
+                        semicolons: false
+                    },
+                    // mangle: false,
+                    keep_fnames: true,
+                    keep_classnames: true
+                }
+            })
+        ] 
+    },
 
     module: {
         rules: [
@@ -57,19 +72,6 @@ const common_settings = {
     ],
     externals: {
         jquery: 'jQuery',
-        loadash: 'lodash'
-        // jquery: {
-        //     commonjs: 'jQuery',
-        //     commonjs2: 'jQuery',
-        //     amd: 'jQuery',
-        //     root: '$'
-        // },
-        // lodash: {
-        //     commonjs: 'lodash',
-        //     commonjs2: 'lodash',
-        //     amd: 'lodash',
-        //     root: '_'
-        // }
     }
 };
 
@@ -89,7 +91,8 @@ const prod_settings = merge(common_settings, {
     devtool: 'source-map',
 
     output: {
-        filename: '[name].[contenthash].min.js',
+        // filename: '[name].[contenthash].min.js',
+        filename: '[name].min.js',
     }
 });
 

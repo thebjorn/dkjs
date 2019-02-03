@@ -6,6 +6,7 @@
 // var dk = require('../../boot/boot');
 import format from "./dk-format";
 import Class from "../../lifecycle/coldboot/dk-class";
+import {dkconsole} from "../../lifecycle/dkboot/dk-console";
 
 const _datatypes = {};
 
@@ -136,7 +137,7 @@ export class DateTime extends DkDate {
             // '@datetime:2014-03-11T08:18:07.543000+00:00'
             return new Date(s.slice(this.tag.length));
         } catch (e) {
-            dk.error('Cannot parse: ' + s);     // FIXME: need to import dk...
+            dkconsole.error('Cannot parse: ' + s);
             throw(e);
         }
     }

@@ -1,6 +1,5 @@
-/* global require, module */
 
-import _ from 'lodash';
+import is from '../../is';
 
 
 export default {
@@ -119,22 +118,22 @@ export default {
         };
 
         let _merge_ab = function (a, b) {
-            if (_.isFunction(a) || _.isUndefined(a) || _.isNull(a))
+            if (is.isFunction(a) || is.isUndefined(a) || is.isNull(a))
                 return b;
 
             if (typeof a !== typeof b)
                 throw "incompatible types '%s' (%r) and '%s' (%r).".format(typeof a, a, typeof b, b);
 
-            if (_.isString(a) && _.isString(b))
+            if (is.isString(a) && is.isString(b))
                 return _merge.string(a, b);
 
-            if (_.isBoolean(a) && _.isBoolean(b))
+            if (is.isBoolean(a) && is.isBoolean(b))
                 return _merge.boolean(a, b);
 
-            if (_.isArray(a) && _.isArray(b))
+            if (Array.isArray(a) && Array.isArray(b))
                 return _merge.array(a, b);
 
-            if (_.isObject(a) && _.isObject(b))
+            if (is.isObject(a) && is.isObject(b))
                 return _merge.object(a, b);
 
             // default..

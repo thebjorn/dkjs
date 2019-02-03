@@ -87,7 +87,7 @@ export default function setup_loaders(dk) {
     
     
     const load_all = function load_all (loader, urls, fn) {
-        if (dk._.isArray(urls)) {
+        if (Array.isArray(urls)) {
             if (urls.length === 1) {
                 return load_url(loader, urls[0], fn);
             } else {

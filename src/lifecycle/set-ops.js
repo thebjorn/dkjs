@@ -28,6 +28,7 @@ export const set_xor = (a, b) => set_difference(set_union(a, b), set_intersectio
 
 export const array_union = (a, b) => set_union(new Set(a), new Set(b));
 export const array_intersection = (a, b) => set_intersection(new Set(a), new Set(b));
+export const array_difference = (a, b) => set_difference(new Set(a), new Set(b));
 export const array_issubset = (a, b) => set_issubset(new Set(a), new Set(b));
 export const array_issuperset = (a, b) => set_issuperset(new Set(a), new Set(b));
 export const array_xor = (a, b) => set_xor(new Set(a), new Set(b));

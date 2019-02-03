@@ -1,6 +1,5 @@
 
 import $ from 'jquery';
-import _ from 'lodash';
 
 const dkconsole = require('../dkboot/dk-console.js');
 const _p = require('./dk-publish.js');
@@ -91,7 +90,7 @@ const load_url = function (loader, url, fn) {
 
 
 const load_all = function load_all (loader, urls, fn) {
-    if (_.isArray(urls)) {
+    if (Array.isArray(urls)) {
         if (urls.length === 1) {
             return load_url(loader, urls[0], fn);
         } else {

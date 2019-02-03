@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 
 import {set_difference} from "./lifecycle/set-ops";
+import is from "./is";
+
 
 export default function old_vs_new(dk) {
-    const _ = dk._;
 
     function list_contents(obj, pth) {
         function _list_contents(obj, path, result) {
@@ -16,7 +17,7 @@ export default function old_vs_new(dk) {
                     pth !== 'dk.dkjstag.tag' &&
                     !k.match(/[?0-9@]/) &&
                     item[k] &&
-                    _.isObject(item[k])); // && item[k].name !== "SubClass"); // && !_.isFunction(item[k]));
+                    is.isObject(item[k])); // && item[k].name !== "SubClass"); // && !is.isFunction(item[k]));
             }
 
             const roots = Object.keys(obj).filter(k => is_object(obj, path, k));

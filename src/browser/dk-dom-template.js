@@ -2,7 +2,9 @@
 import Class from "../lifecycle/coldboot/dk-class";
 import dom from "./dom";
 import dk from "../dk-obj";
-
+import is from "../is";
+import {array_difference} from "../lifecycle/set-ops";
+import {pick} from "../pick";
 
 /*
  *  Define a structured hierarchial dom tree.
@@ -27,16 +29,16 @@ export class Template {
         this.template = '<div/>';
         let tmptemplate = props.template;
         if (!tmptemplate && domtemplates) tmptemplate = domtemplates[this.name];
-        if (!tmptemplate && dom.is_tag(this.name)) tmptemplate =  `<${this.name}/>`;
+        if (!tmptemplate && dom.is_tag(this.name)) tmptemplate = `<${this.name}/>`;
         if (tmptemplate) this.template = tmptemplate;
 
         this.structure = props.structure || {};
 
-        const subitems = dk._.difference(Object.keys(props), Object.keys(this));
+        const subitems = array_difference(Object.keys(props), Object.keys(this));
         subitems.forEach((item, position) => {
             this.structure[item] = new Template(props[item], domtemplates, item.replace('-', '_'), position);
         });
-        if (dk._.isEmpty(this.structure)) delete this.structure;
+        if (is.isEmpty(this.structure)) delete this.structure;
     }
 
     /*
@@ -64,7 +66,7 @@ export class Template {
      *
      *  version #1, one-line'ish
      *
-     *      var dom = dk.dom.Template.create(structure).construct_on('#foo');
+     *      var dom = new Template(structure).construct_on('#foo');
      *      dom.h3.text('hello');
      *      dom.content.text('world');
      *
@@ -79,7 +81,7 @@ export class Template {
      *          }
      *      };
      *
-     *      var templ = dk.dom.Template.create(structure);
+     *      var templ = new Template(structure);
      *      templ.construct_on('#foo', creator);
      *
      *  version #3, a partially filled out html/dom-structure:
@@ -112,11 +114,11 @@ export class Template {
     }
 
     toString() {
-        return JSON.stringify(dk._.pick(this, 'name', 'css', 'classes', 'create', 'query', 'template', 'structure'), null, '    ');
+        return JSON.stringify(pick(this, 'name', 'css', 'classes', 'create', 'query', 'template', 'structure'), null, '    ');
     }
 
     toStringNonRecursive() {
-        return JSON.stringify(dk._.pick(this, 'name', 'css', 'classes', 'create', 'query', 'template'), null, '    ');
+        return JSON.stringify(pick(this, 'name', 'css', 'classes', 'create', 'query', 'template'), null, '    ');
     }
 }
 
@@ -211,7 +213,7 @@ export class DomItem extends Class {
 
         const accessor = this.accessor || {};
 
-        dk._.each(this.subitems, function (subitem, key) {
+        this.forEachSubitem((subitem, key) => {
             item[key] = subitem.construct(item, creator);
             accessor[key] = item[key];
         });
@@ -225,6 +227,11 @@ export class DomItem extends Class {
         location.append(item);
 
         return item;
+    }
+    
+    forEachSubitem(fn) {
+        if (is.isEmpty(this.subitems)) return;
+        Object.entries(this.subitems).forEach(fn);
     }
 
     construct(location, creator, level) {
@@ -247,7 +254,7 @@ export class DomItem extends Class {
         }
 
         const accessor = this.accessor || {};
-        dk._.each(this.subitems, function (subitem, key) {
+        this.forEachSubitem(([key, subitem]) => {
             item[key] = subitem.construct(item, creator, level + 1);
             accessor[key] = item[key];
         });
@@ -305,7 +312,7 @@ export class DomItem extends Class {
     //        }
     //
     //        var accessor = this.accessor || {};
-    //        dk._.each(this.subitems, function (subitem, key) {
+    //        Object.entries(this.subitems).forEach(([key, subitem]) => {
     //            item[key] = subitem.construct(item, creator, level+1);
     //            accessor[key] = item[key];
     //        });
@@ -323,6 +330,6 @@ export class DomItem extends Class {
          } */
         subnodes += ']';
         return "DomItem(%s, [%s])".format(this.template.template, this.keys);
-        //return JSON.stringify(dk._.pick(this, '_templatestring', 'classes', 'position', 'query', 'subitems'), null, '    ');
+        //return JSON.stringify(pick(this, '_templatestring', 'classes', 'position', 'query', 'subitems'), null, '    ');
     }
 }
