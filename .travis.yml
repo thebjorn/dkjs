@@ -2,3 +2,8 @@
 language: node_js
 node_js:
   - "node"
+install:
+  - npm intall -g codecov
+script:
+  - jest --coverage && codecov
+
