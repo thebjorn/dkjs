@@ -6,32 +6,26 @@ import {Widget} from "../dk-widget";
 import page from "../dk-page";
 
 /**
- *  You can create an object inside a dom object found by its
- *  `class`-selector.
+ *  append_to
  *
  */
-test("Widget.create_inside(.class) 1", () => {
+test("Widget.append_to(.class)", () => {
     document.body.innerHTML = `
     <div id="work">
-        <div class="foo"></div>
     </div>
     `;
     const work = $('#work');
     page.initialize(document);
 
-    class HelloFoo extends Widget {
+    Widget.append_to(work, {
         draw() {
             this.widget().text('\nHello World!\n');
         }
-    }
-
-    HelloFoo.create_inside(work.find('.foo'), {});
+    });
 
     expect(utidy(work.html())).toEqual(utidy(`
-        <div class="foo">
-            <div id="hello-foo">
-                Hello World!
-            </div>
+        <div id="widget">
+            Hello World!
         </div>
     `));
 });

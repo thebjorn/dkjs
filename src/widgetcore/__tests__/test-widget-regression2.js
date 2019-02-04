@@ -10,7 +10,7 @@ import page from "../dk-page";
  *  `class`-selector.
  *
  */
-test("Widget.create_inside(.class) 1", () => {
+test("Widget.create_inside(.class)", () => {
     document.body.innerHTML = `
     <div id="work">
         <div class="foo"></div>
@@ -19,19 +19,15 @@ test("Widget.create_inside(.class) 1", () => {
     const work = $('#work');
     page.initialize(document);
 
-    class HelloFoo extends Widget {
+    Widget.create_on(work.find('.foo'), {
         draw() {
             this.widget().text('\nHello World!\n');
         }
-    }
-
-    HelloFoo.create_inside(work.find('.foo'), {});
+    });
 
     expect(utidy(work.html())).toEqual(utidy(`
-        <div class="foo">
-            <div id="hello-foo">
-                Hello World!
-            </div>
+        <div class="foo" id="widget">
+            Hello World!
         </div>
     `));
 });
