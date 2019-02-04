@@ -99,7 +99,7 @@ import {jq_links2popup} from "./browser/jquery-plugins";
 import page from "./widgetcore/dk-page";
 import widgetmap from "./widgetcore/dk-widgetmap";
 import {Layout} from "./layout/dk-layout";
-
+import {Widget} from "./widgetcore/dk-widget";
 
 (function () {
     dk.add({
@@ -127,7 +127,8 @@ import {Layout} from "./layout/dk-layout";
 
         widget: {
             page,
-            widgetmap
+            widgetmap,
+            Widget
         },
         
         update(...args) {

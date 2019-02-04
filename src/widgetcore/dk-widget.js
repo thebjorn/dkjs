@@ -7,6 +7,7 @@ import {Layout} from "../layout/dk-layout";
 import template from "lodash.template";
 import jason from "../data/datacore/dk-json";
 import {cls2id} from "../core/text-utils";
+import {dkconsole} from "../lifecycle/dkboot/dk-console";
 
 
 //
@@ -18,18 +19,18 @@ import {cls2id} from "../core/text-utils";
 
 // dk.Widget class
 export class Widget extends Class{
-    constructor() {
-        super();
-        this.type = null;
-        this.data = null;
-        this.id = null;                   // DOM id of this widget (foo-widget-43)
-        this.cache = false;               // should ajax data be cached?
-        this.dklayout = 'Layout';
-        this.template = {
-            root: 'div'
-        };
+    constructor(...attrs) {
+        super(...attrs);
+        if (this.type === undefined) this.type = null;
+        if (this.data === undefined) this.data = null;
+        if (this.id === undefined) this.id = null;                   // DOM id of this widget (foo-widget-43)
+        if (this.cache === undefined) this.cache = false;               // should ajax data be cached?
+        if (this.dklayout === undefined) this.dklayout = 'Layout';
+        if (this.template === undefined) this.template = {root: 'div'};
+        
         this._visible = true;
         this.__ready = false;
+        
     }
 
     init() {}
@@ -106,6 +107,7 @@ export class Widget extends Class{
         // at this point this.widget() exists in the dom and is
         // the element onto which the widget should be created
         page.widgets[this.id] = this;
+        dkconsole.debug("construct_widget:", this.id);
         //dk.debug("widget():", this.id, this.widget().attr('class'));
 
         this.create_layout(this.widget(), this.template, this.structure);
@@ -474,7 +476,7 @@ export class Widget extends Class{
         // we _must_ generate an id for this widget, so that
         // this.widget() works.
         try {
-            const w = Class.create.call(this, attrs);
+            const w = new this(attrs);
             if (typeof location === 'string') location = dk.$(location);
             page.create_widget(w, {on: location});
             return w;
@@ -488,7 +490,7 @@ export class Widget extends Class{
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
-            const w = dk.Class.create.call(this, attrs);
+            const w = Class.create.call(this, attrs);
             if (typeof location === 'string') location = dk.$(location);
             page.create_widget(w, {inside: location});
             return w;
@@ -501,7 +503,7 @@ export class Widget extends Class{
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
-            const w = dk.Class.create.call(this, attrs);
+            const w = Class.create.call(this, attrs);
             if (typeof location === 'string') location = dk.$(location);
             page.create_widget(w, {inside: location, append: true});
             return w;

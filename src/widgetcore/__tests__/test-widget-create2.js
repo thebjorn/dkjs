@@ -6,14 +6,14 @@ import {Widget} from "../dk-widget";
 import page from "../dk-page";
 
 /**
- *  You can create an object inside a dom object found by its
- *  `class`-selector.
+ *  You can create a widget onto a dom object that already has
+ *  an `id`.
  *
  */
-test("Widget.create_inside(.class) 1", () => {
+test("Widget.create_on(#id)", () => {
     document.body.innerHTML = `
     <div id="work">
-        <div class="foo"></div>
+        <div id="foo" class="bar"></div>
     </div>
     `;
     const work = $('#work');
@@ -21,17 +21,18 @@ test("Widget.create_inside(.class) 1", () => {
 
     class HelloFoo extends Widget {
         draw() {
-            this.widget().text('\nHello World!\n');
+            this.widget().text(`\nHello ${this.data.whom}!\n`);
         }
     }
-
-    HelloFoo.create_inside(work.find('.foo'), {});
+    HelloFoo.create_on(work.find('#foo'), {
+        data: {
+            whom: 'world'
+        }
+    });
 
     expect(utidy(work.html())).toEqual(utidy(`
-        <div class="foo">
-            <div id="hello-foo">
-                Hello World!
-            </div>
+        <div id="foo" class="bar">
+            Hello world!
         </div>
     `));
 });
