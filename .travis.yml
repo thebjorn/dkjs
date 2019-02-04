@@ -1,11 +1,31 @@
----
-language: node_js
-node_js:
-  - "node"
-install:
-  - npm install
-  - npm install -g codecov
-  - npm install -g jest
-script:
-  - jest --coverage && codecov
+matrix:
+  include:
 
+    - language: node_js
+      node_js:
+        - "node"
+      install:
+        - npm install
+        - npm install -g codecov
+        - npm install -g jest
+      script:
+        - jest --coverage && codecov
+
+    - language: python
+      python:
+        - "2.7"
+        - "3.4"
+      
+      install:
+        - pip install -r requirements.txt
+        - pip install -e .
+        - pip install codecov
+          
+      script: py.test -v --cov=dkjs tests
+
+      after_success: 
+        - codecov
+
+notifications: 
+  email:
+    - bp@datakortet.no
