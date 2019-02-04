@@ -19,18 +19,15 @@ test("Widget.create_inside(.class)", () => {
     const work = $('#work');
     page.initialize(document);
 
-    const HelloFoo = Widget.extend({
-        __name__: 'HelloFoo',
+    Widget.create_inside(work.find('.foo'),{
         draw() {
             this.widget().text('\nHello World!\n');
         }
     });
 
-    HelloFoo.create_inside(work.find('.foo'), {});
-
     expect(utidy(work.html())).toEqual(utidy(`
         <div class="foo">
-            <div id="hello-foo">
+            <div class="Widget" id="widget">
                 Hello World!
             </div>
         </div>

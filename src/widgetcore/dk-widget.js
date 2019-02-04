@@ -20,13 +20,14 @@ import {dkconsole} from "../lifecycle/dkboot/dk-console";
 // dk.Widget class
 export class Widget extends Class{
     constructor(...attrs) {
-        super(...attrs);
-        if (this.type === undefined) this.type = null;
-        if (this.data === undefined) this.data = null;
-        if (this.id === undefined) this.id = null;                   // DOM id of this widget (foo-widget-43)
-        if (this.cache === undefined) this.cache = false;               // should ajax data be cached?
-        if (this.dklayout === undefined) this.dklayout = 'Layout';
-        if (this.template === undefined) this.template = {root: 'div'};
+        super(Object.assign({
+            data: null,
+            id: null,                   // DOM id of this widget (foo-widget-43)
+            cache: false,               // should ajax data be cached?
+            dklayout: 'Layout',
+            template: {root: 'div'},
+        }, ...attrs));
+        if (this.type === undefined) this.type = this.constructor.name;
         
         this._visible = true;
         this.__ready = false;
@@ -490,7 +491,7 @@ export class Widget extends Class{
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
-            const w = Class.create.call(this, attrs);
+            const w = new this(attrs);
             if (typeof location === 'string') location = dk.$(location);
             page.create_widget(w, {inside: location});
             return w;
@@ -503,7 +504,7 @@ export class Widget extends Class{
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
-            const w = Class.create.call(this, attrs);
+            const w = new this(attrs);
             if (typeof location === 'string') location = dk.$(location);
             page.create_widget(w, {inside: location, append: true});
             return w;

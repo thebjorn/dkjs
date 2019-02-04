@@ -24,7 +24,7 @@ test("Widget.append_to(.class)", () => {
     });
 
     expect(utidy(work.html())).toEqual(utidy(`
-        <div id="widget">
+        <div class="Widget" id="widget">
             Hello World!
         </div>
     `));

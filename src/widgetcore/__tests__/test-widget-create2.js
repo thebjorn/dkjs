@@ -31,7 +31,7 @@ test("Widget.create_on(#id)", () => {
     });
 
     expect(utidy(work.html())).toEqual(utidy(`
-        <div id="foo" class="bar">
+        <div id="foo" class="HelloFoo bar">
             Hello world!
         </div>
     `));

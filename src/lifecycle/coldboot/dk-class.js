@@ -147,6 +147,7 @@ export default class Class {
         delete props['classattrs'];
         
         let _classname = props.__name__; // || this.name;
+        // let _classname = props.__name__ || this.name;
         delete props.__name__;
         
         let classname = _classname ? _classname : ('(missing __name__ attribute) SubclassOf' + this.name);

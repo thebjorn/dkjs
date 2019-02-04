@@ -120,6 +120,7 @@ import {Widget} from "./widgetcore/dk-widget";
         // here: dom.here,
         utidy,
         css,
+        Widget,
         
         layout: {
             Layout

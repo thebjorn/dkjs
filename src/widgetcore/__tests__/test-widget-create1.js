@@ -29,7 +29,7 @@ test("Widget.create_inside(.class) 1", () => {
 
     expect(utidy(work.html())).toEqual(utidy(`
         <div class="foo">
-            <div id="hello-foo">
+            <div class="HelloFoo" id="hello-foo">
                 Hello World!
             </div>
         </div>
