@@ -21,10 +21,10 @@ matrix:
         - pip install -e .
         - pip install codecov
           
-      script: py.test -v --cov=dkjs tests
+      script: pytest -v --cov=dkjs tests
 
       after_success: 
-        - codecov
+        - codecov -t ${CODECOV_TOKEN}
 
 notifications: 
   email:
