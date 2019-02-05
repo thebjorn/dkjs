@@ -34,8 +34,8 @@ export function parse_uri(uri, argopts) {
             parser: /(?:^|&)([^&=]*)=?([^&]*)/g
         },
         parser: {
-            strict: /^(?:([^:\/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?))?((((?:[^?#\/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
-            loose: /^(?:(?![^:@]+:[^:@\/]*@)([^:\/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:\/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#\/]*\.[^?#\/.]+(?:[?#]|$)))*\/?)?([^?#\/]*))(?:\?([^#]*))?(?:#(.*))?)/
+            strict: /^(?:([^:/?#]+):)?(?:\/\/((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:/?#]*)(?::(\d*))?))?((((?:[^?#/]*\/)*)([^?#]*))(?:\?([^#]*))?(?:#(.*))?)/,
+            loose: /^(?:(?![^:@]+:[^:@/]*@)([^:/?#.]+):)?(?:\/\/)?((?:(([^:@]*)(?::([^:@]*))?)?@)?([^:/?#]*)(?::(\d*))?)(((\/(?:[^?#](?![^?#/]*\.[^?#/.]+(?:[?#]|$)))*\/?)?([^?#/]*))(?:\?([^#]*))?(?:#(.*))?)/
         }
     };
     let opts = Object.assign({}, defopts, argopts);
@@ -58,10 +58,10 @@ export function parse_uri(uri, argopts) {
 }
 
 function find_version(uriobj) {
-    let match = /[-.@\/](\d+\.\d+\.\d+)[.\/]/.exec(uriobj.name);
+    let match = /[-.@/](\d+\.\d+\.\d+)[./]/.exec(uriobj.name);
     if (match) return match[1];
     
-    match = /[-.@\/](\d+\.\d+\.\d+)[.\/]/.exec(uriobj.path);
+    match = /[-.@/](\d+\.\d+\.\d+[b-z]?)[./]/.exec(uriobj.path);
     if (match) return match[1];
     
     match = /\/v(\d)\//.exec(uriobj.name);
@@ -79,7 +79,7 @@ function is_minified(uriobj) {
 
 function plain_name(urlobj) {
     let res = urlobj.name.replace(/[-.]min[-.]?/, '.');
-    res = res.replace(/[-.@\/](\d+\.\d+\.\d+)[.\/]?/, '');
+    res = res.replace(/[-.@/](\d+\.\d+\.\d+[b-z]?)[./]?/, '');
     return res;
 }
 
@@ -89,5 +89,6 @@ export function parse_src(uri) {
     src.version = find_version(src);
     src.libname = plain_name(src);
     src.minified = is_minified(src);
+    src.filetype = '.' + src.file.split('.').slice(-1);
     return src;
 }

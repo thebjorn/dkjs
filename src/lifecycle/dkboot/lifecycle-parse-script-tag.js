@@ -37,7 +37,8 @@ export const env = {
                     if (val.slice(-val.length) !== '.js') {
                         val += '.js';
                     }
-                    _attrs[attr.name] = val;
+                    // _attrs[attr.name] = val;
+                    _attrs.main = val;
                     break;
                 default:
                     // console.debug("default:attr.name", attr.name, "attr.value", attr.value);

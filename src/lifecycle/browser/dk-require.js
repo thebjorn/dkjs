@@ -1,117 +1,113 @@
 
-import $ from 'jquery';
+import dk from "../../dk-obj";
+// import {dkconsole} from "../dkboot/dk-console";
+import {parse_src} from "../uri";
 
-const dkconsole = require('../dkboot/dk-console.js');
-const _p = require('./dk-publish.js');
-
-
-const state = {};
-
-
-const _url2name = function (url) {
-    return url.split('/').slice(-1)[0];
-};
-
-/**
- * load script tags to state
- */
-$('head>script[src]').each(function () {
-    const src = $(this).attr('src');
-    state[_url2name(src)] = {
-        type: 'js',
-        url: src,
-        loaded: true,
-        item: this
-    };
-});
+export const state = {};
+let _loaded_page_tags = false;
 
 
-/**
- * Load stylesheets (.css) to state
- */
-$('head>link[rel=stylesheet]').each(function () {
-    const url = $(this).attr('href');
-    state[_url2name(url)] = {
-        type: 'css',
-        url: url,
-        loaded: true,
-        item: this
-    };
-});
-
-
-const load_javascript = function (name, url, fn) {
-    return $.ajax({
-        dataType: "script",
-        cache: true,
-        url: url,
-        success: function () {
-            state[name].loaded = true;
-            _p.publish(state[name], 'loaded', url);
-            if (fn) fn();
+class _dkrequire {
+    constructor(url) {
+        this.src = parse_src(url);
+    }
+    
+    load(callback) {
+        if (this._begin_reguire()) {
+            const loadstate = state[this.src.libname];
+            
+            switch (this.src.filetype) {
+                case '.js':
+                    this._load_javascript(callback);
+                    break;
+                case '.css':
+                    this._load_css(callback);
+                    break;
+            }
+            
+            if (callback) {
+                if (loadstate.loaded) {
+                    callback(this.src);
+                } else {
+                    dk.on(this.src, 'loaded', callback);
+                }
+            }
         }
-    });
-};
-load_javascript.type = 'js';
+        return this.src;
+    }
 
-
-const load_css = function (name, url, fn) {
-    $('<link>', {
-        rel: "stylesheet",
-        type: 'text/css',
-        href: url
-    }).appendTo('head');
-    state[name].loaded = true;
-    _p.publish(state[name], 'loaded', url);
-    if (fn) fn();
-};
-load_css.type = 'css';
-
-
-const load_url = function (loader, url, fn) {
-    const name = _url2name(url);
-    const loadstate = state[name];
-    if (!loadstate) {
-        state[name] = {
-            type: loader.type,
-            url: url,
+    _begin_reguire() {
+        if (state[this.src.libname]) return false;  // don't start loading again
+        state[this.src.libname] = {
+            src: this.src,
             loaded: false
         };
-        dkconsole.info("require:", url);
-        loader(name, url, fn);
-    } else if (fn) {
-        if (loadstate.loaded) {
-            fn();
-        } else {
-            _p.on(loadstate, 'loaded').run(fn);
-        }
+        return true;
     }
-};
 
+    _load_javascript() {
+        const self = this;
+        return dk.$.ajax({
+            dataType: "script",
+            cache: true,
+            url: self.src.source,
+            success: function () {
+                state[self.src.libname].loaded = true;
+                dk.trigger(self.src, 'loaded', self.src);
+            }
+        });
+    }
 
-const load_all = function load_all (loader, urls, fn) {
-    if (Array.isArray(urls)) {
-        if (urls.length === 1) {
-            return load_url(loader, urls[0], fn);
-        } else {
-            return load_url(loader, urls[0], function () {
-                load_all(loader, urls.slice(1), fn);
+    _load_css() {
+        $('<link>', {
+            rel: "stylesheet",
+            type: 'text/css',
+            href: url
+        }).appendTo('head');
+        state[this.src.libname].loaded = true;
+        dk.trigger(this.src, 'loaded', this.src);
+    }
+    
+    static find_header_impports() {
+        if (!_loaded_page_tags) {
+            /**
+             * load script tags to state
+             */
+            dk.$('head>script[src]').each(function () {
+                const src_url = dk.$(this).attr('src');
+                const src = parse_src(src_url);
+                state[src.libname] = {
+                    src,
+                    loaded: true
+                };
             });
+
+            /**
+             * Load stylesheets (.css) to state
+             */
+            dk.$('head>link[rel=stylesheet]').each(function () {
+                const url = dk.$(this).attr('href');
+                const src = parse_src(src_url);
+                state[src.libname] = {
+                    src,
+                    loaded: true
+                };
+            });
+            _loaded_page_tags = true;
         }
-    } else {
-        return load_url(loader, urls, fn);
     }
-};
+
+}
+
+export function dkrequire(url, callback) {
+    _dkrequire.find_header_impports();
+    const r = new _dkrequire(url);
+    return r.load(callback);
+}
 
 
-export default {
-    _loadstate: state,
-
-    css: function (url, fn) {
-        return load_all(load_css, url, fn);
-    },
-
-    js: function (url, fn) {
-        return load_all(load_javascript, url, fn);
-    }
-};
+export function dkrequire_urls(urls) {
+    _dkrequire.find_header_impports();
+    const reqs = urls.map(url => new _dkrequire(url));
+    return reqs.map(r => r.load());
+}

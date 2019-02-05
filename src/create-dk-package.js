@@ -100,6 +100,9 @@ import page from "./widgetcore/dk-page";
 import widgetmap from "./widgetcore/dk-widgetmap";
 import {Layout} from "./layout/dk-layout";
 import {Widget} from "./widgetcore/dk-widget";
+import {dkrequire_urls} from "./lifecycle/browser/dk-require";
+import {icon, jq_dkicons} from "./widgets/dk-icon-library";
+
 
 (function () {
     dk.add({
@@ -121,6 +124,7 @@ import {Widget} from "./widgetcore/dk-widget";
         utidy,
         css,
         Widget,
+        icon,
         
         layout: {
             Layout
@@ -164,6 +168,10 @@ import {Widget} from "./widgetcore/dk-widget";
             DomItem,
             Template
         },
+        require: {
+            css: dkrequire_urls,
+            js: dkrequire_urls
+        },
 
         ready(fn) {
             dk.$(fn);
@@ -196,6 +204,7 @@ import {Widget} from "./widgetcore/dk-widget";
     dk.info('dk loaded');
     dk.ready(function () {
         jq_links2popup(dk);
+        jq_dkicons(dk);
         dk.info('dk-fully-loaded');
     });
 })();
