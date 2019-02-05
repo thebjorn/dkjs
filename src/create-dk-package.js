@@ -58,7 +58,7 @@
 // import "@babel/polyfill"; // must be first
 
 import dk from "./dk-obj";
-import performance from "./performance-timer";
+// import performance from "./performance-timer";
 
 
 // import Lifecycle from "./lifecycle";
@@ -99,7 +99,7 @@ import {jq_links2popup} from "./browser/jquery-plugins";
 import page from "./widgetcore/dk-page";
 import widgetmap from "./widgetcore/dk-widgetmap";
 import {Layout} from "./layout/dk-layout";
-
+import {Widget} from "./widgetcore/dk-widget";
 
 (function () {
     dk.add({
@@ -120,6 +120,7 @@ import {Layout} from "./layout/dk-layout";
         // here: dom.here,
         utidy,
         css,
+        Widget,
         
         layout: {
             Layout
@@ -127,7 +128,8 @@ import {Layout} from "./layout/dk-layout";
 
         widget: {
             page,
-            widgetmap
+            widgetmap,
+            Widget
         },
         
         update(...args) {

@@ -70,9 +70,53 @@ export function classattrs(props) {
     };
 }
 
+class _mergeobject {
+    constructor({op}) {
+        this.op = op;
+    }
+}
+
+
+const $attr = {
+    append: function (item) {
+        return new _mergeobject({
+            op: function (orig) {
+                orig.push(item);
+                return orig;
+            }
+        });
+    },
+    extend: function (item) {
+        return new _mergeobject({
+            op: function (orig) {
+                return namespace.merge(orig, item);
+            }
+        });
+    },
+    merge: function (item) {
+        return new _mergeobject({
+            op: function (orig) {
+                return namespace.merge(orig, item);
+            }
+        });
+    }
+};
+
+
 export default class Class {
     constructor(props) {
-        Object.assign(this, props || {});
+        this.__class__ = this.constructor;
+        if (typeof props === 'object') {
+            for (const attr in props) if (props.hasOwnProperty(attr)) {
+                let propval = props[attr];
+                if (propval instanceof _mergeobject) {
+                    const classval = this[attr] ? this[attr]: [];
+                    propval = propval.op(classval);
+                }
+                this[attr] = propval;
+            }
+        }
+        // Object.assign(this, props || {});
         if (this.init !== undefined) this.init(props);
     }
     
@@ -102,7 +146,8 @@ export default class Class {
         let classattrs = props['classattrs'];
         delete props['classattrs'];
         
-        let _classname = props.__name__;
+        let _classname = props.__name__; // || this.name;
+        // let _classname = props.__name__ || this.name;
         delete props.__name__;
         
         let classname = _classname ? _classname : ('(missing __name__ attribute) SubclassOf' + this.name);

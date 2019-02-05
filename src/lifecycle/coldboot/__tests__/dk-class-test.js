@@ -77,8 +77,8 @@ test('new Class ctor', () => {
 test('Class ctor with props', () => {
     class Person extends Class {}
 
-    let p = Person.create({name: 'roger'});
-    expect(p.name).toBe('roger');
+    let p = Person.create({data: {name: 'roger'}});
+    expect(p.data.name).toBe('roger');
     expect(p instanceof Person).toBe(true);
 
     let q = new Person({name: 'roger'});
