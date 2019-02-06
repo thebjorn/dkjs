@@ -2,14 +2,29 @@
 import dk from "../../dk-obj";
 // import {dkconsole} from "../dkboot/dk-console";
 import {parse_src} from "../uri";
+import {dkconsole} from "../dkboot/dk-console";
+import {dedent} from "../../core/text-utils";
 
 export const state = {};
 let _loaded_page_tags = false;
 
 
 class _dkrequire {
-    constructor(url) {
+    constructor(url, filetype) {
+        const m = url.match(/^\[fetch:(css|js)]/);
+        
+        if (m) {
+            filetype = '.' + m[1];
+            url = url.slice(m[0].length);
+        } 
         this.src = parse_src(url);
+        if (!m && filetype) {
+            this.src.filetype = filetype;
+        }
+    }
+    
+    get loaded() {
+        return state[this.src.libname];
     }
     
     load(callback) {
@@ -23,6 +38,15 @@ class _dkrequire {
                 case '.css':
                     this._load_css(callback);
                     break;
+                default:
+                    dkconsole.error(dedent(`
+                    dkrequire couldn't automatically deduce the type of 
+                    
+                        ${this.src.source}
+                        
+                    please use dkrequire_css or dkrequire_js to load this url,
+                    or prefix the url with [fetch:css] or [fetch:js].
+                    `));
             }
             
             if (callback) {
@@ -59,10 +83,11 @@ class _dkrequire {
     }
 
     _load_css() {
-        $('<link>', {
+        const self = this;
+        dk.$('<link>', {
             rel: "stylesheet",
             type: 'text/css',
-            href: url
+            href: self.src.source
         }).appendTo('head');
         state[this.src.libname].loaded = true;
         dk.trigger(this.src, 'loaded', this.src);
@@ -87,7 +112,7 @@ class _dkrequire {
              */
             dk.$('head>link[rel=stylesheet]').each(function () {
                 const url = dk.$(this).attr('href');
-                const src = parse_src(src_url);
+                const src = parse_src(url);
                 state[src.libname] = {
                     src,
                     loaded: true
@@ -99,9 +124,25 @@ class _dkrequire {
 
 }
 
-export function dkrequire(url, callback) {
+export function dkrequire_loaded(url) {
     _dkrequire.find_header_impports();
     const r = new _dkrequire(url);
+    return r.loaded;
+}
+
+export function dkrequire_css(url, callback) {
+    return dkrequire(url, callback, '.css');
+}
+
+
+export function dkrequire_js(url, callback) {
+    return dkrequire(url, callback, '.js');
+}
+
+
+export function dkrequire(url, callback, filetype) {
+    _dkrequire.find_header_impports();
+    const r = new _dkrequire(url, filetype);
     return r.load(callback);
 }
 

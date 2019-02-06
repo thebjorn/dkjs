@@ -30,7 +30,7 @@ export function parse_uri(uri, argopts) {
             "anchor"
         ],
         query: {
-            name: "queryKey",
+            name: "query_key",
             parser: /(?:^|&)([^&=]*)=?([^&]*)/g
         },
         parser: {
@@ -78,8 +78,11 @@ function is_minified(uriobj) {
 }
 
 function plain_name(urlobj) {
+    if (!urlobj.name) return urlobj.source;
     let res = urlobj.name.replace(/[-.]min[-.]?/, '.');
     res = res.replace(/[-.@/](\d+\.\d+\.\d+[b-z]?)[./]?/, '');
+    res = res.replace(/^[.]+/, '');
+    res = res.replace(/[.]+$/, '');
     return res;
 }
 
