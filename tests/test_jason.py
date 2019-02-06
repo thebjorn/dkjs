@@ -12,7 +12,7 @@
 import datetime
 import decimal
 import ttcal
-from dkjs import jason
+from dkjs import jason, DJANGO
 
 
 def roundtrip(v):
@@ -33,14 +33,15 @@ def test_dumps():
     assert jason.dumps(decimal.Decimal('3.14159263')) == repr(float('3.14159263'))
 
 
-# def test_jasonval():
-#     "Test the jasonval method."
-#     response = jason.jsonval(['Hei', 'Verden', '2012'])
-#     print 'response:', response
-#     r = str(response)
-#     assert r.count('Hei') == 1
-#     assert r.count('Verden') == 1
-#     assert r.count('2012') == 1
+@pytest.mark.skipif(!DJANGO)
+def test_jasonval():
+    "Test the jasonval method."
+    response = jason.jsonval(['Hei', 'Verden', '2012'])
+    print 'response:', response
+    r = str(response)
+    assert r.count('Hei') == 1
+    assert r.count('Verden') == 1
+    assert r.count('2012') == 1
 
 
 def test_class_dumps():
@@ -88,7 +89,8 @@ def test_loads():
     assert jval['k'] == 42
 
 
-# def test_jsonp():
-#     assert 'JSON.parse(val)}("{\\"x\\":42}")' in str(jason.jsonp('cb', {'x':42}))
-#     assert 'cb(42)' in str(jason.jsonp('cb', 42))
-    
+@pytest.mark.skipif(!DJANGO)
+def test_jsonp():
+    assert 'JSON.parse(val)}("{\\"x\\":42}")' in str(jason.jsonp('cb', {'x':42}))
+    assert 'cb(42)' in str(jason.jsonp('cb', 42))
+  
