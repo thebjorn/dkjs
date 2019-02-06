@@ -5,12 +5,12 @@
     <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
 
     <!-- polyfills -->
-    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/webcomponents-bundle.js"></script>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
     <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/custom-elements-es5-adapter.js"></script>-->
     <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default-3.6"></script>-->
     <script src="https://cdn.polyfill.io/v2/polyfill.js?features=es6"></script>
     <!--<script src="https://cdn.polyfill.io/v2/polyfill.js?features=default-3.6"></script>-->
-    <!--<script src="https://cdn.polyfill.io/v2/polyfill.js?features=Object.entries,Element.prototype.remove,Array.from,NodeList.@@iterator"></script>-->
+    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Array.includes,Object.entries,Element.prototype.remove,Array.from,NodeList.@@iterator"></script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
@@ -22,7 +22,7 @@
     <!--<script DEBUG DK LOGLEVEL="4" crossorigin="anonymous" src="../dkjs/static/dkjs/dk.js"></script>-->
 
     <!--<script src="js/vendors~dk.min.js"></script>-->
-    <script DEBUG DK LOGLEVEL="4" crossorigin="anonymous" src="js/dk.min.js"></script>
+    <script DEBUG LOGLEVEL="4" crossorigin="anonymous" src="js/dk.min.js"></script>
     <!--<script src="js/dk-external.min.js"></script>-->
 </head>
 <body>
@@ -58,120 +58,8 @@
         
         
     });
-
-    class LightWidget3 extends dk.Widget {
-        constructor(props) {
-            super({
-                color: 'yellow'
-            }, props);
-        }
-        set_color(color) {
-            this.color = color;
-            this.draw(color);
-        }
-        draw(color) {
-            this.widget().css('background-color', color || this.color);
-        }
-        construct() {
-            this.widget().addClass('circle light').css({
-                borderRadius: '50%',
-                width: 100,
-                height: 100,
-                backgroundColor: this.color
-            });
-        }
-    }
-
-    class ButtonWidget3 extends dk.Widget{
-        constructor(props) {
-            super({
-                color: null,
-                template: {root: 'button'},
-                css: { margin: 4}
-            }, props);
-        }
-        draw() {
-            this.widget().text(this.color);
-        }
-        handlers() {
-            this.notify_on('click');
-        }
-    }
-
-    class ColorLight extends dk.Widget{
-        constructor(props) {
-            super({
-                colors: 'red,yellow,green',
-
-                structure: {
-                    classes: ['clearfix'],
-                    css: {
-                        position: 'relative',
-                        display: 'flex',
-                        border: '1px dashed #999'
-                    },
-
-                    light: {
-                        css: {
-                            marginRight: 50
-                        }
-                    },
-                    btngrp: {
-                        css: {
-                            border: '3px solid green',
-                            // position: 'absolute',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            // top: 5,
-                            // bottom: 5,
-                            // right: 5,
-                            // width: 'calc(50% - 2*5px)'
-                        }
-                    }
-                }
-            }, props);
-            this.colors = this.colors.split(',');
-            this.widgets = {};
-        }
-
-        draw() {
-            this.lightwidget.draw();
-        }
-        set_color() {
-            return this.light.set_color.apply(this.light, arguments);
-        }
-        construct_lightwidget(location) {
-            return LightWidget3.create_inside(location, {
-                color: 'seagreen',
-                css: {
-                    // float: 'left',
-                    margin: 5
-                }
-            });
-        }
-        construct() {
-            var self = this;
-
-            this.lightwidget = this.construct_lightwidget(this.light);
-            this.lightwidget.set_color('hotpink');
-
-            this.buttons = {};
-            this.colors.forEach(function (color, i) {
-                self.buttons[color] = ButtonWidget3.append_to(self.btngrp, {
-                    color: color
-                });
-            });
-
-            this.colors.forEach(function (color) {
-                dk.on(self.buttons[color], 'click').run(function () {
-                    self.lightwidget.set_color(color);
-                });
-            });
-        }
-    }
-    ColorLight.create_inside("#work");
-    
 </script>
+<script src="./main.js"></script>
 </body>
 </html>
 
