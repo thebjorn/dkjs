@@ -9,10 +9,12 @@
 # R0201: [Class C. method __json__] Method could be a function
 # C0301: Line is too long
 
+import pytest
 import datetime
 import decimal
 import ttcal
-from dkjs import jason, DJANGO
+from dkjs import jason
+DJANGO = jason.DJANGO
 
 
 def roundtrip(v):
@@ -33,7 +35,7 @@ def test_dumps():
     assert jason.dumps(decimal.Decimal('3.14159263')) == repr(float('3.14159263'))
 
 
-@pytest.mark.skipif(not DJANGO)
+@pytest.mark.skipif(not DJANGO, reason="No django present")
 def test_jasonval():
     "Test the jasonval method."
     response = jason.jsonval(['Hei', 'Verden', '2012'])
@@ -89,7 +91,7 @@ def test_loads():
     assert jval['k'] == 42
 
 
-@pytest.mark.skipif(not DJANGO)
+@pytest.mark.skipif(not DJANGO, reason="No Django present")
 def test_jsonp():
     assert 'JSON.parse(val)}("{\\"x\\":42}")' in str(jason.jsonp('cb', {'x':42}))
     assert 'cb(42)' in str(jason.jsonp('cb', 42))
