@@ -7,10 +7,8 @@
     <!-- polyfills -->
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
     <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/custom-elements-es5-adapter.js"></script>-->
-    <!--<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default-3.6"></script>-->
-    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=es6"></script>
-    <!--<script src="https://cdn.polyfill.io/v2/polyfill.js?features=default-3.6"></script>-->
-    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Array.includes,Object.entries,Element.prototype.remove,Array.from,NodeList.@@iterator"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.js?features=es5,es6,es7,Object.entries&flags=gated"></script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
@@ -31,12 +29,12 @@
     <dk-icon value="check"></dk-icon>
 
 
-    <div style="outine:3px dotted red; margin:10px; padding:10px; border-radius: 4px">
-        <div id="work"></div>
+    <div style="width:200px;height:200px;border:3px dotted red; margin:10px; padding:10px; border-radius: 4px">
+        <div id="work"><div class="foo"></div></div>
+        <div id="color-lite"></div>
     </div>
 
 <script>
-    // dk = dk.default;
     var h1;
     dk.ready(function () {
         h1 = dk('h1');
@@ -59,7 +57,14 @@
         
     });
 </script>
-<script src="./main.js"></script>
+<script src="./js/main.js"></script>
+<!--<script src="./widget1.js"></script>-->
+    <script>
+        $(document).ready(function () {
+            // HelloFoo.create_inside($("#work").find('.foo'), {});
+            cl = ColorLight.create_inside("#color-lite");
+        });
+    </script>
 </body>
 </html>
 

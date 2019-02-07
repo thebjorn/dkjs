@@ -45,7 +45,7 @@ class ButtonWidget3 extends dk.Widget{
     }
 }
 
-class ColorLight extends dk.Widget{
+export class ColorLight extends dk.Widget{
     constructor(props) {
         super({
             colors: 'red,yellow,green',
@@ -116,4 +116,4 @@ class ColorLight extends dk.Widget{
         });
     }
 }
-ColorLight.create_inside("#work");
+
