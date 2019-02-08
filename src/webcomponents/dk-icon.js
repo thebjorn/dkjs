@@ -3,7 +3,7 @@
  */
 
 // import {LitElement, html} from '@polymer/lit-element';
-import {html} from '@polymer/lit-element';
+// import {html} from '@polymer/lit-element';
 
 /* global HTMLElement */
 export default class DkIcon extends HTMLElement {
