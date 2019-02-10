@@ -6,8 +6,8 @@ module.exports = function (api) {
             "targets": {
                 "ie": 11
             },
-            // "useBuiltIns": "entry"
-            "useBuiltIns": "usage"
+            "useBuiltIns": "entry"
+            // "useBuiltIns": "usage"
         }],
         // ["@babel/preset-flow"]
     ];
@@ -30,8 +30,8 @@ module.exports = function (api) {
                 "corejs": false,
                 "helpers": true,
                 "regenerator": true,
-                // "useESModules": false
-                "useESModules": true
+                "useESModules": false
+                // "useESModules": true
             }
         ]);
     }
@@ -41,6 +41,13 @@ module.exports = function (api) {
         plugins,
         "ignore": [
             "node_modules"
-        ]
+        ],
+        // env: {
+        //     test: {
+        //         plugins: [
+        //             '@babel/plugin-transform-modules-commonjs'
+        //         ]
+        //     }
+        // }
     };
 };
