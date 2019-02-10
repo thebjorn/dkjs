@@ -100,7 +100,7 @@ import page from "./widgetcore/dk-page";
 import widgetmap from "./widgetcore/dk-widgetmap";
 import {Layout} from "./layout/dk-layout";
 import {Widget} from "./widgetcore/dk-widget";
-import {dkrequire_urls} from "./lifecycle/browser/dk-require";
+import {dkrequire_urls, dkrequire} from "./lifecycle/browser/dk-require";
 import {icon, jq_dkicons} from "./widgets/dk-icon-library";
 
 
@@ -168,6 +168,7 @@ import {icon, jq_dkicons} from "./widgets/dk-icon-library";
             DomItem,
             Template
         },
+        dkrequire,
         require: {
             css: dkrequire_urls,
             js: dkrequire_urls

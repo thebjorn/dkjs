@@ -45,9 +45,9 @@ Object.assign(dk, {
     deep_observer,
     
     performance,
-    require: {
-        css: require_css
-    },
+    // require: {
+    //     css: require_css
+    // },
     version,
     text,
     id2name: text.id2name,

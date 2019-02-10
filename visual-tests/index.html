@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
+
+    <!-- polyfills -->
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
+
+    <!--this is only needed if you compile custom element classes to es5 (for IE11) and then try to run on a modern browser-->
+    <!--this adapter MUST NOT be compiled (it also doesn't seem to be necessary..?)-->
+    <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/custom-elements-es5-adapter.js"></script>-->
+
+    <!--IE11 needs a lot of polyfills (it's empty on all other browsers)-->
+    <script src="https://polyfill.io/v3/polyfill.js?features=es5,es6,es7,Object.entries&flags=gated"></script>
+
+    <!--external-ized jquery (dk.js requires this to be available on the page)-->
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+
+    <!--dk.js proper/core-->
+    <script DEBUG LOGLEVEL="4" crossorigin="anonymous" src="../dkjs/static/dkjs/js/dk.min.js"></script>
+    <script src="./dist/main.js"></script>
+    
+    <style>
+        html { font-family: Verdana; }
+        #tests > .test { 
+            border: 1px solid #999; 
+            margin:3px; 
+            border-radius: 4px; 
+        }
+        #tests > .test > header {
+            font-size: 13px;
+            line-height: 100%;
+            font-family: Consolas, Courier, monospace;
+            border-bottom: 1px solid #999;
+            cursor: pointer;
+        }
+        #tests > .test > header > .status {
+            color: white;
+            display: inline-block;
+            padding: 4px 6px;
+        }
+        #tests > .test > .body {
+            padding: 4px; 
+        }
+        
+        .test-template { display: none; }
+        
+        .test.OK .status {
+            background-color: green;
+            /*color: white;*/
+            /*padding: 4px 6px; */
+        }
+        .test.ERROR .status {
+            background-color: red;
+            /*color: white;*/
+            /*padding: 4px 6px;*/
+        }
+        
+        .test.collapsed > .body { display: none; }
+    </style>
+</head>
+<body>
+    <table style="float: right;font-size: 11px; line-height: 110%;">
+        <tr><th>Passing:</th><td id="test-counters-passing"></td></tr>
+        <tr><th>Failing:</th><td id="test-counters-failing"></td></tr>
+        <tr><td colspan="2"><span id="test-counters-passing-pct"></span>% passing</td></tr>
+    </table>
+
+    <h1>
+        <dk-icon id="pawicon" src="paw"></dk-icon> paw-tests
+    </h1>
+
+    <div class="test test-template">
+        <header>
+            <div class="status"></div> 
+            <span class="test-name">paw-tests</span>
+        </header>
+        <div class="body">
+            <div class="work-box">
+                <div class="work"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tests"></div>
+    
+    <script>
+        window.test_functions = {};
+        window.auto_collapse = true;
+        window.test_counters = {
+            passing: 0,
+            total: 0
+        };
+        
+        function update_counters() {
+            $('#test-counters-passing').html(window.test_counters.passing);
+            $('#test-counters-failing').html(window.test_counters.total - window.test_counters.passing);
+            $('#test-counters-passing-pct').html(100 * window.test_counters.passing / window.test_counters.total);
+        }
+        $(function () {
+            $('#tests').on('click', '.test>header', function () {
+                $(this).parent().toggleClass('collapsed');
+            });
+            
+        });
+        
+        dk.ready(function () {
+            const testlist = [
+                'dom-template0',
+                'dom-template2',
+                'dom-template3'
+            ];
+            var tests = $("#tests");
+
+            for (var i=0; i<testlist.length; i++) {
+                (function (i) {
+                    var current_test = testlist[i];
+                    var ttempl = $('.test-template:eq(0)').clone();
+                    ttempl.removeClass('test-template');
+                    ttempl.prop('id', current_test);
+                    tests.append(ttempl);
+                    var curtst = tests.find('#' + current_test);
+                    var status = curtst.find('.status');
+                    status.html('running..');
+                    var test_name = curtst.find('.test-name');
+                    test_name.html(current_test);
+
+                    const work_area = curtst.find('.work');
+                    var test_env = {
+                        body: work_area,
+                        done: function (ok) {
+                            console.info("Finished:", current_test, i, ok);
+                            window.test_counters.total++;
+                            if (ok) window.test_counters.passing++;
+                            update_counters();
+                            var res = ok ? "OK" : "ERROR";
+                            status.html(res);
+                            curtst.addClass(res);
+                            if (window.auto_collapse && ok) curtst.addClass('collapsed');  // auto-collapse passing tests
+                        }
+                    };
+                    console.info("Fetching:", current_test, i);
+                    // IE11 has seriously aggressive caching (ctrl-f5 can sometimes not break it)
+                    dk.dkrequire('./dist/' + current_test + '.js?_=' + +(new Date()), function (src) {
+                        console.info("Running:", current_test, i);
+                        window.test_functions[current_test](test_env);
+                    });
+                }(i));
+            }
+
+
+        });
+    </script>
+</body>
+</html>
+

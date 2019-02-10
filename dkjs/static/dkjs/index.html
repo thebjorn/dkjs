@@ -4,21 +4,31 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
 
+<!--START DKJS SECTION-->
     <!-- polyfills -->
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
-    <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.0.0/custom-elements-es5-adapter.js"></script>-->
-
+    
+    <!--this is only needed if you compile custom element classes to es5 (for IE11) and then try to run on a modern browser-->
+    <!--this adapter MUST NOT be compiled (it also doesn't seem to be necessary..?)-->
+    <!--<script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/custom-elements-es5-adapter.js"></script>-->
+    
+    <!--IE11 needs a lot of polyfills (it's empty on all other browsers)-->
     <script src="https://polyfill.io/v3/polyfill.js?features=es5,es6,es7,Object.entries&flags=gated"></script>
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.js" integrity="sha256-vS9J2VYhvwAfh2znnLdkhemFPEpx6YoZEhExqBPT5ys=" crossorigin="anonymous"></script>-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.js" integrity="sha256-ps39OudekZO7AVsJKqPapQgZ3EfKUh2kuhQ0f3E82ps=" crossorigin="anonymous"></script>-->
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.core.js" integrity="sha256-Qqd/EfdABZUcAxjOkMi8eGEivtdTkh3b65xCZL4qAQA=" crossorigin="anonymous"></script>-->
+    <!--external-ized jquery (dk.js requires this to be available on the page)-->
     <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
 
+    <!--dk.js proper/core-->
     <script DEBUG LOGLEVEL="4" crossorigin="anonymous" src="js/dk.min.js"></script>
-    <script src="./components/dk-icon.js"></script>    
+    <!--tag lib can go here (if separate)-->
+<!--END DKJS SECTION-->
+    
+    <style>
+        dk-icon:not(:defined) {
+            display: none;
+        }
+    </style>
+    
 </head>
 <body>
 
@@ -54,8 +64,8 @@
         
     });
 </script>
-<script src="./js/main.js"></script>
-<!--<script src="./widget1.js"></script>-->
+    
+    <script src="./js/main.js"></script>
     <script>
         $(document).ready(function () {
             // HelloFoo.create_inside($("#work").find('.foo'), {});

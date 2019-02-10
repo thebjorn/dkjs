@@ -6,6 +6,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="webcomponents-bundle" level="application" />
     <orderEntry type="library" name="custom-elements-es5-adapter" level="application" />
+    <orderEntry type="library" name="jquery-3.1.0" level="application" />
   </component>
   <component name="TestRunnerService">
     <option name="projectConfiguration" value="pytest" />
