@@ -33,11 +33,17 @@ Object.assign(dk, {
     globals: dkglobal,
     env,
     namespace,
+    combine: namespace.combine,
+    merge: namespace.merge,
+    traverse: namespace.traverse,
     on,
     trigger,
     after,
     publish,
     subscribe,
+    bind: function (...args) {
+        dkwarning("dk.bind is deprecated, called with:", ...args);
+    },
 
     ...dkconsole,
 

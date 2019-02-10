@@ -102,7 +102,8 @@ import {Layout} from "./layout/dk-layout";
 import {Widget} from "./widgetcore/dk-widget";
 import {dkrequire_urls, dkrequire} from "./lifecycle/browser/dk-require";
 import {icon, jq_dkicons} from "./widgets/dk-icon-library";
-
+import browser_version from "./browser/browser-version";
+import {count_char, dedent} from "./core/text-utils";
 
 (function () {
     dk.add({
@@ -125,6 +126,13 @@ import {icon, jq_dkicons} from "./widgets/dk-icon-library";
         css,
         Widget,
         icon,
+        
+        core: {
+            text: {
+                count: count_char,
+                dedent
+            }
+        },
         
         layout: {
             Layout
@@ -150,6 +158,9 @@ import {icon, jq_dkicons} from "./widgets/dk-icon-library";
         },
 
         web: {
+            browser: {
+                browser: browser_version
+            },
             cookie,
             uri: {parse: parse_uri},
             dom: {

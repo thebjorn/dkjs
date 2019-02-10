@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from 'jquery';  // use dk.$ ?
 import dkglobal from "../lifecycle/dkglobal";
 
 
