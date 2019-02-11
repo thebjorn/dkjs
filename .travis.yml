@@ -14,7 +14,6 @@ matrix:
     - language: python
       python:
         - "2.7"
-        - "3.4"
       
       install:
         - pip install -r requirements.txt
@@ -25,6 +24,21 @@ matrix:
 
       after_success: 
         - codecov -t ${CODECOV_TOKEN}
+
+    - language: python
+      python:
+        - "3.4"
+
+      install:
+        - pip install -r requirements.txt
+        - pip install -e .
+        - pip install codecov
+
+      script: pytest -v --cov=dkjs tests
+
+      after_success:
+        - codecov -t ${CODECOV_TOKEN}
+
 
 notifications: 
   email:
