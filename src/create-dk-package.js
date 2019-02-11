@@ -104,6 +104,8 @@ import {dkrequire_urls, dkrequire} from "./lifecycle/browser/dk-require";
 import {icon, jq_dkicons} from "./widgets/dk-icon-library";
 import browser_version from "./browser/browser-version";
 import {count_char, dedent} from "./core/text-utils";
+import {PanelWidget} from "./widgets/dk-panel";
+
 
 (function () {
     dk.add({
@@ -125,6 +127,10 @@ import {count_char, dedent} from "./core/text-utils";
         utidy,
         css,
         Widget,
+        Panel: PanelWidget,
+        panel: {
+            PanelWidget
+        },
         icon,
         
         core: {
