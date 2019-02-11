@@ -17,7 +17,11 @@ setuptools.setup(
     name='dkjs',
     version='0.0.1',
     packages=['dkjs'],
-    install_requires=['ttcal'],
+    install_requires=[
+        'ttcal',
+        'six',
+        'future',
+    ],
     url='https://github.com/thebjorn/dkjs',
     classifiers=[line for line in classifiers.split('\n') if line],
     long_description=open('README.md').read(),

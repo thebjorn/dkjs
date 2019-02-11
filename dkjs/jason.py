@@ -5,7 +5,7 @@
 """
 
 # pylint:disable=E0202
-
+import six
 import decimal
 import datetime
 import json
@@ -40,9 +40,9 @@ _clientparsefn = re.sub(r'\s+', "", """
 # required when sending '@type:__' encoded values?
 # Currently this only checks the top level of the value.
 def _is_simpleval(v):
-    if isinstance(v, (int, long, decimal.Decimal)):
+    if isinstance(v, six.integer_types) or isinstance(v, decimal.Decimal):
         return True
-    if isinstance(v, basestring) and not v.startswith('@'):
+    if isinstance(v, six.string_types) and not v.startswith('@'):
         return True
     return False
 
@@ -114,7 +114,7 @@ datetime_re = re.compile(r'''
 
 def obj_decoder(pairs):
     def _get_tag(v):
-        if isinstance(v, unicode) and v.startswith('@'):
+        if isinstance(v, six.text_type) and v.startswith('@'):
             try:
                 v = str(v)
             except UnicodeEncodeError:

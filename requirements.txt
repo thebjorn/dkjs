@@ -1,10 +1,11 @@
 ttcal==1.0.2
+six
+future==0.17.1
 pytest==3.2.3
 coverage==4.4.1
 pytest-cov==2.5.1
 pytest-forked==0.2
 pytest-mock==1.6.2
 pytest-xdist==1.20.1
-future==0.17.1
 Django==1.7.11; python_version < '3.0'
 Django==1.8;    python_version >= '3.4'
