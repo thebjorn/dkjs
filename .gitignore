@@ -1,6 +1,10 @@
 # javascript
 node_modules/
 
+dkjs/static/dkjs/js/dk.min.js
+dkjs/static/dkjs/js/main.js
+dkjs/static/dkjs/js/main.js.map
+
 build/
 coverage/
 out/
