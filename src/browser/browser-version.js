@@ -1,6 +1,6 @@
-import $ from 'jquery';  // use dk.$ ?
-import dkglobal from "../lifecycle/dkglobal";
 
+import dkglobal from "../lifecycle/dkglobal";
+import dk from "../dk-obj";
 
 if (typeof window === "undefined") {
     // running under node.js
@@ -14,7 +14,7 @@ if (typeof window === "undefined") {
 
 export default (function () {
     // $.browser disappeared in jQuery 1.9
-    if ($.browser) return $.browser;
+    if (dk.$.browser) return dk.$.browser;
     if (dkglobal._browser) return this._browser;
 
     // from jquery.dynatree.js with modifications
