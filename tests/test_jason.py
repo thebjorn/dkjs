@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import print_function
 "core.jason"
 
 # pylint:disable=R0904, W0232, C0111, R0201, C0301
@@ -39,7 +39,7 @@ def test_dumps():
 def test_jasonval():
     "Test the jasonval method."
     response = jason.jsonval(['Hei', 'Verden', '2012'])
-    print 'response:', response
+    print('response:', response)
     r = str(response)
     assert r.count('Hei') == 1
     assert r.count('Verden') == 1
