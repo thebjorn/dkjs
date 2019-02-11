@@ -14,7 +14,7 @@ test("panel-3", () => {
     const work = $('#work');
     page.initialize(document);
 
-    var p = PanelWidget.create_inside(work, {
+    const p = PanelWidget.create_inside(work, {
         title: 'Hello World'
     });
     p.collapse_up();

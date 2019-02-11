@@ -105,6 +105,8 @@ import {icon, jq_dkicons} from "./widgets/dk-icon-library";
 import browser_version from "./browser/browser-version";
 import {count_char, dedent} from "./core/text-utils";
 import {PanelWidget} from "./widgets/dk-panel";
+import {ListLayout} from "./layout/list-layout";
+import {TableRowLayout, ResultsetLayout, TableLayout} from "./layout/table-layout";
 
 
 (function () {
@@ -141,7 +143,11 @@ import {PanelWidget} from "./widgets/dk-panel";
         },
         
         layout: {
-            Layout
+            Layout,
+            ListLayout,
+            TableRowLayout, 
+            ResultsetLayout, 
+            TableLayout
         },
 
         widget: {
