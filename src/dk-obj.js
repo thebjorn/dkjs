@@ -22,6 +22,7 @@ import {dkwarning} from "./lifecycle/coldboot/dkwarning";
 import {pick, zip_object} from "./pick";
 import is from "./is";
 import {after, on, trigger, publish, subscribe} from "./lifecycle/dkboot/dk-signals";
+import {add, mul, vec_mul, multiply_reduce} from "./dkmath/dk-math";
 
 const dk = function (selector) {
     return document.querySelector(selector);
@@ -45,6 +46,12 @@ Object.assign(dk, {
         dkwarning("dk.bind is deprecated, called with:", ...args);
     },
 
+    math: {
+        add,
+        mul,
+        vec_mul,
+        multiply_reduce
+    },
     ...dkconsole,
 
     shallow_observer,

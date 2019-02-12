@@ -107,6 +107,8 @@ import {count_char, dedent} from "./core/text-utils";
 import {PanelWidget} from "./widgets/dk-panel";
 import {ListLayout} from "./layout/list-layout";
 import {TableRowLayout, ResultsetLayout, TableLayout} from "./layout/table-layout";
+import {CheckboxSelectWidget, DurationWidget, InputWidget, RadioInputWidget, RadioSelectWidget, SelectWidget, TextInputWidget, TriboolWidget} from "./forms/widgets";
+import {validate} from "./forms/validators";
 
 
 (function () {
@@ -134,6 +136,19 @@ import {TableRowLayout, ResultsetLayout, TableLayout} from "./layout/table-layou
             PanelWidget
         },
         icon,
+        
+        forms: {
+            CheckboxSelectWidget,
+            DurationWidget,
+            InputWidget,
+            RadioInputWidget,
+            RadioSelectWidget,
+            SelectWidget,
+            TextInputWidget,
+            TextWidget: TextInputWidget,
+            TriboolWidget,
+            validators: validate
+        },
         
         core: {
             text: {

@@ -9,7 +9,7 @@ module.exports = function (api) {
             "useBuiltIns": "entry"
             // "useBuiltIns": "usage"
         }],
-        // ["@babel/preset-flow"]
+        ["@babel/preset-flow"]
     ];
     
     const plugins = [
