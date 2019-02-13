@@ -29,26 +29,27 @@ const is_nested = function (obj) {
  * Return an object such that any modifications to that object calls `fn`.
  *
  */
-export function deep_observer(obj, fn, original_obj) {
+export function deep_observer(obj, fn, original_obj, _pth) {
+    if (_pth === undefined) _pth = '';
     if (original_obj === undefined) original_obj = obj;
     switch (type_name(obj)) {
         case 'Object':
             Object.keys(obj).forEach(k => {
-                if (is_nested(obj[k])) obj[k] = deep_observer(obj[k], fn, original_obj);
+                if (is_nested(obj[k])) obj[k] = deep_observer(obj[k], fn, original_obj, _pth + '.' + k);
             });
             break;
         case 'Array':
             obj.forEach((v, i) => {
-                if (is_nested(v)) obj[i] = deep_observer(v, fn , original_obj);
+                if (is_nested(v)) obj[i] = deep_observer(v, fn , original_obj, _pth + '.' + k);
             });
             break;
     }
     
     return new Proxy(obj, {
         set(target, name, val) {
-            if (is_nested(val)) val = deep_observer(val, fn, original_obj);
+            if (is_nested(val)) val = deep_observer(val, fn, original_obj, _pth + '.' + name);
             target[name] = val;
-            if (fn) fn(original_obj, target, name, val);
+            if (fn) fn(original_obj, target, name, val, _pth + '.' + name);
             return true;
         }
         // ,

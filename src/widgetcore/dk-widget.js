@@ -8,6 +8,9 @@ import template from "lodash.template";
 import jason from "../data/datacore/dk-json";
 import {cls2id} from "../core/text-utils";
 import {dkconsole} from "../lifecycle/dkboot/dk-console";
+import {dkwarning} from "../lifecycle/coldboot/dkwarning";
+import is from "../is";
+import {deep_observer} from "../data/observable";
 
 
 //
@@ -20,18 +23,67 @@ import {dkconsole} from "../lifecycle/dkboot/dk-console";
 // dk.Widget class
 export class Widget extends Class{
     constructor(...attrs) {
-        super(Object.assign({
-            data: null,
+        const props = Object.assign({
             id: null,                   // DOM id of this widget (foo-widget-43)
             cache: false,               // should ajax data be cached?
             dklayout: 'Layout',
             template: {root: 'div'},
-        }, ...attrs));
+        }, ...attrs);
+        const data = props.data;
+        if (data !== undefined) delete props.data;
+        super(props);
+        if (data !== undefined) {
+            this.data = data;
+        }
+        
         if (this.type === undefined) this.type = this.constructor.name;
         
+        
+        // this.__state = {
+        //     visible: false,
+        //     ready: false,
+        //     busy: false,
+        //     mode: 'run',  // 'design'
+        // };
         this._visible = true;
         this.__ready = false;
-        
+    }
+
+    /**
+     * Widgets are equal if their data is equal.
+     * 
+     * @param other
+     * @returns {*}
+     */
+    isEqual(other) {
+        if (this.constructor === other.constructor) {
+            if (this._data !== undefined && other._data !== undefined) {
+                return is.isEqual(this._data, other._data);
+            }
+        }
+        return false;
+    }
+    
+    get data() {
+        return this._data;
+    }
+
+    /**
+     * Observe this.data and call this.data_changed anything changes.
+     * @param newval
+     */
+    set data(newval) {
+        if (!is.isObject(newval)) throw `widget.data must be a properties object, not ${typeof newval}`;
+
+        this._data = deep_observer(newval, (orig_data, target, name, val, path) => {
+            this.data_changed(
+                this._data,
+                'this.data' + path,
+                val,
+                name,
+                target, 
+            );
+        });
     }
 
     init() {}
@@ -120,7 +172,7 @@ export class Widget extends Class{
         this.render_data();
 
         this.__ready = true;
-        this.notify('ready', this);
+        this.trigger('ready', this);
         return this;
     }
 
@@ -255,7 +307,7 @@ export class Widget extends Class{
 
     set(field, value) {
         this[field] = value;
-        this.notify('set-field', this, field, value);
+        this.trigger('set-field', this, field, value);
         this.draw(null);
     }
 
@@ -264,9 +316,21 @@ export class Widget extends Class{
      *  widget into a click notification from this widget.
      */
     notify_on(evtname) {
+        dkwarning(`Widget.notify_on is deprecated, use Widget.retrigger instead`);
         const self = this;
         this.widget().on(evtname, function () {
-            self.notify(evtname, self);
+            self.trigger(evtname, self);
+        });
+    }
+
+    /*
+     *  Short hand for forwarding an event, e.g. a click event on this
+     *  widget into a click notification from this widget.
+     */
+    retrigger(evtname) {
+        const self = this;
+        this.widget().on(evtname, function (event) {
+            self.trigger(evtname, self, event);
         });
     }
 
@@ -280,7 +344,22 @@ export class Widget extends Class{
     }
 
     notify(trigname, ...args) {
+        dkwarning(`Widget.notify is deprecated, use Widget.trigger ${this}`);
         dk.trigger(this, trigname, ...args);
+    }
+
+    /**
+     * data_changed is called whenever a change is observed in this.data...
+     * 
+     * @param data      - the new data (after the change)
+     * @param path      - the dotted path to the field that was changed (this.data.foo.bar)
+     * @param val       - the new value assigned to the path
+     * @param name      - the last part of path (this.data.foo.bar => bar)
+     * @param target    - the object containing `name` (for the running example it would be this.data.foo)
+     */
+    data_changed(data, path, val, name, target) {
+        dkconsole.debug(`data-changed ${path} = ${val}, new data: ${JSON.stringify(data)}`);
+        this.draw(data);
     }
 
     start_busy() {

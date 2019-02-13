@@ -86,7 +86,9 @@ export function on(obj, signal, optfn) {
 
 export function trigger(obj, signal, ...args) {
     if (env.DEBUG && env.LOGLEVEL >= BINDING_NOTIFY_LEVEL + 1) {
-        dkconsole.debug(`dk.trigger(${_debugstr(obj)}, "${signal}", [${args}])`);
+        const obj_str = _debugstr(obj);
+        const nl = obj_str.length > 90 ? '\n           ' : ' ';
+        dkconsole.debug(`dk.trigger(${obj_str},${nl}"${signal}",${nl}[${args}])`);
     }
     if (obj[listeners]) {
         if (obj[listeners][signal]) {

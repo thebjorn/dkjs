@@ -137,6 +137,8 @@ export default class Class {
     }
     
     static create(...args) {
+        // first handle X y = X(); X x = X(y); (we don't want a copy ctor)
+        if (args.length === 1 && args[0] instanceof this) return args[0];
         let obj = new this(...args);
         if (obj.init !== undefined) obj.init(...args);
         return obj;

@@ -24,15 +24,23 @@ test("Widget.create_on(#id)", () => {
             this.widget().text(`\nHello ${this.data.whom}!\n`);
         }
     }
-    HelloFoo.create_on(work.find('#foo'), {
+    const w = HelloFoo.create_on(work.find('#foo'), {
         data: {
-            whom: 'world'
+            whom: 'world',
+            // foo: {
+            //     bar: {
+            //         baz: 42
+            //     }
+            // }
         }
     });
+    w.data.whom = 'FOO';
+    // w.data.foo.bar.baz = 14;
+    // w.data.foo = 'hello';
 
     expect(utidy(work.html())).toEqual(utidy(`
         <div id="foo" class="HelloFoo bar">
-            Hello world!
+            Hello FOO!
         </div>
     `));
 });

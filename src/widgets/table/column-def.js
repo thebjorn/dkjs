@@ -3,6 +3,7 @@ import Class from "../../lifecycle/coldboot/dk-class";
 import dk from "../../dk-obj";
 import {value as format_value} from "../../data/datacore/dk-format"
 import widgetmap from "../../widgetcore/dk-widgetmap";
+import {TextInputWidget} from "../../forms/widgets";
 
 
 export class ColumnDef extends Class{
@@ -17,7 +18,7 @@ export class ColumnDef extends Class{
             align:       undefined,                 // cell alignment
             format:      format_value,  // formatting function
             type:        undefined,                 // data type of column values
-            widget_type: forms.TextInputWidget,     // widget to use when editing a cell value
+            widget_type: TextInputWidget,     // widget to use when editing a cell value
             empty:       '',                        // value to use for empty cells
             table:       undefined,                 // the DataTable (subclass) we belong to
             _alignment_map: {
@@ -52,12 +53,12 @@ export class ColumnDef extends Class{
             // wtype = widgetmap.get(field.widget);
             wtype = forms[field.widget];
         } else {
-            wtype = forms.widgetmap[this.type];
+            wtype = widgetmap[this.type];
         }
 
         if (wtype === undefined) {
             // dk.warn("Unknown widget: ", field.widget, field);
-            wtype = forms.TextInputWidget;
+            wtype = TextInputWidget;
         }
         this.widget_type = wtype;
         this.widget_data = field.data;

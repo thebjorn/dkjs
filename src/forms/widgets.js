@@ -8,25 +8,65 @@
 import dk from "../dk-obj";
 import {Widget} from "../widgetcore/dk-widget";
 import is from "../is";
+import {Duration} from "../data/datacore/dk-datatypes";
 
 
 export class InputWidget extends Widget {
-    constructor() {
-        super();
+    constructor(...args) {
+        super({
+            data: {
+                value: null,
+                disabled: false,
+                readonly: false,
+                required: false,
+                autofocus: false,
+            }
+        }, ...args);
     }
     get value() {
-        return this.widget().val();
+        // return this.widget().val();
+        return this.data.value;
     }
-    
+
     set value(v) {
-        this.widget().val(v.value || v.v || v);
-        dk.trigger(this, 'set-value', v);
+        this.data.value = v;
         return v;
     }
+    
+    data_changed(data, path, val, name, target) {
+        const v = data.value.value || data.value.v || data.value;
+        switch (name) {
+            case 'value':
+                this.widget().val(v);
+                this.widget().attr('value', v);
+                this.trigger('set-value', data.value);
+                break;
+            case 'disabled':
+                this.widget().prop('disabled', data.disabled);
+                break;
+            case 'readonly':
+                this.widget().prop('readonly', data.readonly);
+                break;
+            case 'required':
+                this.widget().prop('required', data.required);
+                break;
+            case 'autofocus':
+                this.widget().prop('autofocus', data.autofocus);
+                break;
+        }
+        super.data_changed(data, path, val, name, target);
+    }
+    
+    // toString() helpers..
+    get _widget_data() { return this.widget().data('value'); }
+    get _widget_type() { return this.widget().prop('type'); }
+    get _widget_val() { return this.widget().val(); }
+    
+
     get_value() { return this.value; }
     set_value(v) { this.value = v; return v; }
     formatted_value() {
-        return this.value;
+        return this.value.f || this.value;
     }
     get_field_value() {
         return this.value;
@@ -42,14 +82,24 @@ export class InputWidget extends Widget {
         this.notify_on('change');
         this.notify_on('validation-change');
     }
+    
+    toString() {
+        const html = this.widget()[0].outerHTML;
+        const state = JSON.stringify({
+            data: this._widget_data || null,  // undefined doesn't show up in JSON.stringify
+            type: this._widget_type || null,
+            val: this._widget_val || null
+        });
+        return `${html}(${state})`;
+    }
 }
 
 
 export class TextInputWidget extends InputWidget {
-    constructor() {
+    constructor(...args) {
         super({
             template: {root: 'input'}
-        });
+        }, ...args);
     }
     construct() {
         this.prepare();
@@ -57,33 +107,35 @@ export class TextInputWidget extends InputWidget {
     }
     handlers() {
         super.handlers();
-        this.notify_on('keyup');
+        this.retrigger('keyup');
     }
 }
 
 
 export class DurationWidget extends InputWidget {
-    constructor() {
+    constructor(...args) {
         super({
             template: {root: 'input'},
-        });
+        }, ...args);
     }
-    
-    get value() {
-        return this.widget().data('duration');
-    }
+    // get _widget_data() { return this.widget().data('duration'); }
+
+    // get value() {
+    //     return this._widget_data;
+    // }
     set value(v) {
-        const tmp = dk.Duration.create(v);   // copy ctor? *eek*
+        const tmp = Duration.create(v);
+        this.widget().prop('type', 'text');
         this.widget().data('duration', tmp);
         this.widget().val(tmp.toString());
         return tmp;
     }
     construct() {
         this.prepare();
-        const self = this;
         this.widget().prop('type', 'text');
-        this.widget().on('change', function () {
-            self.widget().data('duration', dk.Duration.create(dk.$(this).val()));
+        this.widget().on('change', (e) => {
+            console.info("EVENT:", e);
+            this.widget().data('duration', new Duration(this._widget_val));
         });
     }
 }
