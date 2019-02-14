@@ -95,6 +95,10 @@ export class Widget extends Class{
         const me = dk.$('#' + this.id);
         return (selector) ? me.find(selector) : me;
     }
+    
+    get node() {
+        return document.getElementById(this.id);
+    }
 
     hide() {
         this.widget().hide('fast');
@@ -125,6 +129,7 @@ export class Widget extends Class{
      *  Append a place holder to this widget, then create_on this placeholder.
      */
     create_subwidget(WidgetType, props, placeholder) {
+        dkwarning("create_subwidget callled..");
         if (typeof WidgetType === 'string') {
             WidgetType = widgetmap.get(WidgetType);
         }

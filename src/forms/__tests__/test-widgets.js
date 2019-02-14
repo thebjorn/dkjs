@@ -1,5 +1,4 @@
 
-
 import $ from "jquery";
 import utidy from "../../browser/dk-html";
 import {DurationWidget, TextInputWidget} from "../widgets";
@@ -16,9 +15,7 @@ test("text-input-widget", () => {
 
     const w = TextInputWidget.create_on(work.find('input'));
 
-    console.log("DATA:", w.widget().data('duration'));
-    console.log("TYPE-PROP:", w.widget().prop('type'));
-    console.log("VAL-PROP:", w.widget().val());
+    console.log(w);
     console.log(work.html());
     
     expect(utidy(work.html())).toEqual(utidy(`
@@ -28,6 +25,18 @@ test("text-input-widget", () => {
     w.value = 'forty-two';   // sets the widget prop, not attr
     expect($('#text-input-widget-1').val()).toBe('forty-two');
     expect(w.value).toBe('forty-two');
+    
+    // document.querySelector('#text-input-widget-1').setAttribute('value', 42);
+    
+    $('#text-input-widget-1').val(42).change();
+    expect(w.value).toBe('42');
+    
+    w.data.readonly = true;
+    console.log(work.html());
+    expect(utidy(work.html())).toEqual(utidy(`
+        <input class="TextInputWidget" id="text-input-widget" readonly="readonly" name="text_input_widget_1" type="text" value="42">
+    `));
+
 });
 
 
@@ -41,25 +50,22 @@ test("duration-widget", () => {
 
     const w = DurationWidget.create_on(work.find('input'));
 
-    console.log("DATA:", w.widget().data('duration'));
-    console.log("TYPE-PROP:", w.widget().prop('type'));
-    console.log("VAL-PROP:", w.widget().val());
-    console.log(work.html());
-
     expect(utidy(work.html())).toEqual(utidy(`
         <input class="DurationWidget" id="duration-widget" name="duration_widget_1" type="text">
     `));
 
     w.value = 3600;   // sets the widget prop, not attr
+    console.log('w.value', w.value);
+    console.log('w.value', w.data.value);
+    console.log('typeof w.value', typeof w.value);
     console.log("W:", w);
+    console.log('new duration:', (new Duration(3600)).toString());
+    console.log('.val:', $('#' + w.id).val(), typeof $('#' + w.id).val());
     expect($('#' + w.id).val()).toEqual((new Duration(3600)).toString());
     expect(w.value).toEqual(new Duration(3600));
     
     // $('#' + w.id).attr('value', '1:00:01');  // .val(...) will not trigger onchange (see note: https://api.jquery.com/change/)
-    w.widget().focus();
-    w.widget().attr('value', '1:00:01');
-    w.widget().blur();
-    // w.widget().change();
+    w.widget().attr('value', '1:00:01').val('1:00:01').change();
     console.log(w.toString());
     expect(w.value).toEqual(new Duration(3601));
 });

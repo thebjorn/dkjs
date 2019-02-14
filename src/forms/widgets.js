@@ -16,53 +16,24 @@ export class InputWidget extends Widget {
         super({
             data: {
                 value: null,
-                disabled: false,
-                readonly: false,
-                required: false,
-                autofocus: false,
+                // disabled: false,
+                // readonly: false,
+                // required: false,
+                // autofocus: false,
             }
         }, ...args);
+        
+        this._validators = [];
+        this._updating = false;
     }
     get value() {
-        // return this.widget().val();
         return this.data.value;
     }
-
     set value(v) {
-        this.data.value = v;
+        const value = this.parse(v);
+        this.data.value = value;
         return v;
     }
-    
-    data_changed(data, path, val, name, target) {
-        const v = data.value.value || data.value.v || data.value;
-        switch (name) {
-            case 'value':
-                this.widget().val(v);
-                this.widget().attr('value', v);
-                this.trigger('set-value', data.value);
-                break;
-            case 'disabled':
-                this.widget().prop('disabled', data.disabled);
-                break;
-            case 'readonly':
-                this.widget().prop('readonly', data.readonly);
-                break;
-            case 'required':
-                this.widget().prop('required', data.required);
-                break;
-            case 'autofocus':
-                this.widget().prop('autofocus', data.autofocus);
-                break;
-        }
-        super.data_changed(data, path, val, name, target);
-    }
-    
-    // toString() helpers..
-    get _widget_data() { return this.widget().data('value'); }
-    get _widget_type() { return this.widget().prop('type'); }
-    get _widget_val() { return this.widget().val(); }
-    
-
     get_value() { return this.value; }
     set_value(v) { this.value = v; return v; }
     formatted_value() {
@@ -71,24 +42,87 @@ export class InputWidget extends Widget {
     get_field_value() {
         return this.value;
     }
+
+    /**
+     * Automatically called when Widget.data.xxx is changed
+     * 
+     * @param data      - the new Widget.data
+     * @param path      - the path to the value being changed
+     * @param val       - the new value
+     * @param name      - the name of the attribute being changed (last part of path)
+     * @param target    - the object (Widget.data, or Widget.data...) which is being changed
+     */
+    data_changed(data, path, val, name, target) {
+        const v = data.value.value || data.value.v || data.value;
+        switch (name) {
+            case 'value':
+                ++this._updating;
+                this.widget().val(this.stringify(v));
+                this.node.setAttribute('value', this.stringify(v));
+                --this._updating;
+                
+                this.trigger('set-value', data.value);
+                break;
+            case 'readonly':  // handle mixed-case dom property
+                this.node.readOnly = data.readonly;
+                break;
+            default:
+                // console.log('data:name:', data[name]);
+                this.node[name] = data[name];
+        }
+        super.data_changed(data, path, val, name, target);
+    }
+
+    /**
+     * "Automatically" called (from handlers) when the dom has changed
+     * @param change
+     */
+    widget_changed(event) {
+        if (this._updating === 0 && event.type === 'change') {
+            ++this._updating;
+            this.value = this.parse(event.item.value);
+            --this._updating;
+        }
+    }
+    // // toString() helpers..
+    // get _widget_data() { return this.widget().data('value'); }
+    // get _widget_type() { return this.node.type; }
+    // get _widget_val() { return this.widget().val(); }
+    // get_widget_value() { return this.widget().val(); }
+
     prepare() {
-        // sub-classes should call this at the start of their construct method..
+        // xxx: sub-classes should call this at the start of their construct method..
         this.name = this.name || this.widget().attr('name') || dk.id2name(this.id);
         this.widget().attr('name', this.name);
         this.widget().addClass(this.type);
         if (this.css) this.widget().css(this.css);
     }
+    construct() {
+        this.prepare();
+    }
+    
+    stringify(val) { return val; }
+    parse(str) { return str; }
+
     handlers() {
-        this.notify_on('change');
-        this.notify_on('validation-change');
+        const self = this;
+        this.widget().on('change', function (e) {
+            self.widget_changed({
+                type: 'change',
+                event: e,
+                item: this
+            });
+            self.trigger('change', e, self);
+        });
+        this.retrigger('validation-change');
     }
     
     toString() {
         const html = this.widget()[0].outerHTML;
         const state = JSON.stringify({
-            data: this._widget_data || null,  // undefined doesn't show up in JSON.stringify
-            type: this._widget_type || null,
-            val: this._widget_val || null
+            data: this.data || null,  // undefined doesn't show up in JSON.stringify
+            type: this.node.type || null,
+            val: this.node.value || null
         });
         return `${html}(${state})`;
     }
@@ -102,8 +136,9 @@ export class TextInputWidget extends InputWidget {
         }, ...args);
     }
     construct() {
-        this.prepare();
-        this.widget().prop('type', 'text');
+        super.construct();
+        // this.data.type = 'text';
+        this.node.setAttribute('type', 'text');
     }
     handlers() {
         super.handlers();
@@ -118,25 +153,17 @@ export class DurationWidget extends InputWidget {
             template: {root: 'input'},
         }, ...args);
     }
-    // get _widget_data() { return this.widget().data('duration'); }
-
-    // get value() {
-    //     return this._widget_data;
-    // }
-    set value(v) {
-        const tmp = Duration.create(v);
-        this.widget().prop('type', 'text');
-        this.widget().data('duration', tmp);
-        this.widget().val(tmp.toString());
-        return tmp;
+    parse(str) {
+        if (str instanceof Duration) return str;
+        return new Duration(str);
+    }
+    stringify(val) {
+        if (val instanceof Duration) return val.toString();
+        return (new Duration(val)).toString();
     }
     construct() {
-        this.prepare();
-        this.widget().prop('type', 'text');
-        this.widget().on('change', (e) => {
-            console.info("EVENT:", e);
-            this.widget().data('duration', new Duration(this._widget_val));
-        });
+        super.construct();
+        this.node.setAttribute('type', 'text');
     }
 }
 

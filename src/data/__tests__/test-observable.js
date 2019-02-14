@@ -1,5 +1,5 @@
 
-import {shallow_observer, deep_observer} from "../observable";
+import {shallow_observer, deep_observer, _ie11_deep_observer} from "../observable";
 
 test("shallow_observer", () => {
     let obj = {
@@ -26,13 +26,51 @@ test("shallow_observer", () => {
     
 });
 
+test("ie11_deep_observer", () => {
+    let obj = {
+        hello: 'world',
+        goodbye: {
+            cruel: 'world2'
+        },
+        ouch: [{a: 42}]
+    };
+    let callargs = [];
+    let obs = _ie11_deep_observer(obj, (...args) => {
+        console.log("ARGS:", args);
+        callargs.push(args);
+    });
+
+    obs.hello = 'new-world';
+    expect(obj.hello).toBe('new-world');
+    let orig_obj, target, name, val, path;
+    [orig_obj, target, name, val, path] = callargs[0];
+    expect(name).toEqual('hello');
+    expect(val).toEqual('new-world');
+
+    obs.goodbye.cruel = 'nested-observe';
+    expect(callargs).toHaveLength(2);
+    [orig_obj, target, name, val] = callargs[1];
+    expect(obj.goodbye.cruel).toBe('nested-observe');
+
+    expect(orig_obj).toMatchObject(obj);
+    expect(target).toMatchObject({cruel: 'nested-observe'});
+    expect(name).toEqual('cruel');
+    expect(val).toEqual('nested-observe');
+
+    obs.ouch[0].a = 43;
+    [orig_obj, target, name, val, path] = callargs[2];
+    expect(obj.ouch[0].a).toBe(43);
+    expect(path).toBe('.ouch[0].a');
+
+});
 
 test("deep_observer", () => {
     let obj = {
         hello: 'world',
         goodbye: {
             cruel: 'world2'
-        }
+        },
+        ouch: [{a: 42}]
     };
     let callargs = [];
     let obs = deep_observer(obj, (...args) => {
@@ -42,19 +80,23 @@ test("deep_observer", () => {
 
     obs.hello = 'new-world';
     expect(obj.hello).toBe('new-world');
-    let orig_obj, target, name, val;
-    [orig_obj, target, name, val] = callargs[0];
+    let orig_obj, target, name, val, path;
+    [orig_obj, target, name, val, path] = callargs[0];
     expect(name).toEqual('hello');
     expect(val).toEqual('new-world');
 
     obs.goodbye.cruel = 'nested-observe';
-    expect(callargs.length).toBe(2);
-    [orig_obj, target, name, val] = callargs[1];
+    expect(callargs).toHaveLength(2);
+    [orig_obj, target, name, val, path] = callargs[1];
     expect(obj.goodbye.cruel).toBe('nested-observe');
     
     expect(orig_obj).toMatchObject(obj);
     expect(target).toMatchObject({cruel: 'nested-observe'});
     expect(name).toEqual('cruel');
     expect(val).toEqual('nested-observe');
-    
+
+    obs.ouch[0].a = 43;
+    [orig_obj, target, name, val, path] = callargs[2];
+    expect(obj.ouch[0].a).toBe(43);
+    expect(path).toBe('.ouch[0].a');
 });
