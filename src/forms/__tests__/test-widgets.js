@@ -8,7 +8,7 @@ import {Duration} from "../../data/datacore/dk-datatypes";
 
 test("text-input-widget", () => {
     document.body.innerHTML = `
-    <div id="work"><input></div>
+        <div id="work"><input></div>
     `;
     const work = $('#work');
     page.initialize(document);
@@ -19,7 +19,7 @@ test("text-input-widget", () => {
     console.log(work.html());
     
     expect(utidy(work.html())).toEqual(utidy(`
-        <input class="TextInputWidget" id="text-input-widget" name="text_input_widget_1" type="text">
+        <input class="TextInputWidget" id="text-input-widget-1" name="text_input_widget_1" type="text">
     `));
 
     w.value = 'forty-two';   // sets the widget prop, not attr
@@ -43,7 +43,7 @@ test("text-input-widget", () => {
 
 test("duration-widget", () => {
     document.body.innerHTML = `
-    <div id="work"><input></div>
+    <div id="work"><input name="foo"></div>
     `;
     const work = $('#work');
     page.initialize(document);
@@ -51,7 +51,7 @@ test("duration-widget", () => {
     const w = DurationWidget.create_on(work.find('input'));
 
     expect(utidy(work.html())).toEqual(utidy(`
-        <input class="DurationWidget" id="duration-widget" name="duration_widget_1" type="text">
+        <input class="DurationWidget" id="duration-widget" name="foo" type="text">
     `));
 
     w.value = 3600;   // sets the widget prop, not attr
@@ -69,3 +69,100 @@ test("duration-widget", () => {
     console.log(w.toString());
     expect(w.value).toEqual(new Duration(3601));
 });
+
+
+test("duration-create-inside", () => {
+    document.body.innerHTML = `
+        <div id="work">
+            
+        </div>
+    `;
+    const work = $('#work');
+    page.initialize(document);
+    
+    const w = DurationWidget.create_inside(work);
+    expect(w.value).toEqual(null);
+    
+    expect(utidy(work.html())).toEqual(utidy(`
+         <input class="DurationWidget" id="duration-widget" name="duration_widget_2" type="text">
+    `));
+});
+
+
+
+test("duration-widget2", () => {
+    document.body.innerHTML = `
+    <div id="work"><input></div>
+    `;
+    const work = $('#work');
+    page.initialize(document);
+
+    const w = DurationWidget.create_on(work.find('input'));
+
+    expect(utidy(work.html())).toEqual(utidy(`
+        <input class="DurationWidget" id="duration-widget" name="duration_widget_3" type="text">
+    `));
+
+    w.value = 3600;   // sets the widget prop, not attr
+    console.log('w.value', w.value);
+    console.log('w.value', w.data.value);
+    console.log('typeof w.value', typeof w.value);
+    console.log("W:", w);
+    console.log('new duration:', (new Duration(3600)).toString());
+    console.log('.val:', $('#' + w.id).val(), typeof $('#' + w.id).val());
+    expect($('#' + w.id).val()).toEqual((new Duration(3600)).toString());
+    expect(w.value).toEqual(new Duration(3600));
+
+    // $('#' + w.id).attr('value', '1:00:01');  // .val(...) will not trigger onchange (see note: https://api.jquery.com/change/)
+    w.widget().attr('value', '1:00:01').val('1:00:01').change();
+    console.log(w.toString());
+    expect(w.value).toEqual(new Duration(3601));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

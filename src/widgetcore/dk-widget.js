@@ -45,6 +45,7 @@ export class Widget extends Class{
         //     busy: false,
         //     mode: 'run',  // 'design'
         // };
+        this._node = null;
         this._visible = true;
         this.__ready = false;
     }
@@ -96,8 +97,11 @@ export class Widget extends Class{
         return (selector) ? me.find(selector) : me;
     }
     
-    get node() {
-        return document.getElementById(this.id);
+    get node() {  // cached accessor to underlying dom node.
+        if (!this._node) {
+            this._node = document.getElementById(this.id);
+        }
+        return this._node;
     }
 
     hide() {

@@ -9,10 +9,17 @@ import dk from "../dk-obj";
 import {Widget} from "../widgetcore/dk-widget";
 import is from "../is";
 import {Duration} from "../data/datacore/dk-datatypes";
+import {env} from "../lifecycle/dkboot/lifecycle-parse-script-tag";
 
 
 export class InputWidget extends Widget {
     constructor(...args) {
+        const props = Object.assign({}, ...args);
+        if ('value' in props) {
+            props.data = props.data || {};
+            props.data.value = props.value;
+            delete props.value;
+        }
         super({
             data: {
                 value: null,
@@ -21,11 +28,21 @@ export class InputWidget extends Widget {
                 // required: false,
                 // autofocus: false,
             }
-        }, ...args);
-        
+        }, props);
+        // this.layout = null;
         this._validators = [];
         this._updating = false;
     }
+    
+    construct() {
+        this.name = this.name || this.node.name || dk.id2name(this.id);
+        if (this.node.name !== this.name) this.node.name = this.name;
+        this.node.type = 'text';  // xxx: it the default for <input>, but ...?
+        this.widget().addClass(this.type);
+        if (this.css) this.widget().css(this.css);
+        if (this.value) this.dom_value = this.value;
+    }
+    
     get value() {
         return this.data.value;
     }
@@ -39,8 +56,17 @@ export class InputWidget extends Widget {
     formatted_value() {
         return this.value.f || this.value;
     }
+
     get_field_value() {
         return this.value;
+    }
+
+    set dom_value(v) {
+        ++this._updating;
+        this.node.value = this.stringify(v);
+        // this is wrong per the html standard, but useful for debugging.
+        if (env.DEBUG) this.node.setAttribute('value', this.stringify(v));
+        --this._updating;
     }
 
     /**
@@ -56,11 +82,7 @@ export class InputWidget extends Widget {
         const v = data.value.value || data.value.v || data.value;
         switch (name) {
             case 'value':
-                ++this._updating;
-                this.widget().val(this.stringify(v));
-                this.node.setAttribute('value', this.stringify(v));
-                --this._updating;
-                
+                this.dom_value = v;
                 this.trigger('set-value', data.value);
                 break;
             case 'readonly':  // handle mixed-case dom property
@@ -72,41 +94,29 @@ export class InputWidget extends Widget {
         }
         super.data_changed(data, path, val, name, target);
     }
-
     /**
      * "Automatically" called (from handlers) when the dom has changed
      * @param change
      */
     widget_changed(event) {
-        if (this._updating === 0 && event.type === 'change') {
-            ++this._updating;
+        if (this._updating++ === 0 && event.type === 'change') {
             this.value = this.parse(event.item.value);
-            --this._updating;
         }
+        --this._updating;
     }
+
     // // toString() helpers..
     // get _widget_data() { return this.widget().data('value'); }
     // get _widget_type() { return this.node.type; }
     // get _widget_val() { return this.widget().val(); }
     // get_widget_value() { return this.widget().val(); }
-
-    prepare() {
-        // xxx: sub-classes should call this at the start of their construct method..
-        this.name = this.name || this.widget().attr('name') || dk.id2name(this.id);
-        this.widget().attr('name', this.name);
-        this.widget().addClass(this.type);
-        if (this.css) this.widget().css(this.css);
-    }
-    construct() {
-        this.prepare();
-    }
     
     stringify(val) { return val; }
     parse(str) { return str; }
 
     handlers() {
         const self = this;
-        this.widget().on('change', function (e) {
+        this.widget().on('change input blur', function (e) {
             self.widget_changed({
                 type: 'change',
                 event: e,
@@ -137,8 +147,7 @@ export class TextInputWidget extends InputWidget {
     }
     construct() {
         super.construct();
-        // this.data.type = 'text';
-        this.node.setAttribute('type', 'text');
+        this.node.type = this.node.type || 'text';
     }
     handlers() {
         super.handlers();
@@ -163,15 +172,45 @@ export class DurationWidget extends InputWidget {
     }
     construct() {
         super.construct();
-        this.node.setAttribute('type', 'text');
+        this.node.type = 'text';
     }
 }
 
 
 export class RadioInputWidget extends InputWidget {
+    constructor(...args) {
+        const props = Object.assign({}, ...args);
+        const _checked = props.checked || false;
+        delete props.checked;
+        
+        super({
+            template: {root: 'input'}
+        }, ...args);
+        this._checked = _checked;
+    }
+    
     construct() {
         super.construct();
-        this.widget().prop('type', 'radio');
+        this.node.type = 'radio';
+        this.node.checked = this._checked;
+    }
+    
+    get checked() {
+        return this._checked;
+    }
+
+    set checked(value) {
+        this._checked = value;
+        this.node.checked = value;  // XXX: should this be in set_node_value?
+        if (env.DEBUG) this.node.setAttribute('checked', 'checked');
+    }
+
+    handlers() {
+        const self = this;
+        super.handlers();
+        this.widget().on('change', function () {
+            self._checked = self.node.checked;  // don't use setter here.
+        });
     }
 }
 
