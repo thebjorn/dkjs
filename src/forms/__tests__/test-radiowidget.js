@@ -15,15 +15,26 @@ test("test-radiowidget", () => {
     
     const w = RadioInputWidget.create_inside(work, {value: 'a'});
     
-    expect(utidy(work.html())).toEqual(utidy(`
-        <input class="RadioInputWidget" id="radio-input-widget" name="radio_input_widget_1" type="radio" value="a">
+    expect(utidy(w.toString())).toEqual(utidy(`
+        <input 
+            class="RadioInputWidget" 
+            id="radio-input-widget" 
+            name="radio_input_widget_1" 
+            type="radio" 
+            dk-value="a">
     `));
     
     w.checked = true;
     console.log(w);
     
-    expect(utidy(work.html())).toEqual(utidy(`
-        <input class="RadioInputWidget" checked="checked" id="radio-input-widget" name="radio_input_widget_1" type="radio" value="a">
+    expect(utidy(w.toString())).toEqual(utidy(`
+        <input 
+            class="RadioInputWidget" 
+            checked="checked" 
+            id="radio-input-widget" 
+            name="radio_input_widget_1" 
+            type="radio" 
+            dk-value="a">
     `));
 
 });

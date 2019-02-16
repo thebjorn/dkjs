@@ -1,4 +1,3 @@
-
 /*
  *  dk.forms namespace
  *
@@ -6,137 +5,35 @@
  */
 
 import dk from "../dk-obj";
-import {Widget} from "../widgetcore/dk-widget";
 import is from "../is";
 import {Duration} from "../data/datacore/dk-datatypes";
 import {env} from "../lifecycle/dkboot/lifecycle-parse-script-tag";
+import {InputWidget} from "./input-widget";
 
-
-export class InputWidget extends Widget {
-    constructor(...args) {
-        const props = Object.assign({}, ...args);
-        if ('value' in props) {
-            props.data = props.data || {};
-            props.data.value = props.value;
-            delete props.value;
-        }
-        super({
-            data: {
-                value: null,
-                // disabled: false,
-                // readonly: false,
-                // required: false,
-                // autofocus: false,
-            }
-        }, props);
-        // this.layout = null;
-        this._validators = [];
-        this._updating = false;
-    }
+/*
+    Global attributes:
     
-    construct() {
-        this.name = this.name || this.node.name || dk.id2name(this.id);
-        if (this.node.name !== this.name) this.node.name = this.name;
-        this.node.type = 'text';  // xxx: it the default for <input>, but ...?
-        this.widget().addClass(this.type);
-        if (this.css) this.widget().css(this.css);
-        if (this.value) this.dom_value = this.value;
-    }
+    accesskey, class
+    contenteditable
+    contextmenu-x
+    data-*
+    dir
+    draggable
+    dropzone-x
+    hidden
+    id
+    inputmode-x
+    is
+    itemid, itemprop, itemref, itemscope, itemtype
+    lang
+    slot
+    spellcheck
+    style
+    tabindex
+    title
+    translate-x
     
-    get value() {
-        return this.data.value;
-    }
-    set value(v) {
-        const value = this.parse(v);
-        this.data.value = value;
-        return v;
-    }
-    get_value() { return this.value; }
-    set_value(v) { this.value = v; return v; }
-    formatted_value() {
-        return this.value.f || this.value;
-    }
-
-    get_field_value() {
-        return this.value;
-    }
-
-    set dom_value(v) {
-        ++this._updating;
-        this.node.value = this.stringify(v);
-        // this is wrong per the html standard, but useful for debugging.
-        if (env.DEBUG) this.node.setAttribute('value', this.stringify(v));
-        --this._updating;
-    }
-
-    /**
-     * Automatically called when Widget.data.xxx is changed
-     * 
-     * @param data      - the new Widget.data
-     * @param path      - the path to the value being changed
-     * @param val       - the new value
-     * @param name      - the name of the attribute being changed (last part of path)
-     * @param target    - the object (Widget.data, or Widget.data...) which is being changed
-     */
-    data_changed(data, path, val, name, target) {
-        const v = data.value.value || data.value.v || data.value;
-        switch (name) {
-            case 'value':
-                this.dom_value = v;
-                this.trigger('set-value', data.value);
-                break;
-            case 'readonly':  // handle mixed-case dom property
-                this.node.readOnly = data.readonly;
-                break;
-            default:
-                // console.log('data:name:', data[name]);
-                this.node[name] = data[name];
-        }
-        super.data_changed(data, path, val, name, target);
-    }
-    /**
-     * "Automatically" called (from handlers) when the dom has changed
-     * @param change
-     */
-    widget_changed(event) {
-        if (this._updating++ === 0 && event.type === 'change') {
-            this.value = this.parse(event.item.value);
-        }
-        --this._updating;
-    }
-
-    // // toString() helpers..
-    // get _widget_data() { return this.widget().data('value'); }
-    // get _widget_type() { return this.node.type; }
-    // get _widget_val() { return this.widget().val(); }
-    // get_widget_value() { return this.widget().val(); }
-    
-    stringify(val) { return val; }
-    parse(str) { return str; }
-
-    handlers() {
-        const self = this;
-        this.widget().on('change input blur', function (e) {
-            self.widget_changed({
-                type: 'change',
-                event: e,
-                item: this
-            });
-            self.trigger('change', e, self);
-        });
-        this.retrigger('validation-change');
-    }
-    
-    toString() {
-        const html = this.widget()[0].outerHTML;
-        const state = JSON.stringify({
-            data: this.data || null,  // undefined doesn't show up in JSON.stringify
-            type: this.node.type || null,
-            val: this.node.value || null
-        });
-        return `${html}(${state})`;
-    }
-}
+ */
 
 
 export class TextInputWidget extends InputWidget {
@@ -147,7 +44,7 @@ export class TextInputWidget extends InputWidget {
     }
     construct() {
         super.construct();
-        this.node.type = this.node.type || 'text';
+        if (this.node.type !== 'text') this.node.type = 'text';
     }
     handlers() {
         super.handlers();
@@ -162,6 +59,10 @@ export class DurationWidget extends InputWidget {
             template: {root: 'input'},
         }, ...args);
     }
+    construct() {
+        super.construct();
+        if (this.node.type !== 'text') this.node.type = 'text';
+    }
     parse(str) {
         if (str instanceof Duration) return str;
         return new Duration(str);
@@ -170,10 +71,7 @@ export class DurationWidget extends InputWidget {
         if (val instanceof Duration) return val.toString();
         return (new Duration(val)).toString();
     }
-    construct() {
-        super.construct();
-        this.node.type = 'text';
-    }
+
 }
 
 
@@ -191,7 +89,7 @@ export class RadioInputWidget extends InputWidget {
     
     construct() {
         super.construct();
-        this.node.type = 'radio';
+        if (this.node.type !== 'radio') this.node.type = 'radio';
         this.node.checked = this._checked;
     }
     
@@ -216,49 +114,75 @@ export class RadioInputWidget extends InputWidget {
 
 
 export class SelectWidget extends InputWidget {
-    constructor() {
+    /* html attributes
+    
+            autocomplete, autofocus
+            disabled
+            form
+            multiple
+            name
+            required
+            size
+            
+     */
+    
+    constructor(...args) {
+        const props = Object.assign({}, ...args);
+        const options = props.options || [];
         super({
-            data: undefined,        // mapping from keys to labels
+            size: 1,
+            multiple: false,
             template: {root: 'select'},
         });
+        this._options = {};
+        this.options = options;
     }
-    formatted_value() {
-        return this.data[this.value];
-    }
-    get_field_value() {
-        return {v: this.value, f: this.formatted_value()};
-    }
-    options(data, fn) {
-        const self = this;
-        let keys;
-        if (is.isFunction(fn)) {
-            if (data) {
-                // list of 2-"tuples"
-                if (is.isArray(data)) {
-                    if (data.length > 0 && is.isArray(data[0]) && data[0].length === 2) {
-                        data.forEach(function (kv) {
-                            fn(kv[0], kv[1]);
-                        });
-                    }
-                } else {
-                    // dict based data (potentially with an __order member).
-                    keys = data.__order? data.__order: Object.keys(data);
-                    keys.forEach(function (key) {
-                        fn(key, data[key]);
-                    });
+    get options() { return this._options; }
+    set options(options) {
+        if (is.isObject(options)) {
+            this._options = options;
+        } else {
+            // options is an Array
+            this._options = {};
+            if (options.length > 0) {  // options === []
+                let [first, ...rest] = options;
+                if (Array.isArray(first)) {  // options === [[k,v], [k,v],...]
+                    options.forEach((k, v) => this._options[k] = v);
+                } else {   // optinos === [v1, v2, v3, ...]
+                    options.forEach(v => this._options[v] = v);
                 }
             }
         }
     }
-    construct() {
-        this.prepare();
+    
+    set dom_value(v) {
+        ++this._updating;
+        this.widget().val(v);
+        // this.widget(`>option[value=${v}]`).attr('selected', 'selected');
+        --this._updating;
     }
+
     draw(data) {
-        const self = this;
-        this.options(data || this.data, function (attr, value) {
-            self.widget().append(dk.$('<option/>').val(attr).text(value));
-            self.widget().append('\n');
+        const widget = this.widget();
+        widget.empty();
+        if (data && data.options) self.options = data.options;
+        console.log("OPTIONS:", self.options);
+        
+        widget.append('\n    ');
+        
+        Object.entries(this.options).forEach(([attr, value]) => {
+            const option = dk.$('<option/>').val(attr).text(value);
+            // noinspection EqualityComparisonWithCoercionJS
+            if (attr == this.value) option.attr('selected', 'selected');  // we want 1 == "1" here!
+            widget.append(option);
+            widget.append('\n    ');
         });
+    }
+    formatted_value() {
+        return this.options[this.value];
+    }
+    get_field_value() {
+        return {v: this.value, f: this.formatted_value()};
     }
 }
 

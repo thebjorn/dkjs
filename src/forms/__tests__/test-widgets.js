@@ -15,16 +15,18 @@ test("text-input-widget", () => {
 
     const w = TextInputWidget.create_on(work.find('input'));
 
-    console.log(w);
-    console.log(work.html());
-    
-    expect(utidy(work.html())).toEqual(utidy(`
-        <input class="TextInputWidget" id="text-input-widget-1" name="text_input_widget_1" type="text">
-    `));
+    // console.log(w);
+    // console.log(work.html());
+    //
+    // expect(utidy(work.html())).toEqual(utidy(`
+    //     <input class="TextInputWidget" id="text-input-widget-1" name="text_input_widget_1" type="text">
+    // `));
 
     w.value = 'forty-two';   // sets the widget prop, not attr
+    console.log(w.toString());
     expect($('#text-input-widget-1').val()).toBe('forty-two');
     expect(w.value).toBe('forty-two');
+    
     
     // document.querySelector('#text-input-widget-1').setAttribute('value', 42);
     
@@ -32,9 +34,18 @@ test("text-input-widget", () => {
     expect(w.value).toBe('42');
     
     w.data.readonly = true;
+    // console.log("ATTRIBUTES:", w._get_attribute_data());
+    
     console.log(work.html());
-    expect(utidy(work.html())).toEqual(utidy(`
-        <input class="TextInputWidget" id="text-input-widget" readonly="readonly" name="text_input_widget_1" type="text" value="42">
+    expect(utidy(w.toString())).toEqual(utidy(`
+        <input 
+            class="TextInputWidget" 
+            id="text-input-widget-1" 
+            name="text_input_widget_1" 
+            dk-readonly="true" 
+            readonly="readonly" 
+            dk-type="text" 
+            dk-value="42">
     `));
 
 });
@@ -50,8 +61,13 @@ test("duration-widget", () => {
 
     const w = DurationWidget.create_on(work.find('input'));
 
-    expect(utidy(work.html())).toEqual(utidy(`
-        <input class="DurationWidget" id="duration-widget" name="foo" type="text">
+    expect(utidy(w.toString())).toEqual(utidy(`
+        <input 
+            class="DurationWidget" 
+            id="duration-widget" 
+            name="foo" 
+            dk-value="null"
+            dk-type="text">
     `));
 
     w.value = 3600;   // sets the widget prop, not attr
@@ -84,7 +100,7 @@ test("duration-create-inside", () => {
     expect(w.value).toEqual(null);
     
     expect(utidy(work.html())).toEqual(utidy(`
-         <input class="DurationWidget" id="duration-widget" name="duration_widget_2" type="text">
+         <input class="DurationWidget" id="duration-widget" name="duration_widget_2">
     `));
 });
 
@@ -100,7 +116,7 @@ test("duration-widget2", () => {
     const w = DurationWidget.create_on(work.find('input'));
 
     expect(utidy(work.html())).toEqual(utidy(`
-        <input class="DurationWidget" id="duration-widget" name="duration_widget_3" type="text">
+        <input class="DurationWidget" id="duration-widget" name="duration_widget_3">
     `));
 
     w.value = 3600;   // sets the widget prop, not attr

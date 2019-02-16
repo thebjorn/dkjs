@@ -107,8 +107,9 @@ import {count_char, dedent} from "./core/text-utils";
 import {PanelWidget} from "./widgets/dk-panel";
 import {ListLayout} from "./layout/list-layout";
 import {TableRowLayout, ResultsetLayout, TableLayout} from "./layout/table-layout";
-import {CheckboxSelectWidget, DurationWidget, InputWidget, RadioInputWidget, RadioSelectWidget, SelectWidget, TextInputWidget, TriboolWidget} from "./forms/widgets";
+import {CheckboxSelectWidget, DurationWidget, RadioInputWidget, RadioSelectWidget, SelectWidget, TextInputWidget, TriboolWidget} from "./forms/widgets";
 import {validate} from "./forms/validators";
+import {InputWidget} from "./forms/input-widget";
 
 
 (function () {

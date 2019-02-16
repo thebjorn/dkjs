@@ -93,7 +93,7 @@ class HtmlTag extends Class {
 function tokenize_html(html) {
     const tokens = [];
     let pos = 0;
-    const tagre = /(<.*?>)/img;
+    const tagre = /(<.*?>)/imsg;
     let m, txt, tag;
     while ((m = tagre.exec(html)) !== null) {
         txt = html.slice(pos, m.index).trim();
@@ -111,8 +111,8 @@ export default function utidy(html, level, indent) {
     if (level === undefined) level = 0;
     if (indent === undefined) indent = '    ';
     const _indent = function (n) {
-        var res = '';
-        for (var j = 0; j < Math.max(0, n); j++) {
+        let res = '';
+        for (let j = 0; j < Math.max(0, n); j++) {
             res += indent;
         }
         return res;
@@ -124,15 +124,19 @@ export default function utidy(html, level, indent) {
     tokens.forEach(tk => {
         switch (tk.kind) {
             case 'text':
+                // console.debug("TEXT:", tk.token);
                 res.push(_indent(i) + tk.token);
                 break;
             case 'tag-start':
+                // console.debug("TAGSTART:", tk.token);
                 res.push(_indent(i++) + tk.token);
                 break;
             case 'tag-end':
+                // console.debug("TAGEND:", tk.token);
                 res.push(_indent(--i) + tk.token);
                 break;
             case 'tag':
+                // console.debug("TAG:", tk.token);
                 res.push(_indent(i) + tk.token);
                 break;
         }
