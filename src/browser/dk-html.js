@@ -4,8 +4,9 @@ import Class from "../lifecycle/coldboot/dk-class";
 
 
 class HtmlTag extends Class {
-    constructor(txt) {
+    constructor(txt, options) {
         super();
+        this.options = options;
         // noinspection JSUnusedGlobalSymbols
         this.orig = txt;
         this.text = txt.replace(/\s+/g, " ");                         // collapse multiple spaces
@@ -25,12 +26,12 @@ class HtmlTag extends Class {
         if (this.closing) this.kind += '-end';
         if (!this.closing && !this.selfclosing) this.kind += '-start';
     }
-    static normalize_class(val) {
+    normalize_class(val) {
         const classes = val.split(/ /);
         classes.sort();
         return classes.join(' ');
     }
-    static normalize_style(val) {
+    normalize_style(val) {
         const styles = val.replace(/&quot;/g, '').split(/;/).map(function (s) {
             return s.replace(/\s+/g, '')
                 .replace('rgb(255,192,203)', 'pink')
@@ -51,11 +52,13 @@ class HtmlTag extends Class {
             const attrval = m[4] || m[6] || attrname;
             switch (attrname) {
                 case 'class':
-                    return ['class', HtmlTag.normalize_class(attrval)];
+                    if (this.options.classes === false) return null;
+                    return ['class', this.normalize_class(attrval)];
                 case 'dkwidget':
                     return ['dk-widget-attr', attrval];
                 case 'style':
-                    return ['style', HtmlTag.normalize_style(attrval)];
+                    if (this.options.style === false) return null;
+                    return ['style', this.normalize_style(attrval)];
                 case 'id':
                     return ['id', attrval.replace(/(.*?)-\d+/, "$1")];
                 case 'for':
@@ -63,7 +66,7 @@ class HtmlTag extends Class {
                 default:
                     return [attrname, attrval];
             }
-        });
+        }).filter(v => v != null);
 
         // special handling of certain tags..
         switch (this.name) {
@@ -79,8 +82,10 @@ class HtmlTag extends Class {
         if (this.closing) return `</${this.name}>`;
         let res = `<${this.name}`;
         if (this.attrtxt) {
+            // console.log("ATTRS:", this.attrs);
             res += " ";
             res += this.attrs.map(([k, v]) => {
+                // console.log("ATTRS:K:V:", k, v);
                 return `${k}="${v}"`;
             }).join(' ');
         }
@@ -90,7 +95,7 @@ class HtmlTag extends Class {
 }
 
 
-function tokenize_html(html) {
+function tokenize_html(html, options) {
     const tokens = [];
     let pos = 0;
     const tagre = /(<.*?>)/imsg;
@@ -98,7 +103,7 @@ function tokenize_html(html) {
     while ((m = tagre.exec(html)) !== null) {
         txt = html.slice(pos, m.index).trim();
         if (txt) tokens.push({kind: 'text', token: txt});
-        tag = HtmlTag.create(html.slice(m.index, tagre.lastIndex));
+        tag = HtmlTag.create(html.slice(m.index, tagre.lastIndex), options);
         tokens.push({kind: tag.kind, token: tag});
         pos = tagre.lastIndex;
     }
@@ -107,9 +112,11 @@ function tokenize_html(html) {
 }
 
 
-export default function utidy(html, level, indent) {
-    if (level === undefined) level = 0;
-    if (indent === undefined) indent = '    ';
+export default function utidy(html, options) {
+    if (options == null) options = {};
+    let level, indent;
+    if (options.level == null) level = 0;
+    if (options.indent == null) indent = '    ';
     const _indent = function (n) {
         let res = '';
         for (let j = 0; j < Math.max(0, n); j++) {
@@ -118,7 +125,7 @@ export default function utidy(html, level, indent) {
         return res;
     };
 
-    const tokens = tokenize_html(html.trim());
+    const tokens = tokenize_html(html.trim(), options);
     const res = [];
     let i = level;
     tokens.forEach(tk => {

@@ -19,7 +19,7 @@ test("panel-3", () => {
     });
     p.collapse_up();
 
-    expect(utidy(work.html())).toEqual(utidy(`
+    expect(utidy(work.html(), {style: false})).toEqual(utidy(`
         <div class="PanelWidget panel-default dk-panel panel collapse-up" id="panel-widget" style="position: relative; overflow: hidden; max-height: 0px;transition-duration:0.1s;transition-property:max-height;transition-timing-function:linear;">
             <header class="panel-heading" id="dk-bx">
                 <div class="panel-title title" id="dk-bx">
@@ -32,5 +32,5 @@ test("panel-3", () => {
             <div style="overflow: auto;" class="panel-body" id="dk-bx"></div>
             <footer class="panel-footer" id="dk-bx"></footer>
         </div>
-    `));
+    `, {style: false}));
 });

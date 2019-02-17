@@ -22,17 +22,18 @@ test("select-widget", () => {
         } 
     });
     // console.log(w);
-    work.find('option[value=1]').click();
-    w.widget().change();
+    work.find('option[value=1]').click().change();
     console.log(work.html());
+    expect(w.value).toEqual({1: 'hello'});
     
-    expect(w.formatted_value()).toBe('hello');
-    expect(w.get_field_value()).toMatchObject({v: "1", f: 'hello'});
+    // expect(w.formatted_value()).toBe('hello');
+    // expect(w.get_field_value()).toMatchObject({v: "1", f: 'hello'});
     
     expect(utidy(work.html())).toEqual(utidy(`
         <select class="SelectWidget" id="select-widget" name="select_widget_1">
-            <option selected="selected" value="1">hello</option>
+            <option value="1">hello</option>
             <option value="2">world</option>
         </select>
     `));
+    expect(w.widget('option:selected').val()).toBe("1");
 });

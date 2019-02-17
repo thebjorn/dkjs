@@ -22,7 +22,7 @@ export default {
         const height = item.outerHeight();
         const origmh = this.setattr(item, 'max-height', height);
         const duration = props.duration || 0;
-        if (duration) {
+        if (duration > 0) {
             this.setattr(item, 'transition-duration', duration + 's');
             this.setattr(item, 'transition-timing-function', 'linear');
             this.setattr(item, 'transition-property', 'max-height');

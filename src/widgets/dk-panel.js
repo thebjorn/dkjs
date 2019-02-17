@@ -24,7 +24,6 @@ export class PanelWidget extends Widget {
             overflow: 'resize',   // 'hidden'|'scroll'|'resize'
             kind: 'panel-default',
 
-
             structure: {
                 classes: ['dk-panel', 'panel'],
                 css: {

@@ -7,12 +7,14 @@ export class InputWidget extends Widget {
         readonly, required, tabindex, type, value
      */
     constructor(...args) {
+        console.log("ARGS:", args);
         const props = Object.assign({}, ...args);
         if ('value' in props) {
             props.data = props.data || {};
             props.data.value = props.value;
             delete props.value;
         }
+        console.log("PROPS:", props);
         super({
             data: {
                 value: null,
@@ -133,10 +135,10 @@ export class InputWidget extends Widget {
         this.retrigger('validation-change');
     }
 
-    _get_attribute_data() {
+    _get_attribute_data(node) {
         const attributes = {};
-        Array.from(this.node.attributes).forEach(({name, value}) => {
-            const attrval = this.node.getAttribute(name);
+        Array.from(node.attributes).forEach(({name, value}) => {
+            const attrval = node.getAttribute(name);
             if (attrval !== undefined && attrval !== value) {
                 attributes['dk-' + name] = value;
                 attributes[name] = attrval;
@@ -147,20 +149,28 @@ export class InputWidget extends Widget {
         Object.entries(this.data).forEach(([k, v]) => {
             if (attributes[k] !== v) attributes['dk-' + k] = v;
         });
-        if (!attributes.type) attributes['dk-type'] = this.node.type;
+        if (!attributes.type) attributes['dk-type'] = node.type;
         return attributes;
     }
-
-    _construct_tag() {
+    
+    _create_start_node() {
         let res = `
             <${this.node.tagName.toLowerCase()}`;
-        const entries = Object.entries(this._get_attribute_data());
+        const entries = Object.entries(this._get_attribute_data(this.node));
         const indent = '\n                ';
         entries.sort().forEach(([k, v]) => res += `${indent}${k}="${v}"`);
         return res + '>';
     }
 
+    _crete_child_nodes() {
+        return "";
+    }
+
+    _create_end_node() {
+        return "";
+    }
+
     toString() {
-        return this._construct_tag();
+        return this._create_start_node() + this._crete_child_nodes() + this._create_end_node()
     }
 }

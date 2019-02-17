@@ -19,17 +19,17 @@ test("panel-4", () => {
     });
     p.collapse_left();
 
-    expect(utidy(work.html())).toEqual(utidy(`        
-        <div class="PanelWidget panel-default dk-panel panel" id="panel-widget" style="position: relative; overflow: hidden; max-height: 0px;transition-duration:0.1s;transition-property:max-height;transition-timing-function:linear;">
+    expect(utidy(work.html(), {style: false})).toEqual(utidy(`        
+        <div class="PanelWidget panel-default dk-panel panel" id="panel-widget">
             <header class="panel-heading" id="dk-bx">
                 <div class="panel-title title" id="dk-bx">
-                    <div class="collapseicon" id="dk-bx" style="cursor:pointer;">
+                    <div class="collapseicon" id="dk-bx">
                         <dk-icon value="folder-open-o:fw"></dk-icon>
                     </div>
                     <span class="headingtext" id="dk-bx">Hello World</span>
                 </div>
             </header>
-            <div style="overflow: auto;" class="panel-body" id="dk-bx"></div>
+            <div class="panel-body" id="dk-bx"></div>
             <footer class="panel-footer" id="dk-bx"></footer>
         </div>
     `));

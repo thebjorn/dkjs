@@ -125,47 +125,70 @@ export class RadioInputWidget extends InputWidget {
  */
 export class SelectWidget extends InputWidget {
     constructor(...args) {
+        // console.log("ARGS:", args);
         const props = Object.assign({}, ...args);
         const options = props.options || [];
+        delete props.options;
+        
+        const selected = props.value || [];
+        delete props.value;
+        
         super({
             size: 1,
             multiple: false,
+            data: {value: {}},
             template: {root: 'select'},
         }, props);
+        
         this._options = {};
+        this._selected = {};
         this.options = options;
+        if (!this.multiple && selected.length > 1) throw "cannot have multiple values when multiple=false";
     }
     get options() { return this._options; }
     set options(options) {
-        if (is.isObject(options)) {
-            this._options = options;
-        } else {
-            // options is an Array
-            this._options = {};
-            if (options.length > 0) {  // options === []
-                let [first, ...rest] = options;
-                if (Array.isArray(first)) {  // options === [[k,v], [k,v],...]
-                    options.forEach((k, v) => this._options[k] = v);
-                } else {   // optinos === [v1, v2, v3, ...]
-                    options.forEach(v => this._options[v] = v);
-                }
+        if (!Array.isArray(options)) options = Object.entries(options);
+        
+        // options is an Array
+        this._options = {};
+        if (options.length > 0) {  // options === []
+            let [first, ...rest] = options;
+            if (Array.isArray(first)) {  // options === [[k,v], [k,v],...]
+                options.forEach(([k, v]) => this._options[k] = v);
+            } else {   // optinos === [v1, v2, v3, ...]
+                options.forEach(v => this._options[v] = v);
             }
         }
+        Object.keys(this._options).forEach(k => this._selected[k] = false);
+    }
+
+    get value() {
+        return this.data.value;
+    }
+    set value(v) {
+        if (!Array.isArray(v)) v = [v];
+        if (!this.multiple) {
+            if (v.length > 1) throw "Cannot set multiple values when multiple = false!";
+            Object.keys(this._selected).forEach(k => this._selected[k] = false);
+        }
+        v.forEach(k => this._selected[k] = true);
+        const val = {};
+        Object.entries(this._selected).forEach(([k, v]) => {
+            if (v) val[k] = this.options[k];
+        });
+        this.data.value = val;
+        return val;
     }
     
     set dom_value(v) {
         ++this._updating;
         this.widget().val(v);
-        // this.widget(`>option[value=${v}]`).attr('selected', 'selected');
         --this._updating;
     }
-
-    draw(data) {
+    
+    rebuild_options() {
         const widget = this.widget();
         widget.empty();
-        if (data && data.options) self.options = data.options;
-        widget.append('\n    ');
-        
         Object.entries(this.options).forEach(([attr, value]) => {
             const option = dk.$('<option/>').val(attr).text(value);
             // noinspection EqualityComparisonWithCoercionJS
@@ -173,6 +196,24 @@ export class SelectWidget extends InputWidget {
             widget.append(option);
             widget.append('\n    ');
         });
+    }
+    
+    construct() {
+        super.construct();
+        if (this.options) this.rebuild_options();
+    }
+
+    draw(data) {
+        if (data != null) {
+            if (data.options && !is.isEqual(data.options, this.options)) {
+                this.options = data.options;
+                this.rebuild_options();
+            } else {
+                this.dom_value = data.value;
+            }
+        } else {
+            this.dom_value = this.value;
+        }
     }
     formatted_value() {
         return this.options[this.value];
@@ -189,15 +230,18 @@ export class RadioSelectWidget extends SelectWidget {
             template: {root: 'div'},
         }, ...args);
     }
-    get value() {
-        return this.widget(':checked').val();
-    }
     set dom_value(v) {
+        if (v == null) return;
         ++this._updating;
-        this.widget(':radio').val([v.value || v.v || v]);
+        const value = v.value || v.v || v;
+        Object.keys(value).forEach(val => {
+            this.widget(`:radio[value="${val}"]`).prop("checked", true);
+        });
         --this._updating;
     }
-    draw(data) {
+    rebuild_options() {
+        const widget = this.widget();
+        widget.empty();
         Object.entries(this.options).forEach(([attr, value]) => {
             const radio = this.layout.make('input', {
                 type: 'radio',
@@ -209,36 +253,48 @@ export class RadioSelectWidget extends SelectWidget {
                 'for': radio.prop('id')
             }).text(value);
             radio.val(attr);
+            // noinspection EqualityComparisonWithCoercionJS
+            if (this.value == attr) radio.prop('checked', true);  // we want 1 == "1" here
             label.prepend('&nbsp;').prepend(radio);
             this.widget().append(label);
-            this.widget().append('\n');
+            this.widget().append('\n        ');
         });
     }
     handlers() {
-        this.widget().on('change', ':radio', () => {
-            this.trigger('change', this);
+        const self = this;
+        this.widget().on('change', ':radio', function (e) {
+            self.widget_changed({
+                type: 'change',
+                event: e,
+                item: this
+            });
+            self.trigger('change', e, self);
         });
+        this.retrigger('validation-change');
     }
 }
 
 
 export class CheckboxSelectWidget extends RadioSelectWidget {
-    get value() {
-        const res = [];
-        this.widget(':checked').each(function () {
-            res.push(dk.$(this).val());
+    constructor(...args) {
+        super({
+            multiple: true
+        }, ...args);
+    }
+    
+    set dom_value(v) {
+        if (v == null) return;
+        ++this._updating;
+        const value = v.value || v.v || v;
+        Object.keys(value).forEach(val => {
+            this.widget(`:checkbox[value="${val}"]`).prop("checked", true);
         });
-        return res;
+        --this._updating;
     }
-    set value(v) {
-        this.widget(':checkbox').val([v.value || v.v || v]);
-        return v;
-    }
-    construct() {
-        this.prepare();
-    }
-    draw(data) {
-        this.options(data || this.data, (attr, value) => {
+    rebuild_options() {
+        const widget = this.widget();
+        widget.empty();
+        Object.entries(this.options).forEach(([attr, value]) => {
             const chkbx = this.layout.make('input', {
                 type: 'checkbox',
                 name: this.name,
@@ -249,15 +305,31 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
                 'for': chkbx.prop('id')
             }).text(value);
             chkbx.val(attr);
+            // noinspection EqualityComparisonWithCoercionJS
+            if (this.value == attr) chkbx.prop('checked', true);  // we want 1 == "1" here
             label.prepend('&nbsp;').prepend(chkbx);
-            this.widget().append(label);
-            this.widget().append('\n');
+            widget.append(label);
+            widget.append('\n');
         });
     }
+   
+    widget_changed(event) {
+        if (this._updating++ === 0 && event.type === 'change') {
+            this._selected[event.item.value] = event.item.checked;
+        }
+        --this._updating;
+    }
     handlers() {
-        this.widget().on('change', ':checkbox', () => {
-            this.notify('change', this);
+        const self = this;
+        this.widget().on('change', ':checkbox', function (e) {
+            self.widget_changed({
+                type: 'change',
+                event: e,
+                item: this
+            });
+            self.trigger('change', e, self);
         });
+        this.retrigger('validation-change');
     }
 }
 
