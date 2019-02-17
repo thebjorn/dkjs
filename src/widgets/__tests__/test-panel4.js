@@ -20,7 +20,7 @@ test("panel-4", () => {
     p.collapse_left();
 
     expect(utidy(work.html())).toEqual(utidy(`        
-        <div class="PanelWidget panel-default dk-panel panel" id="panel-widget" style="position: relative; overflow: hidden; max-height: 0px;">
+        <div class="PanelWidget panel-default dk-panel panel" id="panel-widget" style="position: relative; overflow: hidden; max-height: 0px;transition-duration:0.1s;transition-property:max-height;transition-timing-function:linear;">
             <header class="panel-heading" id="dk-bx">
                 <div class="panel-title title" id="dk-bx">
                     <div class="collapseicon" id="dk-bx" style="cursor:pointer;">

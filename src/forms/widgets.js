@@ -112,20 +112,18 @@ export class RadioInputWidget extends InputWidget {
     }
 }
 
+/* html attributes
 
+        autocomplete, autofocus
+        disabled
+        form
+        multiple
+        name
+        required
+        size
+        
+ */
 export class SelectWidget extends InputWidget {
-    /* html attributes
-    
-            autocomplete, autofocus
-            disabled
-            form
-            multiple
-            name
-            required
-            size
-            
-     */
-    
     constructor(...args) {
         const props = Object.assign({}, ...args);
         const options = props.options || [];
@@ -133,7 +131,7 @@ export class SelectWidget extends InputWidget {
             size: 1,
             multiple: false,
             template: {root: 'select'},
-        });
+        }, props);
         this._options = {};
         this.options = options;
     }
@@ -166,8 +164,6 @@ export class SelectWidget extends InputWidget {
         const widget = this.widget();
         widget.empty();
         if (data && data.options) self.options = data.options;
-        console.log("OPTIONS:", self.options);
-        
         widget.append('\n    ');
         
         Object.entries(this.options).forEach(([attr, value]) => {
@@ -188,24 +184,22 @@ export class SelectWidget extends InputWidget {
 
 
 export class RadioSelectWidget extends SelectWidget {
-    constructor() {
+    constructor(...args) {
         super({
             template: {root: 'div'},
-        });
+        }, ...args);
     }
     get value() {
         return this.widget(':checked').val();
     }
-    set value(v) {
+    set dom_value(v) {
+        ++this._updating;
         this.widget(':radio').val([v.value || v.v || v]);
-        return v;
-    }
-    construct() {
-        this.prepare();
+        --this._updating;
     }
     draw(data) {
-        this.options(data || this.data, (attr, value) => {
-            const radio = self.layout.make('input', {
+        Object.entries(this.options).forEach(([attr, value]) => {
+            const radio = this.layout.make('input', {
                 type: 'radio',
                 name: this.name,
                 id: dk.counter(this.name + '-')
@@ -222,7 +216,7 @@ export class RadioSelectWidget extends SelectWidget {
     }
     handlers() {
         this.widget().on('change', ':radio', () => {
-            this.notify('change', this);
+            this.trigger('change', this);
         });
     }
 }
