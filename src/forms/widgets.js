@@ -9,6 +9,7 @@ import is from "../is";
 import {Duration} from "../data/datacore/dk-datatypes";
 import {env} from "../lifecycle/dkboot/lifecycle-parse-script-tag";
 import {InputWidget} from "./input-widget";
+import {dedent} from "../text/template-functions";
 
 /*
     Global attributes:
@@ -130,7 +131,7 @@ export class RadioInputWidget extends InputWidget {
  * 
  * @param options - key value dict
  */
-function create_options(options) {
+function create_options(options, validate) {
     if (options == null) return {};
     
     if (!Array.isArray(options)) options = Object.entries(options);
@@ -145,7 +146,17 @@ function create_options(options) {
             options.forEach(v => result[v] = v);
         }
     }
-    // Object.keys(this._options).forEach(k => this._selected[k] = false);
+    if (validate) {
+        Object.keys(result).forEach(k => {
+            if (result[k] !== validate[k]) {
+                throw dedent`
+                    Illegal value (${k}) - not in options
+                    VALUES: ${JSON.stringify(result)}
+                    VALIDATE: ${JSON.stringify(validate)} 
+                `;
+            }
+        });
+    }
     return result;
 }
 
@@ -154,25 +165,23 @@ export class SelectWidget extends InputWidget {
     constructor(...args) {
         // console.log("ARGS:", args);
         const props = Object.assign({}, ...args);
-        const options = props.options || [];
+        const options = create_options(props.options);
         delete props.options;
         
-        const selected = create_options(props.value);
+        const value = create_options(props.value, options);
         delete props.value;
-        
-        // XXX handle values passed to create_xx(..)
         
         super({
             size: 1,
             multiple: false,
-            data: {value: selected},
+            data: {value: value},
             template: {root: 'select'},
         }, props);
-        
-        this._options = {};
+
         this._selected = {};
         this.options = options;
-        if (!this.multiple && selected.length > 1) throw "cannot have multiple values when multiple=false";
+        if (!this.multiple && Object.keys(value).length > 1) throw "cannot have multiple values when multiple=false";
+        Object.keys(value).forEach(k => this._selected[k] = true);
     }
     get options() { return this._options; }
     set options(options) {
@@ -187,8 +196,8 @@ export class SelectWidget extends InputWidget {
         if (!Array.isArray(v)) v = [v];
         if (!this.multiple) {
             if (v.length > 1) throw "Cannot set multiple values when multiple = false!";
-            Object.keys(this._selected).forEach(k => this._selected[k] = false);
         }
+        Object.keys(this._selected).forEach(k => this._selected[k] = false);
         v.forEach(k => this._selected[k] = true);
         return this._set_value_from_selected();
         // const val = {};
@@ -316,6 +325,8 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
         if (v == null) return;
         ++this._updating;
         const value = v.value || v.v || v;
+        this.widget(`:checkbox`).prop("checked", false);
+        this.widget(`:checkbox`).removeAttr("checked");
         Object.keys(value).forEach(val => {
             this.widget(`:checkbox[value="${val}"]`).prop("checked", true);
             this.widget(`:checkbox[value="${val}"]`).attr("checked", "checked");
@@ -347,7 +358,9 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
     widget_changed(event) {
         console.debug("WIDGET:CHANGED:", this.value, event.item.value, event.item.checked, this._updating);
         if (this._updating++ === 0 && event.type === 'change') {
+            console.debug("SELECTED:BEFORE:", this._selected);
             this._selected[event.item.value] = event.item.checked;
+            console.debug("SELECTED:AFTER:", this._selected);
             this._set_value_from_selected();
             console.debug("WIDGET:CHANGED:VALUE:", this.value);
         }

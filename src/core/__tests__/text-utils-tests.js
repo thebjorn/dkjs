@@ -25,3 +25,26 @@ test("dedent", () => {
         "\nhello\nworld\n"
     );
 });
+
+
+test("dedent-block", () => {
+    expect(dedent(`
+        hello
+            beautiful
+        world
+    `)).toEqual(
+        "\nhello\n    beautiful\nworld\n"
+    );
+});
+
+
+test("dedent-json", () => {
+    const txt = `
+        hello
+        foo: [
+    1
+]
+        world
+    `;
+    expect(dedent(txt)).toEqual(txt);
+});

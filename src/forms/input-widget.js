@@ -7,14 +7,14 @@ export class InputWidget extends Widget {
         readonly, required, tabindex, type, value
      */
     constructor(...args) {
-        console.log("ARGS:", args);
+        // console.log("ARGS:", args);
         const props = Object.assign({}, ...args);
         if ('value' in props) {
             props.data = props.data || {};
             props.data.value = props.value;
             delete props.value;
         }
-        console.log("PROPS:", props);
+        // console.log("PROPS:", props);
         super({
             data: {
                 value: null,

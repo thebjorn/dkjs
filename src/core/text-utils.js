@@ -43,21 +43,26 @@ export function count_char(s: string, letter: string): number {
 export function dedent(txt: string): string {
     if (!txt) return "";
     const lines = txt.split('\n');
+    // start and end of lines to consider
+    let start = 0;
+    let end = lines.length - 1;
     
     // handle first line
     if (lines[0].match(/^\s*$/)) {
         lines[0] = '';
+        ++start;
     }
     // handle last line
     if (lines[lines.length-1].match(/^\s*$/)) {
-        lines[lines.length-1] = ''
+        lines[lines.length-1] = '';
+        --end;
     }
     
-    let indents = lines.map(line => {
+    let indents = lines.slice(start, end).map(line => {
         const m = line.match(/(^[ \t]*)[^ \t\n]/);
         return m ? m[1] : "";
     });
-    indents = indents.filter(spc => spc > "");  // function (spc) { return spc > ""; });
+    // indents = indents.filter(spc => spc > "");  // function (spc) { return spc > ""; });
     let margin = null;
     indents.forEach(indent => {
         if (margin === null) {
