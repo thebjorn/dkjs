@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+<div
+  id="work"
+>
+  
+            
+  <label>
+    hello world
+  </label>
+  
+        
+  <div
+    class="TriboolWidget"
+    id="tribool-widget-1"
+  >
+    <div
+      class="tribool-label_box"
+      id="dk-bx-1"
+    />
+    <div
+      class="true-widget_box"
+      id="dk-bx-2"
+      style="float: left;"
+    />
+    <div
+      class="false-widget_box"
+      id="dk-bx-3"
+      style="float: left;"
+    />
+  </div>
+</div>
+`;

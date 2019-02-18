@@ -17,15 +17,19 @@ const BINDING_NOTIFY_LEVEL = env.DEBUG ? loglevels.ERROR : loglevels.INFO;
 
 
 function _debugstr(obj) {
-    let res = "";
-    if (obj.tagName) {
-        res += obj.tagName;
-        if (obj.id) {
-            res += '#' + obj.id;
+    try {
+        let res = "";
+        if (obj.tagName) {
+            res += obj.tagName;
+            if (obj.id) {
+                res += '#' + obj.id;
+            }
+            return res;
         }
-        return res;
+        return obj.toString();
+    } catch (e) {
+        return "[error converting obj to string]";
     }
-    return obj.toString();
 }
 
 

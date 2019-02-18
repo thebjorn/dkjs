@@ -383,9 +383,10 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
 
 // XXX: is this a form widget?
 export class TriboolWidget extends InputWidget {
-    constructor(label) {
+    constructor(...args) {
         super({
             values: { 0: 0, 1: 1, 2: 2 },
+            value: 0,
             structure: {  // basic layout of widget
                 tribool_label_box: {},
                 true_widget_box: {
@@ -395,20 +396,22 @@ export class TriboolWidget extends InputWidget {
                     css: { float: 'left' }
                 },
             }
-        });
-        // values: { 0: none, 1: true, 2: false },
-        this.value = 0;
-        this.label = label;
+        }, ...args);
     }
     construct() {
-        this.prepare();
+        super.construct();
         // fixme: add to structure
+        this.label = this.widget('label');
         this.tribool_label_box.text(this.label.text);
         this.true_widget = dk.$('<button type="button" class="btn btn-default btn-circle"><dk-icon src="check checked"></dk-icon></button>');
         this.true_widget_box.append(this.true_widget);
         this.false_widget = dk.$('<button type="button" class="btn btn-default btn-circle"><dk-icon src="minus checked"></dk-icon></i></button>');
         this.false_widget_box.append(this.false_widget);
     }
+    set dom_value(v) {
+        
+    }
+    
     draw(value) {
         if (value === undefined) return;
 
