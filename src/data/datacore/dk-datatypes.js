@@ -73,6 +73,7 @@ export function dkdatatype({tag}) {
 }
 
 
+
 @dkdatatype({tag: '@date:'})
 export class DkDate extends datatype {
     days = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];

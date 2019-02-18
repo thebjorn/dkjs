@@ -20,6 +20,7 @@ test("table-cell", () => {
     const work = $('#work');
 
     const tc = TableCell.create_on(work.find('td'));
+    tc.value = 42;
     
     expect(utidy(work.html())).toEqual(utidy(`
         <table>

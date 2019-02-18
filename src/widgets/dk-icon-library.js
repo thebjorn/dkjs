@@ -2,7 +2,8 @@ import dk from "../dk-obj";
 import {dkrequire} from "../lifecycle/browser/dk-require";
 
 
-class IconLibrary {
+// xxx: should this be exported..?
+export class IconLibrary {
     constructor(props) {
         Object.assign(this, {
             url: '',

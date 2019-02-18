@@ -101,7 +101,7 @@ import widgetmap from "./widgetcore/dk-widgetmap";
 import {Layout} from "./layout/dk-layout";
 import {Widget} from "./widgetcore/dk-widget";
 import {dkrequire_urls, dkrequire} from "./lifecycle/browser/dk-require";
-import {icon, jq_dkicons} from "./widgets/dk-icon-library";
+import {icon, jq_dkicons, IconLibrary} from "./widgets/dk-icon-library";
 import browser_version from "./browser/browser-version";
 import {count_char, dedent} from "./core/text-utils";
 import {PanelWidget} from "./widgets/dk-panel";
@@ -110,12 +110,27 @@ import {TableRowLayout, ResultsetLayout, TableLayout} from "./layout/table-layou
 import {CheckboxSelectWidget, DurationWidget, RadioInputWidget, RadioSelectWidget, SelectWidget, TextInputWidget, TriboolWidget} from "./forms/widgets";
 import {validate} from "./forms/validators";
 import {InputWidget} from "./forms/input-widget";
+import {ArraySource} from "./data/source/dk-array-datasource";
+import {DataSource} from "./data/source/dk-datasource-base";
+import {cursor} from "./widgets/cursors";
+import {ColumnDef} from "./widgets/table/column-def";
+import counter from "./core/counter";
+import {dkwarning} from "./lifecycle/coldboot/dkwarning";
+import {TableCell} from "./widgets/table/table-cell";
+import {TableRow} from "./widgets/table/table-row";
+import {TableHeader} from "./widgets/table/table-header";
+import {SortDirection} from "./widgets/table/sort-direction";
+import {wmap} from "./forms/widgetmap";
 
 
 (function () {
     dk.add({
         sys,
         // core,
+        ColumnDef,
+        TableCell,
+        TableHeader,
+        TableRow,
         State: state.State,
         format,
         format_value: format.value,
@@ -137,6 +152,7 @@ import {InputWidget} from "./forms/input-widget";
             PanelWidget
         },
         icon,
+        cursor,
         
         forms: {
             CheckboxSelectWidget,
@@ -148,14 +164,19 @@ import {InputWidget} from "./forms/input-widget";
             TextInputWidget,
             TextWidget: TextInputWidget,
             TriboolWidget,
-            validators: validate
+            validators: validate,
+            widgetmap: wmap
         },
         
         core: {
             text: {
                 count: count_char,
                 dedent
-            }
+            },
+            counter
+        },
+        ctor_apply(...args) {
+            dkwarning("dk.ctor_apply is no longer needed and has been deprecated.");
         },
         
         layout: {
@@ -168,14 +189,31 @@ import {InputWidget} from "./forms/input-widget";
 
         widget: {
             page,
-            widgetmap,
-            Widget
+            Widget,
+            widgetmap: {
+                wmap: {
+                    CheckboxSelectWidget,
+                    InputWidget,
+                    RadioInputWidget,
+                    RadioSelectWidget,
+                    SelectWidget,
+                    TableCell,
+                    TableRow,
+                    TableHeader,
+                    TriboolWidget,
+                    PanelWidget,
+                    SortDirection,
+                    TextInputWidget
+                }
+            }
         },
         
         update(...args) {
             return Object.assign(...args);
         },
         data: {
+            Source: DataSource,
+            ArraySource,
             datatype: {
                 Date: DkDate,
                 DateTime,
@@ -185,6 +223,14 @@ import {InputWidget} from "./forms/input-widget";
             jason
         },
 
+        table: {
+            ColumnDef,
+            TableCell,
+            TableRow,
+            TableHeader,
+            SortDirection
+        },
+        
         web: {
             browser: {
                 browser: browser_version
@@ -212,7 +258,13 @@ import {InputWidget} from "./forms/input-widget";
             css: dkrequire_urls,
             js: dkrequire_urls
         },
-
+        unsorted: {
+            cursor,
+            icons: {
+                icon,
+                icons: {IconLibrary}
+            }
+        },
         ready(fn) {
             dk.$(fn);
         }
