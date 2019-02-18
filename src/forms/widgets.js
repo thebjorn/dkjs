@@ -133,6 +133,8 @@ export class SelectWidget extends InputWidget {
         const selected = props.value || [];
         delete props.value;
         
+        // XXX handle values passed to create_xx(..)
+        
         super({
             size: 1,
             multiple: false,
