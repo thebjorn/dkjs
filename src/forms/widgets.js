@@ -123,6 +123,33 @@ export class RadioInputWidget extends InputWidget {
         size
         
  */
+
+/**
+ * create an options dict from either an options dict, a flat array, or
+ * a [[key, val], ..] array.
+ * 
+ * @param options - key value dict
+ */
+function create_options(options) {
+    if (options == null) return {};
+    
+    if (!Array.isArray(options)) options = Object.entries(options);
+
+    // options is an Array
+    const result = {};
+    if (options.length > 0) {  // options === []
+        let [first, ...rest] = options;
+        if (Array.isArray(first)) {  // options === [[k,v], [k,v],...]
+            options.forEach(([k, v]) => result[k] = v);
+        } else {   // optinos === [v1, v2, v3, ...]
+            options.forEach(v => result[v] = v);
+        }
+    }
+    // Object.keys(this._options).forEach(k => this._selected[k] = false);
+    return result;
+}
+
+
 export class SelectWidget extends InputWidget {
     constructor(...args) {
         // console.log("ARGS:", args);
@@ -130,7 +157,7 @@ export class SelectWidget extends InputWidget {
         const options = props.options || [];
         delete props.options;
         
-        const selected = props.value || [];
+        const selected = create_options(props.value);
         delete props.value;
         
         // XXX handle values passed to create_xx(..)
@@ -138,7 +165,7 @@ export class SelectWidget extends InputWidget {
         super({
             size: 1,
             multiple: false,
-            data: {value: {}},
+            data: {value: selected},
             template: {root: 'select'},
         }, props);
         
@@ -149,18 +176,7 @@ export class SelectWidget extends InputWidget {
     }
     get options() { return this._options; }
     set options(options) {
-        if (!Array.isArray(options)) options = Object.entries(options);
-        
-        // options is an Array
-        this._options = {};
-        if (options.length > 0) {  // options === []
-            let [first, ...rest] = options;
-            if (Array.isArray(first)) {  // options === [[k,v], [k,v],...]
-                options.forEach(([k, v]) => this._options[k] = v);
-            } else {   // optinos === [v1, v2, v3, ...]
-                options.forEach(v => this._options[v] = v);
-            }
-        }
+        this._options = create_options(options);
         Object.keys(this._options).forEach(k => this._selected[k] = false);
     }
 
@@ -174,12 +190,24 @@ export class SelectWidget extends InputWidget {
             Object.keys(this._selected).forEach(k => this._selected[k] = false);
         }
         v.forEach(k => this._selected[k] = true);
+        return this._set_value_from_selected();
+        // const val = {};
+        // Object.entries(this._selected).forEach(([k, v]) => {
+        //     if (v) val[k] = this.options[k];
+        // });
+        // this.data.value = val;
+        // return val;
+    }
+    _get_value_from_selected() {
         const val = {};
         Object.entries(this._selected).forEach(([k, v]) => {
             if (v) val[k] = this.options[k];
         });
-        this.data.value = val;
         return val;
+    }
+    _set_value_from_selected() {
+        this.data.value = this._get_value_from_selected();
+        return this.data.value;
     }
     
     set dom_value(v) {
@@ -290,6 +318,7 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
         const value = v.value || v.v || v;
         Object.keys(value).forEach(val => {
             this.widget(`:checkbox[value="${val}"]`).prop("checked", true);
+            this.widget(`:checkbox[value="${val}"]`).attr("checked", "checked");
         });
         --this._updating;
     }
@@ -316,8 +345,11 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
     }
    
     widget_changed(event) {
+        console.debug("WIDGET:CHANGED:", this.value, event.item.value, event.item.checked, this._updating);
         if (this._updating++ === 0 && event.type === 'change') {
             this._selected[event.item.value] = event.item.checked;
+            this._set_value_from_selected();
+            console.debug("WIDGET:CHANGED:VALUE:", this.value);
         }
         --this._updating;
     }

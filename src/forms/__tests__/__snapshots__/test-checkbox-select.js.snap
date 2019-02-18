@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`checkbox-select-widget-render 1`] = `
+<div
+  class="CheckboxSelectWidget"
+  id="work"
+>
+  <label
+    for="work-1"
+    id="work-1-label"
+  >
+    <input
+      checked="checked"
+      id="work-1"
+      name="work"
+      type="checkbox"
+      value="hello"
+    />
+     
+    hello
+  </label>
+  
+
+  <label
+    for="work-2"
+    id="work-2-label"
+  >
+    <input
+      id="work-2"
+      name="work"
+      type="checkbox"
+      value="beautiful"
+    />
+     
+    beautiful
+  </label>
+  
+
+  <label
+    for="work-3"
+    id="work-3-label"
+  >
+    <input
+      checked="checked"
+      id="work-3"
+      name="work"
+      type="checkbox"
+      value="world"
+    />
+     
+    world
+  </label>
+  
+
+</div>
+`;
