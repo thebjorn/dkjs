@@ -5,7 +5,12 @@
 import csv
 import pprint
 import datetime
-from django.template.defaultfilters import removetags
+try:
+    from django.template.defaultfilters import removetags
+except ImportError:
+    def removetags(txt, _):
+        return txt
+        
 from django.db.models.fields import FieldDoesNotExist
 from . import jason
 

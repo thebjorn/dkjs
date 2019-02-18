@@ -2,7 +2,10 @@ import textwrap
 from dkjs.grid import (
     ColumnGetter, Model, Column, _ModelFieldColumn, Row, Value, Grid
 )
-from io import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 
 def test_columngetter():
