@@ -101,6 +101,28 @@ export class ArraySource extends DataSource {
      *          ]
      *      }
      */
+    async fetch_records(request) {
+        const p = request;
+        p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
+        p.start = (p.start > p.end) ? p.end : p.start;
+
+        this.do_sort(p);
+        const search_recs = this.do_search(request);
+        const result_recs = search_recs.slice(p.start, p.end);
+
+        return new Promise((resolve, reject) => {
+            resolve({
+                fields: this.get_fields(),
+                meta: {
+                    totcount: this.data.length,
+                    filter_count: search_recs.length,
+                    start_recnum: p.start,
+                    end_recnum: p.start + result_recs.length - 1
+                },
+                records: result_recs
+            });
+        });        
+    }
     get_records(request, returns) {
         const p = request;
         p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;

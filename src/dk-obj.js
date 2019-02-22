@@ -6,7 +6,7 @@ import jQuery from 'jquery';
 
 import performance from "./performance-timer";
 import {env} from "./lifecycle/dkboot/lifecycle-parse-script-tag";
-import * as text from "./core/text-utils";
+import * as text from "./text/text-utils";
 import counter from "./core/counter";
 
 import {shallow_observer, deep_observer} from "./data/observable";

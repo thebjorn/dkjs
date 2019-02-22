@@ -3,7 +3,7 @@ import dk from "../../dk-obj";
 // import {dkconsole} from "../dkboot/dk-console";
 import {parse_src} from "../uri";
 import {dkconsole} from "../dkboot/dk-console";
-import {dedent} from "../../core/text-utils";
+import {dedent} from "../../text/text-utils";
 
 export const state = {};
 let _loaded_page_tags = false;

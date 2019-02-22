@@ -50,6 +50,15 @@ export class DataSource extends Class {
      *      field-name  ::= [-_a-zA-Z]+
      *      field-value ::= ...
      */
+    async fetch_records(request) {
+        return new Promise((resolve, reject) => {
+            resolve({
+                fields: {},
+                meta: {},
+                records: {}
+            });
+        });
+    }
     get_records(request, returns) {
         returns({
             fields: {},

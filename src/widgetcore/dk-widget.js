@@ -6,7 +6,7 @@ import page from "./dk-page";
 import {Layout} from "../layout/dk-layout";
 import template from "lodash.template";
 import jason from "../data/datacore/dk-json";
-import {cls2id} from "../core/text-utils";
+import {cls2id} from "../text/text-utils";
 import {dkconsole} from "../lifecycle/dkboot/dk-console";
 import {dkwarning} from "../lifecycle/coldboot/dkwarning";
 import is from "../is";

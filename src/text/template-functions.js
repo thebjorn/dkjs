@@ -1,5 +1,5 @@
 
-import {dedent as _dedent} from "../core/text-utils";
+import {dedent as _dedent} from "./text-utils";
 
 function _space(n) {
     let res = '';

@@ -103,7 +103,7 @@ import {Widget} from "./widgetcore/dk-widget";
 import {dkrequire_urls, dkrequire} from "./lifecycle/browser/dk-require";
 import {icon, jq_dkicons, IconLibrary} from "./widgets/dk-icon-library";
 import browser_version from "./browser/browser-version";
-import {count_char, dedent} from "./core/text-utils";
+import {count_char, dedent} from "./text/text-utils";
 import {PanelWidget} from "./widgets/dk-panel";
 import {ListLayout} from "./layout/list-layout";
 import {TableRowLayout, ResultsetLayout, TableLayout} from "./layout/table-layout";
@@ -121,6 +121,9 @@ import {TableRow} from "./widgets/table/table-row";
 import {TableHeader} from "./widgets/table/table-header";
 import {SortDirection} from "./widgets/table/sort-direction";
 import {wmap} from "./forms/widgetmap";
+import {JSONDataSource} from "./data/source/dk-json-datasource";
+import {ajax, json} from "./browser/dk-client";
+import {AjaxDataSource} from "./data/source/dk-ajax-datasource";
 
 
 (function () {
@@ -194,6 +197,7 @@ import {wmap} from "./forms/widgetmap";
                 wmap: {
                     CheckboxSelectWidget,
                     InputWidget,
+                    DurationWidget,
                     RadioInputWidget,
                     RadioSelectWidget,
                     SelectWidget,
@@ -214,6 +218,8 @@ import {wmap} from "./forms/widgetmap";
         data: {
             Source: DataSource,
             ArraySource,
+            JSONDataSource,
+            AjaxDataSource,
             datatype: {
                 Date: DkDate,
                 DateTime,
@@ -230,7 +236,8 @@ import {wmap} from "./forms/widgetmap";
             TableHeader,
             SortDirection
         },
-        
+        ajax,
+        json,
         web: {
             browser: {
                 browser: browser_version
@@ -246,7 +253,11 @@ import {wmap} from "./forms/widgetmap";
                 tidy: utidy
             },
             css,
-            state
+            state,
+            client: {
+                ajax,
+                json
+            }
         },
         dom: {
             ...dom,

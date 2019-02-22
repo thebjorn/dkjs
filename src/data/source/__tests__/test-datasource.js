@@ -20,6 +20,15 @@ test("test-datasource-get-records", () => {
 });
 
 
+test("test-datasource-fetch-records", async () => {
+    const ds = new DataSource();
+    const data = await ds.fetch_records({});
+    expect(Object.keys(data.fields)).toHaveLength(0);
+    expect(Object.keys(data.meta)).toHaveLength(0);
+    expect(Object.keys(data.records)).toHaveLength(0);
+});
+
+
 test("test-datasource-get-filter-data", () => {
     const ds = new DataSource();
     ds.get_filter_data({}, data => {
