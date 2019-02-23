@@ -2,9 +2,8 @@
 
 import dk from "../../dk-obj";
 import {TableCell} from "./table-cell";
-import {Widget as SortDirection} from "../../widgetcore/dk-widget";
 import {cursor} from "../cursors";
-
+import {SortDirection} from "./sort-direction";
 
 /*
  *  Column header widget.
@@ -45,7 +44,8 @@ export class TableHeader  extends TableCell {
                 self.table.set_sort(self);
             });
             // $bind('sort@icon -> set_sort_cursor@me', {icon:this.sort_icon, me: this});
-            dk.on(this.sort_icon, 'sort', this.FN('set_sort_cursor'));
+            // dk.on(this.sort_icon, 'sort', this.FN('set_sort_cursor'));
+            dk.on(this.sort_icon, 'sort', () => this.set_sort_cursor());
         }
     }
 
@@ -53,7 +53,9 @@ export class TableHeader  extends TableCell {
         if (this.sortable) {
             const _cursor = this.sort_icon.direction === 'desc' ? 'down' : 'up';
             this.widget().css('cursor', cursor(_cursor));
-            this.table.notify('sort', this.sort_icon.direction);
+            // this.table.notify('sort', this.sort_icon.direction);
+            // this.table.trigger('sort', this.sort_icon.direction);
+            dk.trigger(this.table, 'sort', this.sort_icon.direction);
         }
     }
 

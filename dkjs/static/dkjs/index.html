@@ -26,6 +26,9 @@
         dk-icon:not(:defined) {
             display: none;
         }
+        table, td, th { border: 1px solid #666; }
+        table { border-collapse: collapse; }
+        td, th { padding: 4px; }
     </style>
     
 </head>
@@ -35,10 +38,12 @@
     <dk-icon style="color:hotpink" src="paw:2x:fw"></dk-icon>
 
 
-    <div style="width:200px;height:200px;border:3px dotted red; margin:10px; padding:10px; border-radius: 4px">
+    <div style="width:250px;height:200px;border:3px dotted red; margin:10px; padding:10px; border-radius: 4px">
         <div id="work"><div class="foo"></div></div>
         <div id="color-lite"></div>
     </div>
+    
+    <table id="dtatbl"></table>
 
 <script>
     var h1;
@@ -58,9 +63,23 @@
         // dk.keys().forEach(k => console.log("dk." + k));
         // console.log('dk.keys():', dk.keys());
 
-
-        
-        
+        var dt = dk.DataTable.create_inside('#dtatbl', {
+            datasource: dk.data.ArraySource.create({
+                data: [
+                    {project: 'Generelt NT', work: '1:03:57'},
+                    {project: 'Tiktok',      work: '2:44:57'},
+                    {project: 'AFR-support', work: '1:06:43'}
+                ]
+            }),
+            columns: {
+                project: {
+                    label: 'Prosjekt'
+                },
+                work: {
+                    label: 'Arbeid'
+                }
+            }
+        });
     });
 </script>
     

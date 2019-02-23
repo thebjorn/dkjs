@@ -538,6 +538,18 @@ function isEqual(a, b) {
     return eq(a, b);
 }
 
+function isProps(obj) {
+    const obj_like = obj != null && typeof obj == 'object';
+    const tag = Object.prototype.toString.call(obj);
+    if (!obj_like || tag !== '[object Object]') return false;
+    const proto = Object.getPrototypeOf(Object(obj));  // is Object(obj) still needed? -- yes IE11
+    if (proto === null) return true;
+    const ctor = Object.prototype.hasOwnProperty.call(proto, 'constructor') && proto.constructor;
+    return typeof ctor == 'function' && ctor instanceof ctor &&
+        Function.prototype.toString.call(ctor) === Function.prototype.toString.call(Object);
+}
+
+
 export default {
     VERSION,
     isFunction,
@@ -547,5 +559,6 @@ export default {
     isUndefined,
     isNull,
     isEmpty,
-    isEqual
+    isEqual,
+    isProps
 };

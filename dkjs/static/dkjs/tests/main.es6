@@ -41,7 +41,7 @@ class ButtonWidget3 extends dk.Widget{
         this.widget().text(this.color);
     }
     handlers() {
-        this.notify_on('click');
+        this.retrigger('click');
     }
 }
 

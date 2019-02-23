@@ -100,7 +100,7 @@ export class DataTable extends Widget {
         this.column = {};
         this.column_order = [];
         if (!!this.datasource && this.table_data === null) {
-            this.table_data = DataSet.create({
+            this.table_data = new DataSet({
                 datasource: this.datasource
             });
         }
@@ -108,9 +108,9 @@ export class DataTable extends Widget {
             this.data_url = (this.dk && this.dk.url)? this.dk.url : "";
             //dk.info("URL", this.data_url);
             // if data is not defined, then create one
-            this.table_data = DataSet.create({
+            this.table_data = new DataSet({
                 // default data source is AjaxDataSource
-                datasource: AjaxDataSource.create({
+                datasource: new AjaxDataSource({
                     // default url is current url
                     url: self.data_url
                 })
@@ -168,13 +168,12 @@ export class DataTable extends Widget {
     set_sort(sortcol) {
         if (!sortcol.sortable) return;
         if (this.sortable) {
-            const self = this;
-            self.header.forEach(function (col) {
+            this.header.forEach(function (col) {
                 if (col.sortable && col !== sortcol) col.sort_icon.clear_sort();
             });
             sortcol.sort_icon.toggle_sort_direction();
-            self.data.set_sort(sortcol.name, sortcol.sort_icon.direction);
-            dk.publish(this, 'sort-order', sortcol.name, sortcol.sort_icon.direction, self);
+            this.table_data.set_sort(sortcol.name, sortcol.sort_icon.direction);
+            dk.trigger(this, 'sort-order', sortcol.name, sortcol.sort_icon.direction, this);
         }
     }
 

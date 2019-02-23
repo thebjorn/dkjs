@@ -1,7 +1,5 @@
 
-// var Widget = require('../../widgetcore/dk-widget.js');
-
-
+// XXX: customelement candidate
 import {Widget} from "../../widgetcore/dk-widget";
 import {icon} from "../dk-icon-library";
 
@@ -30,7 +28,7 @@ export class SortDirection extends Widget {
     set_direction(direction) {
         if (direction !== this.direction) {
             this.direction = direction;
-            this.notify('sort', direction);
+            this.trigger('sort', direction);
         }
     }
 
@@ -49,10 +47,7 @@ export class SortDirection extends Widget {
     }
 
     handlers() {
-        var self = this;
-        self.widget().on('click', function () {
-            self.toggle_sort_direction();
-        });
+        this.widget().on('click', () => this.toggle_sort_direction());
     }
 
     draw() {

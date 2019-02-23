@@ -4,9 +4,6 @@ exports[`test-datatable 1`] = `
 <div
   id="work"
 >
-  
-            
-        
   <table
     class="DataTable dk-bx"
     id="data-table-1"
@@ -22,23 +19,43 @@ exports[`test-datatable 1`] = `
         
 
         <th
-          class="TableHeader"
-          fieldname=""
+          class="string"
+          fieldname="project"
           id="dk-table-2"
           scope="col"
+          style="cursor: url(//static.datakortet.no/dk/sort-az.cur), pointer;"
           title=""
-        />
+        >
+          <div
+            class="SortDirection sort-icon"
+            id="sort-direction-1"
+            style="float: right; width: 2ex; margin-left: 2ex;"
+          >
+            <i
+              class="icon fa fa-chevron-down down"
+            />
+          </div>
+          Prosjekt
+        </th>
         
 
         
 
         <th
-          class="TableHeader"
-          fieldname=""
+          class="string"
+          fieldname="work"
           id="dk-table-3"
           scope="col"
+          style="cursor: url(//static.datakortet.no/dk/sort-za.cur), pointer;"
           title=""
-        />
+        >
+          <div
+            class="SortDirection sort-icon"
+            id="sort-direction-2"
+            style="float: right; width: 2ex; margin-left: 2ex;"
+          />
+          Arbeid
+        </th>
         
 
       </tr>
@@ -55,26 +72,30 @@ exports[`test-datatable 1`] = `
 
       <tr
         class="TableRow"
-        id="dk-table-4"
-        pk="0"
+        id="dk-table-7"
+        pk="1"
         rownum="0"
       >
         
 
         <td
-          axis=""
+          axis="project"
           class="TableCell"
-          id="dk-tr-1"
-        />
+          id="dk-tr-7"
+        >
+          Tiktok
+        </td>
         
 
         
 
         <td
-          axis=""
+          axis="work"
           class="TableCell"
-          id="dk-tr-2"
-        />
+          id="dk-tr-8"
+        >
+          2:44:57
+        </td>
         
 
       </tr>
@@ -84,26 +105,30 @@ exports[`test-datatable 1`] = `
 
       <tr
         class="TableRow"
-        id="dk-table-5"
-        pk="1"
+        id="dk-table-8"
+        pk="0"
         rownum="1"
       >
         
 
         <td
-          axis=""
+          axis="project"
           class="TableCell"
-          id="dk-tr-3"
-        />
+          id="dk-tr-9"
+        >
+          Generelt NT
+        </td>
         
 
         
 
         <td
-          axis=""
+          axis="work"
           class="TableCell"
-          id="dk-tr-4"
-        />
+          id="dk-tr-10"
+        >
+          1:03:57
+        </td>
         
 
       </tr>
@@ -113,26 +138,30 @@ exports[`test-datatable 1`] = `
 
       <tr
         class="TableRow"
-        id="dk-table-6"
+        id="dk-table-9"
         pk="2"
         rownum="2"
       >
         
 
         <td
-          axis=""
+          axis="project"
           class="TableCell"
-          id="dk-tr-5"
-        />
+          id="dk-tr-11"
+        >
+          FOO-support
+        </td>
         
 
         
 
         <td
-          axis=""
+          axis="work"
           class="TableCell"
-          id="dk-tr-6"
-        />
+          id="dk-tr-12"
+        >
+          1:06:43
+        </td>
         
 
       </tr>

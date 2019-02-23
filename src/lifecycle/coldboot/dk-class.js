@@ -24,6 +24,8 @@ Usage::
 */
 
 import performance from "../../performance-timer";
+import namespace from "./dk-namespace";
+import is from "../../is";
 
 /**
  * Set the name property of obj.
@@ -104,8 +106,18 @@ const $attr = {
 
 
 export default class Class {
-    constructor(props) {
+    constructor(...args) {
         this.__class__ = this.constructor;
+
+        // if all args are objects (or at least non-numeric..) then combine them
+        let props = {};
+        if (args.length === 1) {
+            props = args[0];
+        } else if (Array.from(args).every(a => is.isProps(a))) {
+            props = Object.assign(props, ...args);
+        } else {
+            props = args;
+        }
         if (typeof props === 'object') {
             for (const attr in props) if (props.hasOwnProperty(attr)) {
                 let propval = props[attr];
@@ -116,7 +128,6 @@ export default class Class {
                 this[attr] = propval;
             }
         }
-        // Object.assign(this, props || {});
         if (this.init !== undefined) this.init(props);
     }
     
@@ -138,10 +149,8 @@ export default class Class {
     
     static create(...args) {
         // first handle X y = X(); X x = X(y); (we don't want a copy ctor)
-        if (args.length === 1 && args[0] instanceof this) return args[0];
-        let obj = new this(...args);
-        if (obj.init !== undefined) obj.init(...args);
-        return obj;
+        if (args.length === 1 && args[0] instanceof this) return args[0];  // XXX: do we really? need this??
+        return new this(...args);
     }
 
     static extend(props) {
