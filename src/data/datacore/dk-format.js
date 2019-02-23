@@ -135,7 +135,7 @@ export const sprintf = (function () {
     }
 
     function str_repeat(input, multiplier) {
-        const output = []
+        const output = [];
         for (; multiplier > 0; output[--multiplier] = input) {/* do nothing */}
         //noinspection JSHint
         return output.join('');
@@ -156,7 +156,7 @@ export function twodigits(n) {
 
 
 export function value(val, record, cell) {
-    if (val === null) return "";
+    if (val == null) return "";
     //if (typeof val === "undefined") debugger;
     let v;
     if (val.v !== undefined) {
@@ -175,7 +175,7 @@ export function value(val, record, cell) {
 
 
 export function percent(val) {
-    if (val === null) return "";
+    if (val == null) return "";
     return val + "%";
 }
 

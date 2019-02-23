@@ -3,40 +3,40 @@
  *  i.e. records in rows, with each field in its own column (with a column
  *  header).
  */
-// var dk = require('../../boot/boot');
-// var Widget = require('../../widgetcore/dk-widget.js');
-// var TableLayout = require('../../layout/dklayout').TableLayout;
-// var TableRow = require('./dk-tablerow-widget.js');
-// var TableHeader = require('./dk-tableheader-widget.js');
-// var ColumnDef = require('./dk-columndef.js');
-// var data = require('../../data');
+// const dk = require('../../boot/boot');
+// const Widget = require('../../widgetcore/dk-widget.js');
+// const TableLayout = require('../../layout/dklayout').TableLayout;
+// const TableRow = require('./dk-tablerow-widget.js');
+// const TableHeader = require('./dk-tableheader-widget.js');
+// const ColumnDef = require('./dk-columndef.js');
+// const data = require('../../data');
 
-
+import dk from "../../dk-obj";
 import {TableLayout} from "../../layout/table-layout";
 import {Widget} from "../../widgetcore/dk-widget";
 import {TableRow} from "./table-row";
+import is from "../../is";
+import {ColumnDef} from "./column-def";
+import {TableHeader} from "./table-header";
+import {DataSet} from "../../data/dk-dataset";
+import {AjaxDataSource} from "../../data/source/dk-ajax-datasource";
 
-class DataTableLayout extends TableLayout {
-    constructor(...args) {
-        super({
-            class_name: 'dk-datatable'
-        }, ...args);
-    }
-    
-    init(widget, location, template, structure) {
-        this._super(widget, location, template, structure);
+
+export class DataTableLayout extends TableLayout {
+    constructor(widget, location, template, structure) {
+        super(widget, location, template, structure);
         this.thead_tr = this.add_header_row();
     }
     
     add_thead_th(attrs) {
-        var th = this.make('thead_th', attrs);
+        const th = this.make('thead_th', attrs);
         this.thead_tr.appendln(th);
         return th;
     }
 }
 
 
-class DataTable extends Widget {
+export class DataTable extends Widget {
     constructor(...args) {
         super({
             // type: 'datatable',
@@ -61,7 +61,7 @@ class DataTable extends Widget {
                 tbody_tr: '<tr/>'
             },
 
-            data: null,
+            table_data: null,
             state: undefined,
 
             // The columns attribute should be a property object that defines the visible columns:
@@ -93,34 +93,33 @@ class DataTable extends Widget {
             column_defs: null,            
         }, ...args);
 
-        var self = this;
-        this._super();
+        const self = this;
         this.rows = [];
         this.header = [];   // th cell objects
 
         this.column = {};
         this.column_order = [];
-        if (!!this.datasource && this.data === null) {
-            this.data = DataSet.create({
+        if (!!this.datasource && this.table_data === null) {
+            this.table_data = DataSet.create({
                 datasource: this.datasource
             });
         }
-        if (this.data === null) {
+        if (this.table_data === null) {
             this.data_url = (this.dk && this.dk.url)? this.dk.url : "";
             //dk.info("URL", this.data_url);
             // if data is not defined, then create one
-            this.data = data.DataSet.create({
+            this.table_data = DataSet.create({
                 // default data source is AjaxDataSource
-                datasource: data.AjaxDataSource.create({
+                datasource: AjaxDataSource.create({
                     // default url is current url
                     url: self.data_url
                 })
             });
         }
-        if (!this.data_url) this.data_url = this.data.datasource.url;
+        if (!this.data_url) this.data_url = this.table_data.datasource.url;
 
         //        this.state = dk.State.create({
-        //            state: this.data.current_pagedef,
+        //            state: this.table_data.current_pagedef,
         //            engine: dk.HashStorage.create({})
         //        });
         //this.state.restore();
@@ -130,27 +129,27 @@ class DataTable extends Widget {
         // this.state = dk.page.hash.substate(this.id);
 
         if (this.download) {
-            var $download = $(this.download);
-            var filename = $download.attr('data-download') || 'filename.csv';
-            $(this.download).attr('href', this.data_url + "!get-records?fmt=csv&filename=" + filename);
+            const $download = dk.$(this.download);
+            const filename = $download.attr('data-download') || 'filename.csv';
+            dk.$(this.download).attr('href', this.data_url + "!get-records?fmt=csv&filename=" + filename);
         }
-        dk.on(this.data, 'fetch-data-start').run(this.FN('start_busy'));
-        dk.on(this.data, 'fetch-data').run(this.FN('draw'));
-        dk.on(this.data, 'fetch-data').run(this.FN('end_busy'));
+        dk.on(this.table_data, 'fetch-data-start').run(this.FN('start_busy'));
+        dk.on(this.table_data, 'fetch-data').run(this.FN('draw'));
+        dk.on(this.table_data, 'fetch-data').run(this.FN('end_busy'));
     }
 
     /*
      *  Connect to a pager widget.
      */
     set_pager(pwidget) {
-        // var self = this;
-        if (this.data.page) {
-            pwidget.set_pagecount(this.data.page.recordset.meta.pagecount);
-            pwidget.select_page(this.data.page.query.pagenum);
+        // const self = this;
+        if (this.table_data.page) {
+            pwidget.set_pagecount(this.table_data.page.recordset.meta.pagecount);
+            pwidget.select_page(this.table_data.page.query.pagenum);
         }
 
-        dk.on(pwidget, 'select-page').run(this.data.FN('get_pagenum'));
-        dk.on(this.data, 'fetch-info').run(function (info, query) {
+        dk.on(pwidget, 'select-page').run(this.table_data.FN('get_pagenum'));
+        dk.on(this.table_data, 'fetch-info').run(function (info, query) {
             pwidget.set_pagecount(info.pagecount);
             pwidget.select_page(query.pagenum);
         });
@@ -161,15 +160,15 @@ class DataTable extends Widget {
     }
 
     handlers() {
-        //$(this.data).on('fetch-data', _.bind(this.draw, this));
-        //$bind('fetch-data@data -> draw@me', {data: this.data, me: this});
+        //$(this.table_data).on('fetch-data', _.bind(this.draw, this));
+        //$bind('fetch-data@data -> draw@me', {data: this.table_data, me: this});
 
     }
 
     set_sort(sortcol) {
         if (!sortcol.sortable) return;
         if (this.sortable) {
-            var self = this;
+            const self = this;
             self.header.forEach(function (col) {
                 if (col.sortable && col !== sortcol) col.sort_icon.clear_sort();
             });
@@ -180,12 +179,12 @@ class DataTable extends Widget {
     }
 
     set_search(terms) {
-        this.data.set_search(terms);
-        if (this.state) this.state.set('pagedef', this.data.current_pagedef);
+        this.table_data.set_search(terms);
+        if (this.state) this.state.set('pagedef', this.table_data.current_pagedef);
     }
 
     set_filter(vals) {
-        this.data.set_filter(vals);
+        this.table_data.set_filter(vals);
     }
 
     get_xy(colnum, rownum) {
@@ -193,15 +192,15 @@ class DataTable extends Widget {
     }
 
     set_xy(colnum, rownum, val, html, title) {
-        var cell = this.get_xy(colnum, rownum);
+        const cell = this.get_xy(colnum, rownum);
         cell.set_value(val, html, title);
         return cell;
     }
 
     values() {
-        var res = [];
+        const res = [];
         this.rows.forEach(function (row) {
-            var r = [];
+            const r = [];
             row.cells.forEach(function (cell) {
                 r.push(cell.widget().text());
             });
@@ -216,18 +215,18 @@ class DataTable extends Widget {
      *    {foo: {label: 'Foo', ..}} ==> [{name: 'foo', label: 'Foo', ...}, ...]
      */
     _get_columndefs(fieldlst) {
-        var self = this;
-        var columndefs;
-        var fields = {};  // field.name -> field
+        const self = this;
+        let columndefs;
+        const fields = {};  // field.name -> field
         fieldlst.forEach(function (f) { fields[f.name] = f; });
 
         // make sure this.columns is an array of pojos
-        if (_.isFunction(this.columns)) columndefs = this.columns(this.data.fields);
+        if (is.isFunction(this.columns)) columndefs = this.columns(this.table_data.fields);
         else if (this.columns === null) columndefs = fieldlst;
-        else if (this.columns !== null && !_.isArray(this.columns)) {
+        else if (this.columns !== null && !Array.isArray(this.columns)) {
             // the columns property has been defined, convert it to array
             columndefs = Object.keys(this.columns).map(function (name) {
-                var col = self.columns[name];
+                const col = self.columns[name];
                 col.name = name;
                 return col;
             });
@@ -235,10 +234,10 @@ class DataTable extends Widget {
 
         // convert the pojos to ColumnDef objects
         return columndefs.map(function (coldef, colnum) {
-            var field = fields[coldef.name];
-            var tmp = {};
+            const field = fields[coldef.name];
+            const tmp = {};
             if (field) {
-                dk.update(tmp, {
+                Object.assign(tmp, {
                     fieldpos: field.pos,
                     fieldtype: field.type,
                     sortable: field.sortable,
@@ -248,15 +247,15 @@ class DataTable extends Widget {
                     field_data: field.data
                 });
             }
-            dk.update(tmp, coldef);
-            dk.update(tmp, {
+            Object.assign(tmp, coldef);
+            Object.assign(tmp, {
                 colnum: colnum,
                 table: self
             });
             if (tmp.sortable === undefined) {
                 tmp.sortable = self.sortable;
             }
-            var cdef = ColumnDef(tmp);
+            const cdef = new ColumnDef(tmp);
             if (fields[cdef.name]) cdef.bind_to_field(fields[cdef.name]);
             self.column[cdef.name] = cdef;
             self.column_order.push(cdef.name);
@@ -269,12 +268,12 @@ class DataTable extends Widget {
      */
     draw_header(dataset) {  // must be a separate method so VDataTable can inherit..
         if (!this.drawn_header) {
-            var self = this;
+            const self = this;
             // NOTE: we have data here!
             this.columns = this._get_columndefs(dataset.page.fields);
 
             this.columns.forEach(function (coldef) {
-                var th = TableHeader.create(self.layout.add_thead_th(), coldef);
+                const th = TableHeader.create(self.layout.add_thead_th(), coldef);
                 self.header.push(th);
             });
             self.drawn_header = true;  // only draw header once.
@@ -282,27 +281,27 @@ class DataTable extends Widget {
     }
 
     draw(dataset) {
-        var self = this;
+        const self = this;
 
         if (!dataset) {   // NOTE: data source consumer pattern..?  (on: data -> draw?)
-            this.data.get_page({
+            this.table_data.get_page({
                 pagenum: this.current_pagenum
             });
         } else {
             self.draw_header(dataset);
-            dk.publish(self, 'draw-start', self);
+            dk.trigger(self, 'draw-start', self);
             self.layout.clear_body();
             self.rows = [];
 
             dataset.page.records.forEach(function (record, rownum) {
-                var tr = self.TableRow.create(self.layout.add_row_to('tbody'), {
+                const tr = self.TableRow.create(self.layout.add_row_to('tbody'), {
                     rownum: rownum,
                     record: record,
                     table: self
                 });
                 self.rows.push(tr);
             });
-            dk.publish(self, 'draw-end', self);
+            dk.trigger(self, 'draw-end', self);
         }
     }
 }

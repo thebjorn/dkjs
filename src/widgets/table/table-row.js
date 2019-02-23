@@ -24,7 +24,6 @@ export class TableRow extends Widget {
         }, ...args);
     }
     
-    
     construct() {
         const record = this.record;
         const table = this.table;

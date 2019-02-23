@@ -124,6 +124,9 @@ import {wmap} from "./forms/widgetmap";
 import {JSONDataSource} from "./data/source/dk-json-datasource";
 import {ajax, json} from "./browser/dk-client";
 import {AjaxDataSource} from "./data/source/dk-ajax-datasource";
+import {DataPage} from "./data/dk-datapage";
+import {DataSet} from "./data/dk-dataset";
+import {DataTable, DataTableLayout} from "./widgets/table/data-table";
 
 
 (function () {
@@ -134,6 +137,8 @@ import {AjaxDataSource} from "./data/source/dk-ajax-datasource";
         TableCell,
         TableHeader,
         TableRow,
+        DataTable,
+        DataTableLayout,
         State: state.State,
         format,
         format_value: format.value,
@@ -220,6 +225,8 @@ import {AjaxDataSource} from "./data/source/dk-ajax-datasource";
             ArraySource,
             JSONDataSource,
             AjaxDataSource,
+            DataPage,
+            DataSet,
             datatype: {
                 Date: DkDate,
                 DateTime,
@@ -234,7 +241,9 @@ import {AjaxDataSource} from "./data/source/dk-ajax-datasource";
             TableCell,
             TableRow,
             TableHeader,
-            SortDirection
+            SortDirection,
+            DataTable,
+            DataTableLayout
         },
         ajax,
         json,

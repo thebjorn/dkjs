@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-datatable 1`] = `
+<div
+  id="work"
+>
+  
+            
+        
+  <table
+    class="DataTable dk-bx"
+    id="data-table-1"
+  >
+    <thead
+      id="dk-bx-1"
+    >
+      
+
+      <tr
+        id="dk-table-1"
+      >
+        
+
+        <th
+          class="TableHeader"
+          fieldname=""
+          id="dk-table-2"
+          scope="col"
+          title=""
+        />
+        
+
+        
+
+        <th
+          class="TableHeader"
+          fieldname=""
+          id="dk-table-3"
+          scope="col"
+          title=""
+        />
+        
+
+      </tr>
+      
+
+    </thead>
+    <tfoot
+      id="dk-bx-2"
+    />
+    <tbody
+      id="dk-bx-3"
+    >
+      
+
+      <tr
+        class="TableRow"
+        id="dk-table-4"
+        pk="0"
+        rownum="0"
+      >
+        
+
+        <td
+          axis=""
+          class="TableCell"
+          id="dk-tr-1"
+        />
+        
+
+        
+
+        <td
+          axis=""
+          class="TableCell"
+          id="dk-tr-2"
+        />
+        
+
+      </tr>
+      
+
+      
+
+      <tr
+        class="TableRow"
+        id="dk-table-5"
+        pk="1"
+        rownum="1"
+      >
+        
+
+        <td
+          axis=""
+          class="TableCell"
+          id="dk-tr-3"
+        />
+        
+
+        
+
+        <td
+          axis=""
+          class="TableCell"
+          id="dk-tr-4"
+        />
+        
+
+      </tr>
+      
+
+      
+
+      <tr
+        class="TableRow"
+        id="dk-table-6"
+        pk="2"
+        rownum="2"
+      >
+        
+
+        <td
+          axis=""
+          class="TableCell"
+          id="dk-tr-5"
+        />
+        
+
+        
+
+        <td
+          axis=""
+          class="TableCell"
+          id="dk-tr-6"
+        />
+        
+
+      </tr>
+      
+
+    </tbody>
+  </table>
+</div>
+`;

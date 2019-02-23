@@ -70,7 +70,7 @@ export function on(obj, signal, optfn) {
             dkconsole.debug(`dk.on(${_debugstr(obj)}, "${signal}", run: ${optfn.toString()})`);
         } else {
             dkconsole.error("dk.on argument error:", obj, signal, optfn);
-            throw new Error("Cannot listen on undefined object: " + obj);
+            if (!obj) throw new Error("Cannot listen on undefined object: " + obj);
         }
     }
     if (obj === undefined) {
