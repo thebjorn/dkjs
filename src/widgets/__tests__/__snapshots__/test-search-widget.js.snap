@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-search-widget-render 1`] = `
+<div
+  id="work"
+>
+  
+            
+        
+  <form
+    class="SearchWidget search-form form-inline"
+    id="search-widget-1"
+  >
+    <div
+      class="form-group has-feedback"
+      id="dk-bx-1"
+    >
+      <div
+        class="input-group input-group-sm"
+        id="dk-bx-2"
+      >
+        <input
+          accesskey="s"
+          class="form-control search-input"
+          id="dk-bx-3"
+          name="q"
+          placeholder="Søk.."
+          type="search"
+        />
+        <span
+          class="clear-button form-control-feedback"
+          id="dk-bx-4"
+          style="display: none;"
+        >
+          <i
+            class="icon fa fa-times times fa-fw"
+          />
+        </span>
+        <div
+          class="input-group-btn go-group"
+          id="dk-bx-5"
+        >
+          <button
+            class="go-button btn btn-primary"
+            id="dk-bx-6"
+          >
+            <i
+              class="icon fa fa-search search fa-fw"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+`;

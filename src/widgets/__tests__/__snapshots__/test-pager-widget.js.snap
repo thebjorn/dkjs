@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-pager-widget-render 1`] = `
+<div
+  id="work"
+>
+  
+            
+        
+  <ul
+    class="PagerWidget pagination"
+    id="pager-widget-1"
+    style="margin-top: 0px; margin-bottom: 0px;"
+  >
+    <li
+      class="prev-nav"
+    >
+      <a
+        href="#"
+      >
+        «
+      </a>
+    </li>
+    <li
+      class="page"
+      page="1"
+    >
+      <a
+        href="#"
+      >
+        1
+      </a>
+    </li>
+    <li
+      class="page"
+      page="2"
+    >
+      <a
+        href="#"
+      >
+        2
+      </a>
+    </li>
+    <li
+      class="page"
+      page="3"
+    >
+      <a
+        href="#"
+      >
+        3
+      </a>
+    </li>
+    <li
+      class="page"
+      page="4"
+    >
+      <a
+        href="#"
+      >
+        4
+      </a>
+    </li>
+    <li
+      class="page"
+      page="5"
+    >
+      <a
+        href="#"
+      >
+        5
+      </a>
+    </li>
+    <li
+      class="page active"
+      page="6"
+    >
+      <a
+        href="#"
+      >
+        6
+      </a>
+    </li>
+    <li
+      class="page"
+      page="7"
+    >
+      <a
+        href="#"
+      >
+        7
+      </a>
+    </li>
+    <li
+      class="page"
+      page="8"
+    >
+      <a
+        href="#"
+      >
+        8
+      </a>
+    </li>
+    <li
+      class="page"
+      page="9"
+    >
+      <a
+        href="#"
+      >
+        9
+      </a>
+    </li>
+    <li
+      class="page"
+      page="10"
+    >
+      <a
+        href="#"
+      >
+        10
+      </a>
+    </li>
+    <li
+      class="next-nav"
+    >
+      <a
+        href="#"
+      >
+        »
+      </a>
+    </li>
+  </ul>
+</div>
+`;

@@ -127,6 +127,15 @@ import {AjaxDataSource} from "./data/source/dk-ajax-datasource";
 import {DataPage} from "./data/dk-datapage";
 import {DataSet} from "./data/dk-dataset";
 import {DataTable, DataTableLayout} from "./widgets/table/data-table";
+import {DataGrid} from "./widgets/table/datagrid/datagrid";
+import {SearchWidget} from "./widgets/search-widget";
+import {PagerWidget} from "./widgets/pager-widget";
+import {ResultSet} from "./widgets/table/resultset/resultset";
+import {DataGridRow} from "./widgets/table/datagrid/datagrid-row";
+import {DataFilter} from "./widgets/data-filter";
+import tree_data from "./widgets/tree/tree-data";
+import {dkmodule} from "./lifecycle/lifecycle";
+import {PostnrLookupWidget} from "./widgets/postnr-lookup";
 
 
 (function () {
@@ -139,6 +148,14 @@ import {DataTable, DataTableLayout} from "./widgets/table/data-table";
         TableRow,
         DataTable,
         DataTableLayout,
+        DataGrid,
+        SearchWidget,
+        PagerWidget,
+        ResultSet,
+        SortDirection,
+        DataFilter,
+        PostnrLookupWidget,
+        
         State: state.State,
         format,
         format_value: format.value,
@@ -162,26 +179,30 @@ import {DataTable, DataTableLayout} from "./widgets/table/data-table";
         icon,
         cursor,
         
-        forms: {
-            CheckboxSelectWidget,
-            DurationWidget,
-            InputWidget,
-            RadioInputWidget,
-            RadioSelectWidget,
-            SelectWidget,
-            TextInputWidget,
-            TextWidget: TextInputWidget,
-            TriboolWidget,
-            validators: validate,
-            widgetmap: wmap
-        },
+        initialize: dkmodule.initialize,
+        
+        forms: wmap,
+        // {
+        //     CheckboxSelectWidget,
+        //     DurationWidget,
+        //     InputWidget,
+        //     RadioInputWidget,
+        //     RadioSelectWidget,
+        //     SelectWidget,
+        //     TextInputWidget,
+        //     TextWidget: TextInputWidget,
+        //     TriboolWidget,
+        //     validators: validate,
+        //     widgetmap: wmap
+        // },
         
         core: {
             text: {
                 count: count_char,
                 dedent
             },
-            counter
+            counter,
+            lifecycle: dkmodule
         },
         ctor_apply(...args) {
             dkwarning("dk.ctor_apply is no longer needed and has been deprecated.");
@@ -193,6 +214,10 @@ import {DataTable, DataTableLayout} from "./widgets/table/data-table";
             TableRowLayout, 
             ResultsetLayout, 
             TableLayout
+        },
+        
+        filter: {
+            DataFilter
         },
 
         widget: {
@@ -212,9 +237,21 @@ import {DataTable, DataTableLayout} from "./widgets/table/data-table";
                     TriboolWidget,
                     PanelWidget,
                     SortDirection,
-                    TextInputWidget
+                    TextInputWidget,
+                    DataGridRow,
+                    search: SearchWidget,
+                    datagrid: DataGrid,
+                    datatable: DataTable,
+                    resultset: ResultSet,
+                    ['postnr-lookup-widget']: PostnrLookupWidget,
+                    PagerWidget,
+                    DataFilter
                 }
             }
+        },
+        
+        tree: {
+            data: tree_data
         },
         
         update(...args) {
@@ -243,7 +280,11 @@ import {DataTable, DataTableLayout} from "./widgets/table/data-table";
             TableHeader,
             SortDirection,
             DataTable,
-            DataTableLayout
+            DataTableLayout,
+            DataGrid,
+            PagerWidget,
+            ResultSet,
+            SearchWidget
         },
         ajax,
         json,
@@ -283,12 +324,15 @@ import {DataTable, DataTableLayout} from "./widgets/table/data-table";
             icons: {
                 icon,
                 icons: {IconLibrary}
-            }
+            },
+            PostnrLookupWidget
         },
         ready(fn) {
             dk.$(fn);
         }
     });
+    
+    dk.format.format_value = format.format_value;
 
     // print out all startup performance metrics 
     // eslint-disable-next-line no-console

@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-resultset-render 1`] = `
+<div
+  id="work"
+>
+  
+            
+        
+  <table
+    class="DataGrid dk-bx busy"
+    id="data-grid-1"
+  >
+    <thead
+      id="dk-bx-1"
+    >
+      
+
+      <tr
+        id="dk-table-1"
+      />
+      
+
+    </thead>
+    <tfoot
+      id="dk-bx-2"
+    />
+    <tbody
+      id="dk-bx-3"
+    />
+  </table>
+</div>
+`;
