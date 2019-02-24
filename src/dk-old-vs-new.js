@@ -335,6 +335,7 @@ export default function old_vs_new(dk) {
     );
 
     const dkattrs = new Set(list_contents(dk));
+    console.info("STARTING:", Array.from(originaldk).length);
     console.warn("MISSING:", Array.from(set_difference(originaldk, dkattrs)).sort());
     console.warn("EXTRA:", Array.from(set_difference(dkattrs, originaldk)).sort());
 }
