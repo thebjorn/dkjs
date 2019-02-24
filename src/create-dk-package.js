@@ -267,7 +267,8 @@ import {PostnrLookupWidget} from "./widgets/postnr-lookup";
             datatype: {
                 Date: DkDate,
                 DateTime,
-                Duration
+                Duration,
+                _datatypes: {}
             },
             format: {format},
             jason
@@ -332,7 +333,7 @@ import {PostnrLookupWidget} from "./widgets/postnr-lookup";
         }
     });
     
-    dk.format.format_value = format.format_value;
+    dk.data.format.format_value = format.format_value;
 
     // print out all startup performance metrics 
     // eslint-disable-next-line no-console
