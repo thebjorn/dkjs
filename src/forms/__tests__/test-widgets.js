@@ -4,6 +4,7 @@ import utidy from "../../browser/dk-html";
 import {DurationWidget, TextInputWidget} from "../widgets";
 import page from "../../widgetcore/dk-page";
 import {Duration} from "../../data/datacore/dk-datatypes";
+import {wmap} from "../widgetmap";
 
 
 test("text-input-widget", () => {
