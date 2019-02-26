@@ -78,7 +78,7 @@ export class DataSet extends Class {
                 }
             }
         }
-        dk.on(page, 'dirty', () => this.update());
+        dk.on(page, 'dirty', (...args) => this.update(...args));
         this.page = this.pages[query] = page;
         dk.trigger(this, 'fetch-info', page.recordset.meta, query);
         dk.trigger(this, 'fetch-data', this, page);

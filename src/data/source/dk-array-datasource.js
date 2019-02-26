@@ -170,7 +170,7 @@ export class ArraySource extends DataSource {
      *  data source (in the correct order).
      */
     get_fields() {
-        if (this.data.length > 1) {
+        if (this.data.length > 0) {
             const first = this.data[0];
             const field_defs = {};
             Object.keys(first).forEach(function (key, i) {

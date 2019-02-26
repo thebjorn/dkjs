@@ -21,13 +21,12 @@ export class DataGridRow extends TableRow {
         if (this.editing) return;
         if (!this.table.start_editing(this)) return;  // prevent editing multiple rows
         this.editing = true;
-        const self = this;
         this.widget().toggle_busy(true);
-        this.cells.forEach(function (cell) {
+        this.cells.forEach(cell => {
             cell.start_editing();
-            dk.on(cell, 'dirty').run(function (coldef, newval, widget) {
-                const record = self.record;
-                self.table.add_dirty(record, coldef, newval, coldef.get_value(record), widget);
+            dk.on(cell, 'dirty', (coldef, newval, widget, oldval) => {
+                const record = this.record;
+                this.table.add_dirty(record, coldef, newval, oldval, widget);
             });
         });
         this.widget('input:first').focus();

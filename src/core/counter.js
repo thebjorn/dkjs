@@ -1,6 +1,6 @@
 // LVL:0
 
-const _counters = {
+let _counters = {
     _default: 1
 };
 
@@ -23,5 +23,8 @@ function counter(name, startval=0) {
     return name + _counters[name]++;
 }
 
+export function _reset_counters() {
+    _counters = {_default: 1};
+}
 
 export default counter;

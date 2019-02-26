@@ -6,7 +6,7 @@ import widgetmap from "../../widgetcore/dk-widgetmap";
 import {TextInputWidget} from "../../forms/widgets";
 
 
-export class ColumnDef extends Class{
+export class ColumnDef extends Class {
     constructor(...args) {
         super({
             isa:         'dk.table.ColumnDef',
@@ -25,34 +25,11 @@ export class ColumnDef extends Class{
                 int: 'right'
             }
         }, ...args);
+        this.name = this.name || this.field;
     }
-
-    // constructor(props) {
-    //     super(Object.assign({
-    //         isa:         'dk.table.ColumnDef',
-    //         name:        '',                        // name of column (eg. for computed cols)
-    //         field:       '',                        // field definition {name:.., pos:.., string:..,...}
-    //         label:       '',                        // text to put in th element
-    //         sortable:    undefined,                 // sortable override
-    //         description: '',                        // description
-    //         align:       undefined,                 // cell alignment
-    //         format:      format_value,  // formatting function
-    //         type:        undefined,                 // data type of column values
-    //         widget_type: TextInputWidget,     // widget to use when editing a cell value
-    //         empty:       '',                        // value to use for empty cells
-    //         table:       undefined,                 // the DataTable (subclass) we belong to
-    //         _alignment_map: {
-    //             int: 'right'
-    //         }
-    //     }, props));
-    // }
 
     alignment() {
         return this.align || this._alignment_map[this.type] || 'left';
-    }
-
-    init() {
-        this.name = this.name || this.field;
     }
 
     get_value(record) {
@@ -71,7 +48,7 @@ export class ColumnDef extends Class{
         let wtype;
         if (field.widget) {
             // wtype = widgetmap.get(field.widget);
-            wtype = forms[field.widget];
+            wtype = widgetmap[field.widget];
         } else {
             wtype = widgetmap[this.type];
         }

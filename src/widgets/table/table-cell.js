@@ -34,7 +34,7 @@ export class TableCell extends Widget{
         let width = location.width();
         location.empty();
         const edit_widget = coldef.widget_type.create_inside(location, {
-            data: coldef.widget_data,  // eg. data to fill a drop-down list.
+            data: coldef.widget_data || {},  // eg. data to fill a drop-down list.
             url: coldef.widget_url,    // url to fetch data from
             css: { border: 'none' }
         });
@@ -57,8 +57,9 @@ export class TableCell extends Widget{
 
         // update field immediately on change (we can still undo..)
         this.edit_widget.widget().on('change', () => {
+            const oldval = this.value;
             this.value = this.edit_widget.get_field_value();
-            dk.trigger(this, 'dirty', this.coldef, this.value, this.edit_widget);
+            dk.trigger(this, 'dirty', this.coldef, this.value, this.edit_widget, oldval);
         });
     }
 

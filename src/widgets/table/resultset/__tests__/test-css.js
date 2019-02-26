@@ -2,7 +2,7 @@
 import $ from 'jquery';
 
 
-test("test-flex-1-css", () => {
+test("test-flex-1-css-failing-travis", () => {
     document.body.innerHTML = `
         <div id="work">
             <div id="a"></div>

@@ -1,6 +1,7 @@
 import dk from "../../../dk-obj";
 import {DataTable} from "../data-table";
 import {DataGridRow} from "./datagrid-row";
+import {dkconsole} from "../../../lifecycle/dkboot/dk-console";
 
 /*
     A datagrid is a data table that can update its data source.
@@ -16,11 +17,11 @@ export class DataGrid extends DataTable {
     }
 
     save() {
-        this.data.update();     // update datasource
+        this.table_data.update();     // update datasource
     }
 
     add_dirty(record, coldef, newval, oldval, widget) {
-        this.data.page.add_dirty(
+        this.table_data.page.add_dirty(
             record.pk,
             coldef.field,
             newval,
@@ -72,8 +73,8 @@ export class DataGrid extends DataTable {
         this._command_cells = null;
         this.widget().removeClass('editing');
         this.editing = false;
-        this.notify('stop-editing', this);
-        dk.info("Table stop editing", 5);
+        this.trigger('stop-editing', this);
+        dkconsole.info("Table stop editing", 5);
     }
 
 }

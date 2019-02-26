@@ -1,6 +1,188 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`test-resultset-render 1`] = `
+exports[`test-datagrid-1 1`] = `
+<div
+  id="work"
+>
+  
+            
+  <div
+    id="mydt-124"
+  >
+    
+                
+    <table
+      class="table table-bordered table-striped DataGrid dk-bx"
+      id="data-grid-1"
+    >
+      
+                
+      <thead
+        id="dk-bx-1"
+      >
+        
+
+        <tr
+          id="dk-table-1"
+        >
+          
+
+          <th
+            class="string"
+            fieldname="work"
+            id="dk-table-2"
+            scope="col"
+            style="cursor: url(//static.datakortet.no/dk/sort-za.cur), pointer;"
+            title=""
+          >
+            <div
+              class="SortDirection sort-icon"
+              id="sort-direction-1"
+              style="float: right; width: 2ex; margin-left: 2ex;"
+            />
+            Arbeid
+          </th>
+          
+
+          
+
+          <th
+            class="string"
+            fieldname="project"
+            id="dk-table-3"
+            scope="col"
+            style="cursor: url(//static.datakortet.no/dk/sort-za.cur), pointer;"
+            title=""
+          >
+            <div
+              class="SortDirection sort-icon"
+              id="sort-direction-2"
+              style="float: right; width: 2ex; margin-left: 2ex;"
+            />
+            Prosjekt
+          </th>
+          
+
+        </tr>
+        
+
+      </thead>
+      <tfoot
+        id="dk-bx-2"
+      />
+      <tbody
+        id="dk-bx-3"
+      >
+        
+
+        <tr
+          class="DataGridRow"
+          id="dk-table-4"
+          pk="0"
+          rownum="0"
+        >
+          
+
+          <td
+            axis="work"
+            class="TableCell"
+            id="dk-tr-1"
+          >
+            1:11:11
+          </td>
+          
+
+          
+
+          <td
+            axis="project"
+            class="TableCell"
+            id="dk-tr-2"
+          >
+            foo-support
+          </td>
+          
+
+        </tr>
+        
+
+        
+
+        <tr
+          class="DataGridRow"
+          id="dk-table-5"
+          pk="1"
+          rownum="1"
+        >
+          
+
+          <td
+            axis="work"
+            class="TableCell"
+            id="dk-tr-3"
+          >
+            2:22:11
+          </td>
+          
+
+          
+
+          <td
+            axis="project"
+            class="TableCell"
+            id="dk-tr-4"
+          >
+            generelt nt
+          </td>
+          
+
+        </tr>
+        
+
+        
+
+        <tr
+          class="DataGridRow"
+          id="dk-table-6"
+          pk="2"
+          rownum="2"
+        >
+          
+
+          <td
+            axis="work"
+            class="TableCell"
+            id="dk-tr-5"
+          >
+            3:33:11
+          </td>
+          
+
+          
+
+          <td
+            axis="project"
+            class="TableCell"
+            id="dk-tr-6"
+          >
+            tiktok
+          </td>
+          
+
+        </tr>
+        
+
+      </tbody>
+    </table>
+    
+            
+  </div>
+  
+        
+</div>
+`;
+
+exports[`test-datagrid-render 1`] = `
 <div
   id="work"
 >

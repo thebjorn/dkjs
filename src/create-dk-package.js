@@ -95,7 +95,7 @@ import {Template, DomItem} from "./browser/dk-dom-template";
 import utidy from "./browser/dk-html";
 import css from "./browser/dk-css";
 import old_vs_new from "./dk-old-vs-new";
-import {jq_links2popup} from "./browser/jquery-plugins";
+import {jq_get_attributes, jq_help_button, jq_links2popup, jq_toggle_busy} from "./browser/jquery-plugins";
 import page from "./widgetcore/dk-page";
 import widgetmap from "./widgetcore/dk-widgetmap";
 import {Layout} from "./layout/dk-layout";
@@ -362,6 +362,10 @@ import {PostnrLookupWidget} from "./widgets/postnr-lookup";
     dk.ready(function () {
         jq_links2popup(dk);
         jq_dkicons(dk);
+        jq_help_button(dk);
+        jq_get_attributes(dk);
+        jq_toggle_busy(dk);
+        
         dk.info('dk-fully-loaded');
     });
 })();

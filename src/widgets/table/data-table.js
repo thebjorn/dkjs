@@ -133,9 +133,6 @@ export class DataTable extends Widget {
             const filename = $download.attr('data-download') || 'filename.csv';
             dk.$(this.download).attr('href', this.data_url + "!get-records?fmt=csv&filename=" + filename);
         }
-        dk.on(this.table_data, 'fetch-data-start').run(this.FN('start_busy'));
-        dk.on(this.table_data, 'fetch-data').run(this.FN('draw'));
-        dk.on(this.table_data, 'fetch-data').run(this.FN('end_busy'));
     }
 
     /*
@@ -148,8 +145,8 @@ export class DataTable extends Widget {
             pwidget.select_page(this.table_data.page.query.pagenum);
         }
 
-        dk.on(pwidget, 'select-page').run(this.table_data.FN('get_pagenum'));
-        dk.on(this.table_data, 'fetch-info').run(function (info, query) {
+        dk.on(pwidget, 'select-page', (...args) => this.table_data.get_pagenum(...args));
+        dk.on(this.table_data, 'fetch-info', (info, query) => {
             pwidget.set_pagecount(info.pagecount);
             pwidget.select_page(query.pagenum);
         });
@@ -162,7 +159,9 @@ export class DataTable extends Widget {
     handlers() {
         //$(this.table_data).on('fetch-data', _.bind(this.draw, this));
         //$bind('fetch-data@data -> draw@me', {data: this.table_data, me: this});
-
+        dk.on(this.table_data, 'fetch-data-start', () => this.start_busy());
+        dk.on(this.table_data, 'fetch-data', (...args) => this.draw(...args));
+        dk.on(this.table_data, 'fetch-data', (...args) => this.end_busy(...args));
     }
 
     set_sort(sortcol) {

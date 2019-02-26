@@ -23,6 +23,7 @@ import {pick, zip_object} from "./pick";
 import is from "./is";
 import {after, on, trigger, publish, subscribe} from "./lifecycle/dkboot/dk-signals";
 import {add, mul, vec_mul, multiply_reduce} from "./dkmath/dk-math";
+import {times} from "./lo-times";
 
 const dk = function (selector) {
     return document.querySelector(selector);
@@ -75,6 +76,7 @@ Object.assign(dk, {
     is,
     pick,
     zip_object,
+    times,
 
     // locally defined
     all(selector) {

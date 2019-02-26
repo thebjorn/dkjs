@@ -13,3 +13,17 @@ exports[`test-flex-1-css 1`] = `
         
 </div>
 `;
+
+exports[`test-flex-1-css-failing-travis 1`] = `
+<div
+  id="work"
+>
+  
+            
+  <div
+    id="a"
+  />
+  
+        
+</div>
+`;
