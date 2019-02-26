@@ -16,7 +16,7 @@ test("array-datasource-get_fields()", () => {
         data: [
             {project: 'Generelt NT', work: '1:03:57'},
             {project: 'Tiktok',      work: '2:44:57'},
-            {project: 'AFR-support', work: '1:06:43'}
+            {project: 'FOO-support', work: '1:06:43'}
         ]
     });
 

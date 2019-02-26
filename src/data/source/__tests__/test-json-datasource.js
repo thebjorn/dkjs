@@ -13,7 +13,7 @@ test("json-datasource", async () => {
                 datatype: "fkey",
                 widget: "SelectWidget",
                 data: {
-                    'proj-1': 'AFR-support',
+                    'proj-1': 'FOO-support',
                     'proj-2': 'Generelt NT',
                     'proj-3': 'Tiktok'
                 }
@@ -28,7 +28,7 @@ test("json-datasource", async () => {
                 {
                     k: 1,
                     c: [
-                        {v: 'proj-1', f: 'AFR-support'},
+                        {v: 'proj-1', f: 'FOO-support'},
                         '@duration:13000'
                     ]
                 },
@@ -69,7 +69,7 @@ test("json-datasource", async () => {
     console.info("records:", records);
     expect(typeof Object.keys(records)[0]).toBe('string');  // record pk is a string
     expect(Object.keys(records)).toHaveLength(4);
-    expect(records[0].project.f).toEqual('AFR-support');
+    expect(records[0].project.f).toEqual('FOO-support');
     
     ds.get_records({}, function (rs) {
         const fields = rs.fields;
@@ -81,7 +81,7 @@ test("json-datasource", async () => {
         console.info("records:", records);
         expect(typeof Object.keys(records)[0]).toBe('string');  // record pk is a string
         expect(Object.keys(records)).toHaveLength(4);
-        expect(records[0].project.f).toEqual('AFR-support');
+        expect(records[0].project.f).toEqual('FOO-support');
     });
 
 });
