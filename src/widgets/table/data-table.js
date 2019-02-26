@@ -100,9 +100,11 @@ export class DataTable extends Widget {
         this.column = {};
         this.column_order = [];
         if (!!this.datasource && this.table_data === null) {
-            this.table_data = new DataSet({
-                datasource: this.datasource
-            });
+            const dsprops = {datasource: this.datasource};
+            if (this.pagesize != null) dsprops.pagesize = this.pagesize;
+            if (this.orphans != null) dsprops.orphans = this.orphans;
+            if (this.pagenum != null) dsprops.pagenum = this.pagenum;
+            this.table_data = new DataSet(dsprops);
         }
         if (this.table_data === null) {
             this.data_url = (this.dk && this.dk.url)? this.dk.url : "";

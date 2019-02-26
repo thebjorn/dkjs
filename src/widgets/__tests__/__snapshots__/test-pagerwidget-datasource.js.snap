@@ -1,0 +1,400 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-pagerwidget-with-datatable-datasource-shortcut 1`] = `
+<div
+  id="work"
+>
+  
+            
+  <div
+    class="container"
+  >
+    
+                
+    <div
+      class="dtbl"
+    >
+      <table
+        class="DataTable dk-bx"
+        id="data-table-1"
+      >
+        <thead
+          id="dk-bx-1"
+        >
+          
+
+          <tr
+            id="dk-table-1"
+          >
+            
+
+            <th
+              class="string"
+              fieldname="project"
+              id="dk-table-2"
+              scope="col"
+              style="cursor: url(//static.datakortet.no/dk/sort-za.cur), pointer;"
+              title=""
+            >
+              <div
+                class="SortDirection sort-icon"
+                id="sort-direction-1"
+                style="float: right; width: 2ex; margin-left: 2ex;"
+              />
+              Prosjekt
+            </th>
+            
+
+            
+
+            <th
+              class="string"
+              fieldname="work"
+              id="dk-table-3"
+              scope="col"
+              style="cursor: url(//static.datakortet.no/dk/sort-za.cur), pointer;"
+              title=""
+            >
+              <div
+                class="SortDirection sort-icon"
+                id="sort-direction-2"
+                style="float: right; width: 2ex; margin-left: 2ex;"
+              />
+              Arbeid
+            </th>
+            
+
+          </tr>
+          
+
+        </thead>
+        <tfoot
+          id="dk-bx-2"
+        />
+        <tbody
+          id="dk-bx-3"
+        >
+          
+
+          <tr
+            class="TableRow"
+            id="dk-table-9"
+            pk="5"
+            rownum="0"
+          >
+            
+
+            <td
+              axis="project"
+              class="TableCell"
+              id="dk-tr-11"
+            >
+              eTiktok
+            </td>
+            
+
+            
+
+            <td
+              axis="work"
+              class="TableCell"
+              id="dk-tr-12"
+            >
+              2:44:57
+            </td>
+            
+
+          </tr>
+          
+
+          
+
+          <tr
+            class="TableRow"
+            id="dk-table-10"
+            pk="6"
+            rownum="1"
+          >
+            
+
+            <td
+              axis="project"
+              class="TableCell"
+              id="dk-tr-13"
+            >
+              fGenerelt NT
+            </td>
+            
+
+            
+
+            <td
+              axis="work"
+              class="TableCell"
+              id="dk-tr-14"
+            >
+              1:03:57
+            </td>
+            
+
+          </tr>
+          
+
+          
+
+          <tr
+            class="TableRow"
+            id="dk-table-11"
+            pk="7"
+            rownum="2"
+          >
+            
+
+            <td
+              axis="project"
+              class="TableCell"
+              id="dk-tr-15"
+            >
+              gTiktok
+            </td>
+            
+
+            
+
+            <td
+              axis="work"
+              class="TableCell"
+              id="dk-tr-16"
+            >
+              2:44:57
+            </td>
+            
+
+          </tr>
+          
+
+          
+
+          <tr
+            class="TableRow"
+            id="dk-table-12"
+            pk="8"
+            rownum="3"
+          >
+            
+
+            <td
+              axis="project"
+              class="TableCell"
+              id="dk-tr-17"
+            >
+              hGenerelt NT
+            </td>
+            
+
+            
+
+            <td
+              axis="work"
+              class="TableCell"
+              id="dk-tr-18"
+            >
+              1:03:57
+            </td>
+            
+
+          </tr>
+          
+
+          
+
+          <tr
+            class="TableRow"
+            id="dk-table-13"
+            pk="9"
+            rownum="4"
+          >
+            
+
+            <td
+              axis="project"
+              class="TableCell"
+              id="dk-tr-19"
+            >
+              iTiktok
+            </td>
+            
+
+            
+
+            <td
+              axis="work"
+              class="TableCell"
+              id="dk-tr-20"
+            >
+              2:44:57
+            </td>
+            
+
+          </tr>
+          
+
+          
+
+          <tr
+            class="TableRow"
+            id="dk-table-14"
+            pk="10"
+            rownum="5"
+          >
+            
+
+            <td
+              axis="project"
+              class="TableCell"
+              id="dk-tr-21"
+            >
+              jGenerelt NT
+            </td>
+            
+
+            
+
+            <td
+              axis="work"
+              class="TableCell"
+              id="dk-tr-22"
+            >
+              1:03:57
+            </td>
+            
+
+          </tr>
+          
+
+          
+
+          <tr
+            class="TableRow"
+            id="dk-table-15"
+            pk="11"
+            rownum="6"
+          >
+            
+
+            <td
+              axis="project"
+              class="TableCell"
+              id="dk-tr-23"
+            >
+              kTiktok
+            </td>
+            
+
+            
+
+            <td
+              axis="work"
+              class="TableCell"
+              id="dk-tr-24"
+            >
+              2:44:57
+            </td>
+            
+
+          </tr>
+          
+
+          
+
+          <tr
+            class="TableRow"
+            id="dk-table-16"
+            pk="12"
+            rownum="7"
+          >
+            
+
+            <td
+              axis="project"
+              class="TableCell"
+              id="dk-tr-25"
+            >
+              last
+            </td>
+            
+
+            
+
+            <td
+              axis="work"
+              class="TableCell"
+              id="dk-tr-26"
+            >
+              1:06:43
+            </td>
+            
+
+          </tr>
+          
+
+        </tbody>
+      </table>
+    </div>
+    
+                
+    <div
+      class="pgr"
+    >
+      <ul
+        class="PagerWidget pagination"
+        id="pager-widget-1"
+        style="margin-top: 0px; margin-bottom: 0px;"
+      >
+        <li
+          class="prev-nav"
+        >
+          <a
+            href="#"
+          >
+            «
+          </a>
+        </li>
+        <li
+          class="page"
+          page="1"
+        >
+          <a
+            href="#"
+          >
+            1
+          </a>
+        </li>
+        <li
+          class="page active"
+          page="2"
+        >
+          <a
+            href="#"
+          >
+            2
+          </a>
+        </li>
+        <li
+          class="next-nav"
+        >
+          <a
+            href="#"
+          >
+            »
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+            
+  </div>
+  
+        
+</div>
+`;

@@ -12,6 +12,7 @@ import {DataPage} from "./dk-datapage";
 import Class from "../lifecycle/coldboot/dk-class";
 import {DataQuery} from "./dk-dataquery";
 import {ArraySource} from "./source/dk-array-datasource";
+import {is_ajax_url} from "../lifecycle/uri";
 
 
 /*
@@ -29,6 +30,7 @@ export class DataSet extends Class {
     constructor(props) {
         if (props == null) props = {};
         if (Array.isArray(props.datasource)) props.datasource = new ArraySource(props.datasource);
+        if (is_ajax_url(props.datasource)) props.datasource = new AjaxDataSource({url: props.datasource});
         super(Object.assign({
             // type: 'dk.data.Data',
             datasource: null,

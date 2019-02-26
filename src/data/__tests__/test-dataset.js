@@ -30,7 +30,7 @@ test("test-dataset-functionality", () => {
     });
     console.log(dataset);
     console.log('-------------------------------');
-    dk.on(dataset, 'fetch-data').run(function (dataset, page) {
+    dk.on(dataset, 'fetch-data', (dataset, page) => {
         console.log("PAGE:", page);
         expect(page.__class__.name).toEqual('DataPage');
         expect(Object.keys(dataset.pages)).toHaveLength(1);
@@ -51,7 +51,7 @@ test("test-dataset-from-arraysource", () => {
         ]
     });
 
-    dk.on(ds, 'fetch-data').run(function (dataset, page) {
+    dk.on(ds, 'fetch-data', (dataset, page) => {
         expect(Object.keys(ds.pages)).toHaveLength(1);
         dk.info("page.records", page.records);
         expect(page.records).toHaveLength(3);

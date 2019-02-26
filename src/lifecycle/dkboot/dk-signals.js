@@ -101,7 +101,8 @@ export function trigger(obj, signal, ...args) {
                 if (fn.name) {
                     dkconsole.debug(`    run: ${fn.name}(${args})`);
                 }
-                fn.apply(null, args);
+                fn(...args);
+                // fn.apply(null, args);
             });
         }
     }

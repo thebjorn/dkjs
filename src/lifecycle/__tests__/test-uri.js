@@ -1,6 +1,26 @@
 
 
-import {parse_src} from "../uri";
+import {is_ajax_url, parse_src} from "../uri";
+
+
+test("test-is_ajax_url", () => {
+    expect(is_ajax_url('hello/')).toBeTruthy();
+    expect(is_ajax_url('.')).toBeTruthy();
+    expect(is_ajax_url('/hello/')).toBeTruthy();
+    expect(is_ajax_url('http://foo.no')).toBeTruthy();
+    expect(is_ajax_url('http://foo.no/')).toBeTruthy();
+    expect(is_ajax_url('http://foo.no/hello')).toBeTruthy();
+    expect(is_ajax_url('http://foo.no/hello/')).toBeTruthy();
+    expect(is_ajax_url('https://foo.no')).toBeTruthy();
+    expect(is_ajax_url('https://foo.no/')).toBeTruthy();
+    expect(is_ajax_url('https://foo.no/hello')).toBeTruthy();
+    expect(is_ajax_url('https://foo.no/hello/')).toBeTruthy();
+
+    expect(is_ajax_url('')).toBeFalsy();
+    expect(is_ajax_url('ftp://foo.no/')).toBeFalsy();
+    expect(is_ajax_url('hello\nworld')).toBeFalsy();
+    
+});
 
 
 test("uri.parse_src", () => {

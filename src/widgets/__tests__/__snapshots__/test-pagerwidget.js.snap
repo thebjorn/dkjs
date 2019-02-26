@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-pagerwidget-1 1`] = `
+<div
+  id="work"
+>
+  
+            
+        
+  <ul
+    class="PagerWidget pagination"
+    id="pager-widget-1"
+    style="margin-top: 0px; margin-bottom: 0px;"
+  >
+    <li
+      class="prev-nav"
+    >
+      <a
+        href="#"
+      >
+        «
+      </a>
+    </li>
+    <li
+      class="page active"
+      page="1"
+    >
+      <a
+        href="#"
+      >
+        1
+      </a>
+    </li>
+    <li
+      class="page"
+      page="2"
+    >
+      <a
+        href="#"
+      >
+        2
+      </a>
+    </li>
+    <li
+      class="page"
+      page="3"
+    >
+      <a
+        href="#"
+      >
+        3
+      </a>
+    </li>
+    <li
+      class="ellipsis"
+    >
+      <span>
+        ...
+      </span>
+    </li>
+    <li
+      class="page"
+      page="49"
+    >
+      <a
+        href="#"
+      >
+        49
+      </a>
+    </li>
+    <li
+      class="page"
+      page="50"
+    >
+      <a
+        href="#"
+      >
+        50
+      </a>
+    </li>
+    <li
+      class="next-nav"
+    >
+      <a
+        href="#"
+      >
+        »
+      </a>
+    </li>
+  </ul>
+</div>
+`;

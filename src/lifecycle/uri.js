@@ -57,6 +57,20 @@ export function parse_uri(uri, argopts) {
     return res;
 }
 
+export function is_ajax_url(s) {
+    if (typeof s !== 'string') return false;
+    if (!s) return false;
+    if (s.includes('\n')) return false;
+    
+    try {
+        const parts = parse_uri(s);
+        if (!parts.protocol) return is_ajax_url('http://example.com/' + s);
+        return parts.protocol.match(/^https?/);
+    } catch (e) {
+        return false;
+    }
+}
+
 function find_version(uriobj) {
     let match = /[-.@/](\d+\.\d+\.\d+)[./]/.exec(uriobj.name);
     if (match) return match[1];

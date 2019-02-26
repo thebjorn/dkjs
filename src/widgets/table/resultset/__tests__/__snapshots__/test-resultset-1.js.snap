@@ -1,0 +1,397 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-pagerwidget-with-datatable-datasource-shortcut 1`] = `
+<div
+  id="work"
+>
+  
+        
+  <section
+    class="ResultSet clearfix"
+    id="result-set-1"
+  >
+    <div
+      class="rowbx"
+      id="dk-bx-1"
+      style="display: flex; align-items: flex-start;"
+    >
+      <div
+        class="filterbx"
+        id="dk-bx-2"
+        style="margin-right: 4px; width: 0px; padding-right: 0px;"
+      />
+      <div
+        class="panel panel-default data"
+        id="dk-bx-3"
+      >
+        <header
+          class="panel-heading clearfix"
+          id="dk-bx-4"
+        >
+          <div
+            class="pull-left search"
+            id="dk-bx-5"
+            style="width: 40%;"
+          >
+            <form
+              class="SearchWidget search-form form-inline"
+              id="search-widget-1"
+            >
+              <div
+                class="form-group has-feedback"
+                id="dk-bx-6"
+              >
+                <div
+                  class="input-group input-group-sm"
+                  id="dk-bx-7"
+                >
+                  <input
+                    accesskey="s"
+                    class="form-control search-input"
+                    id="dk-bx-8"
+                    name="q"
+                    placeholder="Søk.."
+                    type="search"
+                  />
+                  <span
+                    class="clear-button form-control-feedback"
+                    id="dk-bx-9"
+                    style="display: none;"
+                  >
+                    <i
+                      class="icon fa fa-times times fa-fw"
+                    />
+                  </span>
+                  <div
+                    class="input-group-btn go-group"
+                    id="dk-bx-10"
+                  >
+                    <button
+                      class="go-button btn btn-primary"
+                      id="dk-bx-11"
+                    >
+                      <i
+                        class="icon fa fa-search search fa-fw"
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div
+            class="commands pull-right"
+            id="dk-bx-12"
+          >
+            <img
+              alt="add"
+              class="add-button add"
+              height="28"
+              id="dk-bx-13"
+              src="//static.datakortet.no/ikn/ax/button_blue_add.png"
+            />
+            <button
+              class="btn excelbtn csv"
+              data-loading-text="Laster ned..."
+              id="dk-bx-14"
+            >
+              
+                            
+              <span>
+                <img
+                  alt="csv"
+                  height="28"
+                  src="//static.datakortet.no/ikn/ax/button_blue_down.png"
+                />
+              </span>
+              
+                        
+            </button>
+          </div>
+          <div
+            class="pull-right stats"
+            id="dk-bx-15"
+            style="text-align: right; margin-right: 1ex;"
+          />
+        </header>
+        <table
+          class="result-table table table-bordered table-hover table-condensed content DataTable dk-bx"
+          id="dk-bx-16"
+        >
+          <thead
+            id="dk-bx-18"
+          >
+            
+
+            <tr
+              id="dk-table-1"
+            >
+              
+
+              <th
+                class="string"
+                fieldname="project"
+                id="dk-table-2"
+                scope="col"
+                style="cursor: url(//static.datakortet.no/dk/sort-za.cur), pointer;"
+                title=""
+              >
+                <div
+                  class="SortDirection sort-icon"
+                  id="sort-direction-1"
+                  style="float: right; width: 2ex; margin-left: 2ex;"
+                />
+                Prosjekt
+              </th>
+              
+
+              
+
+              <th
+                class="string"
+                fieldname="work"
+                id="dk-table-3"
+                scope="col"
+                style="cursor: url(//static.datakortet.no/dk/sort-za.cur), pointer;"
+                title=""
+              >
+                <div
+                  class="SortDirection sort-icon"
+                  id="sort-direction-2"
+                  style="float: right; width: 2ex; margin-left: 2ex;"
+                />
+                Arbeid
+              </th>
+              
+
+            </tr>
+            
+
+          </thead>
+          <tfoot
+            id="dk-bx-19"
+          />
+          <tbody
+            id="dk-bx-20"
+          >
+            
+
+            <tr
+              class="TableRow"
+              id="dk-table-4"
+              pk="0"
+              rownum="0"
+            >
+              
+
+              <td
+                axis="project"
+                class="TableCell"
+                id="dk-tr-1"
+              >
+                first
+              </td>
+              
+
+              
+
+              <td
+                axis="work"
+                class="TableCell"
+                id="dk-tr-2"
+              >
+                1:03:57
+              </td>
+              
+
+            </tr>
+            
+
+            
+
+            <tr
+              class="TableRow"
+              id="dk-table-5"
+              pk="1"
+              rownum="1"
+            >
+              
+
+              <td
+                axis="project"
+                class="TableCell"
+                id="dk-tr-3"
+              >
+                aTiktok
+              </td>
+              
+
+              
+
+              <td
+                axis="work"
+                class="TableCell"
+                id="dk-tr-4"
+              >
+                2:44:57
+              </td>
+              
+
+            </tr>
+            
+
+            
+
+            <tr
+              class="TableRow"
+              id="dk-table-6"
+              pk="2"
+              rownum="2"
+            >
+              
+
+              <td
+                axis="project"
+                class="TableCell"
+                id="dk-tr-5"
+              >
+                bGenerelt NT
+              </td>
+              
+
+              
+
+              <td
+                axis="work"
+                class="TableCell"
+                id="dk-tr-6"
+              >
+                1:03:57
+              </td>
+              
+
+            </tr>
+            
+
+            
+
+            <tr
+              class="TableRow"
+              id="dk-table-7"
+              pk="3"
+              rownum="3"
+            >
+              
+
+              <td
+                axis="project"
+                class="TableCell"
+                id="dk-tr-7"
+              >
+                cTiktok
+              </td>
+              
+
+              
+
+              <td
+                axis="work"
+                class="TableCell"
+                id="dk-tr-8"
+              >
+                2:44:57
+              </td>
+              
+
+            </tr>
+            
+
+            
+
+            <tr
+              class="TableRow"
+              id="dk-table-8"
+              pk="4"
+              rownum="4"
+            >
+              
+
+              <td
+                axis="project"
+                class="TableCell"
+                id="dk-tr-9"
+              >
+                dGenerelt NT
+              </td>
+              
+
+              
+
+              <td
+                axis="work"
+                class="TableCell"
+                id="dk-tr-10"
+              >
+                1:03:57
+              </td>
+              
+
+            </tr>
+            
+
+          </tbody>
+        </table>
+        <footer
+          class="panel-footer"
+          id="dk-bx-17"
+        >
+          <ul
+            class="PagerWidget pagination"
+            id="pager-widget-1"
+            style="margin-top: 0px; margin-bottom: 0px;"
+          >
+            <li
+              class="prev-nav"
+            >
+              <a
+                href="#"
+              >
+                «
+              </a>
+            </li>
+            <li
+              class="page active"
+              page="1"
+            >
+              <a
+                href="#"
+              >
+                1
+              </a>
+            </li>
+            <li
+              class="page"
+              page="2"
+            >
+              <a
+                href="#"
+              >
+                2
+              </a>
+            </li>
+            <li
+              class="next-nav"
+            >
+              <a
+                href="#"
+              >
+                »
+              </a>
+            </li>
+          </ul>
+        </footer>
+      </div>
+    </div>
+  </section>
+</div>
+`;
