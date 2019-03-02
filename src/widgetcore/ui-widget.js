@@ -17,12 +17,16 @@ export class UIWidget extends BaseWidget {
             template: {root: 'div'},
         };
         Array.from(attrs).forEach(obj => {
-            props.template = dk.merge(props.template, obj.template);
-            props.structure = dk.merge(props.structure, obj.structure);
-            props.defaults = dk.merge(props.defaults, obj.defaults);
-            delete obj.template;
-            delete obj.structure;
-            delete obj.defaults;
+            if (obj == null) return;
+            if (props.template != null && obj.template != null) {
+                props.template = dk.merge(props.template, obj.template);
+            }
+            if (props.structure != null && obj.structure != null) {
+                props.structure = dk.merge(props.structure, obj.structure);
+            }
+            if (props.defaults != null && obj.defaults != null) {
+                props.defaults = dk.merge(props.defaults, obj.defaults);
+            }
             Object.assign(props, obj);
         });
 
