@@ -73,9 +73,8 @@ export function dkdatatype({tag}) {
 }
 
 
-
-@dkdatatype({tag: '@date:'})
-export class DkDate extends datatype {
+export @dkdatatype({tag: '@date:'})
+class DkDate extends datatype {
     days = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
     
     constructor(...args) {
@@ -122,8 +121,8 @@ export class DkDate extends datatype {
 // _datatypes[DkDate.tag] = DkDate;
 
 
-@dkdatatype({tag: '@datetime:'})
-export class DateTime extends DkDate {
+export @dkdatatype({tag: '@datetime:'})
+class DateTime extends DkDate {
     constructor(...args) {
         // '2014-03-11T08:18:07.543000'
         super();
@@ -176,8 +175,8 @@ export class DateTime extends DkDate {
 // _datatypes[DateTime.tag] = DkDate;
 
 
-@dkdatatype({tag: '@duration:'})
-export class Duration extends datatype {
+export @dkdatatype({tag: '@duration:'})
+class Duration extends datatype {
     constructor(v) {
         super();
         if (v instanceof Duration) {

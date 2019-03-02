@@ -16,7 +16,7 @@ module.exports = function (api) {
         "@babel/plugin-transform-flow-strip-types",
         "@babel/plugin-transform-for-of",
         ["@babel/plugin-proposal-decorators", {
-            "decoratorsBeforeExport": true,
+            "decoratorsBeforeExport": false,
             "version": "nov-2018"
             // "version": "jan-2019"
         }],

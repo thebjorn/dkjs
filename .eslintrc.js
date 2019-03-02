@@ -25,6 +25,9 @@ module.exports = {
         "sourceType": "module",
         "codeFrame": false
     },
+    "plugins": [
+        "babel"
+    ],
     "rules": {
         "indent": [           
             "error",            // indentation problems are errors
