@@ -1,0 +1,23 @@
+/*
+ *  Allow for both form-control-feedback and
+ *  input-group-btn addons
+ */
+.form-inline {
+    .form-group.has-feedback {
+        .input-group {
+            .form-control-feedback {
+                right: 45px;
+            }
+            .clear-button {
+                color: #555;
+                cursor: pointer;
+            }
+        }
+        .input-group-sm {
+            .form-control-feedback {
+                right: 35px;
+                top: -2px;
+            }
+        }
+    }
+}

@@ -31,7 +31,7 @@ class IconLibrary {
         res.classList.add(this.classes);
         let classname = this.prefix + (this[name] !== undefined ? this[name] : name);
         res.classList.add(classname);
-        res.classList.add(name);
+        if (name) res.classList.add(name);
         if (nameparts.length > 1) {
             let attrs = nameparts[1].split(',');
             attrs.forEach(attr => {

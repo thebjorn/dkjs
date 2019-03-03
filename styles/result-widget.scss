@@ -1,0 +1,146 @@
+
+@import "utils";
+
+$resultWidgetSpace: 2px;
+$resultWidgetFilterSize: 180px;
+
+$resultWidgetDebugColor: darken(darkgreen, 10%);
+
+
+@mixin dkrs-box {
+    position: relative;
+    @include box-sizing(border-box);
+}
+
+.CheckboxSelectWidget > label,
+.RadioSelectWidget > label {
+    font-weight: normal;
+    display: block;
+}
+
+.ResultWidget {
+    @include dkrs-box;
+
+    header,
+    header + .content { @include dkrs-box; }
+
+    h1 { font-size: 214%; margin-top: 10px; margin-bottom: 10px; }
+    h2 { font-size: 171%; margin-top: 0; margin-bottom: 0; }
+    h3 { font-size: 129%; margin-top: 0; margin-bottom: 0; }
+    h4 { font-size: 100%; margin-top: 0; margin-bottom: 0; }
+    h5 { font-size: 86%; margin-top: 0; margin-bottom: 0; }
+
+    .DataFilter {
+        @include dkrs-box;
+        display: none;
+        header { }
+        .content {
+            .filterbox {
+                @include dkrs-box;
+                margin: 6px 6px 6px 8px;
+
+                header {
+                    h3 { margin-bottom: 5px; }
+                }
+                .content {
+                    margin-left: 8px;
+                }
+            }
+        }
+    }
+
+    .Data {
+        @include dkrs-box;
+    }
+
+    .PagerWidget {
+        @include dkrs-box;
+        .pagination > li.ellipsis > span {
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            background-color: white;
+            cursor: default;
+        }
+    }
+}
+
+.ResultWidget.filter-left {
+    .DataFilter {
+        float: left;
+        width: $resultWidgetFilterSize;
+        margin-right: $resultWidgetSpace;
+        display: block;
+    }
+    .Data,
+    .PagerWidget {
+        margin-left: $resultWidgetFilterSize + $resultWidgetSpace;
+    }
+}
+
+.ResultWidget.filter-right {
+    .DataFilter {
+        float: right;
+        width: $resultWidgetFilterSize;
+        margin-left: $resultWidgetSpace;
+        display: block;
+    }
+    .Data {
+        margin-right: $resultWidgetFilterSize + $resultWidgetSpace;
+    }
+    .PagerWidget {
+        margin-right: $resultWidgetFilterSize + $resultWidgetSpace;
+    }
+}
+
+@mixin css-debug($color: fade_out($resultWidgetDebugColor, .5)){
+    font-size: 9px;
+    color: white;
+    background-color: $color;
+    position: absolute;
+    display: block;
+    z-index: 200;
+    //top:0; left: 0;
+    right: 0; top: 0;
+}
+
+@mixin debug-box($content: "XXX-missing-content", $color: blue){
+    padding-top: 10px;
+    margin: 4px;
+    outline: 1px dotted $color;
+    &::before { content: $content; @include css-debug(fade_out($color, .4)); }
+}
+
+
+.debug {
+    .ResultWidget {
+        @include debug-box(".ResultWidget");
+
+        .DataFilter {
+            @include debug-box(".ResultWidget > .DataFilter", green);
+
+            header {
+                @include debug-box(".DataFilter > header");
+            }
+            &>.content {
+                @include debug-box(".DataFilter > .content");
+                .filterbox {
+                    @include debug-box(".content > .filterbox", red);
+                    header {
+                        @include debug-box(".filterbox > header");
+                    }
+                    .content {
+                        @include debug-box(".filterbox > .content");
+                    }
+                }
+            }
+        }
+
+        .Data,
+        .PagerWidget {
+            float: left;
+            width: #{"calc(100% - 180px - 16px)"};
+        }
+        .Data           { @include debug-box(". ResultWidget > . Data"); }
+        .PagerWidget    { @include debug-box(".ResultWidget > .PagerWidget"); }
+    }
+}

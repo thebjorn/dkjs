@@ -1,0 +1,79 @@
+$subtree-spacing: 4px;
+$subtree-font-size: 14px;
+$subtree-line-height: 20px;
+$subtree-indent: 20px; // == line-height?
+$subtree-line-color: #999;
+$subtree-line-width: 1px;
+$subtree-transition: ease-out;
+$subtree-transition-duration: 0.1s;
+$subtree-hover-color: #fafafa;
+$subtree-leaf-height: 28px;
+$subtree-leaf-middle: (($subtree-leaf-height - $subtree-spacing) / 2) + $subtree-line-width;
+$subtree-left-margin: -34px;
+
+
+.dktree {
+    position: relative;
+
+    li {
+        position:        relative;
+        list-style-type: none;
+        margin:          0;
+        padding-top:     $subtree-spacing;
+        font-size:       $subtree-font-size;
+        line-height:     $subtree-line-height;
+
+        .subtree {
+            margin-left: $subtree-left-margin;
+
+            & > li {
+                padding-left: $subtree-indent;
+            }
+        }
+    }
+
+    .tree {
+        & > span,
+        & > dk-icon {
+            cursor: pointer;
+        }
+
+        & > dk-icon { font-size: 80%; margin-right: 0.5ex; }
+    }
+
+    .leaf {
+        height: $subtree-leaf-height;
+
+        &:after {
+            content:     "";
+            border-left: $subtree-line-width solid $subtree-line-color;
+            display:     block;
+            position:    absolute;
+            top:         0;
+            left:        0;
+            bottom:      0;
+            width:       $subtree-line-width;
+        }
+
+        &:before {
+            border-bottom: $subtree-line-width solid $subtree-line-color;
+            content:       "";
+            display:       block;
+            position:      absolute;
+            //top: $subtree-spacing + ($subtree-line-height / 2);
+            bottom:        $subtree-leaf-middle;
+            left:          0;
+            width:         $subtree-indent - 5px;
+            height:        $subtree-line-width;
+        }
+
+        &:last-child:after {
+            //bottom: $subtree-spacing + ($subtree-line-height / 2) + $subtree-line-width;
+            bottom: $subtree-leaf-middle;
+        }
+
+        &:first-child:after {
+            top: -($subtree-line-height / 4);
+        }
+    }
+}

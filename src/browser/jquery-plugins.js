@@ -1,3 +1,4 @@
+import {help} from "../core/help";
 
 
 export function jq_links2popup(dk) {
@@ -27,25 +28,6 @@ export function jq_links2popup(dk) {
 
 
 export function jq_help_button(dk) {
-    const _helpfn = function (item) {
-        dk.$(item).find('.help > .help-text').each(function () {
-            let $help = dk.$(this).parent();
-            let helptext = dk.$(this);
-            // $help.css('position', 'relative');
-            let trigger = dk.$('<div class="help-trigger"><a><dk-icon value="question-circle"/></a></div>');
-            $help.prepend(trigger);
-            $help.find('.help-trigger > a').addClass('xbtn').attr('tabindex', 10).popover({
-                html: true,
-                title: helptext.attr('title') || 'Hjelp..',
-                container: 'body',
-                trigger: 'focus',
-                toggle: 'popover',
-                placement: helptext.attr('placement') || 'auto left',
-                content: helptext.html()
-            });
-        });
-    };
-
 
     /*
         To get a little blue questionmark that displays help text when hoverered over,
@@ -65,7 +47,7 @@ export function jq_help_button(dk) {
         The defaults are in dkjs/css/dk-help.less
     */
     dk.$(document).ready(function () {
-        _helpfn('body');
+        help('body');
     });
 }
 

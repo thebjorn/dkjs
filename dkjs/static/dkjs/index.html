@@ -21,19 +21,23 @@
     <script DEBUG LOGLEVEL="4" crossorigin="anonymous" src="js/dk.min.js"></script>
     <!--tag lib can go here (if separate)-->
 <!--END DKJS SECTION-->
-    
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="js/dkcss.css">
     <style>
+    
         dk-icon:not(:defined) {
             display: none;
         }
-        table, td, th { border: 1px solid #666; }
-        table { border-collapse: collapse; }
-        td, th { padding: 4px; }
+        /*table, td, th { border: 1px solid #666; }*/
+        /*table { border-collapse: collapse; }*/
+        /*td, th { padding: 4px; }*/
     </style>
     
 </head>
 <body>
-
+<div class="container">
     <h1 id="id-title">hello world</h1>
     <dk-icon style="color:hotpink" src="paw:2x:fw"></dk-icon>
 
@@ -43,8 +47,11 @@
         <div id="color-lite"></div>
     </div>
     
-    <table id="dtatbl"></table>
-
+    <table id="dtatbl" class="table table-bordered table-striped table-hover"></table>
+    
+    <div id="tree1" style="margin:5px;"></div>
+    <div id="tree2" style="margin:5px;"></div>
+</div>
 <script>
     var h1;
     dk.ready(function () {
@@ -63,7 +70,7 @@
         // dk.keys().forEach(k => console.log("dk." + k));
         // console.log('dk.keys():', dk.keys());
 
-        var dt = dk.DataTable.create_inside('#dtatbl', {
+        var dt = dk.DataTable.create_on('#dtatbl', {
             datasource: dk.data.ArraySource.create({
                 data: [
                     {project: 'Generelt NT', work: '1:03:57'},
@@ -80,6 +87,54 @@
                 }
             }
         });
+        var ds = dk.tree.JSonDataSource.create({
+            "depth": 2,
+            "height": 2,
+            "cache": {
+                "d329": {
+                    "kind": "department",
+                    "name": "Bar3",
+                    "parent": "c57",
+                    "id": "d329",
+                    "path": [
+                        "c57", "d329"
+                    ],
+                    "root": "c57",
+                    "children": []
+                },
+                "c57": {
+                    "kind": "company",
+                    "name": "Bar1",
+                    "parent": null,
+                    "id": "c57",
+                    "path": [
+                        "c57"
+                    ],
+                    "root": "c57",
+                    "children": ['d329', 'd328']
+                },
+                "d328": {
+                    "kind": "department",
+                    "name": "Bar2",
+                    "parent": "c57",
+                    "id": "d328",
+                    "path": [
+                        "c57", "d328"
+                    ],
+                    "root": "c57",
+                    "children": []
+                }
+            },
+            "roots": ['c57']
+        });
+        dk.TreeWidget.create_inside('#tree1', {
+            initial_collapse: false,
+            data: ds
+        });
+        dk.tree.SelectTable.create_inside('#tree2', {
+            data: ds
+        })
+
     });
 </script>
     

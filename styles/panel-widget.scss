@@ -1,0 +1,69 @@
+@import "scrollbar-mixin";
+@import "utils";
+
+.dk-panel {
+    @include scrollbar($scroll-bar-color, $scroll-bar-width);
+
+    .panel-heading {
+        padding-top: 6px;
+        padding-bottom: 4px;
+        .panel-title {
+            .collapseicon {
+                display: inline-block;
+                position: relative;
+                left: -5px;
+
+                dk-icon { display: block; }
+            }
+            .headingtext { }
+        }
+    }
+
+    .panel-body {
+        overflow: auto;
+    }
+
+    .panel-footer {
+        &.small {
+            // font-size is set through bs3
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+    }
+
+    &.collapse-up {
+        overflow: hidden;
+    }
+
+    &.collapse-left {
+        .panel-heading {
+            .panel-title {
+                .collapseicon {
+                    top: 2px;
+
+                    dk-icon {
+                        @include rotate(-90deg, 8px, 8px);
+                    }
+                }
+                .headingtext {}
+            }
+        }
+        overflow: hidden;
+    }
+}
+
+.panel-primary > header > .collapse-icon > .icon { color: white !important; }
+
+.panel.small-header {
+    header {
+        padding: 5px 10px;
+    }
+}
+
+/* wait until we're fully loaded to enable height transitions to prevent
+ * flash-of-unstyled-content.
+ */
+//.dk-fully-loaded .dk-panel {
+//    transition-duration: $collapseDuration;
+//    transition-property: height;
+//}

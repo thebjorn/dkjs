@@ -1,0 +1,16 @@
+
+// interactive help..
+
+.help {
+    position: relative;
+
+    dk-icon { color: blue; }
+
+    > .help-trigger {
+        position: absolute;
+        width: 20px;
+        left: -20px;
+        text-align: right;
+        top: 0;
+    }
+}

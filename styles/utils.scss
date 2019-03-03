@@ -1,0 +1,23 @@
+
+
+$scroll-bar-color: #aaa;
+$scroll-bar-width: 8px;
+
+$collapserWidth: 41px;
+$collapseDuration: 1.5s;
+$borderColor: #ccc;
+
+// Box sizing
+@mixin box-sizing($boxmodel){
+    -webkit-box-sizing: $boxmodel;
+    -moz-box-sizing: $boxmodel;
+    box-sizing: $boxmodel;
+}
+
+.borderbox { @include box-sizing(border-box); }
+
+
+@mixin rotate($angle, $x: 50%, $y: 50%){
+    transform: rotate($angle);
+    transform-origin: $x $y;
+}

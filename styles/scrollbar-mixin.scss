@@ -1,0 +1,18 @@
+
+@mixin scrollbar($scrollBarColor, $scrollbarWidth){
+    -ms-scrollbar-base-color: white;
+    -ms-scrollbar-face-color: $scrollBarColor;
+    -ms-scrollbar-arrow-color: $scrollBarColor;
+    //-ms-scrollbar-width: $scrollbarWidth;
+
+    ::-webkit-scrollbar { width: $scrollbarWidth; height: 50px; }
+    ::-webkit-scrollbar-button { display: none; }
+    ::-webkit-scrollbar-track { background-color: $scrollBarColor; }
+    ::-webkit-scrollbar-track-piece { background-color: #ffffff; }
+    ::-webkit-scrollbar-thumb {
+        background-color: $scrollBarColor;
+        border-radius: $scrollbarWidth / 2;
+    }
+    ::-webkit-scrollbar-corner { background-color: #ddd; }
+    ::-webkit-resizer { background-color: #666; }
+}

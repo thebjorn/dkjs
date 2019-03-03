@@ -29,6 +29,7 @@ export class State {
         this._values = null;
         this._engine_state = "null";
         this.engine = engine ? (new engine()) : (new LocalStorage());
+        this.state = {hello: 'world'};  // fixme: backwards compatibility
     }
     
     toString() {
@@ -42,7 +43,7 @@ export class State {
         }
         return this._values;
     }
-
+    
     /**
      * Get a top-level, named, state object.
      * 

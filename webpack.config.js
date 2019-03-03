@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const path = require('path');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const FlowWebpackPlugin = require('flow-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -10,7 +11,8 @@ const LIBRARY_NAME = 'dk';
 
 const common_settings = {
     entry: {
-        dk: './src/index.js'
+        dk: './src/index.js',
+        dkcss: './styles/index.scss',
     },
     target: 'web',
 
@@ -55,6 +57,16 @@ const common_settings = {
                         // presets: ["@babel/preset-env"]
                     }
                 }
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    // fallback to style-loader in development
+                    // {loader: process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader},
+                    {loader: process.env.NODE_ENV === 'production' ? 'style-loader' : MiniCssExtractPlugin.loader},
+                    {loader: "css-loader", options: {sourceMap: true}},
+                    {loader: "sass-loader", options: {sourceMap: true}},
+                ]
             }
         ]
     },
@@ -64,6 +76,13 @@ const common_settings = {
             inject: false,
             template: path.resolve(__dirname, 'src/html-webpack-plugin-django-template.html')
         }),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: process.env.DKBUILD_TYPE === 'PRODUCTION' ? "[name].[contenthash].css" : "[name].css",
+            // filename: "[name].css",
+            chunkFilename: "[id].css"
+        })
         // new FlowWebpackPlugin({
         //     verbose: true,
         //     printFlowOutput: true,

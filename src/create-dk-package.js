@@ -141,6 +141,8 @@ import {Generation} from "./widgets/tree/tree-table/generation";
 import {NodeList} from "./widgets/tree/tree-table/node-list";
 import {SelectTable} from "./widgets/tree/tree-table/select-table";
 import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
+import {VDataTable} from "./widgets/table/vert/vdata-table";
+import {help} from "./core/help";
 
 (function () {
     dk.add({
@@ -150,7 +152,9 @@ import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
         TableCell,
         TableHeader,
         TableRow,
+        TreeWidget,
         DataTable,
+        VDataTable,
         DataTableLayout,
         DataGrid,
         SearchWidget,
@@ -199,8 +203,9 @@ import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
         //     validators: validate,
         //     widgetmap: wmap
         // },
-        
+        help,
         core: {
+            help,
             text: {
                 count: count_char,
                 dedent
@@ -228,6 +233,8 @@ import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
             page,
             Widget,
             widgetmap: {
+                get() { dkwarning("widgetmap.get is deprecated"); },
+                add() { dkwarning("widgetmap.add is deprecated"); },
                 wmap: {
                     CheckboxSelectWidget,
                     InputWidget,
@@ -253,24 +260,14 @@ import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
                     ['dk-tree-generation']: Generation,
                     ['tree-node']: TreeNode,
                     treeselect: SelectTable,
-                    ['treeselect-nodelist']: NodeList,
+                    ['treeselect-nodelist']: NodeList, 
+                    ['vTableColumn']: VDataTable,
+                    ['vdatatable']: VDataTable,
                     dktree: TreeWidget,
                     PagerWidget,
                     DataFilter
                 }
             }
-        },
-        
-        tree: {
-            data: tree_data,
-            list: {
-                Leaf,
-                Tree,
-                TreeWidget
-            },
-            Generation,
-            NodeList,
-            SelectTable,
         },
         
         update(...args) {
@@ -283,6 +280,7 @@ import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
             AjaxDataSource,
             DataPage,
             DataSet,
+            Data: DataSet,
             datatype: {
                 Date: DkDate,
                 DateTime,
@@ -300,12 +298,28 @@ import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
             TableHeader,
             SortDirection,
             DataTable,
+            VDataTable,
             DataTableLayout,
             DataGrid,
             PagerWidget,
             ResultSet,
             SearchWidget
         },
+
+        tree: {
+            JSonDataSource: tree_data.JSonDataSource,
+            AjaxDataSource: tree_data.AjaxDataSource,
+            data: tree_data,
+            list: {
+                Leaf,
+                Tree,
+                TreeWidget
+            },
+            Generation,
+            NodeList,
+            SelectTable,
+        },
+        
         ajax,
         json,
         web: {

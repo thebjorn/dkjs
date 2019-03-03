@@ -1,0 +1,362 @@
+.borderbox {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+/*
+ *  Allow for both form-control-feedback and
+ *  input-group-btn addons
+ */
+.form-inline .form-group.has-feedback .input-group .form-control-feedback {
+  right: 45px; }
+
+.form-inline .form-group.has-feedback .input-group .clear-button {
+  color: #555;
+  cursor: pointer; }
+
+.form-inline .form-group.has-feedback .input-group-sm .form-control-feedback {
+  right: 35px;
+  top: -2px; }
+
+.busy {
+  cursor: wait; }
+
+.borderbox {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.dk-panel {
+  -ms-scrollbar-base-color: white;
+  -ms-scrollbar-face-color: #aaa;
+  -ms-scrollbar-arrow-color: #aaa; }
+  .dk-panel ::-webkit-scrollbar {
+    width: 8px;
+    height: 50px; }
+  .dk-panel ::-webkit-scrollbar-button {
+    display: none; }
+  .dk-panel ::-webkit-scrollbar-track {
+    background-color: #aaa; }
+  .dk-panel ::-webkit-scrollbar-track-piece {
+    background-color: #ffffff; }
+  .dk-panel ::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 4px; }
+  .dk-panel ::-webkit-scrollbar-corner {
+    background-color: #ddd; }
+  .dk-panel ::-webkit-resizer {
+    background-color: #666; }
+  .dk-panel .panel-heading {
+    padding-top: 6px;
+    padding-bottom: 4px; }
+    .dk-panel .panel-heading .panel-title .collapseicon {
+      display: inline-block;
+      position: relative;
+      left: -5px; }
+      .dk-panel .panel-heading .panel-title .collapseicon dk-icon {
+        display: block; }
+  .dk-panel .panel-body {
+    overflow: auto; }
+  .dk-panel .panel-footer.small {
+    padding-top: 0;
+    padding-bottom: 0; }
+  .dk-panel.collapse-up {
+    overflow: hidden; }
+  .dk-panel.collapse-left {
+    overflow: hidden; }
+    .dk-panel.collapse-left .panel-heading .panel-title .collapseicon {
+      top: 2px; }
+      .dk-panel.collapse-left .panel-heading .panel-title .collapseicon dk-icon {
+        transform: rotate(-90deg);
+        transform-origin: 8px 8px; }
+
+.panel-primary > header > .collapse-icon > .icon {
+  color: white !important; }
+
+.panel.small-header header {
+  padding: 5px 10px; }
+
+/* wait until we're fully loaded to enable height transitions to prevent
+ * flash-of-unstyled-content.
+ */
+.borderbox {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.CheckboxSelectWidget > label,
+.RadioSelectWidget > label {
+  font-weight: normal;
+  display: block; }
+
+.ResultWidget {
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+  .ResultWidget header,
+  .ResultWidget header + .content {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+  .ResultWidget h1 {
+    font-size: 214%;
+    margin-top: 10px;
+    margin-bottom: 10px; }
+  .ResultWidget h2 {
+    font-size: 171%;
+    margin-top: 0;
+    margin-bottom: 0; }
+  .ResultWidget h3 {
+    font-size: 129%;
+    margin-top: 0;
+    margin-bottom: 0; }
+  .ResultWidget h4 {
+    font-size: 100%;
+    margin-top: 0;
+    margin-bottom: 0; }
+  .ResultWidget h5 {
+    font-size: 86%;
+    margin-top: 0;
+    margin-bottom: 0; }
+  .ResultWidget .DataFilter {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    display: none; }
+    .ResultWidget .DataFilter .content .filterbox {
+      position: relative;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      margin: 6px 6px 6px 8px; }
+      .ResultWidget .DataFilter .content .filterbox header h3 {
+        margin-bottom: 5px; }
+      .ResultWidget .DataFilter .content .filterbox .content {
+        margin-left: 8px; }
+  .ResultWidget .Data {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+  .ResultWidget .PagerWidget {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box; }
+    .ResultWidget .PagerWidget .pagination > li.ellipsis > span {
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+      background-color: white;
+      cursor: default; }
+
+.ResultWidget.filter-left .DataFilter {
+  float: left;
+  width: 180px;
+  margin-right: 2px;
+  display: block; }
+
+.ResultWidget.filter-left .Data,
+.ResultWidget.filter-left .PagerWidget {
+  margin-left: 182px; }
+
+.ResultWidget.filter-right .DataFilter {
+  float: right;
+  width: 180px;
+  margin-left: 2px;
+  display: block; }
+
+.ResultWidget.filter-right .Data {
+  margin-right: 182px; }
+
+.ResultWidget.filter-right .PagerWidget {
+  margin-right: 182px; }
+
+.debug .ResultWidget {
+  padding-top: 10px;
+  margin: 4px;
+  outline: 1px dotted blue; }
+  .debug .ResultWidget::before {
+    content: ".ResultWidget";
+    font-size: 9px;
+    color: white;
+    background-color: rgba(0, 0, 255, 0.6);
+    position: absolute;
+    display: block;
+    z-index: 200;
+    right: 0;
+    top: 0; }
+  .debug .ResultWidget .DataFilter {
+    padding-top: 10px;
+    margin: 4px;
+    outline: 1px dotted green; }
+    .debug .ResultWidget .DataFilter::before {
+      content: ".ResultWidget > .DataFilter";
+      font-size: 9px;
+      color: white;
+      background-color: rgba(0, 128, 0, 0.6);
+      position: absolute;
+      display: block;
+      z-index: 200;
+      right: 0;
+      top: 0; }
+    .debug .ResultWidget .DataFilter header {
+      padding-top: 10px;
+      margin: 4px;
+      outline: 1px dotted blue; }
+      .debug .ResultWidget .DataFilter header::before {
+        content: ".DataFilter > header";
+        font-size: 9px;
+        color: white;
+        background-color: rgba(0, 0, 255, 0.6);
+        position: absolute;
+        display: block;
+        z-index: 200;
+        right: 0;
+        top: 0; }
+    .debug .ResultWidget .DataFilter > .content {
+      padding-top: 10px;
+      margin: 4px;
+      outline: 1px dotted blue; }
+      .debug .ResultWidget .DataFilter > .content::before {
+        content: ".DataFilter > .content";
+        font-size: 9px;
+        color: white;
+        background-color: rgba(0, 0, 255, 0.6);
+        position: absolute;
+        display: block;
+        z-index: 200;
+        right: 0;
+        top: 0; }
+      .debug .ResultWidget .DataFilter > .content .filterbox {
+        padding-top: 10px;
+        margin: 4px;
+        outline: 1px dotted red; }
+        .debug .ResultWidget .DataFilter > .content .filterbox::before {
+          content: ".content > .filterbox";
+          font-size: 9px;
+          color: white;
+          background-color: rgba(255, 0, 0, 0.6);
+          position: absolute;
+          display: block;
+          z-index: 200;
+          right: 0;
+          top: 0; }
+        .debug .ResultWidget .DataFilter > .content .filterbox header {
+          padding-top: 10px;
+          margin: 4px;
+          outline: 1px dotted blue; }
+          .debug .ResultWidget .DataFilter > .content .filterbox header::before {
+            content: ".filterbox > header";
+            font-size: 9px;
+            color: white;
+            background-color: rgba(0, 0, 255, 0.6);
+            position: absolute;
+            display: block;
+            z-index: 200;
+            right: 0;
+            top: 0; }
+        .debug .ResultWidget .DataFilter > .content .filterbox .content {
+          padding-top: 10px;
+          margin: 4px;
+          outline: 1px dotted blue; }
+          .debug .ResultWidget .DataFilter > .content .filterbox .content::before {
+            content: ".filterbox > .content";
+            font-size: 9px;
+            color: white;
+            background-color: rgba(0, 0, 255, 0.6);
+            position: absolute;
+            display: block;
+            z-index: 200;
+            right: 0;
+            top: 0; }
+  .debug .ResultWidget .Data,
+  .debug .ResultWidget .PagerWidget {
+    float: left;
+    width: calc(100% - 180px - 16px); }
+  .debug .ResultWidget .Data {
+    padding-top: 10px;
+    margin: 4px;
+    outline: 1px dotted blue; }
+    .debug .ResultWidget .Data::before {
+      content: ". ResultWidget > . Data";
+      font-size: 9px;
+      color: white;
+      background-color: rgba(0, 0, 255, 0.6);
+      position: absolute;
+      display: block;
+      z-index: 200;
+      right: 0;
+      top: 0; }
+  .debug .ResultWidget .PagerWidget {
+    padding-top: 10px;
+    margin: 4px;
+    outline: 1px dotted blue; }
+    .debug .ResultWidget .PagerWidget::before {
+      content: ".ResultWidget > .PagerWidget";
+      font-size: 9px;
+      color: white;
+      background-color: rgba(0, 0, 255, 0.6);
+      position: absolute;
+      display: block;
+      z-index: 200;
+      right: 0;
+      top: 0; }
+
+.dktree {
+  position: relative; }
+  .dktree li {
+    position: relative;
+    list-style-type: none;
+    margin: 0;
+    padding-top: 4px;
+    font-size: 14px;
+    line-height: 20px; }
+    .dktree li .subtree {
+      margin-left: -34px; }
+      .dktree li .subtree > li {
+        padding-left: 20px; }
+  .dktree .tree > span,
+  .dktree .tree > dk-icon {
+    cursor: pointer; }
+  .dktree .tree > dk-icon {
+    font-size: 80%;
+    margin-right: 0.5ex; }
+  .dktree .leaf {
+    height: 28px; }
+    .dktree .leaf:after {
+      content: "";
+      border-left: 1px solid #999;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 1px; }
+    .dktree .leaf:before {
+      border-bottom: 1px solid #999;
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: 13px;
+      left: 0;
+      width: 15px;
+      height: 1px; }
+    .dktree .leaf:last-child:after {
+      bottom: 13px; }
+    .dktree .leaf:first-child:after {
+      top: -5px; }
+
+.help {
+  position: relative; }
+  .help dk-icon {
+    color: blue; }
+  .help > .help-trigger {
+    position: absolute;
+    width: 20px;
+    left: -20px;
+    text-align: right;
+    top: 0; }
+

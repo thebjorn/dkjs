@@ -271,7 +271,7 @@ export class UIWidget extends BaseWidget {
 
         } else {
             if (!this.dklayout.create) dk.error("this.dklayout:", this.dklayout);
-            dk.info("THIS:DKLAYOUT:", typeof this.dklayout);
+            // dk.info("THIS:DKLAYOUT:", typeof this.dklayout);
             this.layout = new this.dklayout(this, location, template, structure);
         }
         return this;
