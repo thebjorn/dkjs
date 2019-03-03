@@ -136,7 +136,11 @@ import {DataFilter} from "./widgets/data-filter";
 import tree_data from "./widgets/tree/tree-data";
 import {dkmodule} from "./lifecycle/lifecycle";
 import {PostnrLookupWidget} from "./widgets/postnr-lookup";
-
+import {Leaf, Tree, TreeWidget} from "./widgets/tree/tree-list/tree-list";
+import {Generation} from "./widgets/tree/tree-table/generation";
+import {NodeList} from "./widgets/tree/tree-table/node-list";
+import {SelectTable} from "./widgets/tree/tree-table/select-table";
+import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
 
 (function () {
     dk.add({
@@ -244,6 +248,13 @@ import {PostnrLookupWidget} from "./widgets/postnr-lookup";
                     datatable: DataTable,
                     resultset: ResultSet,
                     ['postnr-lookup-widget']: PostnrLookupWidget,
+                    ['dk-tree-list-leaf']: Leaf,
+                    ['dk-tree-list-tree']: Tree,
+                    ['dk-tree-generation']: Generation,
+                    ['tree-node']: TreeNode,
+                    treeselect: SelectTable,
+                    ['treeselect-nodelist']: NodeList,
+                    dktree: TreeWidget,
                     PagerWidget,
                     DataFilter
                 }
@@ -251,7 +262,15 @@ import {PostnrLookupWidget} from "./widgets/postnr-lookup";
         },
         
         tree: {
-            data: tree_data
+            data: tree_data,
+            list: {
+                Leaf,
+                Tree,
+                TreeWidget
+            },
+            Generation,
+            NodeList,
+            SelectTable,
         },
         
         update(...args) {

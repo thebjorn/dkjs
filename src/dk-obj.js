@@ -19,7 +19,7 @@ import namespace from "./lifecycle/coldboot/dk-namespace";
 import setup_loaders from "./lifecycle/lifecycle-setup-loaders";
 import {dkconsole} from "./lifecycle/dkboot/dk-console";
 import {dkwarning} from "./lifecycle/coldboot/dkwarning";
-import {pick, zip_object} from "./pick";
+import {pick, zip_object} from "./collections";
 import is from "./is";
 import {after, on, trigger, publish, subscribe} from "./lifecycle/dkboot/dk-signals";
 import {add, mul, vec_mul, multiply_reduce} from "./dkmath/dk-math";
@@ -74,7 +74,7 @@ Object.assign(dk, {
     _jquery_version: jQuery.fn.jquery,
 
     is,
-    pick,
+    pick: pick,
     zip_object,
     times,
 

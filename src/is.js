@@ -388,7 +388,7 @@ const isArguments = baseIsArguments(function() { return arguments; }()) ? baseIs
  * properties.
  *
  * Array-like values such as `arguments` objects, arrays, buffers, strings, or
- * jQuery-like collections are considered empty if they have a `length` of `0`.
+ * jQuery-like pick are considered empty if they have a `length` of `0`.
  * Similarly, maps and sets are considered empty if they have a `size` of `0`.
  *
  * @static
@@ -426,7 +426,7 @@ function isEmpty(value) {
 
 
 // Internal recursive comparison function for `isEqual`.
-function eq (a, b, aStack, bStack) {
+function eq(a, b, aStack, bStack) {
     // Identical objects are equal. `0 === -0`, but they aren't identical.
     // See the [Harmony `egal` proposal](http://wiki.ecmascript.org/doku.php?id=harmony:egal).
     if (a === b) return a !== 0 || 1 / a === 1 / b;
@@ -551,7 +551,7 @@ function isProps(obj) {
 
 
 export default {
-    VERSION,
+    // VERSION,
     isFunction,
     isObject,
     isBoolean,

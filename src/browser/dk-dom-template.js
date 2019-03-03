@@ -4,7 +4,7 @@ import dom from "./dom";
 import dk from "../dk-obj";
 import is from "../is";
 import {array_difference} from "../lifecycle/set-ops";
-import {pick} from "../pick";
+import {pick} from "../collections";
 
 /*
  *  Define a structured hierarchial dom tree.

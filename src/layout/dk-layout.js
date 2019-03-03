@@ -14,7 +14,7 @@ export class Layout extends Class {
     constructor(widget, location, template, structure) {
         super();
         this.class_name = 'dk-bx';
-        var self = this;
+        const self = this;
         // location is the dom id onto which the layout should be realized
         this.widget = widget;
 

@@ -13,7 +13,7 @@ import dk from "../dk-obj";
 import {Widget} from "../widgetcore/dk-widget";
 import {Template} from "../browser/dk-dom-template";
 import {CheckboxSelectWidget, RadioSelectWidget, TriboolWidget} from "../forms/widgets";
-import {zip_object} from "../pick";
+import {zip_object} from "../collections";
 
 
 export function list2data (lst) {
