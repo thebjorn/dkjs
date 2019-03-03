@@ -148,7 +148,7 @@ export class ArraySource extends DataSource {
         if (!request.search) return this.data;
         return this.data.filter(function (rec) {
             for (let key in rec) if (rec.hasOwnProperty(key)) {
-                if (typeof rec[key] === 'string' && rec[key].contains(request.search)) return true;
+                if (typeof rec[key] === 'string' && rec[key].includes(request.search)) return true;
             }
             return false;
         });

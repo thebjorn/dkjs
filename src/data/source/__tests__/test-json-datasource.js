@@ -3,57 +3,72 @@ import jason from "../../datacore/dk-json";
 import is from "../../../is";
 
 
+const jsondata = () => jason.parse(JSON.stringify({
+    cols: [{
+        label: "Prosjekt",
+        name: "project",
+        help_text: "project name",
+        datatype: "fkey",
+        widget: "SelectWidget",
+        data: {
+            'proj-1': 'FOO-support',
+            'proj-4': 'FOO-support',
+            'proj-2': 'Generelt NT',
+            'proj-3': 'Tiktok'
+        }
+    }, {
+        label: "Work",
+        name: "work",
+        help_text: "work time period",
+        datatype: "duration",
+        widget: "DurationWidget"
+    }],
+    rows: [
+        {k: 1, c: [{v: 'proj-1', f: 'FOO-support'}, '@duration:13000']},
+        {k: 2, c: [{ v: 'proj-2', f: 'Generelt NT' }, '@duration:8542']},
+        {k: 3, c: [{v: 'proj-2', f: 'Generelt NT'}, '@duration:8542']},
+        {k: 4, c: [{v: 'proj-3', f: 'Tiktok'}, '@duration:12813']}
+    ]
+}));
+
+
+test("json-datasource-update", async () => {
+    const ds = new JSONDataSource({
+        data: jsondata()
+    });
+    // console.log(ds);
+    // console.log("ROWS:", ds.data);
+
+    let rs = await ds.fetch_records({});
+    expect(rs.records[0].project.f).toEqual('FOO-support');
+    ds.update({
+        1: {project: {oldval: {f:"FOO-support", v: 'proj-1'}, newval: {f:"BAR-support", v:'proj-4'}}}
+    });
+    rs = await ds.fetch_records({});
+    console.log("RECORDS:", rs.records);
+    expect(rs.records[0].project).toEqual({f:"BAR-support", v:'proj-4'});
+});
+
+
+test("json-datasource-sort", async () => {
+    const ds = new JSONDataSource({
+        data: jsondata()
+    });
+    // console.log(ds);
+    // console.log("ROWS:", ds.data);
+
+    let rs = await ds.fetch_records({sort:[{field: 'work', direction: 'asc'}]});
+    console.log("RECORDS:", rs.records);
+    expect(rs.records[0].work.value).toEqual(8542);
+
+    rs = await ds.fetch_records({sort:[{field: 'work', direction: 'desc'}]});
+    expect(rs.records[0].work.value).toEqual(13000);
+});
+
+
 test("json-datasource", async () => {
     const ds = new JSONDataSource({
-        data: jason.parse(JSON.stringify({
-            cols: [{
-                label: "Prosjekt",
-                name: "project",
-                help_text: "project name",
-                datatype: "fkey",
-                widget: "SelectWidget",
-                data: {
-                    'proj-1': 'FOO-support',
-                    'proj-2': 'Generelt NT',
-                    'proj-3': 'Tiktok'
-                }
-            }, {
-                label: "Work",
-                name: "work",
-                help_text: "work time period",
-                datatype: "duration",
-                widget: "DurationWidget"
-            }],
-            rows: [
-                {
-                    k: 1,
-                    c: [
-                        {v: 'proj-1', f: 'FOO-support'},
-                        '@duration:13000'
-                    ]
-                },
-                {
-                    k: 2,
-                    c: [
-                        { v: 'proj-2', f: 'Generelt NT' },
-                        '@duration:8542'
-                    ]
-                },
-                {   k: 3,
-                    c: [
-                        {v: 'proj-2', f: 'Generelt NT'},
-                        '@duration:8542'
-                    ]
-                },
-                {
-                    k: 4,
-                    c: [
-                        {v: 'proj-3', f: 'Tiktok'},
-                        '@duration:12813'
-                    ]
-                }
-            ]
-        }))
+        data: jsondata()
     });
     console.log(ds);
     console.log("ROWS:", ds.data);

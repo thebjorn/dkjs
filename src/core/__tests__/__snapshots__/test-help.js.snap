@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-help 1`] = `
+"
+            <h1 class=\\"help\\"><div class=\\"help-trigger\\"><a class=\\"xbtn\\" tabindex=\\"10\\"><dk-icon value=\\"question-circle\\"></dk-icon></a></div>Hello
+                <div title=\\"help-title\\" class=\\"help-text\\">world</div>
+            </h1>
+        "
+`;

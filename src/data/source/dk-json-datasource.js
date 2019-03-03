@@ -10,6 +10,7 @@ export class JSONDataSource extends DataSource {
         this.data = props.data || {};
         this._column_number = {};
     }
+    
     _keymap() {
         // returns a mapping from primary key to row
         const res = {};
@@ -26,17 +27,18 @@ export class JSONDataSource extends DataSource {
         });
         return res;
     }
+    
     update(changes) {
         const keymap = this._keymap();
         const fieldmap = this._field_order();
 
         Object.keys(changes).forEach(function (pk) {
             const change = changes[pk];
-            if (change.oldval === change.newval) return;
+            // if (change.oldval === change.newval) return;
 
             const datarec = keymap[pk];
             Object.keys(change).forEach(function (fieldname) {
-                datarec.c[fieldmap[fieldname]] = change.newval;
+                datarec.c[fieldmap[fieldname]] = change[fieldname].newval;
             });
         });
     }
@@ -96,6 +98,7 @@ export class JSONDataSource extends DataSource {
             start_recnum: p.start,
             totcount: this.data.rows.length
         };
+        const fields = this.get_fields(this.data);
         this.do_sort(p);
         // filter data here..
         this.data.info.filter_count = this.data.rows.length;
@@ -117,6 +120,7 @@ export class JSONDataSource extends DataSource {
             start_recnum: p.start,
             totcount: this.data.rows.length
         };
+        const fields = this.get_fields(this.data);
         this.do_sort(p);
         // filter data here..
         this.data.info.filter_count = this.data.rows.length;
@@ -124,6 +128,7 @@ export class JSONDataSource extends DataSource {
         this.data.rows = this.data.rows.slice(p.start, p.end);
         returns(this._get_records(request, this.data));
     }
+    
     get_fields(data) {
         // returned as part of _get_records(..)
         const self = this;
