@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test-single-node-tree-list 1`] = `
+"
+            <div class=\\"container\\"><div id=\\"tree-widget-1\\" class=\\"dktree panel panel-default\\"><div id=\\"dk-bx-1\\" class=\\"panel-body\\"><ul id=\\"dk-bx-2\\" class=\\"tree\\" style=\\"padding-left: 0px;\\"><li id=\\"tree-1\\" class=\\"dk-tree-list-tree tree company\\" nodeid=\\"c57\\" kind=\\"company\\"><dk-icon id=\\"dk-bx-3\\" class=\\"icon\\" value=\\"square-o:fw\\"></dk-icon><span id=\\"dk-bx-4\\">Spareskillingsbanken</span><ul id=\\"dk-bx-5\\" class=\\"subtree\\" style=\\"display: none;\\"></ul></li></ul></div></div></div>
+        "
+`;
