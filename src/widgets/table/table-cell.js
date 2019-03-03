@@ -2,6 +2,7 @@
 
 import dk from "../../dk-obj";
 import {Widget} from "../../widgetcore/dk-widget";
+import {UIWidget} from "../../widgetcore/ui-widget";
 
 
 /*
@@ -9,7 +10,7 @@ import {Widget} from "../../widgetcore/dk-widget";
  *  table cell.  The data itself is contained in the enclosing TableRow's
  *  `record` property.
  */
-export class TableCell extends Widget{
+export class TableCell extends UIWidget {
     constructor(...args) {
         super({
             tablerow: null,
@@ -18,11 +19,14 @@ export class TableCell extends Widget{
     }
 
     set value(val) {
-        if (!this.tablerow) return;
-        this.tablerow.set_column_value(this.coldef, val);
+        if (!this.tablerow) {
+            this.cell_value = val;
+        } else {
+            this.tablerow.set_column_value(this.coldef, val);
+        }
     }
     get value () {
-        if (!this.tablerow) return null;
+        if (!this.tablerow) return this.cell_value;
         return this.tablerow.get_column_value(this.coldef);        
     }
 
@@ -84,9 +88,11 @@ export class TableCell extends Widget{
 
     draw(value) {
         const val = this.value === undefined ? value: this.value;
-        this.widget().attr({
+        const w = this.widget().attr({
             axis: this.coldef.name,
             title: this.coldef.title
-        }).html(this.coldef.format(val, this.tablerow.record, this.widget()));
+        });
+        const rec = this.tablerow ? this.tablerow.record : null;
+        w.html(this.coldef.format(val, rec, this.widget()));
     }
 }

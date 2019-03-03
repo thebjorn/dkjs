@@ -7,10 +7,9 @@ import {cls2pojo} from "../../../sys/cls2pojo";
 
 
 class VDataTableLayout extends TableLayout {
-    constructor(...args) {
-        super({
-            class_name: 'dk-vdatatable'
-        }, ...args);
+    constructor(widget, location, template, structure) {
+        super(widget, location, template, structure);
+        this.class_name = 'dk-vdatatable';
     }
 }
 
@@ -31,7 +30,7 @@ export class VDataTable extends DataTable {
         const self = this;
 
         if (!dataset) {
-            this.data.get_page({
+            this.table_data.get_page({
                 pagenum: 0,
                 page_size: 0
             });

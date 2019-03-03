@@ -20,6 +20,7 @@ import {ColumnDef} from "./column-def";
 import {TableHeader} from "./table-header";
 import {DataSet} from "../../data/dk-dataset";
 import {AjaxDataSource} from "../../data/source/dk-ajax-datasource";
+import {dkwarning} from "../../lifecycle/coldboot/dkwarning";
 
 
 export class DataTableLayout extends TableLayout {
@@ -230,6 +231,8 @@ export class DataTable extends Widget {
                 col.name = name;
                 return col;
             });
+        } else {
+            dkwarning(`Expected {field1: {...}, field2: {...}, etc.}. columns property of unknown type: ${this.columns}`);
         }
 
         // convert the pojos to ColumnDef objects

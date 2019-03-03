@@ -19,7 +19,8 @@ export class TableColumn extends UIWidget {
 
         this.cells = self.table.column_order.map(function (fname, i) {
             return TableCell.create_on(cells[i], {
-                value: self.record[fname],
+                cell_value: self.record[fname],
+                // tablerow: self,
                 coldef: self.table.column[fname]
             });
         });

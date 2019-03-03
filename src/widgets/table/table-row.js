@@ -33,7 +33,7 @@ export class TableRow extends Widget {
         });
         this.cells = table.column_order.map(fname => {
             const coldef = table.column[fname];
-            return TableCell.create(this.layout.add_td(), {
+            return new TableCell(this.layout.add_td(), {
                 tablerow: this,
                 coldef: coldef
             });
