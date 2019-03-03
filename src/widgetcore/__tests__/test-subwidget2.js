@@ -31,7 +31,7 @@ test("ButtonWidget", () => {
             this.widget().text(this.color);
         }
         handlers() {
-            this.notify_on('click');  // convert a click event to a dk.js triggered event
+            this.retrigger('click');  // convert a click event to a dk.js triggered event
         }
     }
     const button = ButtonWidget.create_inside(work, {color: 'blue'});
