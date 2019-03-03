@@ -17,6 +17,8 @@ export function help(item) {
         // $help.css('position', 'relative');
         let trigger = dk.$('<div class="help-trigger"><a><dk-icon value="question-circle"/></a></div>');
         $help.prepend(trigger);
+        
+        // .popover comes from bootstrap and is thus difficult to unit test...
         $help.find('.help-trigger > a').addClass('xbtn').attr('tabindex', 10).popover({
             html: true,
             title: helptext.attr('title') || 'Hjelp..',
