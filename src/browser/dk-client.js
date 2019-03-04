@@ -84,7 +84,7 @@ function _make_global_json_params(params) {
     return params;
 }
 export function json(params) {
-    ajax(_make_global_json_params(params));
+    return ajax(_make_global_json_params(params));
 }
 export async function async_json(params) {
     return await async_ajax(_make_global_json_params(params));
