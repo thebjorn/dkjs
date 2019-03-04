@@ -76,7 +76,7 @@ export function jq_get_attributes(dk) {
      *  prefix for data attributes, although this is not required.
      *
      */
-    dk.$.fn.getAttributes = function () {   // TODO: add prefix selector (e.g. all data- attributes).
+    dk.$.fn.getAttributes = function () {
         const elem = this,
             attr = {};
 
@@ -198,15 +198,15 @@ export function jq_access_keys(dk) {
             wrap: ['<span class="accesskey">', '</span>']   // tag to wrap the access key with (null => don't wrap).
         }, settings);
 
-        const used_chars = Array.from(dk.$(settings.keep).map(function (v, i) {
+        const used_chars = Array.from(dk.$(settings.keep)).map(function (v, i) {
             return dk.$(v).attr('accesskey');
-        }));
+        });
         const used = dk.zip_object(used_chars, dk.times(used_chars.length, () => '-'));
 
         const items = dk.$(settings.modify);
-        const labels = Array.from(items.map(function (val, i) {
+        const labels = Array.from(items).map(function (val, i) {
             return dk.$(val).text().trim().toLowerCase().replace(settings.skip, '');
-        }));
+        });
         const item_map = dk.zip_object(labels, items);
         const akeys = findKeys(labels, used);
         if (akeys === null) {
