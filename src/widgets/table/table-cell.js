@@ -19,16 +19,26 @@ export class TableCell extends UIWidget {
     }
 
     set value(val) {
-        if (!this.tablerow) {
-            this.cell_value = val;
-        } else {
-            this.tablerow.set_column_value(this.coldef, val);
-        }
+        if (!this.tablerow) return;
+        this.tablerow.set_column_value(this.coldef, val);
     }
+
     get value () {
-        if (!this.tablerow) return this.cell_value;
-        return this.tablerow.get_column_value(this.coldef);        
+        if (!this.tablerow) return null;
+        return this.tablerow.get_column_value(this.coldef);
     }
+
+    // set value(val) {
+    //     if (!this.tablerow) {
+    //         this.cell_value = val;
+    //     } else {
+    //         this.tablerow.set_column_value(this.coldef, val);
+    //     }
+    // }
+    // get value () {
+    //     if (!this.tablerow) return this.cell_value;
+    //     return this.tablerow.get_column_value(this.coldef);        
+    // }
 
     construct_edit_widget() {
         const location = this.widget();
@@ -92,7 +102,8 @@ export class TableCell extends UIWidget {
             axis: this.coldef.name,
             title: this.coldef.title
         });
-        const rec = this.tablerow ? this.tablerow.record : null;
+        // const rec = this.tablerow ? this.tablerow.record : null;
+        const rec = this.tablerow.record;
         w.html(this.coldef.format(val, rec, this.widget()));
     }
 }
