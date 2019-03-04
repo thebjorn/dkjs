@@ -1,3 +1,8 @@
+
+import is from "./is";
+import {array_intersection, set_equal} from "./lifecycle/set-ops";
+
+
 /**
  * Creates an object composed of the picked `object` properties.
  *
@@ -14,14 +19,32 @@
  *
  * _.pick(object, ['a', 'c']);
  * // => { 'a': 1, 'c': 3 }
+ * 
+ *  * _.pick(object, ['a']);
+ * // => { 'a': 1 }
+ * 
+ *  * _.pick(object, 'a');  // shortcut when second arg is of length 1
+ * // => { 'a': 1 }
  */
-import is from "./is";
-
 export function pick(object, paths) {
     if (object == null) return {};
+    if (!Array.isArray(paths)) paths = [paths];
     const res = {};
     paths.forEach(p => { res[p] = object[p]; });
     return res;
+}
+
+
+/**
+ * Return the values (only) from a pick with the same arguments.
+ * @param object
+ * @param paths
+ */
+export function pluck(lst, path) {
+    return lst.map(obj => {
+        const vals = Object.values(pick(obj, path));
+        return vals.length === 1 ? vals[0] : vals;
+    });
 }
 
 
@@ -44,11 +67,29 @@ export function zip_object(props, values)  {
  * @param target
  */
 export function matches(obj, target) {
-    if (!is.isProps(target)) throw `target must be a plain object, not ${target}`;
-    return Object.entries(target).map(([key, val]) => {
-        if (!obj.hasOwnProperty(key)) return false;
-        return obj[key] === val;
-    }).every(v => !!v);
+    function matches_array(src, trg) {
+        // console.log("INTERSECTION:", src, trg, array_intersection(src, trg));
+        // console.log("SET:TRG:", new Set(trg));
+        // console.log("SET:EQUAL:", array_intersection(src, trg) === new Set(trg));
+        return set_equal(array_intersection(src, trg), new Set(trg))
+    }
+    
+    function matches_object(src, trg) {
+        if (!is.isProps(trg)) throw `target must be a plain object, not ${trg}`;
+        return Object.entries(trg).map(([key, val]) => _matches(src[key], val)).every(v => !!v);
+    }
+    
+    function _matches(src, trg) {
+        if (Array.isArray(trg)) {
+            return matches_array(src, trg);
+        }
+        if (is.isProps(trg)) {
+            return matches_object(src, trg);
+        }
+        return src === trg;
+    }
+    
+    return _matches(obj, target);
 }
 
 /**
