@@ -72,37 +72,37 @@ export function classattrs(props) {
     };
 }
 
-class _mergeobject {
-    constructor({op}) {
-        this.op = op;
-    }
-}
-
-
-const $attr = {
-    append: function (item) {
-        return new _mergeobject({
-            op: function (orig) {
-                orig.push(item);
-                return orig;
-            }
-        });
-    },
-    extend: function (item) {
-        return new _mergeobject({
-            op: function (orig) {
-                return namespace.merge(orig, item);
-            }
-        });
-    },
-    merge: function (item) {
-        return new _mergeobject({
-            op: function (orig) {
-                return namespace.merge(orig, item);
-            }
-        });
-    }
-};
+// class _mergeobject {
+//     constructor({op}) {
+//         this.op = op;
+//     }
+// }
+//
+//
+// const $attr = {
+//     append: function (item) {
+//         return new _mergeobject({
+//             op: function (orig) {
+//                 orig.push(item);
+//                 return orig;
+//             }
+//         });
+//     },
+//     extend: function (item) {
+//         return new _mergeobject({
+//             op: function (orig) {
+//                 return namespace.merge(orig, item);
+//             }
+//         });
+//     },
+//     merge: function (item) {
+//         return new _mergeobject({
+//             op: function (orig) {
+//                 return namespace.merge(orig, item);
+//             }
+//         });
+//     }
+// };
 
 
 export default class Class {
@@ -118,13 +118,13 @@ export default class Class {
         } else {
             props = args;
         }
-        if (typeof props === 'object') {
+        if (is.isProps(props)) {
             for (const attr in props) if (props.hasOwnProperty(attr)) {
                 let propval = props[attr];
-                if (propval instanceof _mergeobject) {
-                    const classval = this[attr] ? this[attr]: [];
-                    propval = propval.op(classval);
-                }
+                // if (propval instanceof _mergeobject) {
+                //     const classval = this[attr] ? this[attr]: [];
+                //     propval = propval.op(classval);
+                // }
                 this[attr] = propval;
             }
         }

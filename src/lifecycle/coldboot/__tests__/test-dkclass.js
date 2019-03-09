@@ -1,6 +1,6 @@
 /* global test, expect */
 // const Class = require('../dk-class');
-import Class from "../dk-class";
+import Class, {classattrs} from "../dk-class";
 
 
 test('Class.create ctor', () => {
@@ -157,6 +157,30 @@ test('DEFINEs', () => {
     
     expect(p.DEFINES('foo')).toBe(true);
     expect(p.DEFINES('bar')).toBe(false);
+});
+
+
+test("non-dkclass-ctor", () => {
+    class Person extends Class {
+        constructor(fname, lname) {
+            super(fname, lname);
+            this.fname = fname;
+            this.lname = lname;
+        }
+    }
+    expect((new Person('hello', 'world')).fname).toBe('hello');
+});
+
+
+test("test-class-attrs", () => {
+    @classattrs({hello: 'world'})
+    class Person extends Class {
+        foo() { return 'bar'; }
+    }
+
+    let p = new Person();
+    expect(p.hello).toBe(undefined);
+    expect(Person.hello).toBe('world');
 });
 
 

@@ -11,7 +11,7 @@ import counter from "./core/counter";
 
 import {shallow_observer, deep_observer} from "./data/observable";
 import require_css from "./browser/loaders";
-import dkglobal from "./lifecycle/dkglobal";
+import dkglobal, {get_dk_script_tag} from "./lifecycle/dkglobal";
 import Class from "./lifecycle/coldboot/dk-class";
 import version from "./version";
 import create_debug_environment from "./lifecycle/dkboot/lifecycle-create-debug-environment";
@@ -110,7 +110,7 @@ dk.dkjstag = {
     },
     get tag() {
         dkwarning("dk.dkjstag.tag is deprecated and shouldn't be used anymore.");
-        return dkglobal._dk_script_tag;
+        return get_dk_script_tag();
     }
 };
 
