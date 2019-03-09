@@ -5,6 +5,10 @@ dkjs/static/dkjs/js/dk.min.js
 dkjs/static/dkjs/js/main.js
 dkjs/static/dkjs/js/main.js.map
 
+# PyCharm generated files from .scss
+styles/*.css
+styles/*.map
+
 build/
 coverage/
 out/
