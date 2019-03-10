@@ -56,8 +56,8 @@ test("throttle-debounce-true", () => {
     expect(callback).toHaveBeenCalledTimes(1);
     jest.advanceTimersByTime(250);
     for (i=0;i<100;i++) debounce_fn();
-    expect(callback).toHaveBeenCalledTimes(1);
+    expect(callback).toHaveBeenCalledTimes(2);
     jest.advanceTimersByTime(250);
     for (i=0;i<100;i++) debounce_fn();
-    expect(callback).toHaveBeenCalledTimes(1);
+    expect(callback).toHaveBeenCalledTimes(3);
 });
