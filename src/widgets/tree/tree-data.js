@@ -3,6 +3,7 @@
 import dk from "../../dk-obj";
 import Class from "../../lifecycle/coldboot/dk-class";
 import counter from "../../core/counter";
+import {json} from "../../browser/dk-client";
 
 export class Leaf extends Class {
     constructor(...args) {
@@ -178,19 +179,15 @@ export class JSonDataSource extends DataSource {
             height: 0,
         }, ...args);
     }
-
-    fetch() {
-        dk.trigger(this, 'fetch-data-start', this);
-        dk.trigger(this, 'fetch-data', self);
-    }
 }
 
 
-export class AjaxDataSource extends DataSource {
+export class AjaxDataSource extends JSonDataSource {
     constructor(...args) {
         super({
             url: '',
         }, ...args);
+        this.__in_json = false;
     }
     
     /*
@@ -202,7 +199,7 @@ export class AjaxDataSource extends DataSource {
 
         const self = this;
         dk.trigger(this, 'fetch-data-start', this);
-        dk.json({
+        return json({
             url: this.url,
             cache: true,
             success: function (data) {

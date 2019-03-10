@@ -18,7 +18,7 @@ test("json", () => {
     expect(ajax_args.dataType).toBe('json');
     expect(ajax_args.url).toBe('#foo');
     expect(ajax_args.data).toEqual(JSON.stringify({foo:'bar'}));
-    expect(ajax_args.contentType).toEqual('application/json; charset=utf-8')
+    expect(ajax_args.contentType).toEqual('application/json; charset=utf-8');
     
     // coverage without tests
     ajax_args.statusCode[404]();
@@ -47,7 +47,7 @@ test("async-json", async () => {
     expect(ajax_args.dataType).toBe('json');
     expect(ajax_args.url).toBe('#foo');
     expect(ajax_args.data).toEqual(JSON.stringify({foo:'bar'}));
-    expect(ajax_args.contentType).toEqual('application/json; charset=utf-8')
+    expect(ajax_args.contentType).toEqual('application/json; charset=utf-8');
 
     // coverage without tests
     ajax_args.statusCode[404]();

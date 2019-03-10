@@ -6,6 +6,7 @@
  * @param debounce_mode - false: only call callback once, at end.
  *                      - undefined: call callback every 250 ms, + final time at end
  *                      - true: call callback once at beginning only.
+ * @param args
  * @returns {debounce_function}
  */
 export function throttle(delay, callback, debounce_mode, ...args) {
