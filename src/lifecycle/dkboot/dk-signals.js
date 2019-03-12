@@ -16,7 +16,7 @@ import {dkwarning} from "../coldboot/dkwarning";
 const BINDING_NOTIFY_LEVEL = env.DEBUG ? loglevels.ERROR : loglevels.INFO;
 
 
-function _debugstr(obj) {
+export function debugstr(obj) {
     try {
         let res = "";
         if (obj.tagName) {
@@ -67,10 +67,10 @@ export function on(obj, signal, optfn) {
     if (obj === null) return {run: function () {}};
     if (env.DEBUG && env.LOGLEVEL >= BINDING_NOTIFY_LEVEL) {
         if (obj && signal && optfn) {
-            dkconsole.debug(`dk.on(${_debugstr(obj)}, "${signal}", run: ${optfn.toString()})`);
+            dkconsole.debug(`dk.on(${debugstr(obj)}, "${signal}", run: ${optfn.toString()})`);
         } else {
             dkconsole.error("dk.on argument error:", obj, signal, optfn);
-            if (!obj) throw new Error("Cannot listen on undefined object: " + obj);
+            if (!obj) throw new Error("Can't listen on undefined object: " + obj);
         }
     }
     if (obj === undefined) {
@@ -90,7 +90,7 @@ export function on(obj, signal, optfn) {
 
 export function trigger(obj, signal, ...args) {
     if (env.DEBUG && env.LOGLEVEL >= BINDING_NOTIFY_LEVEL + 1) {
-        const obj_str = _debugstr(obj);
+        const obj_str = debugstr(obj);
         const nl = obj_str.length > 90 ? '\n           ' : ' ';
         const argsval = (args.length === 1 && args[0] === obj) ? 'self' : args;
         dkconsole.debug(`dk.trigger[signal=${signal}](${obj_str},${nl}ARGS=[${argsval}])`);
