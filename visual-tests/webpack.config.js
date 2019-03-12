@@ -10,7 +10,7 @@ const LIBRARY_NAME = 'dk';
 
 const common_settings = {
     entry: [
-        './src/index.j'
+        './src/index.js'
     ],
     target: 'web',
 
