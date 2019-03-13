@@ -104,6 +104,8 @@ export class Node extends UIWidget {
         if (this.have_children()) {
             this.icon.append(dk.icon('chevron-right'));
         }
+        // this.widget('td').css('minHeight', this.tree.item_height);
+
     }
 
     draw_children() {

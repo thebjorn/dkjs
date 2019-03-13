@@ -139,7 +139,7 @@ import {PostnrLookupWidget} from "./widgets/postnr-lookup";
 import {Leaf, Tree, TreeWidget} from "./widgets/tree/tree-list/tree-list";
 import {Generation} from "./widgets/tree/tree-table/generation";
 import {NodeList} from "./widgets/tree/tree-table/node-list";
-import {SelectTable} from "./widgets/tree/tree-table/select-table";
+import {TableTree} from "./widgets/tree/tree-table/table-tree";
 import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
 import {VDataTable} from "./widgets/table/vert/vdata-table";
 import {help} from "./core/help";
@@ -163,6 +163,7 @@ import {help} from "./core/help";
         SortDirection,
         DataFilter,
         PostnrLookupWidget,
+        TableTree,
         
         State: state.State,
         format,
@@ -259,7 +260,7 @@ import {help} from "./core/help";
                     ['dk-tree-list-tree']: Tree,
                     ['dk-tree-generation']: Generation,
                     ['tree-node']: TreeNode,
-                    treeselect: SelectTable,
+                    treeselect: TableTree,
                     ['treeselect-nodelist']: NodeList, 
                     ['vTableColumn']: VDataTable,
                     ['vdatatable']: VDataTable,
@@ -317,7 +318,8 @@ import {help} from "./core/help";
             },
             Generation,
             NodeList,
-            SelectTable,
+            SelectTable: TableTree,
+            TableTree,
         },
         
         ajax,

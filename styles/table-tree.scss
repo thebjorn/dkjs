@@ -1,0 +1,41 @@
+@import "default-theme";
+
+.table-tree {
+    overflow-y: hidden;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    
+    .dk-tree-generation {
+        &::-webkit-scrollbar { width: 6px; }
+        &::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: darkgrey;
+            outline: 1px solid slategrey;
+        }
+
+        //background-color: red;
+        
+        direction: rtl;
+        
+        .treeselect-nodelist {
+            direction: ltr;
+            //td { border: 1px solid red; }
+            tr.tree-node {
+                td.treeselect-input {
+                    width: 1em;
+                    text-align: center;
+                }
+                td.treeselect-node {}
+                td.treeselect-icon {
+                    width: 1em;
+                    text-align: right;
+                }
+            }
+            tr.nav-selected {
+                background-color: $selected-color;
+            }
+        }
+    }
+}

@@ -3,8 +3,8 @@ import {UIWidget} from "../../../widgetcore/ui-widget";
 import {NodeList} from "./node-list";
 
 /*
- *  A Generation is a panel in the SelectTable widget.
- *  This widget controls the width and scrolling behavior of the SelectTable
+ *  A Generation is a panel in the TableTree widget.
+ *  This widget controls the width and scrolling behavior of the TableTree
  *  widget.
  *
  *  The direct children of this widget are `dk.tree.NodeList` objects that
@@ -22,11 +22,9 @@ export class Generation extends UIWidget {
             tree: null,
             width: 100,
             css: {
-                float: 'left',
-                height: '100%',
-                position: 'relative',
                 overflowY: 'scroll',
-                overflowX: 'none'
+                overflowX: 'none',
+                direction: 'rtl'
             },
 
             template: {
@@ -36,6 +34,32 @@ export class Generation extends UIWidget {
             
         }, ...args);
         this._nodelists = [];
+    }
+
+    construct() {
+        this.widget().attr({generation: this.depth});
+        this.widget().width(this.width);
+    }
+
+    draw(nodes) {
+        console.info("GENERATION:DRAW:NODES:", nodes);
+        if (!nodes) return;
+        this.nodelist(nodes);
+    }
+
+    nodelist(nodes, title) {
+        if (!nodes) return;
+        this.clear_nodelists();
+
+        const cur_nodelist = NodeList.append_to(this.widget(), {
+            title: title || this.tree.title,
+            nodes: nodes,
+            tree: this.tree,
+            generation: this
+        });
+
+        this._nodelists.push(cur_nodelist);
+        return cur_nodelist;
     }
 
     denavigate() {
@@ -50,30 +74,5 @@ export class Generation extends UIWidget {
             nlist.hide();
         });
         if (this.next) this.next.clear_nodelists();
-    }
-
-    nodelist(nodes, title) {
-        if (!nodes) return;
-        this.clear_nodelists();
-
-        const nodelist = NodeList.append_to(this.widget(), {
-            title: title,
-            nodes: nodes,
-            tree: this.tree,
-            generation: this
-        });
-
-        this._nodelists.push(nodelist);
-        return nodelist;
-    }
-
-    draw(nodes) {
-        if (!nodes) return;
-        this.nodelist(nodes);
-    }
-
-    construct() {
-        this.widget().attr({generation: this.depth});
-        this.widget().width(this.width);
     }
 }

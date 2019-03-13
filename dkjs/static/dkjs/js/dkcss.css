@@ -349,6 +349,30 @@
     .dktree .leaf:first-child:after {
       top: -5px; }
 
+.table-tree {
+  overflow-y: hidden;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box; }
+  .table-tree .dk-tree-generation {
+    direction: rtl; }
+    .table-tree .dk-tree-generation::-webkit-scrollbar {
+      width: 6px; }
+    .table-tree .dk-tree-generation::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); }
+    .table-tree .dk-tree-generation::-webkit-scrollbar-thumb {
+      background-color: darkgrey;
+      outline: 1px solid slategrey; }
+    .table-tree .dk-tree-generation .treeselect-nodelist {
+      direction: ltr; }
+      .table-tree .dk-tree-generation .treeselect-nodelist tr.tree-node td.treeselect-input {
+        width: 1em;
+        text-align: center; }
+      .table-tree .dk-tree-generation .treeselect-nodelist tr.tree-node td.treeselect-icon {
+        width: 1em;
+        text-align: right; }
+      .table-tree .dk-tree-generation .treeselect-nodelist tr.nav-selected {
+        background-color: #dddddd; }
+
 .help {
   position: relative; }
   .help dk-icon {

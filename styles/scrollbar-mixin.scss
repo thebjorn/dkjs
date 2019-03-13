@@ -16,3 +16,8 @@
     ::-webkit-scrollbar-corner { background-color: #ddd; }
     ::-webkit-resizer { background-color: #666; }
 }
+
+
+@mixin thin-left-scrollbar() {
+    ::-webkit-scrollbar { width: 4px; }
+}

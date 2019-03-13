@@ -53,7 +53,7 @@
     <div id="tree2" style="margin:5px;"></div>
 </div>
 <script>
-    var h1;
+    var h1, ds, ttree;
     dk.ready(function () {
         h1 = dk('h1');
         dk('h1').innerText = 'so long and thanks for all the fish';
@@ -87,9 +87,9 @@
                 }
             }
         });
-        var ds = dk.tree.JSonDataSource.create({
+        ds = dk.tree.JSonDataSource.create({
             "depth": 2,
-            "height": 2,
+            "height": 4,
             "cache": {
                 "d329": {
                     "kind": "department",
@@ -102,17 +102,6 @@
                     "root": "c57",
                     "children": []
                 },
-                "c57": {
-                    "kind": "company",
-                    "name": "Bar1",
-                    "parent": null,
-                    "id": "c57",
-                    "path": [
-                        "c57"
-                    ],
-                    "root": "c57",
-                    "children": ['d329', 'd328']
-                },
                 "d328": {
                     "kind": "department",
                     "name": "Bar2",
@@ -123,16 +112,57 @@
                     ],
                     "root": "c57",
                     "children": []
-                }
+                },
+                "d3291": {
+                    "kind": "department",
+                    "name": "Foo 4",
+                    "parent": "c56",
+                    "id": "d3291",
+                    "path": [
+                        "c56", "d3291"
+                    ],
+                    "root": "c56",
+                    "children": []
+                },
+                "d3289": {
+                    "kind": "department",
+                    "name": "Foo 5",
+                    "parent": "c56",
+                    "id": "d3289",
+                    "path": [
+                        "c56", "d3289"
+                    ],
+                    "root": "c56",
+                    "children": []
+                },
+                "d32899": {"kind": "department", "name": "Foo 5", "parent": "c56", "id": "d32899", "path": ["c56", "d32899"], "root": "c56", "children": []},
+                "d328999": {"kind": "department", "name": "Foo 5", "parent": "c56", "id": "d328999", "path": ["c56", "d328999"], "root": "c56", "children": []},
+                "c56": {
+                    "kind": "company",
+                    "name": "Foo1",
+                    "parent": null,
+                    "id": "c56",
+                    "path": [
+                        "c56"
+                    ],
+                    "root": "c56",
+                    "children": ['d3291', 'd3289', 'd32899', 'd328999']
+                },
+                "c55": {"kind": "company", "name": "Bar4", "parent": null, "id": "c55", "path": ["c55"], "root": "c55", "children": []},
+                "c54": {"kind": "company", "name": "Bar5", "parent": null, "id": "c54", "path": ["c54"], "root": "c54", "children": []},
+                "c53": {"kind": "company", "name": "Bar6", "parent": null, "id": "c53", "path": ["c53"], "root": "c53", "children": []},
+                "c52": {"kind": "company", "name": "Bar7", "parent": null, "id": "c52", "path": ["c52"], "root": "c52", "children": []},
+                "c57": {"kind": "company", "name": "Bar1", "parent": null, "id": "c57", "path": ["c57"], "root": "c57", "children": ['d329', 'd328']}
             },
-            "roots": ['c57']
+            "roots": ['c57', 'c56', 'c55', 'c54', 'c53', 'c52']
         });
         dk.TreeWidget.create_inside('#tree1', {
             initial_collapse: false,
             data: ds
         });
-        dk.tree.SelectTable.create_inside('#tree2', {
-            data: ds
+        ttree = dk.TableTree.create_inside('#tree2', {
+            data: ds,
+            // title: 'hello world'
         })
 
     });

@@ -17,7 +17,7 @@ export class NodeList extends UIWidget {
             generation: null,
             dklayout: TableLayout,
             structure: {
-                classes: ['dk-tree-nodelist'],
+                classes: ['dk-tree-nodelist', 'table', 'table-condensed'],
                 css: {
                     width: '100%'
                 },
@@ -28,19 +28,6 @@ export class NodeList extends UIWidget {
         }, ...args);
     }
 
-    denavigate() {
-        this._nodes.forEach(function (node) {
-            node.navigation_state(false);
-        });
-    }
-
-    show() {
-        this._super();
-        this._nodes.forEach(function (node) {
-            node.hilite();
-        });
-    }
-
     construct() {
         const self = this;
         this.header_row = this.layout.add_row_to('thead');
@@ -49,16 +36,31 @@ export class NodeList extends UIWidget {
         this.header_row.appendln(th);
 
         this._nodes = [];
+        console.info("CONSTRUCTING:NODELIST:NODES:", this.nodes);
 
-        this.nodes.forEach(function (nodeid) {
-            const tr = self.layout.add_row_to('tbody');
+        this.nodes.forEach(node => {
+            const tr = this.layout.add_row_to('tbody');
+            console.info("NODEID:", node.id);
 
-            self._nodes.push(new Node(tr, {
-                item: self.tree.data.cache[nodeid],
-                tree: self.tree,
-                generation: self.generation,
-                nodelist: self
+            this._nodes.push(Node.create_on(tr, {
+                item: this.tree.data.cache[node.id],
+                tree: this.tree,
+                generation: this.generation,
+                nodelist: this
             }));
+        });
+    }
+
+    denavigate() {
+        this._nodes.forEach(function (node) {
+            node.navigation_state(false);
+        });
+    }
+
+    show() {
+        super.show();
+        this._nodes.forEach(function (node) {
+            node.hilite();
         });
     }
 }

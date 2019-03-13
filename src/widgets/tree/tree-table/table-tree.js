@@ -16,10 +16,11 @@ import {Generation} from "./generation";
  *
  */
 
-export class SelectTable extends UIWidget {
+export class TableTree extends UIWidget {
     constructor(...args) {
         super({
-            type: 'treeselect',
+            type: 'table-tree',
+            title: 'MISSING-TITLE',
             item_height: 25,
             select: 'leaves',
             //cursor_children: "url(http://static.datakortet.no/cur/29.cur), pointer",
@@ -33,14 +34,12 @@ export class SelectTable extends UIWidget {
             _generation: null,
             current_node: null,
             _selected_nodes: null,
+            size: 5,
 
             structure: {
                 classes: ['dk-tree-select'],
                 css: {
-                    height: 411,
-                    'overflow-y': 'hidden',
-                    border: '1px solid #e0e0e0',
-                    position: 'relative'
+                    display: 'flex',
                 }
             },
         }, ...args);
@@ -53,6 +52,10 @@ export class SelectTable extends UIWidget {
         this.values = {};
         this._generation = [];
         this._selected_nodes = [];
+    }
+    
+    construct() {
+        this.widget().height(this.size * this.item_height);
     }
 
     get_selected() {
@@ -97,6 +100,7 @@ export class SelectTable extends UIWidget {
         for (let i=0; i<data.depth; i++) {
             const generation = Generation.append_to(this.widget(), {
                 depth: i,
+                title: this.title,
                 selected: null,
                 width: Math.floor((self.widget().innerWidth() - 0.5) / data.depth),
                 tree: self
@@ -104,7 +108,8 @@ export class SelectTable extends UIWidget {
             this._generation.push(generation);
             if (i > 0) this._generation[i - 1].next = generation;
         }
-        if (this.data.depth > 0) {
+        console.info("ROOTS:", this.data.roots);
+        if (true || this.data.depth > 0) {
             this._generation[0].parent = this;
             this._generation[0].draw(this.data.roots);
         }
