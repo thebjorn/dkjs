@@ -60,7 +60,7 @@ export class TableTree extends UIWidget {
 
     get_selected() {
         if (! (this.data || this.data.cache)) return {};
-        return where(this.data.cache, {selected: true});
+        return where(Object.values(this.data.cache), {selected: true});
     }
 
     selection_state(node, boolval) {

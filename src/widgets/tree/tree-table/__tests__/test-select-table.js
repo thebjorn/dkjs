@@ -15,7 +15,9 @@ test("test-select-table-render", () => {
     const work = $('#work');
     page.initialize(document);
 
-    TableTree.create_inside(work, {
+    const tree = TableTree.create_inside(work, {
+        selectable: ['department', 'company'],
+        multiselect: false,
         data: JSonDataSource.create({
             "depth": 2,
             "height": 2,
@@ -57,6 +59,9 @@ test("test-select-table-render", () => {
             "roots": ['c57']
         })
     });
-    console.log(work.html());
+    $('[name=Bar1] .treeselect-node').click();
+    const selected = tree.get_selected();
+    expect(selected).toHaveLength(1);
+    expect(selected[0].id).toBe("c57");
     expect(work.html()).toMatchSnapshot();
 });

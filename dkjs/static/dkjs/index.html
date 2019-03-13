@@ -162,8 +162,10 @@
         });
         ttree = dk.TableTree.create_inside('#tree2', {
             data: ds,
+            selectable: ['department'],
+            multiselect: false
             // title: 'hello world'
-        })
+        });
 
     });
 </script>

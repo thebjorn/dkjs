@@ -7,12 +7,32 @@ exports[`test-select-table-render 1`] = `
 <th colspan=\\"3\\" style=\\"height: 20px;\\" id=\\"dk-table-2\\">MISSING-TITLE</th>
 </tr>
 </thead><tbody id=\\"dk-bx-2\\">
-<tr id=\\"dk-table-3\\" class=\\"tree-node treeselect-item company treeselect-tree\\" name=\\"Bar1\\" style=\\"cursor: pointer;\\">
-<td id=\\"dk-bx-3\\" class=\\"treeselect-input\\" style=\\"text-align: center; vertical-align: middle;\\"></td>
+<tr id=\\"dk-table-3\\" class=\\"tree-node treeselect-item company treeselect-tree nav-selected\\" name=\\"Bar1\\" style=\\"cursor: pointer;\\">
+<td id=\\"dk-bx-3\\" class=\\"treeselect-input\\" style=\\"text-align: center; vertical-align: middle;\\"><input name=\\"company\\" value=\\"c57\\" type=\\"radio\\" id=\\"dk-bx-6\\" style=\\"margin: 4px; cursor: pointer;\\"></td>
 
 <td id=\\"dk-bx-4\\" class=\\"treeselect-node\\">Bar1</td>
 
 <td valign=\\"middle\\" id=\\"dk-bx-5\\" class=\\"treeselect-icon\\"></td>
 </tr>
-</tbody></table></div><div id=\\"generation-2\\" class=\\"dk-tree-generation\\" style=\\"overflow-y: scroll; overflow-x: none; direction: rtl; width: 0px;\\" generation=\\"1\\"></div></div>"
+</tbody></table></div><div id=\\"generation-2\\" class=\\"dk-tree-generation\\" style=\\"overflow-y: scroll; overflow-x: none; direction: rtl; width: 0px;\\" generation=\\"1\\"><table id=\\"node-list-2\\" class=\\"treeselect-nodelist dk-tree-nodelist table table-condensed dk-bx\\" style=\\"width: 100%;\\"><thead id=\\"dk-bx-7\\">
+<tr id=\\"dk-table-4\\">
+<th colspan=\\"3\\" style=\\"height: 20px;\\" id=\\"dk-table-5\\">Bar1</th>
+</tr>
+</thead><tbody id=\\"dk-bx-8\\">
+<tr id=\\"dk-table-6\\" class=\\"tree-node treeselect-item department treeselect-leaf\\" name=\\"Bar3\\" style=\\"cursor: pointer;\\">
+<td id=\\"dk-bx-9\\" class=\\"treeselect-input\\" style=\\"text-align: center; vertical-align: middle;\\"><input name=\\"department\\" value=\\"d329\\" type=\\"radio\\" id=\\"dk-bx-12\\" style=\\"margin: 4px; cursor: pointer;\\"></td>
+
+<td id=\\"dk-bx-10\\" class=\\"treeselect-node\\">Bar3</td>
+
+<td valign=\\"middle\\" id=\\"dk-bx-11\\" class=\\"treeselect-icon\\"></td>
+</tr>
+
+<tr id=\\"dk-table-7\\" class=\\"tree-node treeselect-item department treeselect-leaf\\" name=\\"Bar2\\" style=\\"cursor: pointer;\\">
+<td id=\\"dk-bx-13\\" class=\\"treeselect-input\\" style=\\"text-align: center; vertical-align: middle;\\"><input name=\\"department\\" value=\\"d328\\" type=\\"radio\\" id=\\"dk-bx-16\\" style=\\"margin: 4px; cursor: pointer;\\"></td>
+
+<td id=\\"dk-bx-14\\" class=\\"treeselect-node\\">Bar2</td>
+
+<td valign=\\"middle\\" id=\\"dk-bx-15\\" class=\\"treeselect-icon\\"></td>
+</tr>
+</tbody></table></div></div>"
 `;

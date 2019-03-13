@@ -36,11 +36,11 @@ export class NodeList extends UIWidget {
         this.header_row.appendln(th);
 
         this._nodes = [];
-        console.info("CONSTRUCTING:NODELIST:NODES:", this.nodes);
+        // console.info("CONSTRUCTING:NODELIST:NODES:", this.nodes);
 
         this.nodes.forEach(node => {
             const tr = this.layout.add_row_to('tbody');
-            console.info("NODEID:", node.id);
+            // console.info("NODEID:", node.id);
 
             this._nodes.push(Node.create_on(tr, {
                 item: this.tree.data.cache[node.id],
@@ -52,9 +52,7 @@ export class NodeList extends UIWidget {
     }
 
     denavigate() {
-        this._nodes.forEach(function (node) {
-            node.navigation_state(false);
-        });
+        this._nodes.forEach(node => node && node.navigation_state(false));
     }
 
     show() {

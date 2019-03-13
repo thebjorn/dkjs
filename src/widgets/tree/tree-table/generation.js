@@ -42,7 +42,7 @@ export class Generation extends UIWidget {
     }
 
     draw(nodes) {
-        console.info("GENERATION:DRAW:NODES:", nodes);
+        // console.info("GENERATION:DRAW:NODES:", nodes);
         if (!nodes) return;
         this.nodelist(nodes);
     }
@@ -63,16 +63,12 @@ export class Generation extends UIWidget {
     }
 
     denavigate() {
-        this._nodelists.forEach(function (nlist) {
-            nlist.denavigate();
-        });
+        this._nodelists.forEach(nlist => nlist.denavigate());
         if (this.next) this.next.denavigate();
     }
 
     clear_nodelists() {
-        this._nodelists.forEach(function (nlist) {
-            nlist.hide();
-        });
+        this._nodelists.forEach(nlist => nlist.hide());
         if (this.next) this.next.clear_nodelists();
     }
 }
