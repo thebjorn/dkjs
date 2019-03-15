@@ -22,7 +22,7 @@ matrix:
       after_success: codecov
 
     - language: python
-      python: "3.4"
+      python: "3.6"
       install: pip install -r requirements.txt
       script: pytest -v --cov=dkjs tests
       after_success: codecov
