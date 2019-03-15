@@ -80,6 +80,10 @@ class CORSView(View):
         params = {}
         params.update(request.GET)
         params.update(request.POST)
+        for k, v in params.items():
+            if isinstance(v, list) and len(v) == 1:
+                params[k] = v[0]
+        print("PARAMS:", params)
         request.dkargs = params
 
     def call_method(self, request, *args, **kwargs):
@@ -232,14 +236,15 @@ class GridView(SubcommandView):
         """Return a .csv file.
         """
         response = http.HttpResponse(content_type='text/csv')
-        filename = request.REQUEST.get('filename', 'download')
+        filename = request.dkargs.get('filename', 'download')
         if not filename.endswith('.csv'):
             filename += '.csv'
         contentdisp = 'attachment; filename=%s' % filename
         response['Content-Disposition'] = contentdisp
         # is there any way to check for which version of .csv the user's
         # Office package understand..?
-        delimiter = ',' if request.user.username == 'bjorn' else ';'
+        delimiter = request.dkargs.get('delimiter', ';')
+        # delimiter = ',' if request.user.username == 'bjorn' else ';'
         csvgrid = self.csv_grid(gridval)
         return csvgrid.write_csv(response, delimiter)
 
@@ -296,7 +301,7 @@ class Resultset(GridView):
         # print "PARAMS:", res
         return res
 
-    def get_queryset(self, request, *args, **kwargs):
+    def get_queryset(self, request, *args, **kwargs):  # pragma: nocover
         pass  # must override
 
     def get_columns(self, request, qs, object_list):
@@ -312,7 +317,7 @@ class Resultset(GridView):
             self._column = {}
             res = []
             col_list = self.get_columns(request, qs, object_list)
-            if col_list is None:
+            if col_list is None:  # pragma: nocover
                 raise SyntaxError("you must return the columns from get_columns(...)")
             for c in col_list:
                 if getattr(c, 'is_wrapper', inspect.isclass(c)):
@@ -330,7 +335,7 @@ class Resultset(GridView):
 
     # def get_object_list(self, request): pass
 
-    def run_default(self, request, args):
+    def run_default(self, request, args):  # pragma: nocover
         # return http.HttpResponse("You must supply a command..")
         return jason.response(request, {
             'error': 'You must supply a command',
@@ -402,7 +407,7 @@ class Resultset(GridView):
 class SqlGrid(Resultset):
     """A 'primitive' resultset for values derived directly from a sql query.
     """
-    def get_sql_query(self, request, *args, **kwargs):
+    def get_sql_query(self, request, *args, **kwargs):  # pragma: nocover
         """Override this.
         """
         raise NotImplementedError
