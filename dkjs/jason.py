@@ -84,7 +84,7 @@ class DkJSONEncoder(json.JSONEncoder):
             return dict((k, v) for k, v in obj.__dict__.items()
                         if not k.startswith('_'))
 
-        return json.JSONEncoder.default(self, obj)
+        return super(DkJSONEncoder, self).default(obj)
 
 
 def dumps(val, indent=4, sort_keys=True, cls=DkJSONEncoder):
@@ -117,7 +117,7 @@ def obj_decoder(pairs):
         if isinstance(v, six.text_type) and v.startswith('@'):
             try:
                 v = str(v)
-            except UnicodeEncodeError:
+            except UnicodeEncodeError:  # pragma: nocover
                 return None
             else:
                 if ':' not in v:

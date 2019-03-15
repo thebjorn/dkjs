@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
+
+from dkjs.jason import jsonname, response
+
 "core.jason"
 
 # pylint:disable=R0904, W0232, C0111, R0201, C0301
@@ -66,9 +69,31 @@ def test_class_dumps():
 
 
 def test_set_dumps():
+    assert jason.json_eval(jason.dumps(1)) == 1
     assert jason.json_eval(jason.dumps(set())) == []
     assert jason.json_eval(jason.dumps({1, 2})) == [1, 2]
     assert jason.json_eval(jason.dumps(ttcal.Year(2017))) == {'year': 2017, 'kind': 'YEAR'}
+    assert jason.dumps(ttcal.Duration.parse('1:10:01')) == '"@duration:4201"'
+    assert jason.dumps(datetime.date(2019, 3, 15)) == '"@date:2019-03-15"'
+    assert jason.json_eval(jason.dumps(datetime.time(hour=1, minute=10, second=1))) == {
+        'hour': 1,
+        'minute': 10,
+        'second': 1,
+        'microsecond': 0,
+        'kind': 'TIME'
+    }
+    
+    class Foo(object):
+        __slots__ = ['a', 'b']
+    
+    with pytest.raises(TypeError):
+        jason.dumps(Foo())  # not JSON serializable
+    
+
+@pytest.mark.skipif(not DJANGO, reason="No django present")
+def test_dj_dumps():
+    from django.contrib.auth.models import User
+    assert jason.dumps(User.objects.none()) == '[]'
 
 
 def test_loads():
@@ -91,7 +116,24 @@ def test_loads():
     val = u'{"k":42}'
     jval = jason.loads(val)
     assert jval['k'] == 42
+    
+    
+def test_jsonname():
+    assert jsonname("hello.world") == "hello_world"
+    
 
+@pytest.mark.skipif(not DJANGO, reason="No Django present")
+def test_response(rf):
+    request = rf.get('/')
+    r = response(request, 42)
+    assert r.status_code == 200
+    assert r.content == b'42'
+    
+    request = rf.get('/?callback=cb')
+    r = response(request, 42)
+    assert r.status_code == 200
+    assert r.content == b'cb(42)'
+    
 
 @pytest.mark.skipif(not DJANGO, reason="No Django present")
 def test_jsonp():
@@ -100,4 +142,6 @@ def test_jsonp():
     # assert 'cb(42)' in str(jason.jsonp('cb', 42).content)
     
     assert jason.jsonp('cb', {'x':42}).content.startswith(b'cb(function(val){return(dk&&dk.jason&&dk.jason.parse)?dk.jason.parse(val):JSON.parse(val)}')
+    assert jason.jsonp('cb', 42).content == b'cb(42)'
+    assert jason.jsonp('cb', 'hello').content == b'cb("hello")'
   
