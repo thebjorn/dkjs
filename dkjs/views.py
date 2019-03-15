@@ -312,6 +312,8 @@ class Resultset(GridView):
             self._column = {}
             res = []
             col_list = self.get_columns(request, qs, object_list)
+            if col_list is None:
+                raise SyntaxError("you must return the columns from get_columns(...)")
             for c in col_list:
                 if getattr(c, 'is_wrapper', inspect.isclass(c)):
                     col = c()
@@ -463,8 +465,6 @@ class SqlGrid(Resultset):
         sql.set_range(params['start'], params['end'])
         with connection.cursor() as c:
             object_list = sql.execute(c)
-
-
 
         info = {'totcount': len(object_list)}
         info['filter_count'] = len(object_list)

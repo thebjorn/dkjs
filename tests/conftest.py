@@ -34,5 +34,5 @@ def pytest_configure():
         )
     )
     django.setup()
-    from django.core.management import call_command
-    call_command('migrate', interactive=False)
+    # from django.core.management import call_command
+    # call_command('migrate', interactive=False)

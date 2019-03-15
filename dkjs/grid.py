@@ -20,6 +20,13 @@ except NameError:
     unicode = str
 
 
+def _get_all_field_names(model):
+    try:
+        return model._meta.get_all_field_names()
+    except AttributeError:
+        return [f.name for f in model._meta.get_fields()]
+
+
 class ColumnGetter(object):
     """
     """
@@ -33,7 +40,7 @@ class ColumnGetter(object):
         return list(self)
 
     def __iter__(self):
-        for fname in self._instance.model._meta.get_all_field_names():
+        for fname in _get_all_field_names(self._instance.model):
             yield getattr(self, fname)
 
     def __getattr__(self, colname):
@@ -138,8 +145,9 @@ class _ModelFieldColumn(Column):
 
     def __init__(self, model, field_name, **overrides):
         self.name = field_name
+            
         try:
-            field, _model, direct, m2m = model._meta.get_field_by_name(field_name)
+            field = self._get_field(model, field_name)
         except FieldDoesNotExist:
             self.label = field_name
             self.datatype = None
@@ -152,6 +160,13 @@ class _ModelFieldColumn(Column):
             for k, v in overrides.items():
                 setattr(self, k, v)
         super(_ModelFieldColumn, self).__init__()
+        
+    def _get_field(self, model, name):
+        try:
+            field, _model, _direct, _m2m = model._meta.get_field_by_name(name)
+            return field
+        except AttributeError:
+            return model._meta.get_field(name)
 
     def _get_datatype(self, django_field):
         try:
