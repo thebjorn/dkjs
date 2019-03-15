@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
+
 import django
 
 DIRNAME=os.path.dirname(__file__)
 
 
 def pytest_configure():
+    sys.path.append(DIRNAME)  # for testapp
     from django.conf import settings
     settings.configure(
         DEBUG=True,
@@ -27,6 +30,9 @@ def pytest_configure():
             'django.contrib.sessions',
             'django.contrib.admin',
             'dkjs',
+            'testapp',
         )
     )
     django.setup()
+    from django.core.management import call_command
+    call_command('migrate', interactive=False)
