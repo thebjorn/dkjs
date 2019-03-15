@@ -12,19 +12,17 @@ import json
 import collections
 import re
 
-DJANGO = TTCAL = False
+DJANGO = TTCAL = True
 try:
     from django import http
     from django.db.models.query import QuerySet
-    DJANGO = True
 except ImportError:  # pragma: nocover
-    pass
+    DJANGO = False
 
 try:
     import ttcal
-    TTCAL = True
 except ImportError:  # pragma: nocover
-    pass
+    TTCAL = False
 
 # Call JSON.parse() if dk.jason.parse() is not available
 # (the re.sub() call removes all spaces, which is currently safe).
@@ -59,11 +57,10 @@ class DkJSONEncoder(json.JSONEncoder):
         if isinstance(obj, set):
             return list(obj)
 
-        if TTCAL:
-            if isinstance(obj, ttcal.Year):
-                return dict(year=obj.year, kind='YEAR')
-            if isinstance(obj, ttcal.Duration):
-                return '@duration:%d' % obj.toint()
+        if isinstance(obj, ttcal.Year):
+            return dict(year=obj.year, kind='YEAR')
+        if isinstance(obj, ttcal.Duration):
+            return '@duration:%d' % obj.toint()
 
         if isinstance(obj, datetime.datetime):
             return '@datetime:%s' % obj.isoformat()
@@ -76,9 +73,8 @@ class DkJSONEncoder(json.JSONEncoder):
                         microsecond=obj.microsecond,
                         kind="TIME")
 
-        if DJANGO:
-            if isinstance(obj, QuerySet):
-                return list(obj)
+        if isinstance(obj, QuerySet):
+            return list(obj)
 
         if hasattr(obj, '__dict__'):
             return dict((k, v) for k, v in obj.__dict__.items()
