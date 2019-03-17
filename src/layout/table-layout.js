@@ -48,7 +48,7 @@ export class TableLayout extends Layout {
         this.location.addClass(this.class_name);
     }
     add_row_to(whence) {  // whence = {thead, tbody, tfoot}
-        console.info("WHENCE:", whence);
+        // console.info("WHENCE:", whence);
         const tr = this.make('tr');
         this.widget[whence].appendln(tr);
         return tr;

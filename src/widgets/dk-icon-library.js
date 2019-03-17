@@ -28,26 +28,31 @@ export class IconLibrary {
      */
     make_icon(name, style, item) {
         name = name || "";  // catch undefined
-        let res = item || dk.$('<i class="icon"/>');
+        // let res = item || dk.$('<i class="icon"/>');
+        let res = document.createElement('i');
         let nameparts = name.split(':');
         name = nameparts[0];
 
-        res.addClass(this.classes);
+        // res.addClass(this.classes);
+        res.classList.add(this.classes);
         let classname = this.prefix + (this[name] !== undefined ? this[name] : name);
-        res.addClass(classname);
-        res.addClass(name);
+        // res.addClass(classname);
+        res.classList.add(classname);
+        // res.addClass(name);
+        if (name) res.classList.add(name);
         if (nameparts.length > 1) {
             let attrs = nameparts[1].split(',');
             attrs.forEach(attr => {
                 if (this[attr.replace('-', '_')]) {
                     res = this[attr.replace('-', '_')](res);
                 } else {
-                    res.addClass(this.prefix + attr);
+                    // res.addClass(this.prefix + attr);
+                    res.classList.add(this.prefix + attr);
                 }
             });
         }
 
-        if (style) res.css(style);
+        // if (style) res.css(style);
 
         return res;
     }
@@ -83,3 +88,44 @@ export function jq_dkicons(dk) {
         });
     });
 }
+
+
+
+customElements.define('dk-icon', class extends HTMLElement {
+    constructor() {
+        super();
+    }
+
+    get value() {
+        return this.getAttribute("value");
+    }
+
+    set value(val) {
+        this.setAttribute('value', val);
+    }
+
+    static get observedAttributes() {
+        return ['value'];
+    }
+
+    attributeChangedCallback(attrname, oldval, newval) {
+        if (attrname === 'value') {
+            // this.innerHTML = `<i class="${newval} fa fa-${newval} fa-fw icon"></i>`;
+            if (this.icon) {
+                this.icon.classList.remove(oldval, 'fa-' + oldval);
+                this.icon.classList.add(newval, 'fa-' + newval);
+            }
+        }
+    }
+    connectedCallback() {
+        this.root = this.attachShadow({mode: 'open'});
+        this.icon = icon(this.value);
+        this.root.innerHTML = `<link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">`;
+        this.root.appendChild(this.icon);
+    }
+
+    invalidate() {
+        this.icon.setAttribute('value', this.value);
+    }
+
+});

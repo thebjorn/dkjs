@@ -143,6 +143,7 @@ import {TableTree} from "./widgets/tree/tree-table/table-tree";
 import {Node as TreeNode} from "./widgets/tree/tree-table/tree-node";
 import {VDataTable} from "./widgets/table/vert/vdata-table";
 import {help} from "./core/help";
+import "./browser/dk-load-tag";
 
 (function () {
     dk.add({

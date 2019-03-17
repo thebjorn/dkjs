@@ -17,6 +17,7 @@
     <orderEntry type="jdk" jdkName="Python 3.6 (dkjs36)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jquery-3.1.0" level="application" />
+    <orderEntry type="library" name="webcomponents-bundle" level="application" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="myDocStringFormat" value="Plain" />

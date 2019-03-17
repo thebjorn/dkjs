@@ -7,7 +7,7 @@
 <!--START DKJS SECTION-->
     <!-- polyfills -->
     <!--IE11 needs a lot of polyfills (it's empty on all other browsers)-->
-    <script src="https://polyfill.io/v3/polyfill.js?features=es5,es6,es7,Object.entries&flags=gated"></script>
+    <script src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries&flags=gated"></script>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
     
     <!--this is only needed if you compile custom element classes to es5 (for IE11) and then try to run on a modern browser-->
@@ -18,7 +18,7 @@
     <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
 
     <!--dk.js proper/core-->
-    <script DEBUG LOGLEVEL="4" crossorigin="anonymous" src="js/dk.min.js"></script>
+    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" src="js/dk.min.js"></script>
     <!--tag lib can go here (if separate)-->
 <!--END DKJS SECTION-->
 
@@ -30,17 +30,19 @@
         dk-icon:not(:defined) {
             display: none;
         }
-        /*table, td, th { border: 1px solid #666; }*/
-        /*table { border-collapse: collapse; }*/
-        /*td, th { padding: 4px; }*/
+        dk-load { border: 6px solid red; margin: 3px; }
     </style>
     
 </head>
 <body>
 <div class="container">
     <h1 id="id-title">hello world</h1>
-    <dk-icon style="color:hotpink" src="paw:2x:fw"></dk-icon>
-
+    <dk-icon style="color:hotpink" value="paw:2x:fw"></dk-icon>
+    <block style="display:inline-block;border:1px solid blue">
+        9900 = <dk-load url="https://cache.norsktest.no/ajax/poststed/9900/">
+                   LOADING...
+               </dk-load>
+    </block>
 
     <div style="width:250px;height:200px;border:3px dotted red; margin:10px; padding:10px; border-radius: 4px">
         <div id="work"><div class="foo"></div></div>
@@ -158,11 +160,13 @@
         });
         dk.TreeWidget.create_inside('#tree1', {
             initial_collapse: false,
-            data: ds
+            data: ds,
+            // selectable: ['department'],
+            // multiselect: false
         });
         ttree = dk.TableTree.create_inside('#tree2', {
             data: ds,
-            selectable: ['department'],
+            selectable: ['company', 'department'],
             multiselect: false
             // title: 'hello world'
         });
