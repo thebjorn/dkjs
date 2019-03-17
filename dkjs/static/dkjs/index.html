@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
+    <!--<link rel="stylesheet" href="https://static.datakortet.no/font/fa500/css/fontawesome-pro-core.css">-->
+    <!--<link rel="stylesheet" href="https://static.datakortet.no/font/fa500/css/fontawesome-pro-solid.css">-->
 
 <!--START DKJS SECTION-->
     <!-- polyfills -->
@@ -21,7 +23,7 @@
     <script DEBUG LOGLEVEL="3" crossorigin="anonymous" name="dkk" src="js/dk.min.js"></script>
     <!--tag lib can go here (if separate)-->
 <!--END DKJS SECTION-->
-    <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
+
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="js/dkcss.css">
@@ -37,6 +39,9 @@
 <div class="container">
     <h1 id="id-title">hello world</h1>
     <dk-icon style="color:hotpink" value="paw:2x,fw"></dk-icon>
+
+    <i class="house icon fa fa-home"></i>
+    icon container: <span id="icn-cont"></span>
     
     <div id="panel"></div>
     
@@ -62,6 +67,8 @@
         h1 = dk('h1');
         dk('h1').innerHTML = 'so long and thanks for all the fish';
         dk('h1').appendChild(dk.icon('paw'));
+        dk.dkicon.append_to('h1', {value: 'home'});
+        
         dk.on(h1, 'foo', function (a, b, c) {
             console.log("got foo'd:", a, b, c);
             dk.$(h1).append(' got foo-d');

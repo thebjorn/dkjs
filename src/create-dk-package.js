@@ -101,7 +101,7 @@ import widgetmap from "./widgetcore/dk-widgetmap";
 import {Layout} from "./layout/dk-layout";
 import {Widget} from "./widgetcore/dk-widget";
 import {dkrequire_urls, dkrequire} from "./lifecycle/browser/dk-require";
-import {icon, jq_dkicons, IconLibrary} from "./widgets/dk-icon-library";
+import {icon, jq_dkicons, IconLibrary, dkicon} from "./widgets/dk-icon-library";
 import browser_version from "./browser/browser-version";
 import {count_char, dedent} from "./text/text-utils";
 import {PanelWidget} from "./widgets/dk-panel";
@@ -187,6 +187,7 @@ import "./browser/dk-load-tag";
             PanelWidget
         },
         icon,
+        dkicon,
         cursor,
         browser: browser_version,
         

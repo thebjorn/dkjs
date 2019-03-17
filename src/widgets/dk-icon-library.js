@@ -1,7 +1,84 @@
-import dk from "../dk-obj";
-import {dkrequire} from "../lifecycle/browser/dk-require";
+import {dkrequire, dkrequire_loaded} from "../lifecycle/browser/dk-require";
 import dom from "../browser/dom";
+import {UIWidget} from "../widgetcore/ui-widget";
+import {dkconsole} from "../lifecycle/dkboot/dk-console";
 
+
+export class dkicon extends UIWidget {
+    constructor(...args) {
+        const props = Object.assign({
+            classes: ['icon', 'fa'],
+            prefix: 'fa-',
+            href: 'https://static.datakortet.no/font/fa470/css/font-awesome.css',
+            icons: {
+                remove: 'trash-o',
+                cancel: 'times-circle-o',
+                up: 'chevron-up',
+                down: 'chevron-down'
+            }
+        }, ...args);
+        const value = props.value;
+        const tag = props.tag;
+        delete props.value;
+        delete props.tag;
+        super(props);
+        this._value = value;
+        this._name = null;
+        this._modifiers = [];
+        this._tag = tag;
+        if (!dkrequire_loaded(this.href)) dkconsole.error(`You need to include ${this.href} in the header!`);
+    }
+    
+    construct() {
+        if (!this._tag) {
+            this._tag = document.createElement('i');
+            this.node.appendChild(this._tag);
+        }
+    }
+    
+    draw(value) {
+        if (value == null) value = this._value;
+        this._value = value;
+        // if (!this._tag) return;
+        this._remove_value();
+        this._add_value(...this._value2args(value));
+    }
+
+    _remove_value() {
+        if (!this._tag && this._name) return;
+        dom.remove_classes(
+            this._tag,
+            this._name, ...this.classes, this.prefix + this._name, ...this._modifiers
+        );
+    }
+
+    _add_value(name, modifiers) {
+        if (!name) return;
+        if (this.icons[name]) name = this.icons[name];
+        this._name = name;
+        this._modifiers = modifiers;
+        dom.add_classes(
+            this._tag,
+            this._name, ...this.classes, this.prefix + name, ...modifiers
+        );
+    }
+
+    _value2args(value) {
+        let [name, ...modifier_list] = (value || "").split(':');
+        const modifier_spec = modifier_list.join(',');              // string
+        const modifiers = modifier_spec.split(',').map(attr => this.prefix + attr);
+        return [name, modifiers];
+    }
+
+    get value() { return this._value; }
+
+    set value(val) {
+        if (val !== this._value) {
+            this.draw(val);
+            // this.setAttribute('value', val);
+        }
+    }
+}
 
 // xxx: should this be exported..?
 export class IconLibrary {
@@ -69,10 +146,15 @@ export class IconLibrary {
     }
 }
 
+// export function icon(value) {
+//     const i_tag = document.createElement('i');
+//     dkicon.construct_on(i_tag??)
+//     return ??; 
+// }
 
 export const icon = (function () {
     let chosen_icons = IconLibrary.fontawsome4();
-    // dkrequire(chosen_icons.url);
+    if (!dkrequire_loaded(chosen_icons.url)) dkconsole.error(`You need to include ${chosen_icons.url} in the header!`);
     return (...args) => chosen_icons.make_icon(...args);
 }());
 
@@ -80,8 +162,8 @@ export const icon = (function () {
 // called from create_dk_package.js
 export function jq_dkicons(dk) {
     dk.$(document).ready(function () {
-        $('[dk-icon]').each(function () {
-            $(this).append(icon($(this).attr('dk-icon')));
+        dk.$('[dk-icon]').each(function () {
+            dk.$(this).append(icon(dk.$(this).attr('dk-icon')));
         });
     });
 }
@@ -107,9 +189,9 @@ class DK_ICON extends HTMLElement {
         this._tag = null;
     }
 
-    _icon_stylesheet() {
-        return `<link rel="stylesheet" href="${this.default.url}">`;
-    }
+    // _icon_stylesheet() {
+    //     return `<link rel="stylesheet" href="${this.default.url}">`;
+    // }
 
     _remove_value() {
         if (!this._tag && this._name) return;
