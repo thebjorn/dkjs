@@ -87,8 +87,7 @@ export function jq_dkicons(dk) {
 }
 
 
-
-if (typeof customElements !== 'undefined') customElements.define('dk-icon', class extends HTMLElement {
+class DK_ICON extends HTMLElement {
     constructor() {
         super();
         this.default = {
@@ -107,19 +106,19 @@ if (typeof customElements !== 'undefined') customElements.define('dk-icon', clas
         this._modifiers = [];
         this._tag = null;
     }
-    
+
     _icon_stylesheet() {
-        return `<link rel="stylesheet" href="${this.default.url}">`; 
+        return `<link rel="stylesheet" href="${this.default.url}">`;
     }
-    
+
     _remove_value() {
         if (!this._tag && this._name) return;
         dom.remove_classes(
-            this._tag, 
+            this._tag,
             this._name, ...this.default.classes, this.default.prefix + this._name, ...this._modifiers
         );
     }
-    
+
     _add_value(name, modifiers) {
         if (!name) return;
         if (this.default.icons[name]) name = this.default.icons[name];
@@ -130,18 +129,18 @@ if (typeof customElements !== 'undefined') customElements.define('dk-icon', clas
             this._name, ...this.default.classes, this.default.prefix + name, ...modifiers
         );
     }
-    
+
     _spec2modifiers(spec) {
         return spec.split(',').map(attr => this.default.prefix + attr);
     }
-    
+
     _value2args(value) {
         let [name, ...modifier_list] = (value || "").split(':');
         const modifier_spec = modifier_list.join(',');              // string
         const modifiers = this._spec2modifiers(modifier_spec);
         return [name, modifiers];
     }
-    
+
     _change_value(value) {
         this._value = value;
         if (!this._tag) return;
@@ -185,5 +184,6 @@ if (typeof customElements !== 'undefined') customElements.define('dk-icon', clas
             this.setAttribute('value', val);
         }
     }
+}
 
-});
+if (typeof customElements !== 'undefined') customElements.define('dk-icon', DK_ICON);
