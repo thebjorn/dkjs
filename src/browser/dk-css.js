@@ -2,10 +2,10 @@
 /*
  *  Functionality to make it easier to access complex css from javascript.
  */
-import $ from 'jquery';
+import dk from "../dk-obj";
 
 // ensure jquery
-const _$ = item => item.jquery ? item: $(item);
+const _$ = item => item.jquery ? item: dk.$(item);
 
 export default {
     getattr(item, attr) {
@@ -41,11 +41,10 @@ export default {
         if (duration) {
             this.setattr(item, 'transition-duration', duration + 's');
             this.setattr(item, 'transition-timing-function', 'linear');
-            //item.css('transition-timing-function', 'cubic-bezier(0.175, 0.885, 0.32, 1.275)');
             item.css('transition-property', 'transform');
         }
-        const xorig = (props.xorig === undefined)? item.outerWidth()/2: props.xorig;
-        const yorig = (props.yorig === undefined)? item.outerHeight()/2: props.yorig;
+        const xorig = (props.xorig === undefined) ? item.outerWidth()/2 : props.xorig;
+        const yorig = (props.yorig === undefined) ? item.outerHeight()/2 : props.yorig;
 
         item.css('transform', 'rotate(' + degrees + 'deg)');
         item.css('transform-origin', `${xorig}px ${yorig}px`);

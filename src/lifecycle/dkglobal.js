@@ -1,15 +1,16 @@
 // LVL:0
-import performance from "../performance-timer";
 
 const dkglobal = (function () {
     // the only reliable means to get the global object is
     // `Function('return this')()`
     // However, this causes CSP violations in Chrome apps.
+    if (typeof globalThis !== "undefined") { return globalThis; }
     if (typeof self !== 'undefined') { return self; }
     if (typeof window !== 'undefined') { return window; }
     if (typeof global !== 'undefined') { return global; }
     throw new Error('unable to locate global object');
 })();
+dkglobal.globalThis = dkglobal;
 
 // eslint-disable-next-line no-console
 console.debug("dkjs loaded from:", document.currentScript);
@@ -33,6 +34,4 @@ export function get_dk_script_tag() {
 }
 
 
-performance('dkglobal');
-
-export default dkglobal;
+export default globalThis;

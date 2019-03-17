@@ -16,36 +16,36 @@
  *
  */
 
-import dkglobal from "../dkglobal";
+import globalThis from "../dkglobal";
 import {env, loglevels} from "./lifecycle-parse-script-tag";
 
 
 export const dkconsole = {
     error(...args) {
-        if (env.LOGLEVEL >= loglevels.ERROR && dkglobal.console && dkglobal.console.error) dkglobal.console.error(...args);
+        if (env.LOGLEVEL >= loglevels.ERROR && globalThis.console && globalThis.console.error) globalThis.console.error(...args);
     },
     warn(...args) {
-        if (env.LOGLEVEL >= loglevels.WARN && dkglobal.console && dkglobal.console.warn) dkglobal.console.warn(...args);
+        if (env.LOGLEVEL >= loglevels.WARN && globalThis.console && globalThis.console.warn) globalThis.console.warn(...args);
     },
     log(...args) {
-        if (env.LOGLEVEL >= loglevels.LOG && dkglobal.console && dkglobal.console.log) dkglobal.console.log(...args);
+        if (env.LOGLEVEL >= loglevels.LOG && globalThis.console && globalThis.console.log) globalThis.console.log(...args);
     },
     info(...args) {
-        if (env.LOGLEVEL >= loglevels.INFO && dkglobal.console && dkglobal.console.info) dkglobal.console.info(...args);
+        if (env.LOGLEVEL >= loglevels.INFO && globalThis.console && globalThis.console.info) globalThis.console.info(...args);
     },
     debug(...args) {
-        if (env.LOGLEVEL >= loglevels.DEBUG && dkglobal.console && dkglobal.console.debug) dkglobal.console.debug(...args);
+        if (env.LOGLEVEL >= loglevels.DEBUG && globalThis.console && globalThis.console.debug) globalThis.console.debug(...args);
     },
     dir(...args) {
-        if (env.LOGLEVEL >= loglevels.DEBUG && dkglobal.console && dkglobal.console.dir) {
-            if (!dkglobal.console.group || args.length === 0) {
-                dkglobal.console.dir(...args);
+        if (env.LOGLEVEL >= loglevels.DEBUG && globalThis.console && globalThis.console.dir) {
+            if (!globalThis.console.group || args.length === 0) {
+                globalThis.console.dir(...args);
             } else {
                 let [label, ...rest] = args;
-                dkglobal.console.group(typeof label === 'string'? label: '');
+                globalThis.console.group(typeof label === 'string'? label: '');
                 const obj = args.length === 1 ? label : rest;
-                dkglobal.console.dir(obj);
-                dkglobal.console.groupEnd();
+                globalThis.console.dir(obj);
+                globalThis.console.groupEnd();
             }
         }
     }

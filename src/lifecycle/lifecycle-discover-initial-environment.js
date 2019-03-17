@@ -1,4 +1,4 @@
-// import dkglobal from "./dkglobal";
+// import globalThis from "./globalThis";
 // import {parse_src} from "./uri";
 // // import define_lazy_value from "./define-lazy-value";
 //
@@ -13,7 +13,7 @@
 //     dk.performance('discover-initial-environment-start');
 //     // dk.app = {state: {}};
 //     dk.webpage = {scripts: {}, stylesheets: {}};
-//     // dk.globals = dkglobal;
+//     // dk.globals = globalThis;
 //
 //     function save_url(node, uri, obj, field) {
 //         if (/polyfill\.io/.test(uri)) return;

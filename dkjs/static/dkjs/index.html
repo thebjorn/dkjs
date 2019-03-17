@@ -18,15 +18,14 @@
     <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
 
     <!--dk.js proper/core-->
-    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" src="js/dk.min.js"></script>
+    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" name="dkk" src="js/dk.min.js"></script>
     <!--tag lib can go here (if separate)-->
 <!--END DKJS SECTION-->
-
+    <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="js/dkcss.css">
-    <style>
-    
+    <style>    
         dk-icon:not(:defined) {
             display: none;
         }
@@ -37,12 +36,15 @@
 <body>
 <div class="container">
     <h1 id="id-title">hello world</h1>
-    <dk-icon style="color:hotpink" value="paw:2x:fw"></dk-icon>
-    <block style="display:inline-block;border:1px solid blue">
+    <dk-icon style="color:hotpink" value="paw:2x,fw"></dk-icon>
+    
+    <div id="panel"></div>
+    
+    <div style="display:inline-block;border:1px solid blue">
         9900 = <dk-load url="https://cache.norsktest.no/ajax/poststed/9900/">
                    LOADING...
                </dk-load>
-    </block>
+    </div>
 
     <div style="width:250px;height:200px;border:3px dotted red; margin:10px; padding:10px; border-radius: 4px">
         <div id="work"><div class="foo"></div></div>
@@ -55,10 +57,11 @@
     <div id="tree2" style="margin:5px;"></div>
 </div>
 <script>
-    var h1, ds, ttree;
+    var h1, ds, ttree, panel;
     dk.ready(function () {
         h1 = dk('h1');
-        dk('h1').innerText = 'so long and thanks for all the fish';
+        dk('h1').innerHTML = 'so long and thanks for all the fish';
+        dk('h1').appendChild(dk.icon('paw'));
         dk.on(h1, 'foo', function (a, b, c) {
             console.log("got foo'd:", a, b, c);
             dk.$(h1).append(' got foo-d');
@@ -66,12 +69,11 @@
         dk.$('h1').on('click', function () {
             dk.trigger(h1, 'foo', 'with', 'some', 'args');
         });
-        // dk.on(h1, 'foo', () => console.log("got foo'd"));
         console.log("STATS:", dk.stats);
-
-        // dk.keys().forEach(k => console.log("dk." + k));
-        // console.log('dk.keys():', dk.keys());
-
+        panel = dk.Panel.create_on("#panel", {
+            title: 'hello panel'
+        });
+        
         var dt = dk.DataTable.create_on('#dtatbl', {
             datasource: dk.data.ArraySource.create({
                 data: [

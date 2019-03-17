@@ -11,7 +11,7 @@ import counter from "./core/counter";
 
 import {shallow_observer, deep_observer} from "./data/observable";
 import require_css from "./browser/loaders";
-import dkglobal, {get_dk_script_tag} from "./lifecycle/dkglobal";
+import globalThis, {get_dk_script_tag} from "./lifecycle/dkglobal";
 import Class from "./lifecycle/coldboot/dk-class";
 import version from "./version";
 import create_debug_environment from "./lifecycle/dkboot/lifecycle-create-debug-environment";
@@ -32,7 +32,7 @@ const dk = function (selector) {
 Object.assign(dk, {
     Class,
     counter,
-    globals: dkglobal,
+    globals: globalThis,
     env,
     namespace,
     combine: namespace.combine,

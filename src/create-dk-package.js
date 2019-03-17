@@ -74,8 +74,8 @@ import state from "./browser/dk-state";
 // performance('core');
 
 // // make sure we're not imported again..
-// if (dkglobal && dkglobal.dk) {
-//     let cver = dkglobal.dk.__version__ || 'unknown';
+// if (globalThis && globalThis.dk) {
+//     let cver = globalThis.dk.__version__ || 'unknown';
 //     let myver = __version__ || 'unknown';
 //     throw `Trying to import dk.js (v${myver}), but dk.js (v${cver}) is already imported.`;
 // }
@@ -188,6 +188,7 @@ import "./browser/dk-load-tag";
         },
         icon,
         cursor,
+        browser: browser_version,
         
         initialize: dkmodule.initialize,
         
@@ -327,7 +328,7 @@ import "./browser/dk-load-tag";
         json,
         web: {
             browser: {
-                browser: browser_version
+                browser: browser_version,
             },
             cookie,
             uri: {parse: parse_uri},

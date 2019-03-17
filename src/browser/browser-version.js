@@ -1,10 +1,10 @@
 
-import dkglobal from "../lifecycle/dkglobal";
+import globalThis from "../lifecycle/dkglobal";
 import dk from "../dk-obj";
 
 if (typeof window === "undefined") {
     // running under node.js
-    window = {
+    globalThis.window = {
         navigator: {
             userAgent: ''
         }
@@ -15,25 +15,25 @@ if (typeof window === "undefined") {
 export default (function () {
     // $.browser disappeared in jQuery 1.9
     if (dk.$.browser) return dk.$.browser;
-    if (dkglobal._browser) return this._browser;
+    if (globalThis._browser) return this._browser;
 
     // from jquery.dynatree.js with modifications
-    var matched, browser;
+    let matched, browser;
 
-    var uaMatch = function( ua ) {
+    const uaMatch = function( ua ) {
         ua = ua.toLowerCase();
 
-        var match = /(opr)[\/]([\w.]+)/.exec( ua ) ||
-                /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
-                /(version)[ \/]([\w.]+).*(safari)[ \/]([\w.]+)/.exec(ua) ||
-                /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
-                /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+        const match = /(opr)[/]([\w.]+)/.exec( ua ) ||
+                /(chrome)[ /]([\w.]+)/.exec( ua ) ||
+                /(version)[ /]([\w.]+).*(safari)[ /]([\w.]+)/.exec(ua) ||
+                /(webkit)[ /]([\w.]+)/.exec( ua ) ||
+                /(opera)(?:.*version|)[ /]([\w.]+)/.exec( ua ) ||
                 /(msie) ([\w.]+)/.exec( ua ) ||
-                ua.indexOf("trident") >= 0 && /(rv)(?::| )([\w.]+)/.exec( ua ) ||
+                ua.indexOf("trident") >= 0 && /(rv)(?:[: ])([\w.]+)/.exec( ua ) ||
                 ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
                 [];
 
-        var platform_match = /(ipad)/.exec( ua ) ||
+        const platform_match = /(ipad)/.exec( ua ) ||
                 /(iphone)/.exec( ua ) ||
                 /(android)/.exec( ua ) ||
                 /(windows phone)/.exec(ua) ||

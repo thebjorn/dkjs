@@ -94,38 +94,101 @@ export function jq_dkicons(dk) {
 customElements.define('dk-icon', class extends HTMLElement {
     constructor() {
         super();
+        this.default = {
+            classes: 'fa',
+            prefix: 'fa-',
+            url: 'https://static.datakortet.no/font/fa470/css/font-awesome.css',
+            icons: {
+                remove: 'trash-o',
+                cancel: 'times-circle-o',
+                up: 'chevron-up',
+                down: 'chevron-down'
+            }
+        };
+        this._value = null;
+        this._name = null;
+        this._modifiers = [];
+        this._tag = null;
+    }
+    
+    _icon_stylesheet() {
+        return `<link rel="stylesheet" href="${this.default.url}">`; 
+    }
+    
+    // IE doesn't follow the spec, and  tag.classList.add/remove only takes a single class 
+    _add_classes(...classes) {
+        Array.from(classes).forEach(c => this._tag.classList.add(c));
+    }
+    _remove_classes(...classes) {
+        Array.from(classes).forEach(c => this._tag.classList.remove(c));
+    }
+    
+    _remove_value() {
+        if (!this._tag && this._name) return;
+        this._remove_classes(this._name, this.default.classes, this.default.prefix + this._name, ...this._modifiers);
+    }
+    
+    _add_value(name, modifiers) {
+        if (!name) return;
+        if (this.default.icons[name]) name = this.default.icons[name];
+        this._name = name;
+        this._modifiers = modifiers;
+        this._add_classes(this._name, this.default.classes, this.default.prefix + name, ...modifiers);
+    }
+    
+    _spec2modifiers(spec) {
+        return spec.split(',').map(attr => this.default.prefix + attr);
+    }
+    
+    _value2args(value) {
+        let [name, ...modifier_list] = (value || "").split(':');
+        const modifier_spec = modifier_list.join(',');              // string
+        const modifiers = this._spec2modifiers(modifier_spec);
+        return [name, modifiers];
+    }
+    
+    _change_value(value) {
+        this._value = value;
+        if (!this._tag) return;
+        this._remove_value();
+        this._add_value(...this._value2args(value));
     }
 
-    get value() {
-        return this.getAttribute("value");
+    connectedCallback() {
+        // this.root = this.attachShadow({mode: 'open'});
+        // this.root.innerHTML = this._icon_stylesheet();
+        // this.root.innerHTML = `<link rel="stylesheet" href="${this.default.url}">`;
+        this._tag = document.createElement('i');
+        // this.root.appendChild(this._tag);
+        this.appendChild(this._tag);
+        if (this.value != null) {
+            this._add_value(...this._value2args(this.value));
+        }
     }
 
-    set value(val) {
-        this.setAttribute('value', val);
+    invalidate() {
+        this.icon.setAttribute('value', this.value);
+    }
+
+    attributeChangedCallback(attrname, oldval, newval) {
+        if (attrname === 'value') {
+            this._change_value(newval);
+        }
     }
 
     static get observedAttributes() {
         return ['value'];
     }
 
-    attributeChangedCallback(attrname, oldval, newval) {
-        if (attrname === 'value') {
-            // this.innerHTML = `<i class="${newval} fa fa-${newval} fa-fw icon"></i>`;
-            if (this.icon) {
-                this.icon.classList.remove(oldval, 'fa-' + oldval);
-                this.icon.classList.add(newval, 'fa-' + newval);
-            }
-        }
-    }
-    connectedCallback() {
-        this.root = this.attachShadow({mode: 'open'});
-        this.icon = icon(this.value);
-        this.root.innerHTML = `<link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">`;
-        this.root.appendChild(this.icon);
+    get value() {
+        return this._value;
     }
 
-    invalidate() {
-        this.icon.setAttribute('value', this.value);
+    set value(val) {
+        if (val !== this._value) {
+            this._change_value(val);
+            this.setAttribute('value', val);
+        }
     }
 
 });

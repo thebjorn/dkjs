@@ -3,6 +3,7 @@
   "node": true,
   "module": true,
   "globals": {
+    "globalThis": true,
     "customElements": true,
     "document": true,
     "performance": true,

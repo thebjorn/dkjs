@@ -53,9 +53,7 @@ export class PanelWidget extends Widget {
                 }
             }
         }, props);
-    }
 
-    init() {
         if (this.panel && this.panel.height && typeof this.panel.height === 'string') {
             this.height = parseInt(this.panel.height, 10);
         }
@@ -141,7 +139,8 @@ export class PanelWidget extends Widget {
                     duration: self.rotate_duration,
                     done: function () {
                         self.__collapsing = false;
-                        self.notify('collapse-done', {
+                        // noinspection JSSuspiciousNameCombination
+                        self.trigger('collapse-done', {
                             height: hsize.width,
                             width: hsize.height
                         });
@@ -160,7 +159,7 @@ export class PanelWidget extends Widget {
                         done: function () {
                             self.widget().css('max-height', orig_maxheight);
                             self.__collapsing = false;
-                            self.notify('expand-done', self);
+                            self.trigger('expand-done', self);
                         }
                     });
                 }
@@ -172,8 +171,8 @@ export class PanelWidget extends Widget {
         this.direction = direction || this.direction;
         this['collapse_' + this.direction]();
         this.icon.value = this.icons.expand;
-        this.notify('resized', this);
-        this.notify('collapse', this);
+        this.trigger('resized', this);
+        this.trigger('collapse', this);
     }
 
     expand() {
@@ -183,8 +182,8 @@ export class PanelWidget extends Widget {
             this._expand();
             this._expand = null;
         }
-        this.notify('resized', this);
-        this.notify('expand', this);
+        this.trigger('resized', this);
+        this.trigger('expand', this);
     }
 
     handlers() {
@@ -195,8 +194,8 @@ export class PanelWidget extends Widget {
             this.header.on('click dblclick', function () {
                 if (self.__collapsing) return;
                 self.__collapsing = true;
-                const action = self.collapsed? 'expand': 'collapse';
-                self.notify(action + '-start', self);
+                const action = self.collapsed ? 'expand' : 'collapse';
+                self.trigger(action + '-start', self);
                 self[action]();
                 self.collapsed = !self.collapsed;
             });

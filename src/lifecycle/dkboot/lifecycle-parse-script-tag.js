@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 
-import dkglobal, {get_dk_script_tag} from "../dkglobal";
+import globalThis, {get_dk_script_tag} from "../dkglobal";
 
 export const loglevels = {
     ERROR: 0,
@@ -51,9 +51,9 @@ export const env = {
     },
     
     _get_loglevel() {
-        if (dkglobal.LOGLEVEL !== undefined) return dkglobal.LOGLEVEL;
-        if (dkglobal.DEBUG !== undefined) {
-            this._debug = dkglobal.DEBUG;
+        if (globalThis.LOGLEVEL !== undefined) return globalThis.LOGLEVEL;
+        if (globalThis.DEBUG !== undefined) {
+            this._debug = globalThis.DEBUG;
             return loglevels.DEBUG;
         }
 
@@ -72,7 +72,7 @@ export const env = {
     },
     
     _get_debug() {
-        if (dkglobal.DEBUG !== undefined) return dkglobal.DEBUG;
+        if (globalThis.DEBUG !== undefined) return globalThis.DEBUG;
         const tag = get_dk_script_tag();
         if (tag === null) return true;   // running under e.g. jest
         const tag_debug = tag.getAttribute('debug');

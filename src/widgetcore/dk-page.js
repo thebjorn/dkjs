@@ -3,7 +3,7 @@
  *  page is an object representing the current web page (document).
  */
 import dk from "../dk-obj"
-import dkglobal from "../lifecycle/dkglobal";
+import globalThis from "../lifecycle/dkglobal";
 import {State} from "../browser/dk-state";
 import {HashStorage} from "../browser/storage-engines";
 import {mcall} from "../sys/mcall";
@@ -211,7 +211,7 @@ dk.$(window).on('load', function () {
 });
 
 
-dkglobal.$$ = page.widgets;
-// dkglobal.$notify = page.trigger.bind(page);
+globalThis.$$ = page.widgets;
+// globalThis.$notify = page.trigger.bind(page);
 
 export default page;

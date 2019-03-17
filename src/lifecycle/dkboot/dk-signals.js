@@ -9,7 +9,7 @@
  */
 
 import {dkconsole} from "./dk-console";
-import dkglobal from "../dkglobal";
+import globalThis from "../dkglobal";
 import {env, loglevels} from "./lifecycle-parse-script-tag";
 import {dkwarning} from "../coldboot/dkwarning";
 
@@ -108,7 +108,7 @@ export function trigger(obj, signal, ...args) {
     }
 }
 
-dkglobal.$trigger = trigger;
+globalThis.$trigger = trigger;
 
 
 /**
