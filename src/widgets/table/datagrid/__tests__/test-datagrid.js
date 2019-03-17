@@ -98,7 +98,7 @@ test("test-datagrid-2", () => {
     expect(dirtyrec.work.newval).toEqual('1:02:03');
     
     //dk.info('data page', mydt125.data.page);
-
+    console.log(work.html());
     work.find('i.icon.save').click();
     expect(work.find('td:first').text()).toEqual('1:02:03');
     expect(mydt125.table_data.page.record[0].work).toEqual('1:02:03');

@@ -57,6 +57,15 @@ const dom = {
         Object.entries(attrs || {}).forEach(([k, v]) => dom.setAttribute(k, v));
         return dom;
     },
+
+    // IE doesn't follow the spec, and  tag.classList.add/remove only takes a single class 
+    add_classes(node, ...classes) {
+        Array.from(classes).forEach(c => node.classList.add(c));
+    },
+    
+    remove_classes(node, ...classes) {
+        Array.from(classes).forEach(c => node.classList.remove(c));
+    },   
     
     /*
      *  Compare two dom nodes for equality.

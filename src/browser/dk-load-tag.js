@@ -32,7 +32,7 @@
 import dk from "../dk-obj";
 
 
-customElements.define('dk-load', class extends HTMLElement {
+if (typeof customElements !== 'undefined') customElements.define('dk-load', class extends HTMLElement {
     constructor() {
         super();
     }

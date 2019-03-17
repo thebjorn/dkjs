@@ -1,5 +1,6 @@
 import dk from "../dk-obj";
 import {dkrequire} from "../lifecycle/browser/dk-require";
+import dom from "../browser/dom";
 
 
 // xxx: should this be exported..?
@@ -28,38 +29,34 @@ export class IconLibrary {
      */
     make_icon(name, style, item) {
         name = name || "";  // catch undefined
-        // let res = item || dk.$('<i class="icon"/>');
-        let res = document.createElement('i');
+        let i_tag = document.createElement('i');
         let nameparts = name.split(':');
         name = nameparts[0];
 
-        // res.addClass(this.classes);
-        res.classList.add(this.classes);
+        dom.add_classes(i_tag, ...this.classes);
         let classname = this.prefix + (this[name] !== undefined ? this[name] : name);
-        // res.addClass(classname);
-        res.classList.add(classname);
-        // res.addClass(name);
-        if (name) res.classList.add(name);
+        i_tag.classList.add(classname);
+        if (name) i_tag.classList.add(name);
         if (nameparts.length > 1) {
             let attrs = nameparts[1].split(',');
             attrs.forEach(attr => {
                 if (this[attr.replace('-', '_')]) {
-                    res = this[attr.replace('-', '_')](res);
+                    i_tag = this[attr.replace('-', '_')](i_tag);
                 } else {
                     // res.addClass(this.prefix + attr);
-                    res.classList.add(this.prefix + attr);
+                    i_tag.classList.add(this.prefix + attr);
                 }
             });
         }
 
         // if (style) res.css(style);
 
-        return res;
+        return i_tag;
     }
     
     static fontawsome4() {
         return new IconLibrary({
-            classes: 'fa',
+            classes: ['icon', 'fa'],
             prefix: 'fa-',
             url: "https://static.datakortet.no/font/fa470/css/font-awesome.css",
             // save: 'save',
@@ -91,11 +88,11 @@ export function jq_dkicons(dk) {
 
 
 
-customElements.define('dk-icon', class extends HTMLElement {
+if (typeof customElements !== 'undefined') customElements.define('dk-icon', class extends HTMLElement {
     constructor() {
         super();
         this.default = {
-            classes: 'fa',
+            classes: ['icon', 'fa'],
             prefix: 'fa-',
             url: 'https://static.datakortet.no/font/fa470/css/font-awesome.css',
             icons: {
@@ -115,17 +112,12 @@ customElements.define('dk-icon', class extends HTMLElement {
         return `<link rel="stylesheet" href="${this.default.url}">`; 
     }
     
-    // IE doesn't follow the spec, and  tag.classList.add/remove only takes a single class 
-    _add_classes(...classes) {
-        Array.from(classes).forEach(c => this._tag.classList.add(c));
-    }
-    _remove_classes(...classes) {
-        Array.from(classes).forEach(c => this._tag.classList.remove(c));
-    }
-    
     _remove_value() {
         if (!this._tag && this._name) return;
-        this._remove_classes(this._name, this.default.classes, this.default.prefix + this._name, ...this._modifiers);
+        dom.remove_classes(
+            this._tag, 
+            this._name, ...this.default.classes, this.default.prefix + this._name, ...this._modifiers
+        );
     }
     
     _add_value(name, modifiers) {
@@ -133,7 +125,10 @@ customElements.define('dk-icon', class extends HTMLElement {
         if (this.default.icons[name]) name = this.default.icons[name];
         this._name = name;
         this._modifiers = modifiers;
-        this._add_classes(this._name, this.default.classes, this.default.prefix + name, ...modifiers);
+        dom.add_classes(
+            this._tag,
+            this._name, ...this.default.classes, this.default.prefix + name, ...modifiers
+        );
     }
     
     _spec2modifiers(spec) {
