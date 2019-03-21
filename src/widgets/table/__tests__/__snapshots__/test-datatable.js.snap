@@ -32,7 +32,9 @@ exports[`test-datatable 1`] = `
             style="float: right; width: 2ex; margin-left: 2ex;"
           >
             <i
-              class="icon fa fa-chevron-down down"
+              class="icon fa fa-chevron-down chevron-down"
+              icon="chevron-down"
+              value="down"
             />
           </div>
           Prosjekt

@@ -61,6 +61,8 @@ exports[`test-resultset-render 1`] = `
                   >
                     <i
                       class="icon fa fa-times times fa-fw"
+                      icon="times"
+                      value="times:fw"
                     />
                   </span>
                   <div
@@ -73,6 +75,8 @@ exports[`test-resultset-render 1`] = `
                     >
                       <i
                         class="icon fa fa-search search fa-fw"
+                        icon="search"
+                        value="search:fw"
                       />
                     </button>
                   </div>

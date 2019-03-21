@@ -221,7 +221,7 @@ export default function old_vs_new(dk) {
             "dk.unsorted.icons",
             "dk.unsorted.icons.icon",
             "dk.unsorted.icons.icons",
-            "dk.unsorted.icons.icons.IconLibrary",
+            // "dk.unsorted.icons.icons.IconLibrary",
             "dk.update",
             "dk.warn",
             "dk.web",

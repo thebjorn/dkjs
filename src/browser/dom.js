@@ -60,11 +60,13 @@ const dom = {
 
     // IE doesn't follow the spec, and  tag.classList.add/remove only takes a single class 
     add_classes(node, ...classes) {
-        Array.from(classes).forEach(c => node.classList.add(c));
+        if (!node) dkconsole.error(`node is null (classes=${classes})`);
+        Array.from(classes).filter(c => !!c).forEach(c => node.classList.add(c));
     },
     
     remove_classes(node, ...classes) {
-        Array.from(classes).forEach(c => node.classList.remove(c));
+        if (!node) dkconsole.error(`node is null (classes=${classes})`);
+        Array.from(classes).filter(c => !!c).forEach(c => node.classList.remove(c));
     },   
     
     /*

@@ -377,6 +377,7 @@ export class UIWidget extends BaseWidget {
         // this.widget() works.
         try {
             const w = new this(attrs);
+            // if (!location.jquery) location = dk.$(location);
             if (typeof location === 'string') location = dk.$(location);
             page.create_widget(w, {on: location});
             return w;

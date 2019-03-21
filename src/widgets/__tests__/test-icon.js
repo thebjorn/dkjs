@@ -17,6 +17,6 @@ test("dkicon1", () => {
     work.append(icon('close:fw'));    
 
     expect(utidy(work.html())).toEqual(utidy(`
-        <i class="close fa fa-close fa-fw icon"></i>
+        <i class="close fa fa-close fa-fw icon" icon="close" value="close:fw"></i>
     `));
 });
