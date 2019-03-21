@@ -122,7 +122,7 @@ export default {
                 return b;
 
             if (typeof a !== typeof b)
-                throw "incompatible types '%s' (%r) and '%s' (%r).".format(typeof a, a, typeof b, b);
+                throw `incompatible types '${typeof a}' (${JSON.stringify(a)}) and '${typeof b}' (${JSON.stringify(b)}).`;
 
             if (is.isString(a) && is.isString(b))
                 return _merge.string(a, b);
