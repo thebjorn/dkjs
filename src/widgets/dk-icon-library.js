@@ -15,7 +15,8 @@ export class dkicon extends UIWidget {
                 cancel: 'times-circle-o',
                 up: 'chevron-up',
                 down: 'chevron-down'
-            }
+            },
+            template: {root: 'i'}
         }, ...args);
         const value = props.value;
         const tag = props.tag;
@@ -30,18 +31,15 @@ export class dkicon extends UIWidget {
     }
     
     construct() {
-        if (!this._tag) {
-            this._tag = document.createElement('i');
-            this.node.appendChild(this._tag);
-        }
+        if (!this._tag) this._tag = this.node;
     }
     
     draw(value) {
         if (value == null) value = this._value;
         this._value = value;
-        // if (!this._tag) return;
         this._remove_value();
         this._add_value(...this._value2args(value));
+        this.node.setAttribute('value', value);
     }
 
     _remove_value() {
@@ -66,7 +64,7 @@ export class dkicon extends UIWidget {
     _value2args(value) {
         let [name, ...modifier_list] = (value || "").split(':');
         const modifier_spec = modifier_list.join(',');              // string
-        const modifiers = modifier_spec.split(',').map(attr => this.prefix + attr);
+        const modifiers = modifier_spec.split(',').filter(x => !!x).map(attr => this.prefix + attr);
         return [name, modifiers];
     }
 
@@ -75,7 +73,6 @@ export class dkicon extends UIWidget {
     set value(val) {
         if (val !== this._value) {
             this.draw(val);
-            // this.setAttribute('value', val);
         }
     }
 }
@@ -212,14 +209,10 @@ class DK_ICON extends HTMLElement {
         );
     }
 
-    _spec2modifiers(spec) {
-        return spec.split(',').map(attr => this.default.prefix + attr);
-    }
-
     _value2args(value) {
         let [name, ...modifier_list] = (value || "").split(':');
         const modifier_spec = modifier_list.join(',');              // string
-        const modifiers = this._spec2modifiers(modifier_spec);
+        const modifiers = modifier_spec.split(',').filter(x => !!x).map(attr => this.default.prefix + attr);
         return [name, modifiers];
     }
 

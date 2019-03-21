@@ -62,12 +62,12 @@
     <div id="tree2" style="margin:5px;"></div>
 </div>
 <script>
-    var h1, ds, ttree, panel;
+    var h1, ds, ttree, panel, home;
     dk.ready(function () {
         h1 = dk('h1');
         dk('h1').innerHTML = 'so long and thanks for all the fish';
         dk('h1').appendChild(dk.icon('paw'));
-        dk.dkicon.append_to('h1', {value: 'home'});
+        home = dk.dkicon.append_to('h1', {value: 'home:3x'});
         
         dk.on(h1, 'foo', function (a, b, c) {
             console.log("got foo'd:", a, b, c);
