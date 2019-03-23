@@ -36,7 +36,10 @@ export function fa4_icon(node, value) {
         return node;
     }
     if (!fa4_data.loaded) {
-        if (!dkrequire_loaded(fa4_data.url)) dkconsole.error(`You need to include ${fa4_data.url} in the header!`);
+        if (!dkrequire_loaded(fa4_data.url)) {
+            dkconsole.warn(`You need to include ${fa4_data.url} in the header!`);
+            // throw `You need to include <link rel="stylesheet" href="${fa4_data.url}"> in the header!`;
+        }
     }
     let [new_name, new_modifiers] = parse_icon_value(value);
     if (!new_name) {
@@ -76,8 +79,6 @@ export class dkicon extends UIWidget {
         delete props.value;
         super(props);
         this._value = value;
-        this._name = null;
-        this._modifiers = [];
     }
     
     draw(value) {
@@ -106,56 +107,33 @@ export function icon(value, css) {
 }
 
 
-// called from create_dk_package.js
-export function jq_dkicons(dk) {
-    dk.$(document).ready(function () {
-        dk.$('[dk-icon]').each(function () {
-            dk.$(this).append(icon(dk.$(this).attr('dk-icon')));
-        });
+export function _jq_convert_dkicon(my_jquery) {
+    my_jquery('[dk-icon]').each(function () {
+        my_jquery(this).prepend(icon(my_jquery(this).attr('dk-icon')));
     });
 }
 
+// called from create_dk_package.js
+export function jq_dkicons(dk) {
+    dk.$(document).ready(() => _jq_convert_dkicon(dk.$));
+}
 
-class DK_ICON extends HTMLElement {
+
+if (typeof customElements !== 'undefined') customElements.define('dk-icon', class extends HTMLElement {
     constructor() {
         super();
         this._value = null;
     }
 
-    // _icon_stylesheet() {
-    //     return `<link rel="stylesheet" href="${this.default.url}">`;
-    // }
-    //
-
-    connectedCallback() {
-        // this.root = this.attachShadow({mode: 'open'});
-        // this.root.innerHTML = this._icon_stylesheet();
-        // this.root.innerHTML = `<link rel="stylesheet" href="${this.default.url}">`;
-        // this._tag = document.createElement('i');
-        // this.root.appendChild(this._tag);
-        // this.appendChild(this._tag);
-        if (this.value != null) {
-            fa4_icon(this, this.value);
-        }
-    }
-
-    invalidate() {
-        this.icon.setAttribute('value', this.value);
-    }
+    connectedCallback() { if (this.value != null) fa4_icon(this, this.value); }
 
     attributeChangedCallback(attrname, oldval, newval) {
-        if (attrname === 'value') {
-            if (oldval !== newval) fa4_icon(this, newval);
-        }
+        if (attrname === 'value' && oldval !== newval) fa4_icon(this, newval);
     }
 
-    static get observedAttributes() {
-        return ['value'];
-    }
+    static get observedAttributes() { return ['value']; }
 
-    get value() {
-        return this._value;
-    }
+    get value() {return this._value;}
 
     set value(val) {
         if (val !== this._value) {
@@ -163,6 +141,4 @@ class DK_ICON extends HTMLElement {
             fa4_icon(this, val);
         }
     }
-}
-
-if (typeof customElements !== 'undefined') customElements.define('dk-icon', DK_ICON);
+});
