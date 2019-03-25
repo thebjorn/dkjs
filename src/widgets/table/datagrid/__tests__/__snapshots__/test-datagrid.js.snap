@@ -15,8 +15,6 @@ exports[`test-datagrid-1 1`] = `
       class="table table-bordered table-striped DataGrid dk-bx"
       id="data-grid-1"
     >
-      
-                
       <thead
         id="dk-bx-1"
       >
@@ -67,6 +65,8 @@ exports[`test-datagrid-1 1`] = `
         
 
       </thead>
+      
+                
       <tfoot
         id="dk-bx-2"
       />
