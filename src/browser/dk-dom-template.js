@@ -35,7 +35,7 @@ export class Template {
         this.structure = props.structure || {};
 
         const subitems = array_difference(Object.keys(props), Object.keys(this));
-        subitems.forEach((item, position) => {
+        [...subitems].forEach((item, position) => {
             this.structure[item] = new Template(props[item], domtemplates, item.replace('-', '_'), position);
         });
         if (is.isEmpty(this.structure)) delete this.structure;
@@ -100,14 +100,14 @@ export class Template {
      *
      */
     construct_on(location, creator, accessor) {
-        const domitem = DomItem.create(this);
+        const domitem = new DomItem(this);
         return domitem.construct_on(location, creator, accessor);
     }
 
     append_to(location, creator, accessor) {
         if (accessor === undefined) accessor = {};
         Object.keys(this.structure).forEach(key => {
-            const domitem = DomItem.create(this.structure[key]);
+            const domitem = new DomItem(this.structure[key]);
             accessor[key] = domitem.append_to(location, creator, accessor);
         });
         return accessor;
@@ -136,9 +136,7 @@ export class DomItem extends Class {
         this.is_root = template.name === undefined;
         this.parent = parentitem;
         this.template = template;
-        this.classes = this.template.classes.slice().map(function (cval) {
-            return cval.replace('_', '-');
-        });
+        this.classes = this.template.classes.slice().map(cval => cval.replace('_', '-'));
         this.keys = [];
 
         if (!this.is_root) {
@@ -153,7 +151,7 @@ export class DomItem extends Class {
         if (this.template.structure) {
             this.keys = Object.keys(template.structure || {});
             const vals = this.keys.map(key => {
-                return DomItem.create(template.structure[key], this);
+                return new DomItem(template.structure[key], this);
             });
             this.subitems = dk.zip_object(this.keys, vals);
             this._subitems = this.keys.map(key => {
@@ -236,7 +234,7 @@ export class DomItem extends Class {
 
     construct(location, creator, level) {
         if (level === undefined) level = 0;
-        this.location = (location && location.jquery)? location: dk.$(location);
+        this.location = (location && location.jquery) ? location : dk.$(location);
         let item = this.location;
 
         if (this.is_root) {

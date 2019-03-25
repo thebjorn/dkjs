@@ -2,6 +2,8 @@
 import {Widget} from "../widgetcore/dk-widget";
 import css from "../browser/dk-css";
 import dk from "../dk-obj";
+import browser from "../browser/browser-version";
+import {dkicon, icon} from "./dk-icon-library";
 
 
 export class PanelWidget extends Widget {
@@ -223,6 +225,7 @@ function get_dkpanel_template() {
         _dk_panel_template.innerHTML = `
             <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
             <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+            <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
             <link rel="stylesheet" href="js/dkcss.css">
             <div id="panel" class="PanelWidget dk-panel panel panel-default">
                 <header class="panel-heading">
@@ -237,68 +240,140 @@ function get_dkpanel_template() {
     }
     return _dk_panel_template.content.cloneNode(true);
 }
+let _panel_counter = 1;
 
-if (typeof customElements !== 'undefined') customElements.define('dk-panel', class extends HTMLElement {
-    constructor() {
-        super();
-        const shadowRoot = this.attachShadow({mode: 'open'});
-        shadowRoot.appendChild(get_dkpanel_template());
-        this._icon = shadowRoot.getElementById('icon');
-        this._panel = shadowRoot.getElementById('panel');
-        this._panel_title_text = shadowRoot.getElementById('title-text');
-        this._slot = shadowRoot.getElementById('panel-content');
-        this._slot_changed = false;
+if (typeof customElements !== 'undefined') {
+    if (browser.name === "msie" && browser.versionNumber <= 11) {
+        customElements.define('dk-panel', class extends HTMLElement {
+            constructor() {
+                super();
+                if (!this.id) this.id = `dk-panel-ms-${_panel_counter++}`;
+            }
+            connectedCallback() {
+                dk.$(this).css('display', 'block');
+                const $header = dk.$(this).find('>:header:first-child');
+                const $img = $header.find('>img:first-child');
+                $header.detach();
+                dk.$(this).wrapInner('<div class="panel-body"/>');
+                
+                this._widget = PanelWidget.create_on('#' + this.id, {
+                    title: $header.text()
+                });
+                try {
+                    this._widget.footer.hide();
+                } catch (e) {}
+                if ($img.length && this._widget.header) {
+                    this._widget.header.title.collapseicon.empty().append($img);
+                }
+            }
+        });
+    } else {
         
-        this._slot.addEventListener('slotchange', () => this._on_slot_change());
-    }
-    
-    _on_slot_change() {
-        const add_body_panel = () => {
-            const panel_body = document.createElement('div');
-            panel_body.classList.add('panel-body');
-            this._panel.append(panel_body);
-            return panel_body;
-        };
-        
-        if (!this._slot_changed) {  // this function is called twice..
-            this._slot_changed = true;
+        // normal browsers..
+        customElements.define('dk-panel', class extends HTMLElement {
+            constructor() {
+                super();
+                this._height = undefined;
+                this._width = undefined;
+                this._collapsible = true;
+                this._status = 'open';
+                this._icon_open = 'folder-open-o:fw';
+                this._icon_closed = 'folder:fw';
+                this._dkicon = null;
+                
+                const shadowRoot = this.attachShadow({mode: 'open'});
+                shadowRoot.append(get_dkpanel_template());
+                this._icon = shadowRoot.getElementById('icon');
+                this._panel = shadowRoot.getElementById('panel');
+                this._panel_title_text = shadowRoot.getElementById('title-text');
+                this._slot = shadowRoot.getElementById('panel-content');
+                this._slot_changed = false;
+
+                this._slot.addEventListener('slotchange', () => this._on_slot_change());
+            }
+
+            _on_slot_change() {
+                const add_body_panel = () => {
+                    const panel_body = document.createElement('div');
+                    panel_body.classList.add('panel-body');
+                    this._panel.append(panel_body);
+                    return panel_body;
+                };
+
+                if (!this._slot_changed) {  // this function is called twice..
+                    this._slot_changed = true;
+
+                    const header = this.querySelector('h1,h2,h3,h4,h5,h6');  // :header
+                    this._panel_title_text.textContent = header.textContent;
+                    const img = header.querySelector('img:first-child');
+                    if (img) {
+                        this._icon.append(img);
+                    } else {
+                        this._dkicon = icon(this._icon_open);
+                        this._icon.append(this._dkicon);
+                        // this._dkicon = dkicon.create_inside(this._icon, {value: this._icon_open});
+                    }
+                    this.removeChild(header);
+
+                    let current_panel_body = null;
+                    if (this.children.length === 0 && this.childNodes.length > 0) {  // only text nodes
+                        current_panel_body = add_body_panel();
+                        while (this.childNodes.length > 0) {
+                            current_panel_body.appendChild(this.childNodes[0]);
+                        }
+                    }
+                    while (this.children.length > 0) {
+                        const child = this.children[0];
+                        switch (child.tagName) {
+                            case 'TABLE':
+                            case 'UL':
+                                this._panel.append(child);
+                                current_panel_body = null;
+                                break;
+                            default:
+                                if (!current_panel_body) current_panel_body = add_body_panel();
+                                current_panel_body.append(child);
+                        }
+                    }
+                }
+            }
             
-            const header = this.querySelector('h1,h2,h3,h4,h5,h6');  // :header
-            this._panel_title_text.textContent = header.textContent;
-            const img = header.querySelector('img:first-child');
-            if (img) this._icon.append(img);
-            this.removeChild(header);
+            connectedCallback() {
+                const height_attr = this.getAttribute('height');
+                this._height = height_attr ? parseInt(height_attr, 10) : this.clientHeight;
+                if (this._height) this.setAttribute('height', this._height);
+                
+                const width_attr = this.getAttribute('width');
+                this._width = height_attr ? parseInt(width_attr, 10) : this.clientWidth;
+                if (this._width) this.setAttribute('width', this._width);
 
-            let current_panel_body = null;
-            if (this.children.length === 0 && this.childNodes.length > 0) {  // only text nodes
-                current_panel_body = add_body_panel();
-                while (this.childNodes.length > 0) {
-                    current_panel_body.appendChild(this.childNodes[0]);
-                }
+                this._collapsible = !!this.getAttribute('collapsible');
+                this._status = this.getAttribute('status') || 'open';
+                this.setAttribute('status', this._status);
             }
-            while (this.children.length > 0) {
-                const child = this.children[0];
-                switch (child.tagName) {
-                    case 'TABLE':
-                    case 'UL':
-                        this._panel.append(child);
-                        current_panel_body = null;
-                        break;
-                    default:
-                        if (!current_panel_body) current_panel_body = add_body_panel();
-                        current_panel_body.append(child);
-                }
+            
+            static get observedAttributes() {
+                return [
+                    'height',
+                    'width',
+                    'collapsible',
+                    'status',
+                ];
             }
-        }
+
+            get height() { return this._height; }
+            get width() { return this._width; }
+            get collapsible() { return this._collapsible; }
+            get status() { return this._status; }
+            
+            collapse() {
+                this._widget.collapse();
+            }
+            expand() {
+                this._widget.expand();
+            }
+            get loaded() { return this._loaded; }
+        });
+
     }
-    
-    connectedCallback() {}
-    
-    collapse() {
-        this._widget.collapse();
-    }
-    expand() {
-        this._widget.expand();
-    }
-    get loaded() { return this._loaded; }
-});
+}

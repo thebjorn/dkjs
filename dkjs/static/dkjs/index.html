@@ -9,8 +9,9 @@
 <!--START DKJS SECTION-->
     <!-- polyfills -->
     <!--IE11 needs a lot of polyfills (it's empty on all other browsers)-->
-    <script src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries&flags=gated"></script>
-    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
+    <script crossorign="anonymous" src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries,Element.prototype.append,DocumentFragment.prototype.append,DocumentFragment.prototype.prepend&flags=gated"></script>
+    <script crossorign="anonymous" src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/shadydom/1.1.0/shadydom.min.js"></script>-->
     
     <!--this is only needed if you compile custom element classes to es5 (for IE11) and then try to run on a modern browser-->
     <!--this adapter MUST NOT be compiled (it also doesn't seem to be necessary..?)-->
@@ -88,7 +89,7 @@
     <div id="tree1" style="margin:5px;"></div>
     <div id="tree2" style="margin:5px;"></div>
 </div>
-<script>
+<script defer>
     var h1, ds, ttree, panel, home;
     dk.ready(function () {
         h1 = dk('h1');

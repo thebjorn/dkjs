@@ -37,3 +37,30 @@ test("dk.dom.Template(), depth=1, using accessors", () => {
         <div class="content">WORLD</div>
     `));
 });
+
+
+test("dk.dom.template construct2", () => {
+    document.body.innerHTML = `
+    <div id="work">
+        <div class="content">small-world</div>
+    </div>
+    `;
+    const work = $('#work');
+
+    const structure = {
+        h3: {},
+        content: {}
+    };
+    const creator = {
+        construct_h3: function (location) { location.text('HELLO'); },
+        construct_content: function (location) { if (!location.text()) location.text('WORLD'); }
+    };
+    const templ2 = new Template(structure);
+    templ2.construct_on(work, creator);
+
+    expect(utidy(work.html())).toEqual(utidy(`
+        <h3>HELLO</h3>
+
+        <div class="content">small-world</div>
+    `));
+});
