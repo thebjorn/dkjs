@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
 import textwrap
+
+from django import http
+
 from dkjs.grid import (
     ColumnGetter, Model, Column, _ModelFieldColumn, Row, Value, Grid
 )
@@ -57,18 +61,34 @@ def test_grid_tojson():
     assert g.rows[0].value(g.cols[1]) == 'v'
     assert g.rows[0].sortvalue(g.cols[1]) == 'v'
 
-    buf = StringIO()
-    g.write_csv(buf)
-    # print(dir(buf))
-    # FIXME: this is horribly broken!
-    # assert buf.getvalue() == (
-    #     "Foo,Bar\r\n"
-    #     "fooval,barval\r\n"
-    # )
+    assert g.csv_binary_data() == (
+        b"Foo,Bar\r\n"
+        b"fooval,barval\r\n"
+    )
     
     
 def test_empty_grid_write_csv():
-    buf = StringIO()
-    Grid().write_csv(buf)
-    # print(dir(buf))
-    assert buf.getvalue() == "\r\n"
+    assert Grid().csv_binary_data() == b"\r\n" 
+
+
+def test_csv_response():
+    g = Grid(
+        cols=[
+            Column(name='foo'),
+            Column(name='bar'),
+        ],
+        rows=[
+            Row(key=42, cells=[
+                Value('f', u'blå'),
+                Value('v', u'bær')
+            ])
+        ],
+        info=42
+    )
+    
+    response = http.HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=hello.csv'
+    g.write_csv(response)
+
+    assert response.serialize() == b'Content-Type: text/csv\r\nContent-Disposition: attachment; filename=hello.csv\r\n\r\nFoo,Bar\r\nbl\xe5,b\xe6r\r\n'
+

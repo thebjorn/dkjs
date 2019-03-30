@@ -5,6 +5,9 @@
 import csv
 import pprint
 import datetime
+
+from .csvdata import rows_to_csv_data
+
 try:
     from django.template.defaultfilters import removetags
 except ImportError:
@@ -20,11 +23,13 @@ except NameError:
     unicode = str
 
 
-def _get_all_field_names(model):
-    try:
-        return model._meta.get_all_field_names()
-    except AttributeError:
-        return [f.name for f in model._meta.get_fields()]
+# 
+# 
+# def _get_all_field_names(model):
+#     try:
+#         return model._meta.get_all_field_names()
+#     except AttributeError:
+#         return [f.name for f in model._meta.get_fields()]
 
 
 class ColumnGetter(object):
@@ -216,6 +221,26 @@ class Row(object):
 
     def __json__(self):
         return dict(k=self.key, c=self.cells)
+    
+    def unicode_cells(self):
+        resrow = []
+        for cell in self.cells:
+            if hasattr(cell, 'fmt'):
+                val = removetags(cell.fmt, 'a small img details').strip()
+            else:
+                val = cell
+            if isinstance(val, datetime.datetime):
+                val = val.strftime("%Y.%m.%d %H:%M:%S")
+            if val is None:
+                val = ''
+            if isinstance(val, object):
+                try:
+                    val = unicode(val)  # assume everything is kosher
+                except:
+                    # revert to something working but ugly..
+                    val = unicode(repr(val), 'utf-8')
+            resrow.append(val)
+        return resrow
 
 
 class Value(object):
@@ -284,36 +309,19 @@ class Grid(object):
             'cols': self.cols,
             'info': self.info
         }
+    
+    def csv_binary_data(self, delimiter=','):
+        rows = []
+        rows += [[col.label for col in self.cols]]  # header
+        rows += [row.unicode_cells() for row in self.rows]
+        return rows_to_csv_data(rows, delimiter)
 
     def write_csv(self, fp, delimiter=','):
         """Write comma separated values to the file-like object `fp`.
-           `fp` must be supported by the `csv.writer()` constructor.
+           `fp` must support the writing of binary data.
         """
-        writer = csv.writer(fp, delimiter=delimiter)
-        resrows = [[col.label.encode('l1', errors='ignore')
-                    for col in self.cols]]
-
-        for record in self.rows:
-            row = []
-            for field in record.cells:
-                if hasattr(field, 'fmt'):
-                    val = removetags(field.fmt, 'a small img details').strip()
-                else:
-                    val = field
-                if isinstance(val, datetime.datetime):
-                    val = val.strftime("%Y.%m.%d %H:%M:%S")
-                if val == None:
-                    val = ''
-                if isinstance(val, object):
-                    try:
-                        val = unicode(val)  # assume everything is kosher
-                    except:
-                        # revert to something working but ugly..
-                        val = unicode(repr(val), 'utf-8')
-                row.append(val.encode('l1', errors='ignore'))
-            resrows.append(row)
-
-        writer.writerows(resrows)
+        data = self.csv_binary_data(delimiter)
+        fp.write(data)
         return fp
 
     def __repr__(self):

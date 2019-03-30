@@ -246,7 +246,9 @@ class GridView(SubcommandView):
         delimiter = request.dkargs.get('delimiter', ';')
         # delimiter = ',' if request.user.username == 'bjorn' else ';'
         csvgrid = self.csv_grid(gridval)
-        return csvgrid.write_csv(response, delimiter)
+        binary_csv_data = csvgrid.csv_binary_data(delimiter)
+        response.write(binary_csv_data)
+        return response
 
     def get_records(self, request, *args, **kwargs):
         self.fmt = request.dkargs.get('fmt', 'json')
