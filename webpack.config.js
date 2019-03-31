@@ -110,8 +110,8 @@ const prod_settings = merge(common_settings, {
     devtool: 'source-map',
 
     output: {
-        // filename: '[name].[contenthash].min.js',
-        filename: '[name].min.js',
+        filename: '[name].[contenthash].min.js',
+        // filename: '[name].min.js',
     }
 });
 

@@ -27,12 +27,15 @@
 
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="js/dkcss.css">
+    <link rel="stylesheet" href="/dkjs/dkjs/static/dkjs/js/dkcss.css" type="text/css">
     <style>    
         dk-icon:not(:defined) {
             display: none;
         }
         dk-load { border: 6px solid red; margin: 3px; }
+        .mybox { width: 50px; height: 50px;
+            background-color: red;}
+        .round { border: 1px solid blue; border-radius: 50%; }
     </style>
     
 </head>
@@ -45,6 +48,11 @@
     icon container: <span id="icn-cont"></span>
     <br style="clear: both;">
     <div id="panel"></div>
+    
+    <dk-panel id="first" collapsed>
+        <h1>preserve external styling</h1>
+        <div class="mybox round">World</div>
+    </dk-panel>
 
     <dk-panel>
         <h3><img src="https://static.datakortet.no/ikn/cq/16x16/attachment.png"> Hello world</h3>
@@ -104,7 +112,7 @@
         dk.$('h1').on('click', function () {
             dk.trigger(h1, 'foo', 'with', 'some', 'args');
         });
-        console.log("STATS:", dk.stats);
+        // console.log("STATS:", dk.stats);
         panel = dk.Panel.create_on("#panel", {
             title: 'hello panel'
         });

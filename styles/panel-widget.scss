@@ -2,6 +2,8 @@
 @import "utils";
 @import "variables";
 
+dk-panel { xoutline: 10px dashed green;  }
+dk-panel  .panel-body > p:last-child { margin-bottom: 0; }
 
 //$gray-base:              #000;
 //$gray-darker:            lighten($gray-base, 13.5%); // #222
@@ -156,7 +158,7 @@ $panel-danger-heading-bg:     $state-danger-bg;
 // By default, space out list group content from panel headings to account for
 // any kind of custom content between the two.
 
-.panel {
+dk-panel {
     > .list-group,
     > .panel-collapse > .list-group {
         margin-bottom: 0;
@@ -206,7 +208,7 @@ $panel-danger-heading-bg:     $state-danger-bg;
 // Place a non-bordered `.table` within a panel (not within a `.panel-body`) and
 // watch it go full width.
 
-.panel {
+dk-panel {
     > .table,
     > .table-responsive > .table,
     > .panel-collapse > .table {

@@ -108,7 +108,6 @@ export class TableTree extends UIWidget {
             this._generation.push(generation);
             if (i > 0) this._generation[i - 1].next = generation;
         }
-        console.info("ROOTS:", this.data.roots);
         if (true || this.data.depth > 0) {
             this._generation[0].parent = this;
             this._generation[0].draw(this.data.roots);
