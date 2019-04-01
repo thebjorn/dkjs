@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
+    <script crossorign="anonymous" src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries,Element.prototype.append,DocumentFragment.prototype.append,DocumentFragment.prototype.prepend&flags=gated"></script>
+    <script crossorign="anonymous" src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+
+    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" name="dkk" src="js/dk.min.js"></script>
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/dkjs/dkjs/static/dkjs/js/dkcss.css" type="text/css">
+
+    <style>
+        #first5 {
+            --title-size: 12px;
+        }
+        #first {
+            --title-font: cursive;
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="margin-top: 50px;">
+
+    <dk-panel id="first5">
+        <h1 id="h1">dk-panel > dk-load</h1>
+        <dk-icon id="dk-iconid" value="paw:2x"></dk-icon>
+        <table class="table"> <thead> <tr> <th>#</th> <th>First Name</th> <th>Last Name</th> <th>Username</th> </tr> </thead> <tbody> <tr> <th scope="row">1</th> <td>Mark</td> <td>Otto</td> <td>@mdo</td> </tr> <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> <tr> <th scope="row">3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> </tr> </tbody> </table>
+        <dk-icon id="dk-iconid2" value="paw:2x"></dk-icon>
+    </dk-panel>
+    
+    <dk-panel id="first3">
+        <h1 id="h1">dk-panel > dk-load</h1>
+        <dk-icon id="dk-iconid" value="paw:2x"></dk-icon>
+    </dk-panel>
+    
+    <dk-panel id="first2">
+        <h1>dk-panel > dk-load</h1>
+        <div id="inner"></div>
+    </dk-panel>
+
+    <script>
+        $('#inner').load("https://cache.norsktest.no/ajax/poststed/9900/");
+    </script>
+    
+    <dk-panel id="first4">
+        <h1>dk-panel > dk-load</h1>
+        <dk-load url="https://cache.norsktest.no/ajax/poststed/9900/">
+            LOADING...
+        </dk-load>
+    </dk-panel>
+
+
+    <dk-panel id="first">
+        <h1>dk-panel > dk-load</h1>
+
+        <div>
+            <dk-load url="https://cache.norsktest.no/ajax/poststed/9900/">
+                LOADING...
+            </dk-load>
+        </div>
+    </dk-panel>
+
+</div>
+</body>
+</html>

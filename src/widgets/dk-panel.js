@@ -3,8 +3,7 @@ import {Widget} from "../widgetcore/dk-widget";
 import css from "../browser/dk-css";
 import dk from "../dk-obj";
 import browser from "../browser/browser-version";
-import {dkicon, fa4_icon, icon} from "./dk-icon-library";
-import {dkconsole} from "../lifecycle/dkboot/dk-console";
+import {fa4_icon, icon} from "./dk-icon-library";
 
 
 export class PanelWidget extends Widget {
@@ -215,104 +214,99 @@ export class PanelWidget extends Widget {
  *         PANEL BODY
  *     </dk-panel>
  */
-if (typeof customElements !== 'undefined') customElements.whenDefined('dk-panel').then(() => {
+if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load').then(() => {
     // console.log("DK_PANEL_DEFINED:");
-});
 
-let _dk_panel_template = null;
-function get_dkpanel_template() {
-    if (!_dk_panel_template) {
-        _dk_panel_template = document.createElement('template');
-        _dk_panel_template.innerHTML = `
-            <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
-            <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
-            <link rel="stylesheet" href="/dkjs/dkjs/static/dkjs/js/dkcss.css" type="text/css">
-<!--            <link rel="stylesheet" href="//static.datakortet.no/dkjs/dkcss.fa530d8f7e49451dd630.css">-->
-            <style>
-                :host {
-                    display: block;
-                }
-            </style>
-            <div class="PanelWidget dk-panel panel panel-default">
-                <header class="panel-heading">
-                    <div class="panel-title">
-                        <span id="icon" class="collapseicon" style="cursor:pointer;"></span>
-                        <span id="title-text" class="headingtext"></span>
-                    </div>
-                </header>
-                <slot id="panel-body" name="panel-body"></slot>
-            </div>
-            <slot id="panel-content"></slot>
-        `;
+    
+    let _dk_panel_template = null;
+    function get_dkpanel_template() {
+        if (!_dk_panel_template) {
+            _dk_panel_template = document.createElement('template');
+            _dk_panel_template.innerHTML = `
+                <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+                <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
+                <link rel="stylesheet" href="/dkjs/dkjs/static/dkjs/js/dkcss.css" type="text/css">
+    <!--            <link rel="stylesheet" href="//static.datakortet.no/dkjs/dkcss.fa530d8f7e49451dd630.css">-->
+                <style>
+                    :host { display: block; margin-bottom: 4px; }
+                    :host .panel {margin-bottom: 0;}
+                    #title-text { 
+                        font-size: var(--title-size, inherit); 
+                        font-family: var(--title-font, inherit);
+                    }
+                </style>
+                <div class="PanelWidget dk-panel panel panel-default">
+                    <header class="panel-heading">
+                        <div class="panel-title">
+                            <span id="icon" class="collapseicon" style="cursor:pointer;"></span>
+                            <span id="title-text" class="headingtext"></span>
+                        </div>
+                    </header>
+                    <slot id="panel-body" name="panel-body"></slot>
+                </div>
+                <slot id="panel-content"></slot>
+            `;
+        }
+        return _dk_panel_template.content.cloneNode(true);
     }
-    return _dk_panel_template.content.cloneNode(true);
-}
-let _panel_counter = 1;
+    let _panel_counter = 1;
 
-if (typeof customElements !== 'undefined') {
-    if (browser.name === "msie" && browser.versionNumber <= 11) {
-        customElements.define('dk-panel', class extends HTMLElement {
-            constructor() {
-                super();
-                if (!this.id) this.id = `dk-panel-ms-${_panel_counter++}`;
-            }
-            connectedCallback() {
-                dk.$(this).css('display', 'block');
-                const $header = dk.$(this).find('>:header:first-child');
-                const $img = $header.find('>img:first-child');
-                $header.detach();
-                dk.$(this).wrapInner('<div class="panel-body"/>');
-                
-                this._widget = PanelWidget.create_on('#' + this.id, {
-                    title: $header.text()
-                });
-                try {
-                    this._widget.footer.hide();
-                } catch (e) {}
-                if ($img.length && this._widget.header) {
-                    this._widget.header.title.collapseicon.empty().append($img);
+    if (typeof customElements !== 'undefined') {
+        if (browser.name === "msie" && browser.versionNumber <= 11) {
+            customElements.define('dk-panel', class extends HTMLElement {
+                constructor() {
+                    super();
+                    if (!this.id) this.id = `dk-panel-ms-${_panel_counter++}`;
                 }
-            }
-        });
-    } else {
-        
-        // normal browsers..
-        customElements.define('dk-panel', class extends HTMLElement {
-            constructor() {
-                super();
-                this._collapsed = false;
-                this._icon_open = 'folder-open-o:fw';
-                this._icon_closed = 'folder:fw';
-                this._dkicon = null;
-                
-                const shadowRoot = this.attachShadow({mode: 'open'});
-                shadowRoot.append(get_dkpanel_template());
-                this._icon = shadowRoot.getElementById('icon');
-                this._panel_title_text = shadowRoot.getElementById('title-text');
-                this._slot = shadowRoot.getElementById('panel-content');
-                this._panel_body_slot = shadowRoot.getElementById('panel-body');
-                this._slot_changed = false;
-
-                this._slot.addEventListener('slotchange', () => this._on_slot_change());
-                this._icon.addEventListener('click', (e) => this.toggle(e));
-            }
-
-            _on_slot_change() {
-                const add_body_panel = () => {
-                    const panel_body = document.createElement('div');
-                    panel_body.classList.add('panel-body');
-                    // this._panel.append(panel_body);
-                    this.append(panel_body);
-                    panel_body.setAttribute('slot', 'panel-body');
-                    return panel_body;
-                };
-
-                if (!this._slot_changed) {  // this function is called twice..
-                    this._slot_changed = true;
-
-                    const header = this.querySelector('h1,h2,h3,h4,h5,h6');  // :header
-                    this._panel_title_text.textContent = header.textContent;
+                connectedCallback() {
+                    dk.$(this).css('display', 'block');
+                    const $header = dk.$(this).find('>:header:first-child');
+                    const $img = $header.find('>img:first-child');
+                    $header.detach();
+                    dk.$(this).wrapInner('<div class="panel-body"/>');
                     
+                    this._widget = PanelWidget.create_on('#' + this.id, {
+                        title: $header.text()
+                    });
+                    try {
+                        this._widget.footer.hide();
+                    } catch (e) {}
+                    if ($img.length && this._widget.header) {
+                        this._widget.header.title.collapseicon.empty().append($img);
+                    }
+                }
+            });
+        } else {
+            
+            // normal browsers..
+            customElements.define('dk-panel', class extends HTMLElement {
+                constructor() {
+                    super();
+                    this._collapsed = false;
+                    this._icon_open = 'folder-open-o:fw';
+                    this._icon_closed = 'folder:fw';
+                    this._dkicon = null;
+                    
+                    const shadowRoot = this.attachShadow({mode: 'open'});
+                    shadowRoot.append(get_dkpanel_template());
+                    this._icon = shadowRoot.getElementById('icon');
+                    this._panel_title_text = shadowRoot.getElementById('title-text');
+                    this._slot = shadowRoot.getElementById('panel-content');
+                    this._panel_body_slot = shadowRoot.getElementById('panel-body');
+                    this._current_body_panel = null;
+                    this.__header_filled = false;
+    
+                    this._slot.addEventListener('slotchange', (e) => this._on_slot_change(e));
+                    this._icon.addEventListener('click', (e) => this.toggle(e));
+                }
+                
+                _fill_header() {
+                    if (this.__header_filled) return;
+                    const header = this.querySelector('h1,h2,h3,h4,h5,h6');  // :header
+                    if (!header) return;
+                    this.__header_filled = true;
+                    this._panel_title_text.textContent = header.textContent;
+
                     const img = header.querySelector('img:first-child');
                     if (img) {
                         // img.setAttribute('slot', 'icon');
@@ -323,90 +317,104 @@ if (typeof customElements !== 'undefined') {
                         // this._dkicon = dkicon.create_inside(this._icon, {value: this._icon_open});
                     }
                     this.removeChild(header);
+                }
+                
+                _add_body_panel() {
+                    const panel_body = document.createElement('div');
+                    panel_body.classList.add('panel-body');
+                    this.append(panel_body);
+                    panel_body.setAttribute('slot', 'panel-body');
+                    return panel_body;
+                }
+    
+                _on_slot_change(e) {
+                    this._fill_header();
+                    const assigned_elements = this._slot.assignedElements();
+                    if (assigned_elements.length === 0) return;
 
-                    let current_panel_body = null;
                     if (this.children.length === 0 && this.childNodes.length > 0) {  // only text nodes
-                        current_panel_body = add_body_panel();
-                        while (this.childNodes.length > 0 && this.childNodes[0] !== current_panel_body) {
-                            current_panel_body.appendChild(this.childNodes[0]);
+                        this._current_body_panel = this._add_body_panel();
+                        while (this.childNodes.length > 0 && this.childNodes[0] !== this._current_body_panel) {
+                            this._current_body_panel.appendChild(this.childNodes[0]);
                         }
                     }                    
-                    [...this._slot.assignedElements()].forEach(n => {
+                    [...assigned_elements].forEach(n => {
                         switch (n.tagName) {
                             case 'TABLE':
                             case 'UL':
                                 n.setAttribute('slot', 'panel-body');
-                                current_panel_body = null;
+                                this._current_body_panel = null;
                                 break;
                             default:
-                                if (!current_panel_body) current_panel_body = add_body_panel();
-                                current_panel_body.append(n);                                
+                                if (!this._current_body_panel) this._current_body_panel = this._add_body_panel();
+                                this._current_body_panel.append(n);                                
                         }
                     });
                 }
-            }
-            
-            connectedCallback() {
-                this.collapsed = this.hasAttribute('collapsed');
-            }
-            
-            static get observedAttributes() {
-                return [
-                    'collapsed',
-                ];
-            }
-            
-            attributeChangedCallback(attrname, oldval, newval) {
-                newval = newval === "";  // true
-                oldval = oldval === "";
-                // console.log(`attrchange: ${attrname} #${this.id} "${oldval}"->"${newval}"`);
-                if (attrname === 'collapsed' && oldval != newval) {
-                    // console.log(`performing-attrchange: ${attrname} #${this.id} "${oldval}"->"${newval}"`);
-                    this.collapsed = newval;
+                
+                connectedCallback() {
+                    // debugger;
+                    this.collapsed = this.hasAttribute('collapsed');
                 }
-            }
-
-            get collapsed() { return this._collapsed; }
-            set collapsed(v) {
-                if (!!v !== this._collapsed) {
-                    if (v) {
-                        this.collapse();
-                    } else {
+                
+                static get observedAttributes() {
+                    return [
+                        'collapsed',
+                    ];
+                }
+                
+                attributeChangedCallback(attrname, oldval, newval) {
+                    newval = newval === "";  // true
+                    oldval = oldval === "";
+                    // console.log(`attrchange: ${attrname} #${this.id} "${oldval}"->"${newval}"`);
+                    if (attrname === 'collapsed' && oldval != newval) {
+                        // console.log(`performing-attrchange: ${attrname} #${this.id} "${oldval}"->"${newval}"`);
+                        this.collapsed = newval;
+                    }
+                }
+    
+                get collapsed() { return this._collapsed; }
+                set collapsed(v) {
+                    if (!!v !== this._collapsed) {
+                        if (v) {
+                            this.collapse();
+                        } else {
+                            this.expand();
+                        }
+                    }
+                }
+                
+                collapse() {
+                    if (!this.collapsed) {
+                        this._collapsed = true;
+                        dk.$(this._panel_body_slot).hide();
+                        this.setAttribute('collapsed', "");
+                        if (this._dkicon) {
+                            fa4_icon(this._dkicon, this._icon_closed);
+                            // this._dkicon = icon(this._icon_closed);
+                        }
+                    }
+                }
+                expand() {
+                    if (this.collapsed) {
+                        this._collapsed = false;
+                        dk.$(this._panel_body_slot).show();
+                        this.removeAttribute('collapsed');
+                        if (this._dkicon) {
+                            fa4_icon(this._dkicon, this._icon_open);
+                            // this._dkicon = icon(this._icon_open);
+                        }
+                    }
+                }
+                toggle() {
+                    if (this.collapsed) {
                         this.expand();
+                    } else {
+                        this.collapse();
                     }
                 }
-            }
-            
-            collapse() {
-                if (!this.collapsed) {
-                    this._collapsed = true;
-                    dk.$(this._panel_body_slot).hide();
-                    this.setAttribute('collapsed', "");
-                    if (this._dkicon) {
-                        fa4_icon(this._dkicon, this._icon_closed);
-                        // this._dkicon = icon(this._icon_closed);
-                    }
-                }
-            }
-            expand() {
-                if (this.collapsed) {
-                    this._collapsed = false;
-                    dk.$(this._panel_body_slot).show();
-                    this.removeAttribute('collapsed');
-                    if (this._dkicon) {
-                        fa4_icon(this._dkicon, this._icon_open);
-                        // this._dkicon = icon(this._icon_open);
-                    }
-                }
-            }
-            toggle() {
-                if (this.collapsed) {
-                    this.expand();
-                } else {
-                    this.collapse();
-                }
-            }
-        });
-
+            });
+    
+        }
     }
-}
+});
