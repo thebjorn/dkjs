@@ -1,28 +1,24 @@
 # -*- coding: utf-8 -*-
-import dkjs
-import dkjs.apps
-import dkjs.decorators
+
+"""Test that all modules are importable.
+"""
+
+import dkjs.csvdata
 import dkjs.grid
-import dkjs.grid_resource
 import dkjs.jason
 import dkjs.mysql_select
-import dkjs.publish
-import dkjs.resource
-import dkjs.views
 import dkjs.templatetags
 import dkjs.templatetags.dkjs_tags
+import dkjs.views
 
 
-def test_import_dkjs():
-    assert dkjs
-    assert dkjs.apps
-    assert dkjs.decorators
+def test_import_():
+    "Test that all modules are importable."
+    
+    assert dkjs.csvdata
     assert dkjs.grid
-    assert dkjs.grid_resource
     assert dkjs.jason
     assert dkjs.mysql_select
-    assert dkjs.publish
-    assert dkjs.resource
-    assert dkjs.views
     assert dkjs.templatetags
     assert dkjs.templatetags.dkjs_tags
+    assert dkjs.views
