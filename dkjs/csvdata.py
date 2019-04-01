@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 try:  # pragma: nocover
     from cStringIO import StringIO
-    mkbuffer = lambda:StringIO
+    mkbuffer = lambda:StringIO()
     encode_csv = lambda x: x
     encode_rows = lambda rows: [[col.encode('latin-1') for col in row] for row in rows]
 except ImportError:  # pragma: nocover
