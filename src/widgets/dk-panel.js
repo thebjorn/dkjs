@@ -226,7 +226,7 @@ function get_dkpanel_template() {
         _dk_panel_template.innerHTML = `
             <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
             <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
-            <link rel="stylesheet" href="/dkjs/dkjs/static/dkjs/js/dkcss.css" type="text/css">
+            <link rel="stylesheet" href="//finaut:8000/static/dkjs/js/dkcss.css" type="text/css">
 <!--            <link rel="stylesheet" href="//static.datakortet.no/dkjs/dkcss.fa530d8f7e49451dd630.css">-->
             <style>
                 :host {
@@ -242,7 +242,7 @@ function get_dkpanel_template() {
                 </header>
                 <slot id="panel-body" name="panel-body"></slot>
             </div>
-            <slot id="panel-content"></slot>
+            <slot id="default-slot"></slot>
         `;
     }
     return _dk_panel_template.content.cloneNode(true);
@@ -289,11 +289,11 @@ if (typeof customElements !== 'undefined') {
                 shadowRoot.append(get_dkpanel_template());
                 this._icon = shadowRoot.getElementById('icon');
                 this._panel_title_text = shadowRoot.getElementById('title-text');
-                this._slot = shadowRoot.getElementById('panel-content');
+                this._default_slot = shadowRoot.getElementById('default-slot');
                 this._panel_body_slot = shadowRoot.getElementById('panel-body');
                 this._slot_changed = false;
 
-                this._slot.addEventListener('slotchange', () => this._on_slot_change());
+                this._default_slot.addEventListener('slotchange', () => this._on_slot_change());
                 this._icon.addEventListener('click', (e) => this.toggle(e));
             }
 
@@ -331,7 +331,7 @@ if (typeof customElements !== 'undefined') {
                             current_panel_body.appendChild(this.childNodes[0]);
                         }
                     }                    
-                    [...this._slot.assignedElements()].forEach(n => {
+                    [...this._default_slot.assignedElements()].forEach(n => {
                         switch (n.tagName) {
                             case 'TABLE':
                             case 'UL':

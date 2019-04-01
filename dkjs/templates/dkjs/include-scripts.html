@@ -1,7 +1,22 @@
 {% load staticfiles %}
 
+<!-- publicPath: ../../static/dkjs/js/ -->
+<!-- chunks:      -->
+<!-- manifest:      -->
 
-    <script src="{% static "dkjs/dk.baea24a217d2596ac23e.min.js" %}"></script>
+<link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
 
-    <script src="{% static "dkjs/dkcss.6ac5455ea386618471b7.min.js" %}"></script>
+<script crossorign="anonymous" src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries,Element.prototype.append,DocumentFragment.prototype.append,DocumentFragment.prototype.prepend&flags=gated"></script>
+<script crossorign="anonymous" src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+
+
+    
+    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" src="{% static "dkjs/js/dk.min.js" %}"></script>
+    
+
+    
+
+
+    <link rel="stylesheet" href="{% static "dkjs/js/dkcss.css" %}" type="text/css">
 

@@ -2,7 +2,6 @@
 
 """CBV helper classes.
 """
-import csv
 import inspect
 import sys
 

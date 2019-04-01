@@ -1,5 +1,20 @@
 {% load staticfiles %}
 <% const path = require('path'); %>
+<!-- publicPath: <%= htmlWebpackPlugin.files.publicPath %> -->
+<!-- chunks:     <%= htmlWebpackPlugin.files.chunks.length %> -->
+<!-- manifest:     <%= htmlWebpackPlugin.files.manifest %> -->
+
+<link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
+
+<script crossorign="anonymous" src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries,Element.prototype.append,DocumentFragment.prototype.append,DocumentFragment.prototype.prepend&flags=gated"></script>
+<script crossorign="anonymous" src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+
 <% for (var jsfile in htmlWebpackPlugin.files.js) { %>
-    <script src="{% static "dkjs/<%= path.basename(htmlWebpackPlugin.files.js[jsfile]) %>" %}"></script>
+    <% if (htmlWebpackPlugin.files.js[jsfile].indexOf('js/dkcss') === -1) { %>
+    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" src="{% static "dkjs/js/<%= path.basename(htmlWebpackPlugin.files.js[jsfile]) %>" %}"></script>
+    <% } %>
+<% } %>
+<% for (var cssfile in htmlWebpackPlugin.files.css) { %>
+    <link rel="stylesheet" href="{% static "dkjs/js/<%= path.basename(htmlWebpackPlugin.files.css[cssfile]) %>" %}" type="text/css">
 <% } %>
