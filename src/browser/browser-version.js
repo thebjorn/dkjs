@@ -20,26 +20,27 @@ export default (function () {
     // from jquery.dynatree.js with modifications
     let matched, browser;
 
-    const uaMatch = function( ua ) {
+    const uaMatch = function(ua) {
         ua = ua.toLowerCase();
 
-        const match = /(opr)[/]([\w.]+)/.exec( ua ) ||
-                /(chrome)[ /]([\w.]+)/.exec( ua ) ||
-                /(version)[ /]([\w.]+).*(safari)[ /]([\w.]+)/.exec(ua) ||
-                /(webkit)[ /]([\w.]+)/.exec( ua ) ||
-                /(opera)(?:.*version|)[ /]([\w.]+)/.exec( ua ) ||
-                /(msie) ([\w.]+)/.exec( ua ) ||
-                ua.indexOf("trident") >= 0 && /(rv)(?:[: ])([\w.]+)/.exec( ua ) ||
-                ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
-                [];
+        const match = /(opr)[/]([\w.]+)/.exec(ua) ||
+            /(edge)[/]([\w.]+)/.exec(ua) ||
+            /(chrome)[ /]([\w.]+)/.exec(ua) ||
+            /(version)[ /]([\w.]+).*(safari)[ /]([\w.]+)/.exec(ua) ||
+            /(webkit)[ /]([\w.]+)/.exec(ua) ||
+            /(opera)(?:.*version|)[ /]([\w.]+)/.exec(ua) ||
+            /(msie) ([\w.]+)/.exec(ua) ||
+            ua.indexOf("trident") >= 0 && /(rv)(?:[: ])([\w.]+)/.exec(ua) ||
+            ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec(ua) ||
+            [];
 
-        const platform_match = /(ipad)/.exec( ua ) ||
-                /(iphone)/.exec( ua ) ||
-                /(android)/.exec( ua ) ||
+        const platform_match = /(ipad)/.exec(ua) ||
+                /(iphone)/.exec(ua) ||
+                /(android)/.exec(ua) ||
                 /(windows phone)/.exec(ua) ||
-                /(win)/.exec( ua ) ||
-                /(mac)/.exec( ua ) ||
-                /(linux)/.exec( ua ) ||
+                /(win)/.exec(ua) ||
+                /(mac)/.exec(ua) ||
+                /(linux)/.exec(ua) ||
                 [];
 
         return {
