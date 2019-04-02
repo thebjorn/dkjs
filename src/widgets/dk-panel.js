@@ -225,18 +225,26 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
             _dk_panel_template.innerHTML = `
                 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
                 <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
-                <link rel="stylesheet" href="/dkjs/dkjs/static/dkjs/js/dkcss.css" type="text/css">
+    <!--            <link rel="stylesheet" href="/dkjs/dkjs/static/dkjs/js/dkcss.css" type="text/css">-->
     <!--            <link rel="stylesheet" href="//static.datakortet.no/dkjs/dkcss.fa530d8f7e49451dd630.css">-->
                 <style>
-                    :host { display: block; margin-bottom: 4px; }
-                    :host .panel {margin-bottom: 0;}
+                    :host { 
+                        display: block; 
+                        margin-bottom: 4px;
+                        will-change:  contents;
+                        max-height: none;
+                        transition-property: max-height;
+                        transition-duration: 0.1s;
+                        transition-timing-function: linear;
+                        overflow: hidden;
+                    }
+                    #dk-panel {margin-bottom: 0;}
                     #title-text { 
-                        font-size: var(--title-size, inherit); 
-                        font-family: var(--title-font, inherit);
+                        font-size: var(--title-size); 
                     }
                 </style>
-                <div class="PanelWidget dk-panel panel panel-default">
-                    <header class="panel-heading">
+                <div id="dk-panel" class="PanelWidget dk-panel panel panel-default">
+                    <header id="header" class="panel-heading">
                         <div class="panel-title">
                             <span id="icon" class="collapseicon" style="cursor:pointer;"></span>
                             <span id="title-text" class="headingtext"></span>
@@ -252,7 +260,7 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
     let _panel_counter = 1;
 
     if (typeof customElements !== 'undefined') {
-        if (browser.name === "msie" && browser.versionNumber <= 11) {
+        if (browser.name === "msie" || browser.name === 'edge') {
             customElements.define('dk-panel', class extends HTMLElement {
                 constructor() {
                     super();
@@ -286,15 +294,18 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
                     this._icon_open = 'folder-open-o:fw';
                     this._icon_closed = 'folder:fw';
                     this._dkicon = null;
+                    this.collapse_pixels_per_second = 1200;  // to get uniform speed regardless of panel height
                     
                     const shadowRoot = this.attachShadow({mode: 'open'});
                     shadowRoot.append(get_dkpanel_template());
+                    this._header = shadowRoot.getElementById('header');
                     this._icon = shadowRoot.getElementById('icon');
                     this._panel_title_text = shadowRoot.getElementById('title-text');
                     this._slot = shadowRoot.getElementById('panel-content');
                     this._panel_body_slot = shadowRoot.getElementById('panel-body');
                     this._current_body_panel = null;
                     this.__header_filled = false;
+                    this.__collapsed_maxheight = null;
     
                     this._slot.addEventListener('slotchange', (e) => this._on_slot_change(e));
                     this._icon.addEventListener('click', (e) => this.toggle(e));
@@ -367,12 +378,12 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
                     newval = newval === "";  // true
                     oldval = oldval === "";
                     // console.log(`attrchange: ${attrname} #${this.id} "${oldval}"->"${newval}"`);
-                    if (attrname === 'collapsed' && oldval != newval) {
+                    if (attrname === 'collapsed' && oldval !== newval) {
                         // console.log(`performing-attrchange: ${attrname} #${this.id} "${oldval}"->"${newval}"`);
                         this.collapsed = newval;
                     }
                 }
-    
+                
                 get collapsed() { return this._collapsed; }
                 set collapsed(v) {
                     if (!!v !== this._collapsed) {
@@ -387,8 +398,17 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
                 collapse() {
                     if (!this.collapsed) {
                         this._collapsed = true;
-                        dk.$(this._panel_body_slot).hide();
+                        this.classList.add('collapse-up');
+                        const hsize = this._header.scrollHeight;
+                        this.__collapsed_curheight = this.offsetHeight;
+                        
+                        this.__collapsed_maxheight = css.maxheight(this, {
+                            height: hsize,
+                            duration: Math.max(0.09, this.__collapsed_curheight/ this.collapse_pixels_per_second) 
+                        });
+                        
                         this.setAttribute('collapsed', "");
+                        
                         if (this._dkicon) {
                             fa4_icon(this._dkicon, this._icon_closed);
                             // this._dkicon = icon(this._icon_closed);
@@ -396,10 +416,23 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
                     }
                 }
                 expand() {
+                    const self = this;
                     if (this.collapsed) {
                         this._collapsed = false;
-                        dk.$(this._panel_body_slot).show();
+                        
+                        if (this.__collapsed_maxheight != null) {
+                            css.maxheight(this, {
+                                height: this.__collapsed_curheight,
+                                duration: Math.max(0.09, this.__collapsed_curheight/ this.collapse_pixels_per_second),
+                                done() {
+                                    self.style.maxHeight = self.__collapsed_maxheight;
+                                    self.__collapsed_maxheight = null;
+                                }
+                            });
+                        }
+                        
                         this.removeAttribute('collapsed');
+                        
                         if (this._dkicon) {
                             fa4_icon(this._dkicon, this._icon_open);
                             // this._dkicon = icon(this._icon_open);
