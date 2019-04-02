@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+# pylint:disable=too-few-public-methods
 import traceback
 from django.conf import settings
-from dkjs.views import SubcommandView
-from dkjs import jason
+from .views import SubcommandView
+from . import jason
 import logging
 log = logging.getLogger(__name__)
 
@@ -95,10 +96,10 @@ class ToggleView(SubcommandView):
         ))
 
     def get_current_value(self, request, args, kw):
-        raise NotImplemented
+        raise NotImplementedError
 
     def set_current_value(self, request, args, kw, param):
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class BoolToggleDataSource(ToggleView):
@@ -159,7 +160,7 @@ class BoolToggleDataSource(ToggleView):
                 self.STATUS_OK,
                 self.states[value]
             ))
-        except Exception as e:
+        except Exception:
             if settings.DEBUG:
                 # provide the traceback on the javascript consolee if we're
                 # in debug mode

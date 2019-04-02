@@ -18,7 +18,9 @@ class CORSView(View):
     ALLOW_ORIGIN = '*'  # set to None to disallow CORS.
     ALLOW_METHODS = ['POST', 'GET', 'OPTIONS']
     MAX_AGE = None  # set to number of seconds
-    ALLOW_HEADERS = ['origin', 'x-csrftoken', 'x-dkjs', 'content-type', 'accept']
+    ALLOW_HEADERS = [
+        'origin', 'x-csrftoken', 'x-dkjs', 'content-type', 'accept'
+    ]
 
     def __init__(self, *args, **kwargs):
         self.origin = None  # local call
@@ -399,7 +401,7 @@ class Resultset(GridView):
             field = column[field].sort_field
             return field if direction == 'asc' else '-' + field
 
-        terms = ','.join(filter(None, [term(t) for t in terms]))
+        terms = ','.join(filter(None, [term(t) for t in terms])) # pylint:disable=bad-builtin
         if not terms:
             return qs
         return qs.order_by(terms)

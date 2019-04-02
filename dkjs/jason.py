@@ -90,9 +90,11 @@ def dumps(val, indent=4, sort_keys=True, cls=DkJSONEncoder):
 
 
 def dump2(val, **kw):
+    """Dump using a compact dump format.
+    """
     kw['indent'] = kw.get('indent', None)
     kw['cls'] = kw.get('cls', DkJSONEncoder)
-    kw['separators'] = kw.get('separators', (',',':'))
+    kw['separators'] = kw.get('separators', (',', ':'))
     return json.dumps(val, **kw)
 
 
@@ -144,12 +146,14 @@ def obj_decoder(pairs):
         elif tag and tag == '@date:':
             val = datetime.date(
                 *[int(part, 10)
-                      for part in val[len('@date:'):].split('-')])
+                  for part in val[len('@date:'):].split('-')])
         res[key] = val
     return res
 
 
 def loads(txt, **kw):
+    """Load json data from txt.
+    """
     if 'cls' not in kw:
         kw['object_pairs_hook'] = kw.get('object_pairs_hook', obj_decoder)
     return json.loads(txt, **kw)

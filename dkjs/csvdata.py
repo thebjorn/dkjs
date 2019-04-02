@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
+Convenience functions to make csv writing code work on both Py2 and Py3.
+"""
+
 try:  # pragma: nocover
     from cStringIO import StringIO
-    mkbuffer = lambda:StringIO()
+    mkbuffer = lambda: StringIO()
     encode_csv = lambda x: x
     encode_rows = lambda rows: [[col.encode('latin-1') for col in row] for row in rows]
 except ImportError:  # pragma: nocover
     from io import StringIO
-    mkbuffer = lambda:StringIO(newline="")  # needed for cells with newlines
-    encode_csv = lambda data: data.encode('latin-1') 
+    mkbuffer = lambda: StringIO(newline="")  # needed for cells with newlines
+    encode_csv = lambda data: data.encode('latin-1')
     encode_rows = lambda x: x
 import csv
 

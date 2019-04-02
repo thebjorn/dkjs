@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-
 """Resource classes to marshal grid data.
 """
-import csv
+# pylint: disable=too-few-public-methods
 import pprint
 import datetime
 
@@ -20,7 +19,7 @@ from . import jason
 try:
     unicode
 except NameError:
-    unicode = str
+    unicode = str  # pylint:disable=redefined-builtin
 
 
 # 
@@ -33,8 +32,7 @@ except NameError:
 
 
 class ColumnGetter(object):
-    """
-    """
+
     def __get__(self, instance, owner):
         if instance is None:
             raise Exception("ColumnGetter is an instance descriptor.")
@@ -55,7 +53,9 @@ class ColumnGetter(object):
         def wrapper(**overrides):
             return _ModelFieldColumn(self._instance.model, colname, **overrides)
         wrapper.is_wrapper = True
-        wrapper.__name__ = 'wrapper_ModelFieldColumn[%r, %r]' % (self._instance.model, colname)
+        wrapper.__name__ = 'wrapper_ModelFieldColumn[%r, %r]' % (
+            self._instance.model, colname
+        )
 
         return wrapper
 
@@ -139,6 +139,10 @@ class Column(object):
         return res
 
 
+def _hasattrs(obj, *attrs):
+    return all(hasattr(obj, attr) for attr in attrs)
+
+
 class _ModelFieldColumn(Column):
     """Create a column resource from a field on a model. Use from Model above.
     """
@@ -157,10 +161,12 @@ class _ModelFieldColumn(Column):
             self.label = field_name
             self.datatype = None
         else:
-            self.label = field.verbose_name if hasattr(field, 'verbose_name') else field_name
+            has_verbose = hasattr(field, 'verbose_name') 
+            self.label = field.verbose_name if has_verbose else field_name
             self.datatype = self._get_datatype(field)
             # self.widget = ???
-            if hasattr(field, 'rel') and hasattr(field, 'get_choices') and field.rel:
+
+            if _hasattrs(field, 'rel', 'get_choices') and field.rel:
                 self.data = field.get_choices()
             for k, v in overrides.items():
                 setattr(self, k, v)
@@ -238,7 +244,8 @@ class Row(object):
                     val = unicode(val)  # assume everything is kosher
                 except:
                     # revert to something working but ugly..
-                    val = unicode(repr(val), 'utf-8')
+                    # val = unicode(repr(val), 'utf-8')
+                    val = u''
             resrow.append(val)
         return resrow
 
@@ -257,7 +264,12 @@ class Value(object):
 
     @property
     def fmt(self):
-        return self.fmtval if self.fmtval is not None else unicode(self.value or "")
+        if self.fmtval is not None:
+            return self.fmtval
+        else:
+            return unicode(self.value or "")
+        # return self.fmtval if self.fmtval is not None
+        #                    else unicode(self.value or "")
 
     def __json__(self):
         res = dict(v=self.value)

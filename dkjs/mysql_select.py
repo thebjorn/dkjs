@@ -22,9 +22,9 @@ class SelectStmt(object):
 
     def get_sql(self):
         sql = """
-            select {self.select}
-            from {self.from_}
-        """.format(self=self)
+            select {me.select}
+            from {me.from_}
+        """.format(me=self)
         if self.where:
             sql += "\nwhere " + self.where
         if self.group_by:
