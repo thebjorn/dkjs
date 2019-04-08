@@ -157,21 +157,21 @@ export class ResultSet extends Widget {
             if (end_recnum - start_recnum === 1) count = 'one';
 
             let infotxt = '<span class="info">';
-            const total = '<span class="tot">(totalt: %d)</span>'.format(totcount);
+            const total = `<span class="tot">(totalt: ${totcount})</span>`;
 
             switch (count) {
                 case 'none':
-                    infotxt += 'viser 0 av %d'.format(filter_count);
+                    infotxt += `viser 0 av ${filter_count}`;
                     break;
                 case 'one':
                     if (start_recnum === 1) {
-                        infotxt += 'viser 1 av %d'.format(filter_count);
+                        infotxt += `viser 1 av ${filter_count}`;
                     } else {
-                        infotxt += 'post nr. %d av %d'.format(start_recnum, filter_count);
+                        infotxt += `post nr. ${start_recnum} av ${filter_count}`;
                     }
                     break;
                 case 'many':
-                    infotxt += 'viser %d&ndash;%d av %d'.format(start_recnum, end_recnum - 1, filter_count);
+                    infotxt += `viser ${start_recnum}&ndash;${end_recnum-1} av ${filter_count}`;
                     break;
             }
             infotxt += '</span>';

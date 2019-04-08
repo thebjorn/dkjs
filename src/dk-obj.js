@@ -34,7 +34,7 @@ Object.assign(dk, {
     counter,
     globals: globalThis,
     env,
-    namespace,
+    namespace: namespace.create_namespace,
     combine: namespace.combine,
     merge: namespace.merge,
     traverse: namespace.traverse,

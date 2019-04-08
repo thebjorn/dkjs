@@ -4,6 +4,7 @@ import css from "../browser/dk-css";
 import dk from "../dk-obj";
 import browser from "../browser/browser-version";
 import {fa4_icon, icon} from "./dk-icon-library";
+import styles from "../../styles/index.scss";
 
 
 export class PanelWidget extends Widget {
@@ -228,6 +229,7 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
     <!--            <link rel="stylesheet" href="/dkjs/dkjs/static/dkjs/js/dkcss.css" type="text/css">-->
     <!--            <link rel="stylesheet" href="//static.datakortet.no/dkjs/dkcss.fa530d8f7e49451dd630.css">-->
                 <style>
+                    ${styles.toString()}
                     :host { 
                         display: block; 
                         margin-bottom: 4px;

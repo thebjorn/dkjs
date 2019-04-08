@@ -10,10 +10,11 @@
 // const forms = require('../forms');
 
 import dk from "../dk-obj";
-import {Widget} from "../widgetcore/dk-widget";
+// import {Widget} from "../widgetcore/dk-widget";
 import {Template} from "../browser/dk-dom-template";
 import {CheckboxSelectWidget, RadioSelectWidget, TriboolWidget} from "../forms/widgets";
 import {zip_object} from "../collections";
+import {UIWidget} from "../widgetcore/ui-widget";
 
 
 export function list2data (lst) {
@@ -62,13 +63,13 @@ export function list2data (lst) {
  *      }
  *  });
  */
-export class DataFilter extends Widget {
+export class DataFilter extends UIWidget {
     constructor(...args) {
         super({
             // type: 'DataFilter',
             data: undefined,
             heading: 'Filter',
-            filters: [],         // XXX shouldn't this be {} or null?
+            filters: {},
             dataset: null,
             structure: {
                 header: {
@@ -114,7 +115,7 @@ export class DataFilter extends Widget {
                 filtercontent: {}
             }
         };
-        const templ = Template(structure, this.template);
+        const templ = new Template(structure, this.template);
         const dom = templ.append_to(location, this, location);
 
         if (!filter.construct) {
@@ -131,7 +132,7 @@ export class DataFilter extends Widget {
 
                 // noinspection JSPotentiallyInvalidUsageOfClassThis
                 this.widget = widgetclass.create_inside(loc, {
-                    data: list2data(this.values),
+                    data: {value: list2data(this.values)},
                     name: filter_name,
                     label: me.label
                 });
@@ -154,7 +155,7 @@ export class DataFilter extends Widget {
     }
 
     construct() {
-        this.filters.forEach((value, key) => {
+        Object.entries(this.filters).forEach(([key, value]) => {
             //console.log('key:', key, 'value:', value);
             this.construct_filterbx(this.content, value, key);
         });

@@ -211,7 +211,7 @@ export class DomItem extends Class {
 
         const accessor = this.accessor || {};
 
-        this.forEachSubitem((subitem, key) => {
+        this.forEachSubitem(([key, subitem]) => {
             item[key] = subitem.construct(item, creator);
             accessor[key] = item[key];
         });
