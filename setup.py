@@ -15,7 +15,7 @@ Topic :: Software Development :: Libraries
 
 setuptools.setup(
     name='dkjs',
-    version='0.0.1',
+    version='0.99.0',
     packages=['dkjs'],
     install_requires=[
         'ttcal',

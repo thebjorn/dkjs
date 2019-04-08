@@ -1,6 +1,6 @@
 {
   "name": "dkjs",
-  "version": "0.0.1",
+  "version": "0.99.0",
   "description": "dk widgets and more..",
   "module": "dist/dk.js",
   "scripts": {
