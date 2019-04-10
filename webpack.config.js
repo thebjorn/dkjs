@@ -12,7 +12,7 @@ const LIBRARY_NAME = 'dk';
 const common_settings = {
     entry: {
         dk: './src/index.js',
-        dkcss: './styles/index.scss',
+        // dkcss: './styles/index.scss',
     },
     target: 'web',
 
@@ -57,6 +57,13 @@ const common_settings = {
                         // presets: ["@babel/preset-env"]
                     }
                 }
+            },
+            {
+                test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                },
             },
             {
                 test: /\.scss$/,

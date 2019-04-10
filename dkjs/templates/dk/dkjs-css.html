@@ -1,25 +1,5 @@
 {% load staticfiles %}
-{% with "0.0.1" as version %}
+{% with "0.99.0" as version %}
     {# keep the above exactly as-is (it will be overwritten when compiling the css). #}
     {% include "dkjs/include-scripts.html" %}
-{#    <script src="https://static.datakortet.no/dk/dk-external.min-1.2.3.js"></script>#}
-{#    <script DEBUG src="https://static.datakortet.no/dk/dk.min-1.2.4b.js"></script>#}
-    <!-- <script src="/static/dk/dk.min-1.2.4b.js"></script> -->
-    {% comment %}
-    {% with css_path="dk/dkjs-"|add:version|add:".min.css" dkjs="dk/dk-"|add:version|add:".min.js" dkexternal="dk/dk-external-"|add:version|add:".min.js" %}
-        {% if debug and 0 %}
-            {% if css == False %}{% else %}
-            <link rel="stylesheet" type="text/css" href="{% static css_path %}">{% endif %}
-            <script src='{% static dkexternal %}'></script>
-            <!-- <script DEBUG src='{% static dkjs %}'></script> -->
-            <script DEBUG src="{% static "dk/dk.js" %}"></script>
-        {% else %}
-            {% if css == False %}{% else %}
-            <link rel="stylesheet" type="text/css" href="{% static css_path %}">{% endif %}
-            <script src='{% static dkexternal %}'></script>
-            <script src='{% static dkjs %}'></script>
-            <!-- <script DEBUG src="{% static "dk/dk.js" %}"></script> -->
-        {% endif %}
-    {% endwith %}
-    {% endcomment %}
 {% endwith %}

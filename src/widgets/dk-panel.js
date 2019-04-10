@@ -226,8 +226,6 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
             _dk_panel_template.innerHTML = `
                 <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
                 <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
-    <!--            <link rel="stylesheet" href="/dkjs/dkjs/static/dkjs/js/dkcss.css" type="text/css">-->
-    <!--            <link rel="stylesheet" href="//static.datakortet.no/dkjs/dkcss.fa530d8f7e49451dd630.css">-->
                 <style>
                     ${styles.toString()}
                     :host { 
@@ -400,7 +398,7 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
                 collapse() {
                     if (!this.collapsed) {
                         this._collapsed = true;
-                        this.classList.add('collapse-up');
+                        // this.classList.add('collapse-up');   // do not self-apply classes (https://developers.google.com/web/fundamentals/web-components/best-practices)
                         const hsize = this._header.scrollHeight;
                         this.__collapsed_curheight = this.offsetHeight;
                         
