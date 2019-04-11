@@ -73,12 +73,12 @@ const common_settings = {
                     // {loader: process.env.NODE_ENV === 'production' ? 'style-loader' : MiniCssExtractPlugin.loader},
                     // {loader: "css-loader", options: {sourceMap: true}},
                     {loader: "postcss-loader", options: {
-                            plugins: [
-                                require('autoprefixer')({
-                                    browsers: ['ie >= 11', 'last 25 versions']
-                                })
-                            ]
-                        }},
+                        plugins: [
+                            require('autoprefixer')({
+                                browsers: ['ie >= 11', 'last 25 versions']
+                            })
+                        ]
+                    }},
                     {loader: "sass-loader", options: {sourceMap: true}},
                 ]
             }
