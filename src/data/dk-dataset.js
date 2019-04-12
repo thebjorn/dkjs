@@ -13,6 +13,7 @@ import Class from "../lifecycle/coldboot/dk-class";
 import {DataQuery} from "./dk-dataquery";
 import {ArraySource} from "./source/dk-array-datasource";
 import {is_ajax_url} from "../lifecycle/uri";
+import {AjaxDataSource} from "./source/dk-ajax-datasource";
 
 
 /*
