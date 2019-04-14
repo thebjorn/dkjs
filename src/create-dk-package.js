@@ -145,6 +145,9 @@ import {VDataTable} from "./widgets/table/vert/vdata-table";
 import {help} from "./core/help";
 import "./browser/dk-load-tag";
 import {sprintf} from "./data/datacore/sprintf";
+import {BaseWidget} from "./widgetcore/dk-base-widget";
+import {DataWidget} from "./widgetcore/data-widget";
+import {ServerWidget} from "./widgetcore/server-widget";
 
 if (!String.prototype.format) {
     String.prototype.format = function (...args) {
@@ -189,6 +192,9 @@ if (!String.prototype.format) {
         // here: dom.here,
         utidy,
         css,
+        BaseWidget,
+        DataWidget,
+        ServerWidget,
         Widget,
         Panel: PanelWidget,
         panel: {

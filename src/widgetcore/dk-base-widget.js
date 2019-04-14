@@ -22,6 +22,7 @@ export class BaseWidget extends Class {
      *  state to a storage engine (cookies, hash-storage, localstorage, etc.)
      *  This method should return a dict.
      */
+    // noinspection JSMethodCanBeStatic
     get state() {
         return {};
     }
