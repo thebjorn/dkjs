@@ -10,6 +10,8 @@ import {Duration} from "../data/datacore/dk-datatypes";
 import {env} from "../lifecycle/dkboot/lifecycle-parse-script-tag";
 import {InputWidget} from "./input-widget";
 import {dedent} from "../text/template-functions";
+import {dkwarning} from "../lifecycle/coldboot/dkwarning";
+import {dkconsole} from "../lifecycle/dkboot/dk-console";
 
 /*
     Global attributes:
@@ -126,26 +128,48 @@ export class RadioInputWidget extends InputWidget {
  */
 
 /**
- * create an options dict from either an options dict, a flat array, or
- * a [[key, val], ..] array.
- * 
+ * create an options dict `{name -> value} from either
+ *
+ *  (a) an options dict,
+ *  (b) a flat array, or
+ *  (c) a [[key, val], ..] array.
+ *
  * @param options - key value dict
+ * @param validate - optional validation function
  */
 function create_options(options, validate) {
     if (options == null) return {};
+    let result = {};
+    // let order = [];
     
-    if (!Array.isArray(options)) options = Object.entries(options);
-
-    // options is an Array
-    const result = {};
-    if (options.length > 0) {  // options === []
-        let [first, ...rest] = options;
-        if (Array.isArray(first)) {  // options === [[k,v], [k,v],...]
-            options.forEach(([k, v]) => result[k] = v);
-        } else {   // optinos === [v1, v2, v3, ...]
-            options.forEach(v => result[v] = v);
+    if (Array.isArray(options)) {  // (b) or (c)
+        // https://www.stefanjudis.com/today-i-learned/property-order-is-predictable-in-javascript-objects-since-es2015/
+        // property order in objects is by insertion order..
+        // ..except for numbers -- which are sorted and inserted
+        // in front (thus messing up an implied order that is 
+        // not numerically ascending)
+        if (options.length > 0) {  // options === []
+            let [first, ...rest] = options;
+            if (Array.isArray(first)) {  // (c) options === [[k,v], [k,v],...]
+                options.forEach(([k, v]) => result[k] = v);
+                // order = options.map(([k, v]) => k);
+            } else {   // optinos === [v1, v2, v3, ...]
+                // order = options;
+                options.forEach(v => result[v] = v);
+                if (!is.isEqual(Object.keys(result), options.map(v => `${v}`))) {
+                    throw `The default ordering of the options 
+                     ${JSON.stringify(Object.keys(result))} does not match ${JSON.stringify(options)}. You
+                     should specify the options as a property object (instead
+                     of a list) to achieve your desired order.`;
+                }
+                // options.forEach(v => result[`${(typeof v === 'number' ? '0' : '')}${v}`] = v);
+            }
         }
+    } else {  // (a)
+        result = options;
+        // order = Object.keys(options);
     }
+
     if (validate) {
         Object.keys(result).forEach(k => {
             if (result[k] !== validate[k]) {
@@ -200,12 +224,6 @@ export class SelectWidget extends InputWidget {
         Object.keys(this._selected).forEach(k => this._selected[k] = false);
         v.forEach(k => this._selected[k] = true);
         return this._set_value_from_selected();
-        // const val = {};
-        // Object.entries(this._selected).forEach(([k, v]) => {
-        //     if (v) val[k] = this.options[k];
-        // });
-        // this.data.value = val;
-        // return val;
     }
     _get_value_from_selected() {
         const val = {};

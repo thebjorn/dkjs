@@ -21,7 +21,7 @@ test("select-widget", () => {
             2: 'world'
         } 
     });
-    // console.log(w);
+    console.log(w);
     work.find('option[value=1]').click().change();
     console.log(work.html());
     expect(w.value).toEqual({1: 'hello'});
