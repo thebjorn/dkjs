@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`test-select-multiple-filterdef 1`] = `
-"<div id=\\"select-multiple-filter-def-1\\" class=\\"SelectMultipleFilterDef\\"><div id=\\"dk-bx-1\\" class=\\"myname filterbox\\"><div id=\\"dk-bx-2\\" class=\\"filterheader\\"><div id=\\"dk-bx-3\\" class=\\"filtertitle\\">My Label</div></div><div id=\\"dk-bx-4\\" class=\\"filtercontent\\"><div id=\\"checkbox-select-widget-1\\" class=\\"CheckboxSelectWidget\\"><label id=\\"checkbox_select_widget_1-1-label\\" for=\\"checkbox_select_widget_1-1\\"><input type=\\"checkbox\\" name=\\"checkbox_select_widget_1\\" id=\\"checkbox_select_widget_1-1\\" value=\\"1\\">&nbsp;1</label>
-<label id=\\"checkbox_select_widget_1-2-label\\" for=\\"checkbox_select_widget_1-2\\"><input type=\\"checkbox\\" name=\\"checkbox_select_widget_1\\" id=\\"checkbox_select_widget_1-2\\" value=\\"2\\">&nbsp;2</label>
-<label id=\\"checkbox_select_widget_1-3-label\\" for=\\"checkbox_select_widget_1-3\\"><input type=\\"checkbox\\" name=\\"checkbox_select_widget_1\\" id=\\"checkbox_select_widget_1-3\\" value=\\"3\\">&nbsp;3</label>
-</div></div></div></div>"
-`;
