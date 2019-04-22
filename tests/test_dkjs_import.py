@@ -4,6 +4,8 @@
 """
 
 import dkjs.csvdata
+import dkjs.datasources
+import dkjs.decorators
 import dkjs.grid
 import dkjs.jason
 import dkjs.mysql_select
@@ -16,6 +18,8 @@ def test_import_():
     "Test that all modules are importable."
     
     assert dkjs.csvdata
+    assert dkjs.datasources
+    assert dkjs.decorators
     assert dkjs.grid
     assert dkjs.jason
     assert dkjs.mysql_select
