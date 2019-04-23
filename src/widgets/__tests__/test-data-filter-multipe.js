@@ -5,7 +5,7 @@ import utidy from "../../browser/dk-html";
 
 
 
-test("test-data-filter-single", () => {
+test("test-data-filter-multiple", () => {
     document.body.innerHTML = `
         <div id="work"></div>
     `;
@@ -17,7 +17,8 @@ test("test-data-filter-single", () => {
         filters: {
             filter_name: {
                 label: 'Filter Label',
-                values: [1, 2, 3]
+                values: [1, 2, 3],
+                select_multiple: true
             }
         },
         data: {
@@ -26,13 +27,14 @@ test("test-data-filter-single", () => {
             }
         }
     });
-    
+
     console.log(work.html());
     expect(work.html()).toMatchSnapshot();
-    
-    work.find(':radio:eq(1)').click();
-    expect(set_filter_vals).toEqual({filter_name: {"2": 2}});
-    
+
+    work.find(':checkbox:eq(0)').click();
+    work.find(':checkbox:eq(1)').click();
+    expect(set_filter_vals).toEqual({filter_name: {"1": 1, "2": 2}});
+
     // expect(utidy(work.html())).toEqual(utidy(`
     //
     // `));

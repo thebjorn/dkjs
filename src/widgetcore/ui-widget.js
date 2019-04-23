@@ -266,7 +266,8 @@ export class UIWidget extends BaseWidget {
                 // Layout.init sets widget.layout
                 this.layout = Layout.create(this, location, template, structure);
             } catch (e) {
-                throw "in class: " + this.constructor.name + " :: " + e;
+                throw e;  // easier to debug
+                // throw "in class: " + this.constructor.name + " :: " + e;
             }
 
         } else {

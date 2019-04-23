@@ -136,7 +136,7 @@ export class DomItem extends Class {
         this.is_root = template.name === undefined;
         this.parent = parentitem;
         this.template = template;
-        this.classes = this.template.classes.slice().map(cval => cval.replace('_', '-'));
+        this.classes = this.template.classes.filter(v => !!v).map(cval => cval.replace('_', '-'));
         this.keys = [];
 
         if (!this.is_root) {
