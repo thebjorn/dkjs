@@ -39,7 +39,7 @@ test("test-data-filter-custom", () => {
     });
 
     console.log(work.html());
-    // expect(work.html()).toMatchSnapshot();
+    expect(work.html()).toMatchSnapshot();
 
     work.find('button').click();
     console.log("SET_FILTER_VALS:", set_filter_vals);
