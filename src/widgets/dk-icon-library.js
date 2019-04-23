@@ -128,7 +128,14 @@ if (typeof customElements !== 'undefined') customElements.define('dk-icon', clas
     connectedCallback() { if (this.value != null) fa4_icon(this, this.value); }
 
     attributeChangedCallback(attrname, oldval, newval) {
-        if (attrname === 'value' && oldval !== newval) fa4_icon(this, newval);
+        if (attrname === 'value' && oldval !== newval) {
+            try {
+                // if (/ /.test(newval)) debugger;
+                fa4_icon(this, newval);
+            } catch (e) {
+                dkconsole.error(`trying to set dkicon to ${newval}, which is not a legal value: ${e}`);
+            }
+        }
     }
 
     static get observedAttributes() { return ['value']; }
