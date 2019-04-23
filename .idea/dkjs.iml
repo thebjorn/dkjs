@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="django" name="Django">
       <configuration>
-        <option name="rootFolder" value="" />
+        <option name="rootFolder" value="$MODULE_DIR$" />
         <option name="settingsModule" value="" />
         <option name="manageScript" value="" />
         <option name="environment" value="&lt;map/&gt;" />
@@ -14,7 +14,7 @@
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python 2.7 (dev)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.6 (dkjs36)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jquery-3.1.0" level="application" />
     <orderEntry type="library" name="webcomponents-bundle" level="application" />
