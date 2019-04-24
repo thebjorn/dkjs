@@ -113,6 +113,9 @@ class DkDate extends datatype {
         });
         return res;
     }
+    toISOString() {
+        return this.value.toISOString();
+    }
     toJSON() {
         // dk.debug('date tag', dk.Date.tag);
         return this.tag + this.value.toISOString().slice(0, 10);
@@ -167,6 +170,9 @@ class DateTime extends DkDate {
             }
         });
         return res;
+    }
+    toISOString() {
+        return this.toString("Y-m-dTH:i:s");
     }
     toJSON() {
         return this.tag + this.toString("Y-m-dTH:i:s") + "." + this.value.getMilliseconds();
