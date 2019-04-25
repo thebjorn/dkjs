@@ -12,7 +12,8 @@
 
 <% for (var jsfile in htmlWebpackPlugin.files.js) { %>
     <% if (htmlWebpackPlugin.files.js[jsfile].indexOf('js/dkcss') === -1) { %>
-    <script DEBUG LOGLEVEL="4" crossorigin="anonymous" src="{% static "dkjs/js/<%= path.basename(htmlWebpackPlugin.files.js[jsfile]) %>" %}"></script>
+    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" src="{% static "dkjs/js/<%= path.basename(htmlWebpackPlugin.files.js[jsfile]) %>" %}"></script>
+{#    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" src="{% static "dkjs/js/<%= path.basename(htmlWebpackPlugin.files.js[jsfile]) %>?_=<%= +(new Date()) %>" %}"></script>#}
     <% } %>
 <% } %>
 <% for (var cssfile in htmlWebpackPlugin.files.css) { %>

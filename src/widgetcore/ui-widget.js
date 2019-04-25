@@ -195,7 +195,7 @@ export class UIWidget extends BaseWidget {
         // at this point this.widget() exists in the dom and is
         // the element onto which the widget should be created
         page.widgets[this.id] = this;
-        dkconsole.debug("construct_widget:", this.id);
+        // dkconsole.debug("construct_widget:", this.id);
 
         this.create_layout(this.widget(), this.template, this.structure);
         this.construct();

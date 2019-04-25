@@ -57,12 +57,13 @@ export function _no_datetime(v) {
     );
 }
 
-export function no_datetime(val) {
+export function no_datetime(val, secs=true) {
     if (!val) return "";
     const v = val.value;
-    return _no_datetime(v);
+    const res = _no_datetime(v);
+    // return res.slice(0, -3);
+    return secs ? res : res.slice(0, -3);
 }
-
 
 export default {
     twodigits,
