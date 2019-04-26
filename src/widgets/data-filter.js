@@ -63,6 +63,10 @@ export class FilterDefBase extends UIWidget {
         
         this.structure.filterbox.classes.push(this.name);
         this.structure.filterbox.filterheader.filtertitle.text = this.label || this.name;
+        // this is set to true for select-one/-many, so the data source's get_foo_filter_values
+        // method will be called, you must set it to true manually in any other filter, 
+        // e.g. a custom filter.
+        this.needs_options = false;    
     }
     
     get value() {
@@ -71,6 +75,16 @@ export class FilterDefBase extends UIWidget {
     
     handlers() {
         if (this.input) dk.on(this.input, 'change', (evt, widget) => this.trigger('change', this.value));
+    }
+    
+    fetch_options() {
+        if (this.needs_options) {
+            if (this.datafilter && this.datafilter.dataset) {
+                this.datafilter.dataset.get_filter_data(this.name, (...args) => this.draw(...args));
+            } else {
+                console.info('fetch_options', this.datafilter.dataset);
+            }
+        }
     }
 }
 
@@ -89,13 +103,11 @@ export class CustomFilterDef extends FilterDefBase {
     constructor(...args) {
         const props = Object.assign({}, ...args);
         const name = props.name;
-        // xconst value = props.value;
-        delete props.construct;
         delete props.name;
-        delete props.value;
+        // delete props.construct;
+        // delete props.value;
         super(props);
         this._name = name;
-        // xthis._value = value;
     }
     
     get value() { return this._value; }
@@ -114,6 +126,9 @@ export class SelectOneFilterDef extends FilterDefBase {
         super({
             select_multiple: false
         }, ...args);
+        this.needs_options = true;
+        console.log('SelectOneFilterdef:', this.name, args);
+        console.log('SelectOneFilterdef:', this.name, this.datafilter);
     }
     
     construct() {
@@ -122,6 +137,10 @@ export class SelectOneFilterDef extends FilterDefBase {
             name: this.name,
             label: this.label
         });
+        // debugger;
+        console.log('SelectOneFilterdef:', this.name, this.datafilter);
+        
+        if (!this.values) this.fetch_options();
     }
 }
 
@@ -131,6 +150,9 @@ export class SelectMultipleFilterDef extends SelectOneFilterDef {
         super({
             select_multiple: true
         }, ...args);
+        this.needs_options = true;
+        console.log('SelectMultipleFilterdef:', this.name, args);
+        console.log('SelectMultipleFilterdef:', this.name, this.datafilter);
     }
 
     construct() {
@@ -139,6 +161,10 @@ export class SelectMultipleFilterDef extends SelectOneFilterDef {
             name: this.name,
             label: this.label
         });
+        // debugger;
+        console.log('SelectMultipleFilterdef:', this.name, this.datafilter);
+
+        if (!this.values) this.fetch_options();
     }
 }
 
@@ -263,6 +289,7 @@ export class DataFilter extends UIWidget {
     construct() {
         this.filters = {};
         this._filter_data.forEach(([filterprops, filtercls]) => {
+            filterprops.datafilter = this;
             const res = filtercls.append_to(this.content, filterprops);
             dk.on(res, 'change', (...args) => {
                 if (this.data) this.data.set_filter(this.values());
