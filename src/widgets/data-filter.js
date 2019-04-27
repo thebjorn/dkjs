@@ -77,6 +77,12 @@ export class FilterDefBase extends UIWidget {
         if (this.input) dk.on(this.input, 'change', (evt, widget) => this.trigger('change', this.value));
     }
     
+    draw(...args) {
+        if (this.input && this.input.draw) {
+            this.input.draw(...args);
+        }
+    }
+    
     fetch_options() {
         if (this.needs_options) {
             if (this.datafilter && this.datafilter.dataset) {
@@ -104,8 +110,6 @@ export class CustomFilterDef extends FilterDefBase {
         const props = Object.assign({}, ...args);
         const name = props.name;
         delete props.name;
-        // delete props.construct;
-        // delete props.value;
         super(props);
         this._name = name;
     }
@@ -114,7 +118,6 @@ export class CustomFilterDef extends FilterDefBase {
     set value(val) { this._value = val; }
 
     construct() {
-        console.log("CUSTOMFILTER:CONSTRUCT");
         this.input = this.construct_filter(this.filterbox.filtercontent, this);
     }
     
@@ -127,8 +130,6 @@ export class SelectOneFilterDef extends FilterDefBase {
             select_multiple: false
         }, ...args);
         this.needs_options = true;
-        console.log('SelectOneFilterdef:', this.name, args);
-        console.log('SelectOneFilterdef:', this.name, this.datafilter);
     }
     
     construct() {
@@ -137,22 +138,17 @@ export class SelectOneFilterDef extends FilterDefBase {
             name: this.name,
             label: this.label
         });
-        // debugger;
-        console.log('SelectOneFilterdef:', this.name, this.datafilter);
-        
         if (!this.values) this.fetch_options();
     }
 }
 
 
-export class SelectMultipleFilterDef extends SelectOneFilterDef {
+export class SelectMultipleFilterDef extends FilterDefBase {
     constructor(...args) {
         super({
             select_multiple: true
         }, ...args);
         this.needs_options = true;
-        console.log('SelectMultipleFilterdef:', this.name, args);
-        console.log('SelectMultipleFilterdef:', this.name, this.datafilter);
     }
 
     construct() {
@@ -161,9 +157,6 @@ export class SelectMultipleFilterDef extends SelectOneFilterDef {
             name: this.name,
             label: this.label
         });
-        // debugger;
-        console.log('SelectMultipleFilterdef:', this.name, this.datafilter);
-
         if (!this.values) this.fetch_options();
     }
 }
@@ -263,18 +256,17 @@ export class DataFilter extends UIWidget {
             filterdef.name = filtername;
             if (is.isProps(filterdef)) {
                 if (filterdef.select_multiple) {  // (a)
-                    console.info("SELECT_MULTIPLE", filterdef);
+                    // console.info("SELECT_MULTIPLE", filterdef);
                     return [filterdef, SelectMultipleFilterDef];
                 } else if (filterdef.construct_filter) {  // (b)
-                    console.info("CUSTOMFILTER", filterdef);
+                    // console.info("CUSTOMFILTER", filterdef);
                     return [filterdef, CustomFilterDef];
                 } else {
-                    console.info("SELECT_ONE", filterdef);
+                    // console.info("SELECT_ONE", filterdef);
                     return [filterdef, SelectOneFilterDef];
                 }
             } else {
                 dkconsole.warn("filter def is not a properties object..?");
-                console.info("FOFOFOSLDKJSDFOIFJS");
                 // return [filterdef, null]; 
             }
         });

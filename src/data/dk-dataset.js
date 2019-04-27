@@ -1,12 +1,4 @@
 
-// const dk = require('../boot');
-// const _ = require('lodash');
-// const AjaxDataSource = require('../data/source/dk-ajax-datasource.js');
-// const ArrayDataSource = require('../data/source/dk-array-datasource.js');
-// const counter = require('../core/dk-counter.js');
-// const DataPage = require('./dk-datapage.js');
-// const DataQuery = require('./dk-dataquery.js');
-
 import dk from "../dk-obj";
 import {DataPage} from "./dk-datapage";
 import Class from "../lifecycle/coldboot/dk-class";
