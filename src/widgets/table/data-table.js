@@ -3,13 +3,6 @@
  *  i.e. records in rows, with each field in its own column (with a column
  *  header).
  */
-// const dk = require('../../boot/boot');
-// const Widget = require('../../widgetcore/dk-widget.js');
-// const TableLayout = require('../../layout/dklayout').TableLayout;
-// const TableRow = require('./dk-tablerow-widget.js');
-// const TableHeader = require('./dk-tableheader-widget.js');
-// const ColumnDef = require('./dk-columndef.js');
-// const data = require('../../data');
 
 import dk from "../../dk-obj";
 import {TableLayout} from "../../layout/table-layout";
@@ -224,10 +217,10 @@ export class DataTable extends Widget {
         // make sure this.columns is an array of pojos
         if (is.isFunction(this.columns)) columndefs = this.columns(this.table_data.fields);
         else if (this.columns === null) columndefs = fieldlst;
-        else if (this.columns !== null && !Array.isArray(this.columns)) {
+        else if (!Array.isArray(this.columns)) {
             // the columns property has been defined, convert it to array
-            columndefs = Object.keys(this.columns).map(function (name) {
-                const col = self.columns[name];
+            columndefs = Object.keys(this.columns).map(name => {
+                const col = this.columns[name];
                 col.name = name;
                 return col;
             });

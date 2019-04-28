@@ -97,7 +97,7 @@ export class TableCell extends UIWidget {
     }
 
     draw(value) {
-        const val = this.value === undefined ? value: this.value;
+        const val = this.value === undefined ? value : this.value;
         const w = this.widget().attr({
             axis: this.coldef.name,
             title: this.coldef.title

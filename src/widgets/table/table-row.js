@@ -2,10 +2,6 @@
 /*
  *  A Data Record widget.
  */
-// const Widget = require('../../widgetcore/dk-widget.js');
-// const TableCell = require('./dk-tablecell-widget.js');
-// const layout = require('../../layout/dklayout');
-
 
 import {Widget} from "../../widgetcore/dk-widget";
 import {TableCell} from "./table-cell";
