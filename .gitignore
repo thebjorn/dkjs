@@ -137,4 +137,3 @@ venv.bak/
 .mypy_cache/
 /dist/dk.js
 *.md5
-readme.md
