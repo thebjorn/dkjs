@@ -1,7 +1,7 @@
 import $ from 'jquery';
-import page from "../../widgetcore/dk-page";
+import page from "../../../widgetcore/dk-page";
 import {DataFilter} from "../data-filter";
-import utidy from "../../browser/dk-html";
+import utidy from "../../../browser/dk-html";
 
 
 

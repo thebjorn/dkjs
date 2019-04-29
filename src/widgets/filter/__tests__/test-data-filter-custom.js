@@ -1,8 +1,8 @@
 import $ from 'jquery';
-import dk from "../../dk-obj";
-import page from "../../widgetcore/dk-page";
+import dk from "../../../dk-obj";
+import page from "../../../widgetcore/dk-page";
 import {DataFilter} from "../data-filter";
-import utidy from "../../browser/dk-html";
+import utidy from "../../../browser/dk-html";
 
 
 test("test-data-filter-custom", () => {

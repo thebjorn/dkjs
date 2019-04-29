@@ -8,7 +8,7 @@ import styles from "../../styles/index.scss";
 
 
 export class PanelWidget extends Widget {
-    constructor(props) {
+    constructor(...args) {
         super({
             // type: 'PanelWidget',
             width: undefined,
@@ -55,7 +55,7 @@ export class PanelWidget extends Widget {
                     create: false
                 }
             }
-        }, props);
+        }, ...args);
 
         if (this.panel && this.panel.height && typeof this.panel.height === 'string') {
             this.height = parseInt(this.panel.height, 10);

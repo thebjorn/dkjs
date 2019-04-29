@@ -1,7 +1,6 @@
 import $ from 'jquery';
-import page from "../../widgetcore/dk-page";
-import utidy from "../../browser/dk-html";
-import {SelectMultipleFilterDef, SelectOneFilterDef} from "../data-filter";
+import page from "../../../widgetcore/dk-page";
+import {SelectOneFilterDef} from "../filter-defs";
 
 
 test("test-select-one-filterdef", () => {

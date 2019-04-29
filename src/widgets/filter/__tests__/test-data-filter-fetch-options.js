@@ -1,9 +1,9 @@
 import $ from 'jquery';
-import page from "../../widgetcore/dk-page";
+import page from "../../../widgetcore/dk-page";
 import {DataFilter} from "../data-filter";
-import utidy from "../../browser/dk-html";
-import {ArraySource} from "../../data/source/dk-array-datasource";
-import {DataSet} from "../../data/dk-dataset";
+import utidy from "../../../browser/dk-html";
+import {ArraySource} from "../../../data/source/dk-array-datasource";
+import {DataSet} from "../../../data/dk-dataset";
 
 
 

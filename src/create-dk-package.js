@@ -132,7 +132,7 @@ import {SearchWidget} from "./widgets/search-widget";
 import {PagerWidget} from "./widgets/pager-widget";
 import {ResultSet} from "./widgets/table/resultset/resultset";
 import {DataGridRow} from "./widgets/table/datagrid/datagrid-row";
-import {DataFilter} from "./widgets/data-filter";
+import {DataFilter} from "./widgets/filter/data-filter";
 import tree_data from "./widgets/tree/tree-data";
 import {dkmodule} from "./lifecycle/lifecycle";
 import {PostnrLookupWidget} from "./widgets/postnr-lookup";

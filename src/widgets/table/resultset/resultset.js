@@ -85,7 +85,7 @@ export class ResultSet extends Widget {
         // this.rowbx.data.css('width', '80%');
     }
 
-    construct_filter(location) {  //}, dataset) {
+    construct_filter(location, dataset) {
         this.filter = null;
         // override this method to atttach a filter.  The default version removes the
         // filter box and stretches the data box to full width.

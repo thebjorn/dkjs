@@ -131,7 +131,9 @@ export class DataSet extends Class {
         if (this._filter_data[filter_name]) {
             returns(this._filter_data[filter_name]);
         } else {
-            this.datasource.get_filter_data(filter_name, returns);
+            this.datasource.get_filter_data(filter_name, opts => {
+                returns(opts);
+            });
         }
     }
 
