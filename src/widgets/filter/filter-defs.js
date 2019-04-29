@@ -15,6 +15,7 @@ export class FilterDefBase extends UIWidget {
             label: "",
             values: null,
             structure: {
+                classes: ['filterdef'],
                 filterbox: {
                     classes: [],
                     filterheader: {

@@ -209,7 +209,8 @@ class GridView(SubcommandView):
 
         filter_getter = 'get_%s_filter_values' % filter_name
         val = getattr(self, filter_getter)(request, *args, **kwargs)
-        return jason.response(request, val)
+        return jason.response(request, dict(options=val))
+        # return jason.response(request, val)
 
     def get_grid(self, request, *args, **kwargs):
         """Should return a filled out Grid object::
