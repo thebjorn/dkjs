@@ -3,6 +3,7 @@
 """dk.js template tags
 """
 from django import template
+from django.contrib.sites.shortcuts import get_current_site
 from django.utils.safestring import mark_safe
 from .. import jason
 
@@ -14,7 +15,8 @@ register = template.Library()
 def dkjs_create_page_var(context, varname='page'):
     return {
         'varname': varname,
-        'user': context['user']
+        'user': context['user'],
+        'site': get_current_site(context['request'])
     }
     
 

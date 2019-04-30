@@ -44,13 +44,14 @@ of for multiple values:
 {% endcomment %}
 
 <script>
-    dk.globals.page = {
+    dk.globals.{{ varname }} = {
         user: {
             id: {{ user.id|jsonval }},
             username: {{ user.username|jsonval }},
             name: {{ user.get_full_name|jsonval }},
             email: {{ user.email|jsonval }},
             is_staff: {{ user.is_staff|jsonval }}
-        }
+        },
+        site: {{ site|jsonval }}
     };
 </script>
