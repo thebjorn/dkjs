@@ -8,7 +8,8 @@
 
 <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries,Object.fromEntries,Element.prototype.append,DocumentFragment.prototype.append,DocumentFragment.prototype.prepend&flags=gated"></script>
 <script crossorigin="anonymous" src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
-<script crossorigin="anonymous" src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk="></script>
+<script src="https://code.jquery.com/jquery-3.4.0.js" integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.0.1.js"></script>
 
 <% for (var jsfile in htmlWebpackPlugin.files.js) { %>
     <% if (htmlWebpackPlugin.files.js[jsfile].indexOf('js/dkcss') === -1) { %>

@@ -6,7 +6,8 @@ module.exports = function (api) {
             "targets": {
                 "ie": 11
             },
-            "useBuiltIns": "entry"
+            "useBuiltIns": "entry",
+            "corejs": "2",
             // "useBuiltIns": "usage"
         }],
         ["@babel/preset-flow"]
@@ -27,7 +28,7 @@ module.exports = function (api) {
         plugins.push([
             "@babel/plugin-transform-runtime",
             {
-                "corejs": false,
+                "corejs": "2",
                 "helpers": true,
                 "regenerator": true,
                 "useESModules": false
