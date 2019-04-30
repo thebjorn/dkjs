@@ -1,9 +1,4 @@
 
-// const $ = require('jquery');
-// const dk = require('../boot');
-// const cookie = require('./dk-cookie.js');
-// const datacore = require('../data/datacore');
-
 import dk from "../dk-obj";
 import cookie from "./dk-cookie";
 import jason from "../data/datacore/dk-json";

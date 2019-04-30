@@ -71,23 +71,9 @@ test("resultset-filter-options", () => {
 
 
     ResultSet.create_on(work, {
+
         construct_filter: function (location, dataset) {
-            // return DataFilter.create_on(location, {
-            //     structure: {
-            //         content: {}
-            //     },
-            //     datasource: ds,
-            //     filters: {
-            //         testcenter: {
-            //             label: 'Testsenter',
-            //             select_multiple: true,
-            //             // values: [1,2,3]
-            //             // url: './!get-testcenter-values'
-            //         }
-            //     }
-            // });
             return ProgressResultFilterPanel.create_on(location, {
-                // datasource: ds,
                 dataset: dataset
             });
         },

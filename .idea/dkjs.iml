@@ -18,6 +18,9 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="jquery-3.1.0" level="application" />
     <orderEntry type="library" name="webcomponents-bundle" level="application" />
+    <orderEntry type="library" name="webcomponents-bundle" level="application" />
+    <orderEntry type="library" name="jquery-3.4.0" level="application" />
+    <orderEntry type="library" name="jquery-migrate-3.0.1" level="application" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="myDocStringFormat" value="Plain" />
