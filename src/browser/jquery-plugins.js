@@ -4,7 +4,7 @@ import {help} from "../core/help";
 export function jq_links2popup(dk) {
 
     // create popup windows from links with class=popup
-    dk.$('a.popup').click(function () {
+    dk.$('a.popup').on('click', function () {
         const w = window.open(
             dk.$(this).prop('href'),
             dk.$(this).prop('id') || "WindowName",

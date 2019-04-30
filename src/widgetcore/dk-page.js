@@ -118,7 +118,7 @@ const page = {
         });
         _ready_queue = [];
 
-        dk.$(window).resize(throttle(function () {
+        dk.$(window).on('resize', throttle(function () {
             mcall(self.widgets, 'flow');
         }, 25));
 

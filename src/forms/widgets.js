@@ -344,10 +344,10 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
         ++this._updating;
         const value = v.value || v.v || v;
         this.widget(`:checkbox`).prop("checked", false);
-        this.widget(`:checkbox`).removeAttr("checked");
+        // this.widget(`:checkbox`).removeAttr("checked");
         Object.keys(value).forEach(val => {
             this.widget(`:checkbox[value="${val}"]`).prop("checked", true);
-            this.widget(`:checkbox[value="${val}"]`).attr("checked", "checked");
+            // this.widget(`:checkbox[value="${val}"]`).attr("checked", "checked");
         });
         --this._updating;
     }
