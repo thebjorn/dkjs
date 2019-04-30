@@ -71,7 +71,7 @@ export class DataFilter extends UIWidget {
                 // similarly to the main filter section.
                 filterbox: '<div/>',
                 filterheader: '<header/>',
-                filtertitle: '<h4/>',
+                filtertitle: '<h3/>',
                 filtercontent: '<div class="filter content"/>'
             },
             

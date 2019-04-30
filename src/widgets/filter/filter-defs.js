@@ -21,7 +21,7 @@ export class FilterDefBase extends UIWidget {
                     filterheader: {
                         template: 'header',
                         filtertitle: {
-                            template: 'h4',
+                            template: 'h3',
                             text: ""
                         }
                     },

@@ -6,6 +6,13 @@ import browser from "../browser/browser-version";
 import {fa4_icon, icon} from "./dk-icon-library";
 import styles from "../../styles/index.scss";
 
+(function () {
+    if (dk.$('style#dkjs-styles').length === 0) {
+        const style = `<style id="dkjs-styles">${styles.toString()}</style>`;
+        dk.$('html>head').append(style);
+    }
+}());
+
 
 export class PanelWidget extends Widget {
     constructor(...args) {

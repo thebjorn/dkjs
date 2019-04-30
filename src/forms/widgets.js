@@ -312,7 +312,7 @@ export class RadioSelectWidget extends SelectWidget {
             radio.val(attr);
             // noinspection EqualityComparisonWithCoercionJS
             if (this.value == attr) radio.prop('checked', true);  // we want 1 == "1" here
-            label.prepend('&nbsp;').prepend(radio);
+            label.prepend(radio);
             this.widget().append(label);
             this.widget().append('\n        ');
         });
@@ -367,7 +367,7 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
             chkbx.val(attr);
             // noinspection EqualityComparisonWithCoercionJS
             if (this.value == attr) chkbx.prop('checked', true);  // we want 1 == "1" here
-            label.prepend('&nbsp;').prepend(chkbx);
+            label.prepend(chkbx);
             widget.append(label);
             widget.append('\n');
         });
