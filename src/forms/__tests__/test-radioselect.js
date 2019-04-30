@@ -37,12 +37,10 @@ test("radio-select-widget", () => {
 
     expect(utidy(work.html())).toEqual(utidy(`
         <label for="work" id="work-label">
-            <input id="work" name="work" type="radio" value="hello">
-            &nbsp;hello
+            <input id="work" name="work" type="radio" value="hello">hello
         </label>
         <label for="work" id="work-label">
-            <input id="work" name="work" type="radio" value="world">
-            &nbsp;world
+            <input id="work" name="work" type="radio" value="world">world
         </label>
     `));
 });

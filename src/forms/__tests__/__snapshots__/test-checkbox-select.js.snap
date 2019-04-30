@@ -10,13 +10,11 @@ exports[`checkbox-select-widget-render 1`] = `
     id="work-1-label"
   >
     <input
-      checked="checked"
       id="work-1"
       name="work"
       type="checkbox"
       value="hello"
     />
-     
     hello
   </label>
   
@@ -31,7 +29,6 @@ exports[`checkbox-select-widget-render 1`] = `
       type="checkbox"
       value="beautiful"
     />
-     
     beautiful
   </label>
   
@@ -41,13 +38,11 @@ exports[`checkbox-select-widget-render 1`] = `
     id="work-3-label"
   >
     <input
-      checked="checked"
       id="work-3"
       name="work"
       type="checkbox"
       value="world"
     />
-     
     world
   </label>
   

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`test-select-one-filterdef 1`] = `
-"<div id=\\"select-one-filter-def-1\\" class=\\"SelectOneFilterDef\\"><div id=\\"dk-bx-1\\" class=\\"myname filterbox\\"><header id=\\"dk-bx-2\\" class=\\"filterheader\\"><h4 id=\\"dk-bx-3\\" class=\\"filtertitle\\">My Label</h4></header><div id=\\"dk-bx-4\\" class=\\"filter content filtercontent RadioSelectWidget\\"><label id=\\"myname-1-label\\" for=\\"myname-1\\"><input type=\\"radio\\" name=\\"myname\\" id=\\"myname-1\\" value=\\"1\\">&nbsp;1</label>
-        <label id=\\"myname-2-label\\" for=\\"myname-2\\"><input type=\\"radio\\" name=\\"myname\\" id=\\"myname-2\\" value=\\"2\\">&nbsp;2</label>
-        <label id=\\"myname-3-label\\" for=\\"myname-3\\"><input type=\\"radio\\" name=\\"myname\\" id=\\"myname-3\\" value=\\"3\\">&nbsp;3</label>
+"<div id=\\"select-one-filter-def-1\\" class=\\"SelectOneFilterDef filterdef\\"><div id=\\"dk-bx-1\\" class=\\"myname filterbox\\"><header id=\\"dk-bx-2\\" class=\\"filterheader\\"><h3 id=\\"dk-bx-3\\" class=\\"filtertitle\\">My Label</h3></header><div id=\\"dk-bx-4\\" class=\\"filter content filtercontent RadioSelectWidget\\"><label id=\\"myname-1-label\\" for=\\"myname-1\\"><input type=\\"radio\\" name=\\"myname\\" id=\\"myname-1\\" value=\\"1\\">1</label>
+        <label id=\\"myname-2-label\\" for=\\"myname-2\\"><input type=\\"radio\\" name=\\"myname\\" id=\\"myname-2\\" value=\\"2\\">2</label>
+        <label id=\\"myname-3-label\\" for=\\"myname-3\\"><input type=\\"radio\\" name=\\"myname\\" id=\\"myname-3\\" value=\\"3\\">3</label>
         </div></div></div>"
 `;

@@ -95,7 +95,8 @@ test("resultset-filter-options", () => {
         }
     });
 
-    expect(utidy(work.html())).toEqual(utidy(`
-
-    `));
+    expect(work.html).toMatchSnapshot();
+    // expect(utidy(work.html())).toEqual(utidy(`
+    //
+    // `));
 });

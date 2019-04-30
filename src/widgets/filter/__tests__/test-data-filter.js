@@ -37,25 +37,25 @@ test("test-data-filter", () => {
                 <h2 class="title" id="dk-bx">Filter</h2>
             </header>
             <div class="content" id="dk-bx">
-                <div class="SelectOneFilterDef" id="select-one-filter-def">
+                <div class="SelectOneFilterDef filterdef" id="select-one-filter-def">
                     <div class="expires filterbox" id="dk-bx">
                         <header class="filterheader" id="dk-bx">
-                            <h4 class="filtertitle" id="dk-bx">Utløper</h4>
+                            <h3 class="filtertitle" id="dk-bx">Utløper</h3>
                         </header>
                         <div id="dk-bx" class="RadioSelectWidget filter content filtercontent">
-                            <label for="expires-1" id="expires-1-label"><input value="2013" id="expires" name="expires" type="radio">&nbsp;2013</label>
-                            <label for="expires-2" id="expires-2-label"><input value="2014" id="expires" name="expires" type="radio">&nbsp;2014</label>
+                            <label for="expires-1" id="expires-1-label"><input value="2013" id="expires" name="expires" type="radio">2013</label>
+                            <label for="expires-2" id="expires-2-label"><input value="2014" id="expires" name="expires" type="radio">2014</label>
                         </div>
                     </div>
                 </div>
-                <div class="SelectMultipleFilterDef" id="select-multiple-filter-def">
+                <div class="SelectMultipleFilterDef filterdef" id="select-multiple-filter-def">
                     <div class="favyear filterbox" id="dk-bx">
                         <header class="filterheader" id="dk-bx">
-                            <h4 class="filtertitle" id="dk-bx">Favorittår</h4>
+                            <h3 class="filtertitle" id="dk-bx">Favorittår</h3>
                         </header>
                         <div id="dk-bx" class="CheckboxSelectWidget filter content filtercontent">
-                            <label for="favyear-1" id="favyear-1-label"><input value="2013" id="favyear" name="favyear" type="checkbox">&nbsp;2013</label>
-                            <label for="favyear-2" id="favyear-2-label"><input value="2014" id="favyear" name="favyear" type="checkbox">&nbsp;2014</label>
+                            <label for="favyear-1" id="favyear-1-label"><input value="2013" id="favyear" name="favyear" type="checkbox">2013</label>
+                            <label for="favyear-2" id="favyear-2-label"><input value="2014" id="favyear" name="favyear" type="checkbox">2014</label>
                         </div>
                     </div>
                 </div>

@@ -24,6 +24,7 @@ exports[`test-resultset-render 1`] = `
       <div
         class="panel panel-default data"
         id="dk-bx-3"
+        style="flex: 1px;"
       >
         <header
           class="panel-heading clearfix"
