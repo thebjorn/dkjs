@@ -16,6 +16,7 @@ $resultWidgetDebugColor: darken(darkgreen, 10%);
 .RadioSelectWidget > label {
     font-weight: normal;
     display: flex;
+    align-items: flex-start;
     input { 
         display: block;
     }
