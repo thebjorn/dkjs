@@ -10,6 +10,14 @@ from .. import jason
 register = template.Library()
 
 
+@register.inclusion_tag('dkjs/pagevar.html', takes_context=True)
+def dkjs_create_page_var(context, varname='page'):
+    return {
+        'varname': varname,
+        'user': context['user']
+    }
+    
+
 @register.filter
 def jsonval(val):
     """Output `val` as a (json) value suitable for assigning to variables in
