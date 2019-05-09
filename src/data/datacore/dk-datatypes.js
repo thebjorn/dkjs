@@ -81,6 +81,9 @@ class DkDate extends datatype {
         super();
         if (this._has_my_tag(args)) {
             this.value = new Date(args[0].substr(this.tag.length));
+        } else if (args.length === 1 && args[0] instanceof Date) {
+            const d = args[0];
+            this.value = new Date(d.getFullYear(), d.getMonth(), d.getDate());  // remove time
         } else {
             let [y, m, d] = [...args];
             this.value = new Date(y, m, d);
@@ -112,6 +115,9 @@ class DkDate extends datatype {
             }
         });
         return res;
+    }
+    ttformat() {
+        return 'd' + this.toString('Ymd');
     }
     toISOString() {
         return this.value.toISOString();
