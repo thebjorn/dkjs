@@ -1,3 +1,4 @@
+import namespace from "../lifecycle/coldboot/dk-namespace";
 import {UIWidget} from "./ui-widget";
 import is from "../is";
 import {deep_observer} from "../data/observable";
@@ -6,10 +7,11 @@ import {dkconsole} from "../lifecycle/dkboot/dk-console";
 
 export class DataWidget extends UIWidget {
     constructor(...args) {
-        const data = args.data;
-        if (data !== undefined) delete args.data;
+        const data_props = args.map(a => a.data).filter(v => !!v);
+        let data = data_props.length > 0 ? namespace.merge(...data_props) : null;
+        args.forEach(a => delete a.data);
         super(...args);
-        if (data !== undefined) this.data = data;
+        if (data != null) this.data = data;
     }
     
     get data() {
