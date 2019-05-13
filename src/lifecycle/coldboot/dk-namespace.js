@@ -42,6 +42,7 @@ export default {
      *  with `this`.
      */
     traverse(obj, path) {
+        if (path == null) return undefined;
         let pelems = path.split('.');
         let res = obj;
         pelems.forEach(function (item) {
