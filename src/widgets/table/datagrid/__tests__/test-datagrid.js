@@ -19,7 +19,7 @@ test("test-datagrid-render", () => {
     page.initialize(document);
 
     DataGrid.create_inside(work);
-
+    // expect(utidy(work.html())).toEqual("");
     expect(document.getElementById('work')).toMatchSnapshot();
 });
 

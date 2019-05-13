@@ -7,10 +7,11 @@ import {dkconsole} from "../lifecycle/dkboot/dk-console";
 
 export class DataWidget extends UIWidget {
     constructor(...args) {
-        const data_props = args.map(a => a.data).filter(v => !!v);
-        let data = data_props.length > 0 ? namespace.merge(...data_props) : null;
-        args.forEach(a => delete a.data);
-        super(...args);
+        const data_args = [...args].filter(arg => arg && arg.data).map(arg => arg.data);
+        const props = Object.assign(...args);
+        delete props.data;
+        const data = data_args.length > 0 ? namespace.merge(...data_args) : null;
+        super(props);
         if (data != null) this.data = data;
     }
     
