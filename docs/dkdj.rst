@@ -1,6 +1,13 @@
 dkdj package
 ============
 
+Subpackages
+-----------
+
+.. toctree::
+
+    dkdj.templatetags
+
 Submodules
 ----------
 
@@ -8,6 +15,22 @@ dkdj.csvdata module
 -------------------
 
 .. automodule:: dkdj.csvdata
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+dkdj.datasources module
+-----------------------
+
+.. automodule:: dkdj.datasources
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+dkdj.decorators module
+----------------------
+
+.. automodule:: dkdj.decorators
     :members:
     :undoc-members:
     :show-inheritance:
