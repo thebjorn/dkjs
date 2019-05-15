@@ -26,10 +26,10 @@ exclude_lines =
 
 omit =
     setup.py
-    dkjs/migrations/*
+    dkdj/migrations/*
 
 ignore_errors = True
 
 [html]
 ;; html report
-title = dkjs coverage
+title = dkdj coverage

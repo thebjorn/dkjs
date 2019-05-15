@@ -17,7 +17,7 @@ const common_settings = {
     target: 'web',
 
     output: {
-        path: path.resolve(__dirname, 'dkjs/static/dkjs/js'),
+        path: path.resolve(__dirname, 'dkdj/static/dkdj/js'),
         filename: '[name].min.js',
         chunkFilename: '[name].bundle.js',
         library: LIBRARY_NAME,
@@ -86,7 +86,7 @@ const common_settings = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            filename: path.resolve(__dirname, 'dkjs/templates/dkjs/include-scripts.html'),
+            filename: path.resolve(__dirname, 'dkdj/templates/dkdj/include-scripts.html'),
             inject: false,
             template: path.resolve(__dirname, 'src/html-webpack-plugin-django-template.html')
         }),

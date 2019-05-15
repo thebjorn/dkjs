@@ -19,7 +19,7 @@ class CORSView(View):
     ALLOW_METHODS = ['POST', 'GET', 'OPTIONS']
     MAX_AGE = None  # set to number of seconds
     ALLOW_HEADERS = [
-        'origin', 'x-csrftoken', 'x-dkjs', 'content-type', 'accept'
+        'origin', 'x-csrftoken', 'x-dkjs', 'x-dkdj', 'content-type', 'accept'
     ]
 
     def __init__(self, *args, **kwargs):
@@ -215,7 +215,7 @@ class GridView(SubcommandView):
     def get_grid(self, request, *args, **kwargs):
         """Should return a filled out Grid object::
 
-               return dkjs.grid.Grid(
+               return dkdj.grid.Grid(
                     cols=cols,
                     rows=rows,
                     info=info

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 
-from dkjs.jason import jsonname, response
+from dkdj.jason import jsonname, response
 
 "core.jason"
 
@@ -16,7 +16,7 @@ import pytest
 import datetime
 import decimal
 import ttcal
-from dkjs import jason
+from dkdj import jason
 DJANGO = jason.DJANGO
 
 

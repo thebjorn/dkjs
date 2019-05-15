@@ -1,45 +1,45 @@
-dkjs package
+dkdj package
 ============
 
 Submodules
 ----------
 
-dkjs.csvdata module
+dkdj.csvdata module
 -------------------
 
-.. automodule:: dkjs.csvdata
+.. automodule:: dkdj.csvdata
     :members:
     :undoc-members:
     :show-inheritance:
 
-dkjs.grid module
+dkdj.grid module
 ----------------
 
-.. automodule:: dkjs.grid
+.. automodule:: dkdj.grid
     :members:
     :undoc-members:
     :show-inheritance:
 
-dkjs.jason module
+dkdj.jason module
 -----------------
 
-.. automodule:: dkjs.jason
+.. automodule:: dkdj.jason
     :members:
     :undoc-members:
     :show-inheritance:
 
-dkjs.mysql\_select module
+dkdj.mysql\_select module
 -------------------------
 
-.. automodule:: dkjs.mysql_select
+.. automodule:: dkdj.mysql_select
     :members:
     :undoc-members:
     :show-inheritance:
 
-dkjs.views module
+dkdj.views module
 -----------------
 
-.. automodule:: dkjs.views
+.. automodule:: dkdj.views
     :members:
     :undoc-members:
     :show-inheritance:
@@ -48,7 +48,7 @@ dkjs.views module
 Module contents
 ---------------
 
-.. automodule:: dkjs
+.. automodule:: dkdj
     :members:
     :undoc-members:
     :show-inheritance:

@@ -44,7 +44,7 @@ export function jq_help_button(dk) {
             </div>
 
         override .help>.help-trigger to change the palcement of the ?-mark.
-        The defaults are in dkjs/css/dk-help.less
+        The defaults are in dkdj/css/dk-help.less
     */
     dk.$(document).ready(function () {
         help('body');

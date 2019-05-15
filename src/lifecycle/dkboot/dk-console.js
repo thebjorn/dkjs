@@ -5,12 +5,12 @@
  *  You must add the DEBUG attribute to the script tag, or define
  *  `window.DEBUG` for this module to write anything
  *
- *     <script DEBUG src="/dkjs/dk/dk.js"></script>
+ *     <script DEBUG src="/dkdj/dk/dk.js"></script>
  *
  *   you can get less verbose logging by setting the LOGLEVEL to a lower value
  *   (default == 4 which logs everything). E.g. to only log warnings::
  *
- *       <script DEBUG LOGLEVEL=2 src="/dkjs/dk/dk.js"></script>
+ *       <script DEBUG LOGLEVEL=2 src="/dkdj/dk/dk.js"></script>
  *
  *   DEBUG and LOGLEVEL can also be set as global variables.
  *

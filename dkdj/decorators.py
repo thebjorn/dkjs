@@ -156,7 +156,7 @@ def class_view_decorator(fndecorator):
        ::
 
            @class_view_decorator(login_required)
-           class MyGrid(dkjs.views.ModelGrid):
+           class MyGrid(dkdj.views.ModelGrid):
                ...
 
     """
@@ -187,7 +187,7 @@ def make_cbv_decorator(fndecorator):
            LoginRequired = make_cbv_decorator(login_required)
 
            @LoginRequired(login_url='/foo/')
-           class MyGrid(dkjs.views.ModelGrid):
+           class MyGrid(dkdj.views.ModelGrid):
               ...
 
     """

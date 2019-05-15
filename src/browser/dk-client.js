@@ -14,7 +14,7 @@ function _make_global_ajax_params(params) {
     };
     const beforeSend = params.beforeSend;
     params.beforeSend = function (xhr, settings) {
-        xhr.setRequestHeader("X-dkjs", dk.version);
+        xhr.setRequestHeader("X-dkdj", dk.version);
         if (!csrf_safe(params.type)) {
             xhr.setRequestHeader("X-CSRFToken", cookie.get('csrftoken'));
         }

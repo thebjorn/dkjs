@@ -1,7 +1,7 @@
 .. coding: utf-8
 
 
-Welcome to dkjs's documentation!
+Welcome to dkdj's documentation!
 ================================================================
 
 .. toctree::
@@ -15,7 +15,7 @@ ToDo list
 .. todolist::
 
 
-.. lintscore:: c:\work\github\dkjs\dkjs
+.. lintscore:: c:\work\github\dkdj\dkdj
 
 API docs
 --------

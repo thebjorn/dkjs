@@ -86,7 +86,7 @@ class Column(object):
     label = ''
     sortable = None
     sort_field = None
-    widget = None           # dkjs widget type
+    widget = None           # dkdj widget type
     data = None             # data for the widget
     url = None              # url datasource for the widget
     datatype = None

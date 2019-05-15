@@ -398,13 +398,13 @@ if (!String.prototype.format) {
     // //
     // if (!globals.$ && !scripttag_attributes['hide-jquery']) {
     //     // Prevent export of jquery by adding a hide-jquery attribute to the script tag:
-    //     // <script hide-jquery src="/dkjs/dist/index.js"></script>
+    //     // <script hide-jquery src="/dkdj/dist/index.js"></script>
     //     globals.$ = $;
     //     globals.jQuery = $;
     // }
     //
     // if (!globals._ && !scripttag_attributes['hide-underscore']) {
-    //     // <script hide-underscore src="/dkjs/dist/index.js"></script>
+    //     // <script hide-underscore src="/dkdj/dist/index.js"></script>
     //     globals._ = _;
     // }
 

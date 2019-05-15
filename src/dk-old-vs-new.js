@@ -14,7 +14,7 @@ export default function old_vs_new(dk) {
                         'create_inside', 'toString', 'extend', 'next_widget_id',
                         '__class__', 'DEFINES', 'FN'
                     ].includes(k) &&
-                    pth !== 'dk.dkjstag.tag' &&
+                    pth !== 'dk.dkdjtag.tag' &&
                     !k.match(/[?0-9@]/) &&
                     item[k] &&
                     is.isObject(item[k])); // && item[k].name !== "SubClass"); // && !is.isFunction(item[k]));
@@ -101,8 +101,8 @@ export default function old_vs_new(dk) {
             "dk.debug",
             "dk.dedent",
             "dk.dir",
-            "dk.dkjstag",
-            "dk.dkjstag.tag",
+            "dk.dkdjtag",
+            "dk.dkdjtag.tag",
             "dk.dom",
             "dk.dom.DomItem",
             "dk.dom.Template",

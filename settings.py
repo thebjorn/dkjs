@@ -5,6 +5,6 @@ INSTALLED_APPS = [
     'django',
     'django.contrib.staticfiles',
     'ttcal',
-    'dkjs',
+    'dkdj',
 ]
 

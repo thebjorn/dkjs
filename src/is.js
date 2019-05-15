@@ -438,7 +438,7 @@ function eq(a, b, aStack, bStack) {
     const type = typeof a;
     if (type !== 'function' && type !== 'object' && typeof b != 'object') return false;
     
-    // dkjs equality
+    // dkdj equality
     if (a.isEqual) return a.isEqual(b);
     if (b.isEqual) return b.isEqual(a);
     return deepEq(a, b, aStack, bStack);

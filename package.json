@@ -1,5 +1,5 @@
 {
-  "name": "dkjs",
+  "name": "dkdj",
   "version": "0.99.0",
   "description": "dk widgets and more..",
   "module": "dist/dk.js",
@@ -11,13 +11,13 @@
     "flow": "flow",
     "watch": "webpack --cache --watch --progress"
   },
-  "repository": "git+https://github.com/thebjorn/dkjs.git",
+  "repository": "git+https://github.com/thebjorn/dkdj.git",
   "author": "Bjorn Pettersen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thebjorn/dkjs/issues"
+    "url": "https://github.com/thebjorn/dkdj/issues"
   },
-  "homepage": "https://github.com/thebjorn/dkjs#readme",
+  "homepage": "https://github.com/thebjorn/dkdj#readme",
   "devDependencies": {
     "@babel/core": "*",
     "@babel/plugin-proposal-class-properties": "^7.3.4",

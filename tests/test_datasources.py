@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 
-from dkjs.datasources import BoolToggleDataSource
+from dkdj.datasources import BoolToggleDataSource
 
 
 class MyToggle(BoolToggleDataSource):

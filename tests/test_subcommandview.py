@@ -2,7 +2,7 @@
 import pytest
 from django import http
 
-from dkjs.views import SubcommandView
+from dkdj.views import SubcommandView
 
 
 @pytest.fixture

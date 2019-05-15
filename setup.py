@@ -14,15 +14,18 @@ Topic :: Software Development :: Libraries
 """
 
 setuptools.setup(
-    name='dkjs',
+    name='dkdj',
     version='0.99.0',
-    packages=['dkjs'],
+    packages=[
+        'dkdj',
+        'dkdj.templatetags'
+    ],
     install_requires=[
         'ttcal',
         'six',
         'future',
     ],
-    url='https://github.com/thebjorn/dkjs',
+    url='https://github.com/thebjorn/dkdj',
     classifiers=[line for line in classifiers.split('\n') if line],
     long_description=open('README.md').read(),
     license='MIT',

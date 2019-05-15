@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/dkjs.iml" filepath="$PROJECT_DIR$/.idea/dkjs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/dkdj.iml" filepath="$PROJECT_DIR$/.idea/dkdj.iml" />
     </modules>
   </component>
 </project>

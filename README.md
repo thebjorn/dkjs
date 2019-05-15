@@ -1,11 +1,11 @@
-# dkjs
+# dkdj
 
-[![Build Status](https://travis-ci.org/thebjorn/dkjs.svg?branch=master)](https://travis-ci.org/thebjorn/dkjs)
-[![codecov](https://codecov.io/gh/thebjorn/dkjs/branch/master/graph/badge.svg)](https://codecov.io/gh/thebjorn/dkjs)
+[![Build Status](https://travis-ci.org/thebjorn/dkdj.svg?branch=master)](https://travis-ci.org/thebjorn/dkdj)
+[![codecov](https://codecov.io/gh/thebjorn/dkdj/branch/master/graph/badge.svg)](https://codecov.io/gh/thebjorn/dkdj)
 
 
-![sunburst](https://codecov.io/gh/thebjorn/dkjs/branch/master/graphs/sunburst.svg?token=aHXCDVqDRj)
-![commits](https://codecov.io/gh/thebjorn/dkjs/branch/master/graphs/commits.svg?token=aHXCDVqDRj)
+![sunburst](https://codecov.io/gh/thebjorn/dkdj/branch/master/graphs/sunburst.svg?token=aHXCDVqDRj)
+![commits](https://codecov.io/gh/thebjorn/dkdj/branch/master/graphs/commits.svg?token=aHXCDVqDRj)
 
 
 note: until WebStorm 2019.1 you'll need to
@@ -22,11 +22,11 @@ see (https://youtrack.jetbrains.com/issue/WEB-37680) for details.
 2. install yarn from https://yarnpkg.com/en/
 3. then 
 ```
-cd dkjs
+cd dkdj
 yarn
 webpack
 ```
 
-To develop dkjs, use `webpack --watch` instead.
+To develop dkdj, use `webpack --watch` instead.
 
 To build a production version run `inv build -f`

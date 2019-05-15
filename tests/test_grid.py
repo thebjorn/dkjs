@@ -3,7 +3,7 @@ import textwrap
 
 from django import http
 
-from dkjs.grid import (
+from dkdj.grid import (
     ColumnGetter, Model, Column, _ModelFieldColumn, Row, Value, Grid
 )
 try:

@@ -13,7 +13,7 @@ const dkglobal = (function () {
 dkglobal.globalThis = dkglobal;
 
 // eslint-disable-next-line no-console
-console.debug("dkjs loaded from:", document.currentScript);
+console.debug("dkdj loaded from:", document.currentScript);
 
 
 let _dk_script_tag = undefined;

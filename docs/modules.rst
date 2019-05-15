@@ -1,7 +1,7 @@
-dkjs
+dkdj
 ====
 
 .. toctree::
    :maxdepth: 4
 
-   dkjs
+   dkdj

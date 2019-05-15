@@ -30,7 +30,7 @@ def pytest_configure():
             'django.contrib.contenttypes',
             'django.contrib.sessions',
             'django.contrib.admin',
-            'dkjs',
+            'dkdj',
             'testapp',
         )
     )

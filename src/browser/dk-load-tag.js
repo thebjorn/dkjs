@@ -10,7 +10,7 @@
  *          before-load-content
  *      </dk-load>
  *
- *  If the `delay` attribute is present, dkjs will wait before loading the url.
+ *  If the `delay` attribute is present, dkdj will wait before loading the url.
  *
  *  To load just a part of the url source, use:
  *

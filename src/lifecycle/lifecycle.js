@@ -5,7 +5,7 @@
 
 // var dk = require('../boot');
 
-// var _dktag = require('../boot/dk-dkjsinclude.js');
+// var _dktag = require('../boot/dk-dkdjinclude.js');
 // var _dkrequire = require('../boot/dk-require.js');
 
 

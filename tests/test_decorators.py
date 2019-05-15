@@ -10,8 +10,8 @@ from django.contrib.auth.models import User, AnonymousUser
 from django.core.exceptions import PermissionDenied
 from django.utils.http import urlquote
 
-from dkjs import decorators
-from dkjs.views import SubcommandView
+from dkdj import decorators
+from dkdj.views import SubcommandView
 
 try:  # pragma: nocover
     from django.utils.encoding import force_text

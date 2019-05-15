@@ -3,9 +3,9 @@ from __future__ import print_function
 import pytest
 from django.contrib.auth.models import User
 
-from dkjs import jason
-from dkjs.grid import Column
-from dkjs.views import ModelGrid
+from dkdj import jason
+from dkdj.grid import Column
+from dkdj.views import ModelGrid
 
 
 @pytest.mark.django_db

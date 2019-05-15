@@ -32,9 +32,9 @@ export class RuntimeEnvironment {
     }
     
     
-    get dkjs_script_tag() {
+    get dkdj_script_tag() {
         for (const script of this.scripts) {
-            console.log("dkjs script tag get:", script.version, script.libname, script);
+            console.log("dkdj script tag get:", script.version, script.libname, script);
         }
         return 42;
     }

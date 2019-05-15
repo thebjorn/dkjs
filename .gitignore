@@ -1,9 +1,9 @@
 # javascript
 node_modules/
 
-dkjs/static/dkjs/js/dk.min.js
-dkjs/static/dkjs/js/main.js
-dkjs/static/dkjs/js/main.js.map
+dkdj/static/dkdj/js/dk.min.js
+dkdj/static/dkdj/js/main.js
+dkdj/static/dkdj/js/main.js.map
 
 # PyCharm generated files from .scss
 styles/*.css
