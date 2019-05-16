@@ -11,7 +11,7 @@ const LIBRARY_NAME = 'dk';
 
 const common_settings = {
     entry: {
-        dk: './src/index.js',
+        dkdj: './src/index.js',
         // dkcss: './styles/index.scss',
     },
     target: 'web',
