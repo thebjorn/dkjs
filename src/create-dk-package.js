@@ -67,7 +67,7 @@ import dk from "./dk-obj";
 import sys from "./sys";
 // performance('loaded-sys');
 
-import state from "./browser/dk-state";
+import state from "./data/state/dk-state";
 // performance('loaded-dk-state');
 
 // import core from "./core";

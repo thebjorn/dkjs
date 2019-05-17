@@ -4,12 +4,12 @@
  */
 import dk from "../dk-obj"
 import globalThis from "../lifecycle/dkglobal";
-import {State} from "../browser/dk-state";
-import {HashStorage} from "../browser/storage-engines";
+import {State} from "../data/state/dk-state";
 import {mcall} from "../sys/mcall";
 import throttle from "lodash.throttle";
 import {dkconsole} from "../lifecycle/dkboot/dk-console";
 import {dkwarning} from "../lifecycle/coldboot/dkwarning";
+import {HashStorage} from "../data/state/hash-storage";
 
 
 let _ready_queue = [];

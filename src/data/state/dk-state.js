@@ -1,6 +1,9 @@
 /* global window */
 
-import {CookieStorage, HashStorage, LocalStorage, SessionStorage} from "./storage-engines";
+import {CookieStorage} from "./cookie-storage";
+import {LocalStorage} from "./local-storage";
+import {SessionStorage} from "./session-storage";
+import {HashStorage} from "./hash-storage";
 
 /**
  * The State class enables pages (and especially widgets on pages) to save and restore
@@ -11,15 +14,21 @@ import {CookieStorage, HashStorage, LocalStorage, SessionStorage} from "./storag
  * 
  * Initial state is created using the default parameter to get_item(key, defaultValue)::
  * 
- *     dk.state = new dk.State({engine: dk.State.CookieStorage, name: 'pagename'});
- *     this.color = dk.state.get_item('color', 'blue');
+ *     cookie_state = new dk.State({engine: dk.State.engines.cookie, name: 'pagename'});
+ *     this.color = cookie_state.get_item('myapp', 'color', 'blue');
+ *     
+ *  The root level of the State objects consists of namespace => (keys => values). This 
+ *  makes it easy to store individual widget state::
+ *  
+ *      mystate.set_item('widget-1', 'query', {filter: {year: 2019}, sort: ['-year']});
+ *      
  */
 export class State {
     
     /**
      * Create a new state object, typically::
      * 
-     *     dk.state = new State({engine: State.HashStorage});
+     *     dk.state = new State({engine: State.engines.hash});
      *     
      * @param engine
      * @param name
