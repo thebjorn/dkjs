@@ -1,10 +1,13 @@
-import {decode_url_value, encode_url_value} from "./serializers";
+import {decode_url_value, encode_url_value, uri_serializer} from "./serializers";
 import cookie from "../../browser/dk-cookie";
 import {StorageBase} from "./storage";
 
 export class CookieStorage extends StorageBase{
     constructor() {
         super();
+        this._encode = uri_serializer.encode;
+        this._decode = uri_serializer.decode;
+        
         this.name = 'CookieStorage';
         this.capabilities = {
             flat: true,
@@ -29,10 +32,9 @@ export class CookieStorage extends StorageBase{
         });
     }
 
-    _del(key) { cookie.remove(key); }
+    _del(key) { cookie.del(key); }
     
     _all() { return cookie.all(); }
     includes(key) { return cookie.includes(key); }
     keys() { return cookie.keys(); }
-    entries() { return cookie.entries(); }
 }

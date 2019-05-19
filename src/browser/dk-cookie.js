@@ -48,6 +48,7 @@ export default {
      */
     all() {
         const res = {};
+        if (document.cookie === "") return res;
         document.cookie.split(';').forEach(cookie => {
             const [name, value] = cookie.split('=').map(c => c.trim());
             res[name] = value;

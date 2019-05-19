@@ -66,3 +66,8 @@ export const json_serializer = {
     encode: JSON.stringify,
     decode: JSON.parse
 };
+
+export const uri_serializer = {
+    encode(v) { console.log("encoding", v); return encodeURIComponent(JSON.stringify(v)); },
+    decode(v) { console.log("decoding", v); return JSON.parse(decodeURIComponent(v)); }
+};
