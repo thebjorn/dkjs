@@ -1,4 +1,30 @@
 
+//
+// export function dk_encode(v) {
+//     const res = [];
+//     Object.entries(v).forEach(([k, v]) => {
+//         let val = v;
+//         if (!(typeof v === 'string' || typeof v === 'number')) {
+//             v = JSON.stringify(v)
+//                 .replace('{', '(')
+//                 .replace('}', ')')
+//                 .replace(':', '-')
+//                 .replace(/"/g, "'");
+//         }
+//         res.push(`${k}-${v}`);
+//     });
+//     return res.join('~');
+// }
+//
+// export function dk_decode(v) {
+//     const items = v.split(';');
+//     const entries = items.map(x => x.split('='));
+//     const res = {};
+//     entries.forEach(([k, v]) => {
+//        
+//     });
+//     return res;
+// }
 
 /**
  * Returns a base64 encoded version of the JSON.stringified representation of val.

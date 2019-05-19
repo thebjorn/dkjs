@@ -48,20 +48,20 @@ test("State.get|set_item", () => {
 });
 
 
-test("State.changed", () => {
-    // state should always be changed() == false from the outside.
-    console.info("State.changed");
-    Object.entries(engines).forEach(([name, engine]) => {
-        const state = new State({engine: engine, name: 's1'});
-        
-        expect(state._values).toBe(null);
-        expect(state._engine_state).toBe("null");
-        expect(state.changed()).toBe(false);
-        expect(state.engine.values).toMatchObject({});
-
-        const val = state.get_item('my-widget-1', 'hello', 'world');
-        expect(state.changed()).toBe(false);
-        expect(state.engine.values).toMatchObject({"my-widget-1": {"hello": "world"}});
-        // expect(document.cookie).toBe('')
-    });
-});
+// test("State.changed", () => {
+//     // state should always be changed() == false from the outside.
+//     console.info("State.changed");
+//     Object.entries(engines).forEach(([name, engine]) => {
+//         const state = new State({engine: engine, name: 's1'});
+//        
+//         expect(state._values).toBe(null);
+//         expect(state._engine_state).toBe("null");
+//         expect(state.changed()).toBe(false);
+//         expect(state.engine.values).toMatchObject({});
+//
+//         const val = state.get_item('my-widget-1', 'hello', 'world');
+//         expect(state.changed()).toBe(false);
+//         expect(state.engine.values).toMatchObject({"my-widget-1": {"hello": "world"}});
+//         // expect(document.cookie).toBe('')
+//     });
+// });

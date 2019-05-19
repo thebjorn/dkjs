@@ -1,15 +1,12 @@
+
 import {StorageBase} from "./storage";
-import {base64_serializer} from "./serializers";
-import cookie from "../../browser/dk-cookie";
 
 
 export class LocalStorage extends StorageBase {
     constructor(engine) {
         super();
         this.name = 'LocalStorage';
-        this.name_prefix = 'dks-';
         this.engine = engine || window.localStorage;
-        this.serializer = base64_serializer;
 
         this.capabilities = {
             flat: true,

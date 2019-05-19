@@ -148,6 +148,7 @@ import {sprintf} from "./data/datacore/sprintf";
 import {BaseWidget} from "./widgetcore/dk-base-widget";
 import {DataWidget} from "./widgetcore/data-widget";
 import {ServerWidget} from "./widgetcore/server-widget";
+import {HashStorage} from "./data/state/hash-storage";
 
 if (!String.prototype.format) {
     String.prototype.format = function (...args) {
@@ -382,6 +383,28 @@ if (!String.prototype.format) {
         },
         ready(fn) {
             dk.$(fn);
+        }
+    });
+    
+    Object.defineProperty(dk, 'hash', {
+        get: function() {
+            if (!dk._hash_obj) {
+                dk._hash_obj = new HashStorage();
+                const handler = {
+                    get(target, name) {
+                        if (name in target) {
+                            return target[name];
+                        } else {
+                            return target.get(name);
+                        }
+                    },
+                    set(obj, prop, value) {
+                        return obj.set(prop, value);
+                    }
+                };
+                dk._hash_obj_proxy = new Proxy(dk._hash_obj, handler);
+            }
+            return dk._hash_obj_proxy;
         }
     });
     
