@@ -53,8 +53,28 @@ export class DataQuery extends Class {
             filter: this.filter
         });
     }
+    
+    axdata2page_query(axdata) {
+        const res = {
+            start: axdata.start || 0,
+            search: axdata.q,
+            filter: axdata.ft,
+            end: axdata.end
+        };
+        if (axdata.s) {
+            res.sort = axdata.s.split(',').map(sitem => {
+                if (sitem[0] === '-') {
+                    return {direction: 'desc', field:sitem.slice(1)};
+                } else {
+                    return {direction: 'asc', field:sitem};
+                }
+            });
+        }
+        return res;
+    }
 
     _axdata() {
+        // FIXME: duplicated in AjaxDataSource._axdata
         const sortcol = function (sitem) {
             if (sitem.field === undefined) return '';
             return (sitem.direction === 'desc' ? '-' : '') + sitem.field;

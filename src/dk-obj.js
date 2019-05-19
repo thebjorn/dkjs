@@ -24,10 +24,35 @@ import is from "./is";
 import {after, on, trigger, publish, subscribe} from "./lifecycle/dkboot/dk-signals";
 import {add, mul, vec_mul, multiply_reduce} from "./dkmath/dk-math";
 import {times} from "./lo-times";
+import {HashStorage} from "./data/state/hash-storage";
 
 const dk = function (selector) {
     return document.querySelector(selector);
 };
+
+
+Object.defineProperty(dk, 'hash', {
+    get: function() {
+        if (!dk._hash_obj) {
+            dk._hash_obj = new HashStorage();
+            const handler = {
+                get(target, name) {
+                    if (name in target) {
+                        return target[name];
+                    } else {
+                        return target.get(name);
+                    }
+                },
+                set(obj, prop, value) {
+                    return obj.set(prop, value);
+                }
+            };
+            dk._hash_obj_proxy = new Proxy(dk._hash_obj, handler);
+        }
+        return dk._hash_obj_proxy;
+    }
+});
+
 
 Object.assign(dk, {
     Class,

@@ -38,6 +38,7 @@ export class DataSet extends Class {
             
         }, props));
     
+        this._first_fetch = true;
         this.pages = {};
         this._filter_data = {};
     }
@@ -51,6 +52,29 @@ export class DataSet extends Class {
         // });
     }
 
+    /**
+     * Gets the current state
+     * @param query  - a DataQuery instance
+     * @returns {*}  - a DataQuery instance
+     */
+    get_state(query) {
+        if (!this.datasource.url) return query;
+        return DataQuery.create(dk.hash.get(this.datasource.url, query.copy()), this);
+    }
+
+    set_state(query) {
+        if (this.datasource.url) {
+            dk.hash[this.datasource.url] = query.copy();
+        }
+    }
+    
+    /**
+     * _new_recordset is the callback handler for this.datasource.get_records().
+     * 
+     * @param recordset
+     * @param query
+     * @private
+     */
     _new_recordset(recordset, query) {
         const page = DataPage.create({
             query: query,
@@ -81,6 +105,15 @@ export class DataSet extends Class {
 
     get_page(query) {
         query = DataQuery.create(query, this);
+        // console.info("DATASET:GET:PAGE:QUERY:", this._first_fetch, query);
+        if (this._first_fetch) {
+            query = this.get_state(query);
+            this._first_fetch = false;
+        } else {
+            this.set_state(query);
+        }
+        // console.info("DATASET:GET:PAGE:QUERY:2", this._first_fetch, query);
+        
         // dk.dir("GET-PAGE:", query.copy());
         dk.trigger(this, 'fetch-data-start');
 

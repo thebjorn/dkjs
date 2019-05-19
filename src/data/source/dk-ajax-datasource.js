@@ -18,6 +18,7 @@ export class AjaxDataSource extends JSONDataSource {
     }
 
     _axdata(request) {
+        // FIXME: duplicated in DataQuery._axdata
         if (request == null) request = new DataQuery();
         const sortcol = function (sitem) {
             if (sitem.field === undefined) return '';
