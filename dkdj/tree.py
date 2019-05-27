@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
-from StringIO import StringIO
-from abc import ABCMeta
+
+try:  # pragma: nocover
+    from cStringIO import StringIO
+except ImportError:  # pragma: nocover
+    from io import StringIO
+
 from . import jason
 
 
@@ -202,7 +206,6 @@ class PathTreeDataSource(TreeDatasource):
 
        can be specified using only the ``c`` and ``d`` nodes.
     """
-    __metaclass__ = ABCMeta
 
     # noinspection PyMethodFirstArgAssignment
     def __init__(self, nodes=()):
