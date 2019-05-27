@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from six import itervalues
 
 try:  # pragma: nocover
     from cStringIO import StringIO
@@ -155,8 +156,8 @@ class TreeDatasource(object):
             node = self.cache[key]
             fmt = "{indent}{label}\n"
             lbl = node.label
-            if isinstance(lbl, unicode):
-                lbl = lbl.encode('ascii', 'ignore')  # pragma: nocover
+            # if isinstance(lbl, unicode):
+            #     lbl = lbl.encode('ascii', 'ignore')  # pragma: nocover
             out.write(fmt.format(indent='    ' * depth,
                                  label=lbl))
             for c in node.children:
@@ -220,7 +221,7 @@ class PathTreeDataSource(TreeDatasource):
         """Add nodes for intermediate path nodes that have not been explicitly
            added.
         """
-        for node in self.cache.values():
+        for node in list(self.cache.values()):
             for subnode in self.path_to(node):
                 if subnode.key not in self.cache:
                     self.cache[subnode.key] = subnode
