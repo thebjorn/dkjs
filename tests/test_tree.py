@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import json
 
 from dkdj import jason
@@ -108,7 +109,7 @@ def test_parent():
     with ds:
         ds += sections
         ds += []
-    print ds  # coverage for __repr__
+    print(ds)  # coverage for __repr__
     assert ds.validate()
     # print jason.dumps(ds)
     assert json.loads(jason.dumps(ds)) == treeds_result
@@ -146,9 +147,9 @@ def test_path():
                     `-- d
     """
     root = Section(id=1, name='a', path=[1])
-    b = Section(id=2, name='b', path=[1,2])
-    c = Section(id=3, name='c', path=[1,2,3])
-    d = Section(id=4, name='d', path=[1,2,4])
+    b = Section(id=2, name='b', path=[1, 2])
+    c = Section(id=3, name='c', path=[1, 2, 3])
+    d = Section(id=4, name='d', path=[1, 2, 4])
 
     sections = [root, b, c, d]
 
@@ -195,15 +196,15 @@ class PathStrTree(PathTreeDataSource):
                 for pfx in self.prefix_list(treenode.value, '/')]
 
 
-def _mktree(vals):
+def _mktree(values):
     with PathStrTree() as t:
-        t += vals
+        t += values
         return t
 
 
 def test_tds():
-    print "VALS:", vals
+    print("VALS:", vals)
     ds = _mktree(vals)
-    print jason.dumps(ds.cache, indent=4)
-    print repr(ds)
+    print(jason.dumps(ds.cache, indent=4))
+    print(repr(ds))
     assert ds.validate()

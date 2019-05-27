@@ -13,6 +13,8 @@ build/
 coverage/
 out/
 
+.vscode/
+
 # PyCharm
 .idea/misc.xml
 .idea/workspace.xml
@@ -137,3 +139,6 @@ venv.bak/
 .mypy_cache/
 /dist/dk.js
 *.md5
+.idea/markdown-navigator/profiles_settings.xml
+.idea/markdown-exported-files.xml
+.idea/markdown-navigator/profiles_settings.xml
