@@ -16,10 +16,7 @@ Topic :: Software Development :: Libraries
 setuptools.setup(
     name='dkdj',
     version='0.99.1',
-    packages=[
-        'dkdj',
-        'dkdj.templatetags'
-    ],
+    packages=setuptools.find_packages(exclude=['tests']),
     install_requires=[
         'ttcal',
         'six',
