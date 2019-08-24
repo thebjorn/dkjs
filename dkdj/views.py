@@ -192,7 +192,7 @@ class SubcommandView(CORSView):
 
 class GridView(SubcommandView):
     """Convenience class documenting the server interface of
-       `dk.data.AjaxDataSource`.
+       ``dk.data.AjaxDataSource``.
     """
 
     def __init__(self, *args, **kwargs):
@@ -220,6 +220,7 @@ class GridView(SubcommandView):
                     rows=rows,
                     info=info
                )
+
         """
         return grid.Grid()  # you should override this one..!
 

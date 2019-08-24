@@ -15,8 +15,6 @@ ToDo list
 .. todolist::
 
 
-.. lintscore:: c:\work\github\dkdj\dkdj
-
 API docs
 --------
 
