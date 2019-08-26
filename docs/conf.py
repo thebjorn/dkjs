@@ -17,8 +17,6 @@ import sys
 sys.path.insert(0, '../tests')
 import conftest
 conftest.pytest_configure()
-# sys.path.insert(0, os.path.abspath('..'))
-
 
 # -- Project information -----------------------------------------------------
 

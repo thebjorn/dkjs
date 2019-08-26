@@ -192,7 +192,7 @@ class SubcommandView(CORSView):
 
 class GridView(SubcommandView):
     """Convenience class documenting the server interface of
-       `dk.data.AjaxDataSource`.
+       ``dk.data.AjaxDataSource``.
     """
 
     def __init__(self, *args, **kwargs):

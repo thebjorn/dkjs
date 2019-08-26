@@ -194,3 +194,6 @@ venv.bak/
 
 # dkbuild
 *.md5
+/.idea/deployment.xml
+/.idea/misc.xml
+/.idea/codeStyles/Project.xml
