@@ -52,11 +52,12 @@ class UserPassesTestMixin(AccessMixin):
     to get access into view.
 
     Class Settings
-        `user_passes_test` - This is required to be a method that takes user
+    
+        :user_passes_test: This is required to be a method that takes user
             instance and return True or False after checking conditions.
-        `login_url` - the login url of site
-        `redirect_field_name` - defaults to "next"
-        `raise_exception` - defaults to False - raise 403 if set to True
+        :login_url: the login url of site
+        :redirect_field_name: defaults to "next"
+        :raise_exception: defaults to False - raise 403 if set to True
 
     """
 
@@ -83,10 +84,11 @@ class LoginRequiredMixin(AccessMixin):
     """
     View mixin which verifies that the user is authenticated.
 
-    NOTE:
+    .. note::
         This should be the left-most mixin of a view, except when
         combined with CsrfExemptMixin - which in that case should
         be the left-most mixin.
+        
     """
 
     def dispatch(self, request, *args, **kwargs):
@@ -212,10 +214,11 @@ def LoginRequired(cls=None, **login_args):
     See the documentation for the ``login_required`` [#]_ for more information
     about the keyword arguments.
 
-    Usage:
-      @LoginRequired
-      class MyListView (ListView):
-        ...
+    Usage::
+    
+        @LoginRequired
+        class MyListView (ListView):
+            ...
 
     .. [#] https://docs.djangoproject.com/en/dev/topics/auth/#the-login-required-decorator
 

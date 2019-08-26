@@ -119,8 +119,9 @@ class BoolToggleDataSource(ToggleView):
                    self._val = param
                    return param
 
-       Note: you should set your value to ``param`` in ``set_current_value``,
-       and return this value unchanged.
+       .. note:: you should set your value to ``param`` in ``set_current_value``,
+                 and return this value unchanged.
+                 
     """
     STATUS_OK = MessageStatus(200)
     STATUS_UPDATE = MessageStatus(201, 'update', 'update')
@@ -145,7 +146,7 @@ class BoolToggleDataSource(ToggleView):
     def toggle(self, request, *args, **kw):
         """Toggle the boolean value.
 
-           The client should send its current value as json:
+           The client should send its current value as json::
 
                {'val': true}
 
@@ -166,7 +167,7 @@ class BoolToggleDataSource(ToggleView):
            the ``result`` has the new value, although the client is assumed to
            have set this value pre-emptively.
 
-           If the value doesn't match the server's value, the server will return
+           If the value doesn't match the server's value, the server will return::
 
                {
                    "result": {

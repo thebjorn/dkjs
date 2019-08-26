@@ -213,13 +213,16 @@ class GridView(SubcommandView):
         # return jason.response(request, val)
 
     def get_grid(self, request, *args, **kwargs):
-        """Should return a filled out Grid object::
+        """Should return a filled out Grid object
+        
+           ::
 
                return dkdj.grid.Grid(
                     cols=cols,
                     rows=rows,
                     info=info
                )
+               
         """
         return grid.Grid()  # you should override this one..!
 

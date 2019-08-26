@@ -1,24 +1,27 @@
 .. coding: utf-8
 
-
+================================================================
 Welcome to dkdj's documentation!
 ================================================================
 
 .. toctree::
-   :glob:
-   :maxdepth: 2
-   :caption: Contents:
+    :glob:
+    :maxdepth: 2
+    :caption: Contents:
+
+    tutorials/index
+    datasources
+
+    faq
 
 
 ToDo list
----------
+=========
 .. todolist::
 
 
-.. lintscore:: c:\work\github\dkdj\dkdj
-
 API docs
---------
+========
 
 .. include:: modules.rst
 

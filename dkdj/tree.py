@@ -74,8 +74,8 @@ class TreeDatasource(object):
            .tree_key()   returning a unique key for the item
            .tree_node()  returning an instance of the TreeNode class (above)
            
-       alternatively you can subclass and override `.unique(obj)` and 
-       `.as_treenode(obj)`l
+       alternatively you can subclass and override ``.unique(obj)`` and 
+       ``.as_treenode(obj)``
            
     """
     cache = {}  # xtype: Dict[Any, TreeNode] 
