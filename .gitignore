@@ -194,6 +194,8 @@ venv.bak/
 
 # dkbuild
 *.md5
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/$CACHE_FILE$
 /.idea/deployment.xml
 /.idea/misc.xml
 /.idea/codeStyles/Project.xml
