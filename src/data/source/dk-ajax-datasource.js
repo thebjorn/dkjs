@@ -4,7 +4,7 @@ import {JSONDataSource} from "./dk-json-datasource";
 import is from "../../is";
 import {dkconsole} from "../../lifecycle/dkboot/dk-console";
 import jason from "../datacore/dk-json";
-import {ajax, async_ajax} from "../../browser/dk-client";
+import {ajax, async_ajax, async_json, json} from "../../browser/dk-client";
 import {DataQuery} from "../dk-dataquery";
 
 
@@ -43,6 +43,7 @@ export class AjaxDataSource extends JSONDataSource {
         // for data to be sent as json, the type must be POST, dataType 'json', contentType
         // set as below, and data must be json (ie. a string).
         const self = this;
+        dkconsole.debug("CMD:", cmd, "DATA:", data);
         const defaults = {
             cache: false,
             type: 'POST',
@@ -50,10 +51,10 @@ export class AjaxDataSource extends JSONDataSource {
             url: self.url + '!' + cmd,
             contentType: "application/json; charset=utf-8",
             statusCode: {
-                404() { dkconsole.debug("Page not found: " + self.url); },
-                500() { window.open(self.url); }
+                404: function () { dkconsole.debug("Page not found: " + self.url); },
+                500: function () { window.open(self.url); }
             },
-            error(req, status, err) {
+            error: function (req, status, err) {
                 self.waiting = false;
                 dkconsole.warn("ERROR", req, status, err);
                 //dk.notify(self, 'fetch-data-error', req, status, err);
@@ -62,8 +63,8 @@ export class AjaxDataSource extends JSONDataSource {
             converters: {
                 "text json": jason.parse
             },
-            success(data) {
-                // dk.debug("dk-ajax-datasource-DATA:", data);
+            success: function (data) {
+                dkconsole.debug("dk-ajax-datasource-DATA:", data);
                 if (data.error) {
                     dkconsole.warn(data);
                     throw data;
@@ -110,11 +111,28 @@ export class AjaxDataSource extends JSONDataSource {
         });
     }
 
-    get_filter_data(name, callback) {
-        this._ajax('get-filter-values', {
-            data: {name: name},
-            do_success(data) {
-                callback(data);
+    async fetch_filter_data(filter_name) {
+        return await async_json({
+            data: {name: filter_name},
+            url: `${this.url}!get-filter-values`
+        });
+    }
+    
+    get_filter_data(filter_name, returns) {
+        json({
+            data: {name: filter_name},
+            // url: `${this.url}`,
+            url: `${this.url}!get-filter-values`,
+            success: function (data) {
+                dkconsole.debug("get-filter-data:", filter_name, 'DATA:', data);
+                if (data.error) {
+                    dkconsole.warn(data);
+                    throw data;
+                } else {
+                    self.data = data;
+                    self.waiting = false;
+                    returns(data);
+                }
             }
         });
     }
