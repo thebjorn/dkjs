@@ -66,6 +66,15 @@ export class DataSource extends Class {
             records: {}
         });
     }
+    
+    async fetch_filter_data(filter_name) {
+        return new Promise((resolve, reject) => {
+            resolve({
+                missing: 'data missing',
+                need_to: 'need to implement fetch_filter_data in datasource'
+            });
+        });
+    }
 
     get_filter_data(filter_name, returns) {
         returns({
