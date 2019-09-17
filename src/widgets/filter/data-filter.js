@@ -48,7 +48,7 @@ export class DataFilter extends UIWidget {
     constructor(...args) {
         super({
             // type: 'DataFilter',
-            data: undefined,
+            data: undefined,        // XXX: hmm...
             heading: 'Filter',
             filters: {},
             dataset: null,
@@ -134,8 +134,11 @@ export class DataFilter extends UIWidget {
             filterprops.datafilter = this;
             const res = filtercls.append_to(this.content, filterprops);
             dk.on(res, 'change', (...args) => {
-                if (this.data) this.data.set_filter(this.values());
-                this.trigger('filter-change', this.values());
+                // console.info("FILTERCLS:ON:CHANGE", args);
+                const values = this.values();
+                console.info("FILTERDATA::::::::::::::::::", values);
+                if (this.data) this.data.set_filter(values);
+                this.trigger('filter-change', values);
             });
             this.filters[filterprops.name] = res;
         });
@@ -143,21 +146,34 @@ export class DataFilter extends UIWidget {
 
     values() {
         const keys = Object.keys(this.filters);
+        // console.info("DATAFILTER:KEYS:", keys);
         const vals = keys.map(filter_name => {
             const filter = this.filters[filter_name];
+            // const filter = materialize(this.filters[filter_name]);
+            // console.info("MATERIALIZE:FILTER:", materialize(filter));
+            
+            console.info("DATAFILTER:filter[NAME]", filter_name);
+            // console.info("DATAFILTER:filter:", filter_name, filter);
+            // console.info("DATAFILTER:filter:input:", filter.input);
+            
+
             if (filter.value) {
                 // filter has defined a value on itself.. (e.g. `CustomFilterDef`'s
+                console.info("DATAFILTER:filter:direct-VALUE:", filter.value);
                 return filter.value;
             }
             if (filter.input && filter.input.jquery) {
                 // found a jQuery object, get its .val()
+                console.info("DATAFILTER:filter:value:JQ:", filter.input.val());
                 return filter.input.val();
             }
             if (filter.input && filter.input.value) {
                 // found a dk.form object
+                console.info("DATAFILTER:filter:value:JS:", filter.input.value);
                 return filter.input.value;
             }
         });
+        console.info("DATAFILTER:VALS:", vals)
         return zip_object(keys, vals);
     }
 }

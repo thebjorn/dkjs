@@ -12,6 +12,7 @@ import {InputWidget} from "./input-widget";
 import {dedent} from "../text/template-functions";
 import {dkwarning} from "../lifecycle/coldboot/dkwarning";
 import {dkconsole} from "../lifecycle/dkboot/dk-console";
+import {zip_object} from "../collections";
 
 /*
     Global attributes:
@@ -214,7 +215,10 @@ export class SelectWidget extends InputWidget {
     }
 
     get value() {
-        return this.data.value;
+        // make a real array from the keys
+        const res = [];
+        Object.keys(this.data.value).forEach(k => res.push(k));
+        return res;
     }
     set value(v) {
         if (!Array.isArray(v)) v = [v];
@@ -226,6 +230,11 @@ export class SelectWidget extends InputWidget {
         return this._set_value_from_selected();
     }
     _get_value_from_selected() {
+        // const val = [];
+        // Object.entries(this._selected).forEach(([k, v]) => {
+        //     if (v) val.push(k);
+        // });
+        // return val;
         const val = {};
         Object.entries(this._selected).forEach(([k, v]) => {
             if (v) val[k] = this.options[k];

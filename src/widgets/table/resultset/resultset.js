@@ -87,7 +87,7 @@ export class ResultSet extends Widget {
 
     construct_filter(location, dataset) {
         this.filter = null;
-        // override this method to atttach a filter.  The default version removes the
+        // override this method to attach a filter.  The default version removes the
         // filter box and stretches the data box to full width.
         location.css({
             paddingRight: 0,
@@ -183,6 +183,8 @@ export class ResultSet extends Widget {
         dk.on(this.table.table_data, 'fetch-data-start', () => this.start_busy());
         dk.on(this.table.table_data, 'fetch-data', () => this.end_busy());
 
+        // FIXME: this assumes that this.filter is a panel that has a .datafilter attribute that 
+        //        is a widgets/filter/data-filter.js:DataFilter instance
         if (this.filter) {
             dk.on(this.filter.datafilter, 'filter-change', filtervals => this.table.table_data.set_filter(filtervals));
         }

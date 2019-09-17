@@ -45,7 +45,10 @@ export class FilterDefBase extends UIWidget {
     }
 
     handlers() {
-        if (this.input) dk.on(this.input, 'change', (evt, widget) => this.trigger('change', this.value));
+        if (this.input) dk.on(this.input, 'change', (evt, widget) => {
+            console.info("DK:ON:CHANGE:", evt, widget);
+            this.trigger('change', this.value);
+        });
     }
 
     draw(opts) {
