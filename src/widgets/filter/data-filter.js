@@ -11,7 +11,6 @@ import {dkconsole} from "../../lifecycle/dkboot/dk-console";
 import {CustomFilterDef, SelectMultipleFilterDef, SelectOneFilterDef} from "./filter-defs";
 
 
-
 /*
  *  The top level filter container/widget.
  *
@@ -173,7 +172,7 @@ export class DataFilter extends UIWidget {
                 return filter.input.value;
             }
         });
-        console.info("DATAFILTER:VALS:", vals)
+        console.info("DATAFILTER:VALS:", vals);
         return zip_object(keys, vals);
     }
 }
