@@ -46,6 +46,7 @@ export class FilterDefBase extends UIWidget {
 
     handlers() {
         if (this.input) dk.on(this.input, 'change', (evt, widget) => {
+            // eslint-disable-next-line no-console
             console.info("DK:ON:CHANGE:", evt, widget);
             this.trigger('change', this.value);
         });
@@ -62,10 +63,13 @@ export class FilterDefBase extends UIWidget {
             if (this.datafilter && this.datafilter.dataset) {
                 // this.datafilter.dataset.get_filter_data(this.name, this.FN('draw'));
                 this.datafilter.dataset.get_filter_data(this.name, opts => {
-                    this.draw(opts)
+                    this.draw(opts);
+                    // eslint-disable-next-line no-console
+                    console.info('fetch_options-1', opts);
                 });
             } else {
-                console.info('fetch_options', this.datafilter.dataset);
+                // eslint-disable-next-line no-console
+                console.info('fetch_options-2', this.datafilter.dataset);
             }
         }
     }
