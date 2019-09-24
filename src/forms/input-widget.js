@@ -43,7 +43,7 @@ export class InputWidget extends Widget {
     }
 
     get value() {
-        return this.data.value;
+        return this.data.value;  // this is a proxy object..?
     }
 
     set value(v) {

@@ -21,6 +21,11 @@ test('checkbox-select-widget-render', () => {
         ],
         value: ['hello', 'world']
     });
+    console.log("WORK:", work.html());
+    console.log("WIDGET:", w.widget().html());
+    w.widget('[checked]').prop('checked', true);
+    console.log(":CHECKED:", w.widget(':checked').length);
+    console.log("[CHECKED]", w.widget('[checked]').length);
     expect(w.widget(':checked')).toHaveLength(2);
     expect(document.getElementById('work')).toMatchSnapshot();
 });
