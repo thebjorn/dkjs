@@ -361,9 +361,14 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
         --this._updating;
     }
     rebuild_options() {
+        console.info("REBUILD:OPTIONS:::::::::::::::::::::::")
         const widget = this.widget();
+        const self = this;
         widget.empty();
         Object.entries(this.options).forEach(([attr, value]) => {
+            console.log("SELF:THIS:", self === this);
+            console.log("SELF:WIDGET:", self.widget());
+            console.log("THIS:WIDGET:", this.widget());
             const chkbx = this.layout.make('input', {
                 type: 'checkbox',
                 name: this.name,
@@ -375,11 +380,17 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
             }).text(value);
             chkbx.val(attr);
             // noinspection EqualityComparisonWithCoercionJS
-            if (this.value == attr) chkbx.prop('checked', true);  // we want 1 == "1" here
+            console.info("THIS:VALUE:", this.value, "ATTR:", attr, "INCLUDES:", this.value.includes(attr));
+            // if (this.value == attr) {  // / we want 1 == "1" here
+            if (this.value.includes(attr)) {  // / we want 1 == "1" here
+                chkbx.prop('checked', true);
+                // chkbx.attr('checked', 'checked');
+            }
             label.prepend(chkbx);
             widget.append(label);
             widget.append('\n');
         });
+        console.log("REBUILD:OPTIONS:WIDGET:CHECKED:", this.widget().find(':checked').length);
     }
    
     widget_changed(event) {
@@ -393,6 +404,7 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
         }
         --this._updating;
     }
+    
     handlers() {
         const self = this;
         this.widget().on('change', ':checkbox', function (e) {
