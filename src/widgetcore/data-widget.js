@@ -47,8 +47,9 @@ export class DataWidget extends UIWidget {
      * @param target    - the object containing `name` (for the running example it would be this.data.foo)
      */
     data_changed(data, path, val, name, target) {
-        dkconsole.debug(`data-changed ${path} = ${val}, new data: ${JSON.stringify(data)}`);
+        // dkconsole.debug(`data-changed ${path} = ${val}, new data: ${JSON.stringify(data)}`);
         this.draw(data);
+        this.trigger('change', data);
     }
 
     /**
@@ -64,6 +65,10 @@ export class DataWidget extends UIWidget {
             }
         }
         return false;
+    }
+
+    toString() {
+        return `${this.__class__.name}(data=${JSON.stringify(this.data)})`
     }
     
 }

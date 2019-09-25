@@ -181,6 +181,10 @@ export default class Class {
         SubClass.toString = () => SubClass.name;
         return SubClass;
     }
+    
+    toString() {
+        return `${this.__class__.name}(...)`;
+    }
 }
 
 performance('dk-class');

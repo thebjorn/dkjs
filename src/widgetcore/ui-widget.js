@@ -202,12 +202,12 @@ export class UIWidget extends BaseWidget {
 
         this.initialize();
         this._widget_props.visible = true;
-        console.log("CHECKED:LEN:1", this.widget().find('input:checked').length);
+        // console.log("CHECKED:LEN:1", this.widget().find('input:checked').length);
 
         if (this.handlers) this.handlers();
-        console.log("CHECKED:LEN:2", this.widget().find('input:checked').length);
+        // console.log("CHECKED:LEN:2", this.widget().find('input:checked').length);
         this.render_data();
-        console.log("CHECKED:LEN:3", this.widget().find('input:checked').length);
+        // console.log("CHECKED:LEN:3", this.widget().find('input:checked').length);
 
         this._widget_props.ready = true;
         // this.__ready = true;

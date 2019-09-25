@@ -114,10 +114,22 @@ export class InputWidget extends Widget {
         --this._updating;
     }
 
+    /**
+     * Convert `val` to a string value.
+     * 
+     * @param val
+     * @returns {*}
+     */
     stringify(val) {
         return val;
     }
 
+    /**
+     * Convert `str` from a string to an object.
+     * 
+     * @param str
+     * @returns {*}
+     */
     parse(str) {
         return str;
     }

@@ -15,6 +15,27 @@ test("test-data-widget-isequal", () => {
 });
 
 
+test("test-data-widget-mutate", () => {
+    class MyWidget extends DataWidget {
+        constructor(...args) {
+            super({
+                
+            }, ...args);
+        }
+    }
+    const w = new MyWidget({data: {hello: 'world'}});
+
+    let newval = null;
+    w.on('change', val => newval = val);
+    
+    expect(w.data.hello).toEqual('world');
+    w.data.hello = 'beautiful world';
+    expect(w.data.hello).toEqual('beautiful world');
+    
+    expect(newval).toEqual({hello: 'beautiful world'});
+});
+
+
 test("test-base-widget-isequal", () => {
     const bw1 = new BaseWidget({data: {hello: 'world'}});
     const bw2 = new BaseWidget({data: {hello: 'world'}});
