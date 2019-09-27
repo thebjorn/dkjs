@@ -376,13 +376,14 @@ export class UIWidget extends BaseWidget {
         return this.create_on(location, attrs);
     }
 
-    static create_on(location, attrs) {
+    static create_on(loc, attrs) {
         // we _must_ generate an id for this widget, so that
         // this.widget() works.
         try {
             const w = new this(attrs);
             // if (!location.jquery) location = dk.$(location);
-            if (typeof location === 'string') location = dk.$(location);
+            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (location.length === 0) throw `Location ${loc} not found in document.`;
             page.create_widget(w, {on: location});
             return w;
         } catch (e) {
@@ -390,12 +391,13 @@ export class UIWidget extends BaseWidget {
         }
     }
 
-    static create_inside(location, attrs) {
+    static create_inside(loc, attrs) {
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
             const w = new this(attrs);
-            if (typeof location === 'string') location = dk.$(location);
+            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (location.length === 0) throw `Location ${loc} not found in document.`;
             page.create_widget(w, {inside: location});
             return w;
         } catch (e) {
@@ -403,12 +405,13 @@ export class UIWidget extends BaseWidget {
         }
     }
 
-    static append_to(location, attrs) {
+    static append_to(loc, attrs) {
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
             const w = new this(attrs);
-            if (typeof location === 'string') location = dk.$(location);
+            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (location.length === 0) throw `Location ${loc} not found in document.`;
             page.create_widget(w, {inside: location, append: true});
             return w;
         } catch (e) {
