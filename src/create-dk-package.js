@@ -149,6 +149,7 @@ import {BaseWidget} from "./widgetcore/dk-base-widget";
 import {DataWidget} from "./widgetcore/data-widget";
 import {ServerWidget} from "./widgetcore/server-widget";
 import {HashStorage} from "./data/state/hash-storage";
+import {ValueRef} from "./data/source/dk-datasource-base";
 
 if (!String.prototype.format) {
     String.prototype.format = function (...args) {
@@ -309,6 +310,8 @@ if (!String.prototype.format) {
             format: {format},
             jason
         },
+        
+        ValueRef,
 
         table: {
             ColumnDef,

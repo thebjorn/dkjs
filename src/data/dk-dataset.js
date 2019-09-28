@@ -6,6 +6,7 @@ import {DataQuery} from "./dk-dataquery";
 import {ArraySource} from "./source/dk-array-datasource";
 import {is_ajax_url} from "../lifecycle/uri";
 import {AjaxDataSource} from "./source/dk-ajax-datasource";
+import {ValueRef} from "./source/dk-datasource-base";
 
 
 /*
@@ -43,6 +44,15 @@ export class DataSet extends Class {
         this._filter_data = {};
     }
 
+    value_ref({pk, field}) { 
+        const vref = new ValueRef(pk, field);
+        const get_value = (page) => page ? page.get_record(pk)[field] : null;
+        vref.fetch = () => vref.value = get_value(this.page);
+        vref.value = get_value(this.page);
+        dk.on(this, 'fetch-data', (self, page) => vref.value = get_value(page));
+        return vref;
+    }
+    
     // synchronize dirty elements on page to datasource.
     update() {
         this.pages = {};  // clear cache
@@ -76,6 +86,7 @@ export class DataSet extends Class {
      * @private
      */
     _new_recordset(recordset, query) {
+        // console.log("_NEW_RECORDSET:QUERY:", query.toCacheKey());
         const page = DataPage.create({
             query: query,
             recordset: recordset
@@ -98,7 +109,8 @@ export class DataSet extends Class {
             }
         }
         dk.on(page, 'dirty', (...args) => this.update(...args));
-        this.page = this.pages[query] = page;
+        // console.log("_NEW_RECORDSET:setting page")
+        this.page = this.pages[query.toCacheKey()] = page;
         dk.trigger(this, 'fetch-info', page.recordset.meta, query);
         dk.trigger(this, 'fetch-data', this, page);
     }
@@ -117,14 +129,23 @@ export class DataSet extends Class {
         // dk.dir("GET-PAGE:", query.copy());
         dk.trigger(this, 'fetch-data-start');
 
-        if (!this.pages[query]) {
+        // console.log("GET:PAGE:QUERY:", query);
+        // console.log("GET:PAGE:QUERY:TOSTRING:JSON:", query.toString());
+        // console.log("GET:PAGE:QUERY:TOGETPARAMS", query.toGetParams());
+        // console.log("GET:PAGE:QUERY:axdata", query._axdata());
+        // console.log("GET:PAGE:QUERY:TOCACHEKEY", query.toCacheKey());
+        const key = query.toCacheKey();
+        if (!this.pages[key]) {
+            // dk.info("GET-PAGE... NOT cached!");
             // this.datasource.get_records(query, this.FN('_new_recordset'));
             this.datasource.get_records(query, recordset => {
+                // _new_recordset sets this.page
                 this._new_recordset(recordset, query);
             });
         } else {
-            dk.info("GET-PAGE... cached!");
-            this.page = this.pages[query];
+            // dk.info("GET-PAGE... cached!");
+            // console.log("GET_PAGE:setting page")
+            this.page = this.pages[key];
             dk.trigger(this, 'fetch-info', this.page.recordset.meta, query);
             dk.trigger(this, 'fetch-data', this, this.page);
         }

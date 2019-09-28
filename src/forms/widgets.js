@@ -2,6 +2,7 @@
  *  dk.forms namespace
  *
  *  The purpose of these widgets is to auto-create widgets for inline editing of grids.
+ *  (and filters..?)
  */
 
 import dk from "../dk-obj";
@@ -75,7 +76,6 @@ export class DurationWidget extends InputWidget {
         if (val instanceof Duration) return val.toString();
         return (new Duration(val)).toString();
     }
-
 }
 
 

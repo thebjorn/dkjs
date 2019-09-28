@@ -28,9 +28,7 @@ export class ArraySource extends DataSource {
             this.data = arr.data;
         }
         // data source items need to have a key
-        this.data.map(function (item, i) {
-            item.pk = item.pk || i;
-        });
+        this.data.map((item, i) => item.pk = item.pk || i);
     }
 
     /*
@@ -123,8 +121,9 @@ export class ArraySource extends DataSource {
             });
         });        
     }
+    
     get_records(request, returns) {
-        const p = request;
+        const p = request.copy();
         p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
 

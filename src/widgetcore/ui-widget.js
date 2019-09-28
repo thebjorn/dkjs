@@ -74,7 +74,7 @@ export class UIWidget extends BaseWidget {
     }
 
     start_busy() {
-        dk.debug("START-BUSY: ", this.id);
+        // dk.debug("START-BUSY: ", this.id);
         if (this._widget_props.busy) return;
         // if (this.__busy) return;
         const shim_id = counter('busy-shim-');
@@ -109,7 +109,7 @@ export class UIWidget extends BaseWidget {
     }
 
     end_busy() {
-        dk.debug("END-BUSY: ", this.id);
+        // dk.debug("END-BUSY: ", this.id);
         // if (!this.__busy) return;
         if (!this._widget_props.busy) return;
         window.clearInterval(this.busyID);
