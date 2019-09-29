@@ -15,19 +15,20 @@ test("radio-select-widget", () => {
             'world'
         ]
     });
-    // w.value = 'hello';
-    console.log("W:DATA:", w.data);
-    // expect(w.value).toEqual(['hello']);
-    console.log("CHECKED VAL:", w.widget(':checked').length);
-    // console.log("RADIOS:", w._radios.map(r => r.prop('checked')));
-    // console.log("RADIOS:", w._radios.forEach(r => console.log(r[0].outerHTML)));
-    // console.log(w);
-    // expect(w.widget(':radio:checked').val()).toBe("hello");
+    expect(w.options).toEqual({"hello": "hello", "world": "world"});
+    expect(w.value).toEqual([]);
+    expect(w._selected).toEqual({hello: false, world: false});
     
-    console.log(work.html());
-    work.find(':radio:eq(1)').click().change();   // FIXME: FAILS here (no change recorded).
-    console.log(work.html());
-    console.log(w.toString());
+    work.find('input[type=radio]:eq(0)').click().change();
+    
+    expect(w.widget('input[type=radio]:checked')).toHaveLength(1);
+    expect(w.widget('input[type=radio]:checked').val()).toEqual('hello');
+    expect(w.value).toEqual(["hello"]);
+    
+    // console.log(work.html());
+    work.find(':radio:eq(1)').click().change(); 
+    // console.log(work.html());
+    // console.log(w.toString());
     
     expect(w.value).toEqual(["world"]);
     // expect(w.formatted_value()).toBe('hello');

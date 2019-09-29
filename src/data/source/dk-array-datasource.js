@@ -121,9 +121,30 @@ export class ArraySource extends DataSource {
             });
         });        
     }
+
+    /**
+     * One of the tests passes `{}` as the request (and this might be useful in other
+     * scenarios as well, so this ugly duplication of DataQuery.copy() is needed here...
+     * @param r
+     * @returns {{filter: (*|{}), search: (*|string), pagesize: (number|*), start: (number|*), end: *, sort: (*|Array), pagenum: (*|number|ArraySource._copy_request.props.pagenum), orphans: (number|*)}|*|AssignmentTrackerState|{filter: *, search: *, pagesize: *, start: *, end: *, sort: *, pagenum: *, orphans: *}}
+     * @private
+     */
+    _copy_request(r) {
+        if (r.copy) return r.copy();
+        return {
+            pagesize: r.pagesize,
+            pagenum: r.pagenum,
+            start: r.start,
+            end: r.end,
+            orphans: r.orphans,
+            search: r.search,
+            sort: r.sort,
+            filter: r.filter
+        };
+    }
     
     get_records(request, returns) {
-        const p = request.copy();
+        const p = this._copy_request(request);
         p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
 

@@ -226,10 +226,10 @@ export class SelectWidget extends InputWidget {
         this._selected = {};
         this.options = options;
         
-        console.log("SELECT:WIDGET:CTOR:VALUE:", value);
-        // XXX: Object.keys(value) below is wrong..
-        if (!this.multiple && Object.keys(value).length > 1) throw "cannot have multiple values when multiple=false";
-        Object.keys(value).forEach(k => this._selected[k] = true);
+        // console.log("SELECT:WIDGET:CTOR:VALUE:", value);
+        if (!Array.isArray(value)) throw `value should be an array, not ${JSON.stringify(values)}`;
+        if (!this.multiple && value.length > 1) throw "cannot have multiple values when multiple=false";
+        value.forEach(k => this._selected[k] = true);
     }
     get options() { return this._options; }
     set options(options) {
@@ -250,13 +250,17 @@ export class SelectWidget extends InputWidget {
     }
     
     set value(v) {
-        if (!Array.isArray(v)) v = [v];
-        if (!this.multiple && v.length > 1) throw "Cannot set multiple values when multiple = false!";
+        if (!this._status.updating_from_data) {
+            if (!Array.isArray(v)) v = [v];
+            if (!this.multiple && v.length > 1) throw "Cannot set multiple values when multiple = false!";
 
-        this._clear_selections();
-        this._set_selections(v);
+            this._clear_selections();
+            this._set_selections(v);
 
-        this.data.value = v;
+            this.data.value = v;
+            if (this.datasource) this.datasource.value = v;
+            this.trigger('value-changed', this.value);
+        }
         return v;
     }
     
@@ -274,9 +278,9 @@ export class SelectWidget extends InputWidget {
     }
     
     set dom_value(v) {
-        ++this._updating;
-        this.widget().val(v);
-        --this._updating;
+        if (!this._status.updating_from_widget) {
+            this.widget().val(v);
+        }
     }
     
     rebuild_options() {
@@ -327,16 +331,16 @@ export class RadioSelectWidget extends SelectWidget {
     }
     
     set dom_value(v) {
-        if (v == null) return;
-        ++this._updating;
-        const values = v.value || v.v || v;
-        if (!Array.isArray(values)) throw `value should be an array, not ${JSON.stringify(values)}`;
-        // this.widget(':radio').val(values);
-        values.forEach(val => {
-            this.widget(`:radio[value="${val}"]`).prop("checked", true);
-            this.widget(`:radio[value="${val}"]`).attr("checked", "checked");
-        });
-        --this._updating;
+        if (!this._status.updating_from_widget) {
+            if (v == null) return;
+            const values = v.value || v.v || v;
+            if (!Array.isArray(values)) throw `value should be an array, not ${JSON.stringify(values)}`;
+            // this.widget(':radio').val(values);
+            values.forEach(val => {
+                this.widget(`:radio[value="${val}"]`).prop("checked", true);
+                this.widget(`:radio[value="${val}"]`).attr("checked", "checked");
+            });
+        }
     }
     
     rebuild_options() {
@@ -360,6 +364,20 @@ export class RadioSelectWidget extends SelectWidget {
             this.widget().append('\n        ');
         });
     }
+
+    /**
+     * "Automatically" called (from handlers) when the dom has changed
+     * @param event
+     */
+    widget_changed(event) {
+        this._status.updating_from_widget = true;
+        if (event.type === 'change') {
+            this._clear_selections();
+            this._selected[event.item.value] = event.item.checked;
+            this._set_value_from_selected();
+        }
+        this._status.updating_from_widget = false;
+    }
     
     handlers() {
         const self = this;
@@ -367,7 +385,7 @@ export class RadioSelectWidget extends SelectWidget {
             self.widget_changed({
                 type: 'change',
                 event: e,
-                item: self
+                item: this
             });
             self.trigger('change', e, self);
         });
@@ -384,12 +402,12 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
     }
     
     set dom_value(v) {
-        if (v == null) return;
-        ++this._updating;
-        const value = v.value || v.v || v;
-        if (!Array.isArray(value)) throw `value should be an array, not ${JSON.stringify(value)}`;
-        this.widget(':checkbox').val(value);
-        --this._updating;
+        if (!this._status.updating_from_widget) {
+            if (v == null) return;
+            const value = v.value || v.v || v;
+            if (!Array.isArray(value)) throw `value should be an array, not ${JSON.stringify(value)}`;
+            this.widget(':checkbox').val(value);
+        }
     }
     
     rebuild_options() {
@@ -419,15 +437,16 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
    
     widget_changed(event) {
         // called from function set up in .handers() below..
-        console.debug("WIDGET:CHANGED:", this.value, event.item.value, event.item.checked, this._updating);
-        if (this._updating++ === 0 && event.type === 'change') {
-            console.debug("SELECTED:BEFORE:", this._selected);
+        this._status.updating_from_widget = true;
+        // console.debug("IN:WIDGET:CHANGED:this.value", this.value, "CLICKED:ON:", event.item.value, "NEW:VALUE:", event.item.checked, this._status);
+        if (event.type === 'change') {
+            // console.debug("SELECTED:BEFORE:", this._selected);
             this._selected[event.item.value] = event.item.checked;
-            console.debug("SELECTED:AFTER:", this._selected);
+            // console.debug("SELECTED:AFTER:", this._selected);
             this._set_value_from_selected();
-            console.debug("WIDGET:CHANGED:VALUE:", this.value);
+            // console.debug("WIDGET:CHANGED:VALUE:", this.value);
         }
-        --this._updating;
+        this._status.updating_from_widget = false;
     }
     
     handlers() {

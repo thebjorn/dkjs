@@ -56,7 +56,10 @@ test("checkbox-select-widget-dom-changed", () => {
         ],
         value: ['hello', 'world']
     });
-    console.log('------------------------------------------')
+    expect(w.options).toEqual({"beautiful": "beautiful", "hello": "hello", "world": "world"});
+    expect(w.value).toEqual(['hello', 'world']);
+    expect(w._selected).toEqual({hello: true, beautiful: false, world: true});
+    console.log('------------------------------------------');
     w.widget(':checkbox:eq(0)').click().change();
     console.log(work.html());
     expect(w.value).toEqual(['world']);

@@ -3,37 +3,20 @@ import $ from "jquery";
 import page from "../../widgetcore/dk-page";
 import {ArraySource} from "../../data/source/dk-array-datasource";
 import {DataSet} from "../../data/dk-dataset";
-
-
-// function debug_item(v) {
-//     console.log(v);
-//     console.dir(v);
-//    
-// }
-//
-// function debug_work_item(w) {
-//     // console.log("W:HTML:", w.html());
-//     // console.log("W:EACH:HTML:");
-//     const children = w.find('> *');
-//     console.log("FOUND:", children.length, "CHILDREN");
-//     // if (children.length === 0) return;
-//    
-//     if (children.length > 1) {
-//         children.each(function (i, item) {
-//             debug_item(item);
-//         });
-//     } else {
-//         debug_item(w);
-//     }
-// }
+import {DataTable} from "../../widgets/table/data-table";
 
 
 test("test-ds-formwidget", () => {
-    document.body.innerHTML = `<div id="work"></div>`;
+    document.body.innerHTML = `
+        <div id="work">
+            <div id="table"></div>
+            <div id="txtinput"></div>
+        </div>
+    `;
     const work = $('#work');
     page.initialize(document);
-    
-    const ds = new DataSet({
+
+    const dt = DataTable.create_inside('#table', {
         datasource: [
             {f: 'a'},
             {f: 'b'},
@@ -41,14 +24,12 @@ test("test-ds-formwidget", () => {
         ]
     });
     
-    const w = TextInputWidget.create_inside(work, {
-        value: ds[1].f
+    const w = TextInputWidget.create_inside('#txtinput', {
+        datasource: dt.table_data.value_ref({pk: 1, field: 'f'})
     });
 
-    console.log(work.html());
-    // debug_work_item(work.find('.TextInputWidget'));
-    console.log(w.toString());
-    // console.log(w);
-    
-    expect(work.html()).toEqual("");
+    expect(dt.values()[1][0]).toEqual('b');
+    expect(w.value).toEqual('b');
+    w.value = 'foo';
+    expect(dt.values()[1][0]).toEqual('foo');
 });
