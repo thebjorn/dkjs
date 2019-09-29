@@ -5,11 +5,7 @@ import utidy from "../../browser/dk-html";
 
 
 test("radio-select-widget", () => {
-    document.body.innerHTML = `
-        <div id="work">
-            
-        </div>
-    `;
+    document.body.innerHTML = `<div id="work"></div>`;
     const work = $('#work');
     page.initialize(document);
 
@@ -19,19 +15,22 @@ test("radio-select-widget", () => {
             'world'
         ]
     });
-    w.value = 'hello';
-    expect(w.value).toEqual({hello: 'hello'});
-    console.log("CHECKED VAL:", w.widget(':checked').length);
-    // console.log("RADIOS:", w._radios.map(r => r.prop('checked')));
-    // console.log("RADIOS:", w._radios.forEach(r => console.log(r[0].outerHTML)));
-    console.log(w);
-    expect(w.widget(':radio:checked').val()).toBe("hello");
+    expect(w.options).toEqual({"hello": "hello", "world": "world"});
+    expect(w.value).toEqual([]);
+    expect(w._selected).toEqual({hello: false, world: false});
     
-    work.find(':radio:eq(1)').click().change();
+    work.find('input[type=radio]:eq(0)').click().change();
+    
+    expect(w.widget('input[type=radio]:checked')).toHaveLength(1);
+    expect(w.widget('input[type=radio]:checked').val()).toEqual('hello');
+    expect(w.value).toEqual(["hello"]);
+    
     // console.log(work.html());
-    console.log(w.toString());
+    work.find(':radio:eq(1)').click().change(); 
+    // console.log(work.html());
+    // console.log(w.toString());
     
-    expect(w.value).toEqual({world: "world"});
+    expect(w.value).toEqual(["world"]);
     // expect(w.formatted_value()).toBe('hello');
     // expect(w.get_field_value()).toMatchObject({v: "0", f: 'hello'});
 

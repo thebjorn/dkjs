@@ -1,0 +1,51 @@
+@startuml
+Widget <|-- InputWidget
+InputWidget <|-- TextInputWidget
+InputWidget <|-- DurationWidget
+InputWidget <|-- RadioInputWidget
+InputWidget <|-- SelectWidget
+SelectWidget <|-- RadioSelectWidget
+RadioSelectWidget <|-- CheckboxSelectWidget
+InputWidget <|-- TriboolWidget
+
+class InputWidget {
+    #value
+    #dom_value
+
+    formatted_value()
+    get_field_value()
+    data_changed(...)
+    widget_changed(event)
+
+    stringify(val)
+    parse(str)
+    
+    handlers()
+}
+
+class RadioInputWidget {
+    #checked
+}
+
+class SelectWidget {
+    #options
+    #value
+    #dom_value
+}
+
+class RadioSelectWidget {
+    #dom_value
+
+    rebuild_options()
+    handlers()
+}
+
+
+class CheckboxSelectWidget {
+    #dom_value
+
+    rebuild_options()
+    widget_changed(event)
+    handlers()
+}
+@enduml

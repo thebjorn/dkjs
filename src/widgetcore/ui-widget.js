@@ -74,7 +74,7 @@ export class UIWidget extends BaseWidget {
     }
 
     start_busy() {
-        dk.debug("START-BUSY: ", this.id);
+        // dk.debug("START-BUSY: ", this.id);
         if (this._widget_props.busy) return;
         // if (this.__busy) return;
         const shim_id = counter('busy-shim-');
@@ -109,7 +109,7 @@ export class UIWidget extends BaseWidget {
     }
 
     end_busy() {
-        dk.debug("END-BUSY: ", this.id);
+        // dk.debug("END-BUSY: ", this.id);
         // if (!this.__busy) return;
         if (!this._widget_props.busy) return;
         window.clearInterval(this.busyID);
@@ -202,12 +202,12 @@ export class UIWidget extends BaseWidget {
 
         this.initialize();
         this._widget_props.visible = true;
-        console.log("CHECKED:LEN:1", this.widget().find('input:checked').length);
+        // console.log("CHECKED:LEN:1", this.widget().find('input:checked').length);
 
         if (this.handlers) this.handlers();
-        console.log("CHECKED:LEN:2", this.widget().find('input:checked').length);
+        // console.log("CHECKED:LEN:2", this.widget().find('input:checked').length);
         this.render_data();
-        console.log("CHECKED:LEN:3", this.widget().find('input:checked').length);
+        // console.log("CHECKED:LEN:3", this.widget().find('input:checked').length);
 
         this._widget_props.ready = true;
         // this.__ready = true;
@@ -376,13 +376,14 @@ export class UIWidget extends BaseWidget {
         return this.create_on(location, attrs);
     }
 
-    static create_on(location, attrs) {
+    static create_on(loc, attrs) {
         // we _must_ generate an id for this widget, so that
         // this.widget() works.
         try {
             const w = new this(attrs);
             // if (!location.jquery) location = dk.$(location);
-            if (typeof location === 'string') location = dk.$(location);
+            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (location.length === 0) throw `Location ${loc} not found in document.`;
             page.create_widget(w, {on: location});
             return w;
         } catch (e) {
@@ -390,12 +391,13 @@ export class UIWidget extends BaseWidget {
         }
     }
 
-    static create_inside(location, attrs) {
+    static create_inside(loc, attrs) {
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
             const w = new this(attrs);
-            if (typeof location === 'string') location = dk.$(location);
+            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (location.length === 0) throw `Location ${loc} not found in document.`;
             page.create_widget(w, {inside: location});
             return w;
         } catch (e) {
@@ -403,12 +405,13 @@ export class UIWidget extends BaseWidget {
         }
     }
 
-    static append_to(location, attrs) {
+    static append_to(loc, attrs) {
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
             const w = new this(attrs);
-            if (typeof location === 'string') location = dk.$(location);
+            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (location.length === 0) throw `Location ${loc} not found in document.`;
             page.create_widget(w, {inside: location, append: true});
             return w;
         } catch (e) {

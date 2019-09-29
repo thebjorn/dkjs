@@ -23,12 +23,12 @@ test("test-select-multiple-filterdef", () => {
     // console.log(work.html());
     // expect(work.html()).toMatchSnapshot();
 
-    expect(sofd.value).toEqual({});
+    expect(sofd.value).toEqual([]);
 
     work.find(':checkbox:eq(0)').click();
-    expect(sofd.value).toEqual({"1": 1});
+    expect(sofd.value).toEqual(["1"]);
 
     work.find(':checkbox:eq(1)').click();
-    expect(sofd.value).toEqual({"1": 1, "2": 2});
+    expect(sofd.value).toEqual(["1", "2"]);
 
 });

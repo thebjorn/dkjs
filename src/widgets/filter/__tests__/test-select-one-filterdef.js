@@ -19,13 +19,13 @@ test("test-select-one-filterdef", () => {
     console.log(work.html());
     expect(work.html()).toMatchSnapshot();
     
-    expect(sofd.value).toEqual({});
+    expect(sofd.value).toEqual([]);
     
     work.find(':radio:eq(0)').click();
-    expect(sofd.value).toEqual({"1": 1});
+    expect(sofd.value).toEqual(["1"]);
 
     work.find(':radio:eq(1)').click();
-    expect(sofd.value).toEqual({"2": 2});
+    expect(sofd.value).toEqual(["2"]);
 
     // expect(utidy(work.html())).toEqual(utidy(`
     //

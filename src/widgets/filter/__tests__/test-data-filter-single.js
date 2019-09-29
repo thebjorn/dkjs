@@ -31,7 +31,7 @@ test("test-data-filter-single", () => {
     expect(work.html()).toMatchSnapshot();
     
     work.find(':radio:eq(1)').click();
-    expect(set_filter_vals).toEqual({filter_name: {"2": 2}});
+    expect(set_filter_vals).toEqual({filter_name: ["2"]});
     
     // expect(utidy(work.html())).toEqual(utidy(`
     //

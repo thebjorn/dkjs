@@ -62,9 +62,18 @@ export class DataPage extends Class {
     }
     // --------------------------------------------------
 
+    /**
+     * Note/remember/record that records[pk].field has changed so we can
+     * update the datasource some time in the future.
+     * 
+     * @param pk
+     * @param field
+     * @param newval
+     * @param oldval
+     * @param widget
+     */
     add_dirty(pk, field, newval, oldval, widget) {
         const dirtyrec = this.dirtyset[pk] || {};
-        //if (dirtyrec && dirtyrec.newval != oldval) dk.error("Data synchronization error:", pk, field, newval, oldval, this);
         dirtyrec[field.name] = {
             oldval: oldval,
             newval: newval
@@ -79,6 +88,12 @@ export class DataPage extends Class {
     }
 
     // --------------------------------------------------
+    /**
+     * Get the object/record with primary key `pk`.
+     * 
+     * @param pk        primary key
+     * @returns {*}     record
+     */
     get_record(pk) {
         return this.record[pk];
     }

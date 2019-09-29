@@ -92,6 +92,10 @@ export class DataQuery extends Class {
         if (is.isEqual(data.ft, {})) delete data.ft;
         return data;
     }
+    
+    toCacheKey() {
+        return Object.entries(this._axdata()).map(([k,v]) => `${k}=${v}`).join('&');
+    }
 
     toGetParams() {
         return 'state=' + encodeURIComponent(JSON.stringify(this._axdata()));

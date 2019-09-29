@@ -5,6 +5,42 @@
  */
 import counter from "../../core/counter";
 import Class from "../../lifecycle/coldboot/dk-class";
+import dk from "../../dk-obj";
+
+
+// export class Channel {
+//     constructor(src, dst) {
+//         this.src = src;
+//         this.dst = dst;
+//     }
+// }
+
+export class ValueRef extends Class {
+    constructor(pk, field) {
+        super();
+        this.pk = pk;
+        this.field = field;
+        this._value = null;
+        // this.fetch = () => null;
+    }
+    
+    set value(val) {
+        if (val !== this._value) {
+            this._value = val;
+            // console.log("VALUE:REF:VALUE_CHANGED:", val);
+            dk.trigger(this, 'value-changed', val);
+        }
+    }
+    
+    get value() { return this._value; }
+    
+    update(ds) {
+        ds.update([{
+            pk: this.pk,
+            [this.field]: this.value,
+        }]);
+    }
+}
 
 
 export class DataSource extends Class {
@@ -16,6 +52,15 @@ export class DataSource extends Class {
         this.id = this.name = counter('datasource_');
     }
 
+    // /**
+    //  * Return a ValueRef to the field named `field`, in the record 
+    //  * with primary key `pk`. 
+    //  * @param pk
+    //  * @param field
+    //  */
+    // value_ref(pk, field) { return new ValueRef(pk, field); }
+    //
+    
     /*
      *  Fill out request with defaults for missing values.
      */

@@ -93,7 +93,7 @@ export function trigger(obj, signal, ...args) {
         const obj_str = debugstr(obj);
         const nl = obj_str.length > 90 ? '\n           ' : ' ';
         const argsval = (args.length === 1 && args[0] === obj) ? 'self' : args;
-        dkconsole.debug(`dk.trigger[signal=${signal}](${obj_str},${nl}ARGS=[${argsval}])`);
+        // dkconsole.debug(`dk.trigger[signal=${signal}](${obj_str},${nl}ARGS=[${argsval}])`);
     }
     if (obj[listeners]) {
         if (obj[listeners][signal]) {

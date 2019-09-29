@@ -2,6 +2,7 @@
  *  dk.forms namespace
  *
  *  The purpose of these widgets is to auto-create widgets for inline editing of grids.
+ *  (and filters..?)
  */
 
 import dk from "../dk-obj";
@@ -75,7 +76,6 @@ export class DurationWidget extends InputWidget {
         if (val instanceof Duration) return val.toString();
         return (new Duration(val)).toString();
     }
-
 }
 
 
@@ -129,16 +129,15 @@ export class RadioInputWidget extends InputWidget {
  */
 
 /**
- * create an options dict `{name -> value} from either
+ * create an options dict {name -> value} from either
  *
  *  (a) an options dict,
  *  (b) a flat array, or
  *  (c) a [[key, val], ..] array.
  *
  * @param options - key value dict
- * @param validate - optional validation function
  */
-function create_options(options, validate) {
+function create_options(options) {
     if (options == null) return {};
     let result = {};
     // let order = [];
@@ -171,18 +170,38 @@ function create_options(options, validate) {
         // order = Object.keys(options);
     }
 
-    if (validate) {
-        Object.keys(result).forEach(k => {
-            if (result[k] !== validate[k]) {
-                throw dedent`
-                    Illegal value (${k}) - not in options
-                    VALUES: ${JSON.stringify(result)}
-                    VALIDATE: ${JSON.stringify(validate)} 
-                `;
-            }
-        });
-    }
+    // if (validate) {
+    //     Object.keys(result).forEach(k => {
+    //         if (result[k] !== validate[k]) {
+    //             throw dedent`
+    //                 Illegal value (${k}) - not in options
+    //                 VALUES: ${JSON.stringify(result)}
+    //                 VALIDATE: ${JSON.stringify(validate)} 
+    //             `;
+    //         }
+    //     });
+    // }
+    // console.log("CREATE:OPTIONS:OPTIONS:", options);
+    // console.log("CREATE:OPTIONS:VALIDATE:", validate);
+    // console.log("CREATE:OPTIONS:RESULT:", result);
     return result;
+}
+
+
+function _validate_option_values(values, options) {
+    if (values == null) return [];
+    if (!Array.isArray(values)) values = [values];
+    const keys = Object.keys(options);
+    values.forEach(v => {
+        if (!keys.includes(v)) {
+            throw dedent`
+                Illegal value (${v}) - not in options
+                VALUES: ${JSON.stringify(values)}
+                OPTIONS: ${JSON.stringify(options)} 
+            `;
+        }
+    });
+    return values;
 }
 
 
@@ -190,10 +209,11 @@ export class SelectWidget extends InputWidget {
     constructor(...args) {
         // console.log("ARGS:", args);
         const props = Object.assign({}, ...args);
+        
         const options = create_options(props.options);
         delete props.options;
         
-        const value = create_options(props.value, options);
+        const value = _validate_option_values(props.value, options);
         delete props.value;
         
         super({
@@ -205,8 +225,11 @@ export class SelectWidget extends InputWidget {
 
         this._selected = {};
         this.options = options;
-        if (!this.multiple && Object.keys(value).length > 1) throw "cannot have multiple values when multiple=false";
-        Object.keys(value).forEach(k => this._selected[k] = true);
+        
+        // console.log("SELECT:WIDGET:CTOR:VALUE:", value);
+        if (!Array.isArray(value)) throw `value should be an array, not ${JSON.stringify(values)}`;
+        if (!this.multiple && value.length > 1) throw "cannot have multiple values when multiple=false";
+        value.forEach(k => this._selected[k] = true);
     }
     get options() { return this._options; }
     set options(options) {
@@ -214,42 +237,50 @@ export class SelectWidget extends InputWidget {
         Object.keys(this._options).forEach(k => this._selected[k] = false);
     }
 
-    get value() {
-        // make a real array from the keys
-        const res = [];
-        Object.keys(this.data.value).forEach(k => res.push(k));
-        return res;
-    }
-    set value(v) {
-        if (!Array.isArray(v)) v = [v];
-        if (!this.multiple) {
-            if (v.length > 1) throw "Cannot set multiple values when multiple = false!";
-        }
+    get value() { return this.data.value; }   // default implementation
+    
+    _clear_selections() {
+        // remove all selected options
         Object.keys(this._selected).forEach(k => this._selected[k] = false);
-        v.forEach(k => this._selected[k] = true);
-        return this._set_value_from_selected();
     }
-    _get_value_from_selected() {
-        // const val = [];
-        // Object.entries(this._selected).forEach(([k, v]) => {
-        //     if (v) val.push(k);
-        // });
-        // return val;
-        const val = {};
-        Object.entries(this._selected).forEach(([k, v]) => {
-            if (v) val[k] = this.options[k];
-        });
-        return val;
+    
+    _set_selections(values) {
+        // values is a list of options/_selected keys
+        values.forEach(k => this._selected[k] = true);
     }
+    
+    set value(v) {
+        if (!this._status.updating_from_data) {
+            if (!Array.isArray(v)) v = [v];
+            if (!this.multiple && v.length > 1) throw "Cannot set multiple values when multiple = false!";
+
+            this._clear_selections();
+            this._set_selections(v);
+
+            this.data.value = v;
+            if (this.datasource) this.datasource.value = v;
+            this.trigger('value-changed', this.value);
+        }
+        return v;
+    }
+    
     _set_value_from_selected() {
         this.data.value = this._get_value_from_selected();
         return this.data.value;
     }
     
+    _get_value_from_selected() {
+        const val = [];
+        Object.entries(this._selected).forEach(([k, v]) => {
+            if (v) val.push(k);
+        });
+        return val;
+    }
+    
     set dom_value(v) {
-        ++this._updating;
-        this.widget().val(v);
-        --this._updating;
+        if (!this._status.updating_from_widget) {
+            this.widget().val(v);
+        }
     }
     
     rebuild_options() {
@@ -281,9 +312,11 @@ export class SelectWidget extends InputWidget {
             this.dom_value = this.value;
         }
     }
+    
     formatted_value() {
         return this.options[this.value];
     }
+    
     get_field_value() {
         return {v: this.value, f: this.formatted_value()};
     }
@@ -296,15 +329,20 @@ export class RadioSelectWidget extends SelectWidget {
             template: {root: 'div'},
         }, ...args);
     }
+    
     set dom_value(v) {
-        if (v == null) return;
-        ++this._updating;
-        const value = v.value || v.v || v;
-        Object.keys(value).forEach(val => {
-            this.widget(`:radio[value="${val}"]`).prop("checked", true);
-        });
-        --this._updating;
+        if (!this._status.updating_from_widget) {
+            if (v == null) return;
+            const values = v.value || v.v || v;
+            if (!Array.isArray(values)) throw `value should be an array, not ${JSON.stringify(values)}`;
+            // this.widget(':radio').val(values);
+            values.forEach(val => {
+                this.widget(`:radio[value="${val}"]`).prop("checked", true);
+                this.widget(`:radio[value="${val}"]`).attr("checked", "checked");
+            });
+        }
     }
+    
     rebuild_options() {
         const widget = this.widget();
         widget.empty();
@@ -320,12 +358,27 @@ export class RadioSelectWidget extends SelectWidget {
             }).text(value);
             radio.val(attr);
             // noinspection EqualityComparisonWithCoercionJS
-            if (this.value == attr) radio.prop('checked', true);  // we want 1 == "1" here
+            if (this.value.includes(attr)) radio.prop('checked', true);  // we want 1 == "1" here
             label.prepend(radio);
             this.widget().append(label);
             this.widget().append('\n        ');
         });
     }
+
+    /**
+     * "Automatically" called (from handlers) when the dom has changed
+     * @param event
+     */
+    widget_changed(event) {
+        this._status.updating_from_widget = true;
+        if (event.type === 'change') {
+            this._clear_selections();
+            this._selected[event.item.value] = event.item.checked;
+            this._set_value_from_selected();
+        }
+        this._status.updating_from_widget = false;
+    }
+    
     handlers() {
         const self = this;
         this.widget().on('change', ':radio', function (e) {
@@ -349,26 +402,19 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
     }
     
     set dom_value(v) {
-        if (v == null) return;
-        ++this._updating;
-        const value = v.value || v.v || v;
-        this.widget(`:checkbox`).prop("checked", false);
-        // this.widget(`:checkbox`).removeAttr("checked");
-        Object.keys(value).forEach(val => {
-            this.widget(`:checkbox[value="${val}"]`).prop("checked", true);
-            // this.widget(`:checkbox[value="${val}"]`).attr("checked", "checked");
-        });
-        --this._updating;
+        if (!this._status.updating_from_widget) {
+            if (v == null) return;
+            const value = v.value || v.v || v;
+            if (!Array.isArray(value)) throw `value should be an array, not ${JSON.stringify(value)}`;
+            this.widget(':checkbox').val(value);
+        }
     }
+    
     rebuild_options() {
-        console.info("REBUILD:OPTIONS:::::::::::::::::::::::")
         const widget = this.widget();
         const self = this;
         widget.empty();
         Object.entries(this.options).forEach(([attr, value]) => {
-            console.log("SELF:THIS:", self === this);
-            console.log("SELF:WIDGET:", self.widget());
-            console.log("THIS:WIDGET:", this.widget());
             const chkbx = this.layout.make('input', {
                 type: 'checkbox',
                 name: this.name,
@@ -380,29 +426,27 @@ export class CheckboxSelectWidget extends RadioSelectWidget {
             }).text(value);
             chkbx.val(attr);
             // noinspection EqualityComparisonWithCoercionJS
-            console.info("THIS:VALUE:", this.value, "ATTR:", attr, "INCLUDES:", this.value.includes(attr));
-            // if (this.value == attr) {  // / we want 1 == "1" here
-            if (this.value.includes(attr)) {  // / we want 1 == "1" here
+            if (this.value.includes(attr)) {
                 chkbx.prop('checked', true);
-                // chkbx.attr('checked', 'checked');
             }
             label.prepend(chkbx);
             widget.append(label);
             widget.append('\n');
         });
-        console.log("REBUILD:OPTIONS:WIDGET:CHECKED:", this.widget().find(':checked').length);
     }
    
     widget_changed(event) {
-        console.debug("WIDGET:CHANGED:", this.value, event.item.value, event.item.checked, this._updating);
-        if (this._updating++ === 0 && event.type === 'change') {
-            console.debug("SELECTED:BEFORE:", this._selected);
+        // called from function set up in .handers() below..
+        this._status.updating_from_widget = true;
+        // console.debug("IN:WIDGET:CHANGED:this.value", this.value, "CLICKED:ON:", event.item.value, "NEW:VALUE:", event.item.checked, this._status);
+        if (event.type === 'change') {
+            // console.debug("SELECTED:BEFORE:", this._selected);
             this._selected[event.item.value] = event.item.checked;
-            console.debug("SELECTED:AFTER:", this._selected);
+            // console.debug("SELECTED:AFTER:", this._selected);
             this._set_value_from_selected();
-            console.debug("WIDGET:CHANGED:VALUE:", this.value);
+            // console.debug("WIDGET:CHANGED:VALUE:", this.value);
         }
-        --this._updating;
+        this._status.updating_from_widget = false;
     }
     
     handlers() {
