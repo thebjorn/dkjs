@@ -43,13 +43,32 @@ export class DataSet extends Class {
         this.pages = {};
         this._filter_data = {};
     }
+    
+    get_record(pk) {
+        return this.page.get_record(pk);
+    }
 
+    set_field_value(pk, field_name, newval) {
+        const record = this.get_record(pk);
+        record[field_name] = newval;
+        dk.trigger(record, 'change', field_name, newval);
+        const field = this.page.get_field(field_name);
+        this.page.add_dirty(pk, field, newval);
+        // NOTE: it is up to the application to call this.update() - most 
+        //       likely after one or more rows have finished changing.
+        // console.log("SET_FIELD_VALUE:PAGE>DIRTYSET:", this.page.dirtyset);
+    }
+    
+    get_field_value(pk, field) {
+        return this.get_record(pk)[field];
+    }
+    
     value_ref({pk, field}) { 
         const vref = new ValueRef(pk, field);
         const get_value = (page) => page ? page.get_record(pk)[field] : null;
-        vref.fetch = () => vref.value = get_value(this.page);
         vref.value = get_value(this.page);
         dk.on(this, 'fetch-data', (self, page) => vref.value = get_value(page));
+        dk.on(vref, 'value-changed', val => this.set_field_value(pk, field, val));
         return vref;
     }
     

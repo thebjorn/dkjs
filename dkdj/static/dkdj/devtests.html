@@ -54,7 +54,7 @@
         const w = dk.forms.TextInputWidget.create_inside('#input-box', {
             datasource: dt.table_data.value_ref({pk:2, field:'project'})
         });
-        dk.on(w, 'value-changed', newval => console.log("ON:W:...set-value...:", newval));
+        // dk.on(w, 'value-changed', newval => console.log("ON:W:...set-value...:", newval));
         // console.log("W:DATASOURCE:", w.datasource);
         // console.log("W:DATASOURCE:dataset", w.datasource.ds);
     </script>

@@ -95,6 +95,14 @@ export class TableCell extends UIWidget {
         this.draw();
         this.editing = false;
     }
+    
+    handlers() {
+        dk.on(this.tablerow.record, 'change', (fieldname, newval) => {
+            if (this.coldef.name === fieldname) {
+                this.draw(newval)
+            }
+        });
+    }
 
     draw(value) {
         const val = this.value === undefined ? value : this.value;

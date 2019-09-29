@@ -21,13 +21,14 @@ export class ValueRef extends Class {
         this.pk = pk;
         this.field = field;
         this._value = null;
-        this.fetch = () => null;
+        // this.fetch = () => null;
     }
     
     set value(val) {
         if (val !== this._value) {
             this._value = val;
-            dk.trigger(this, 'new-value', val);
+            // console.log("VALUE:REF:VALUE_CHANGED:", val);
+            dk.trigger(this, 'value-changed', val);
         }
     }
     
