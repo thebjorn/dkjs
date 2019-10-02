@@ -174,7 +174,7 @@ export class DataTable extends Widget {
 
     set_search(terms) {
         this.table_data.set_search(terms);
-        if (this.state) this.state.set('pagedef', this.table_data.current_pagedef);
+        if (this.state && this.state.set) this.state.set('pagedef', this.table_data.current_pagedef);
     }
 
     set_filter(vals) {

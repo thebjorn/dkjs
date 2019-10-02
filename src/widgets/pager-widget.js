@@ -95,9 +95,9 @@ export class PagerWidget extends Widget {
                 midrange[1] = postrange[1];
                 postrange = null;
             }
-            console.log("PRE:", prerange);
-            console.log("MID:", midrange);
-            console.log("POST:", postrange);
+            // console.log("PRE:", prerange);
+            // console.log("MID:", midrange);
+            // console.log("POST:", postrange);
             if (prerange) {
                 this.draw_range(prerange);
                 this.widget().append(dk.$('<li class="ellipsis"><span>...</span></li>'));
