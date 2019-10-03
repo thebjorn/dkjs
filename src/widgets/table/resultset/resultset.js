@@ -2,7 +2,9 @@ import dk from "../../../dk-obj";
 import {Widget} from "../../../widgetcore/dk-widget";
 import {SearchWidget} from "../../search-widget";
 import {PagerWidget} from "../../pager-widget";
-
+import {dkwarning} from "../../../lifecycle/coldboot/dkwarning";
+import {dedent} from "../../../text/template-functions";
+        
 
 export class ResultSet extends Widget {
     constructor(...args) {
@@ -74,6 +76,21 @@ export class ResultSet extends Widget {
             },
             
         }, ...args);
+        if (!this.dataset) dkwarning(dedent`
+            You should define .dataset on the Resultset (as opposed to inside the construct_table function):
+            
+                dk.ResultSet.create_on(.., {
+                    dataset: dk.data.DataSet.cretae({
+                        datasource: ...
+                        pagesize: 5,
+                        orphans: 4
+                    }),
+                    construct_table: function (location, downloadwidget, ds) {
+                        table_data: ds,
+                        ...
+                    }
+                });
+        `);
     }
 
     collapse_filter(size) {
@@ -121,6 +138,7 @@ export class ResultSet extends Widget {
     construct() {
         this.state = {}; //dk.page.hash.substate(this.id);
         this.table = this.construct_table(this.rowbx.data.content, this.widget('.excel'));
+        console.log("Resultset:construct:end:construct_table");
         if (!this.table) return;
 
         //this.filter = this.construct_filter(this.rowbx.filterbx, this.table);
@@ -144,9 +162,11 @@ export class ResultSet extends Widget {
         //}
     }
     handlers() {
+        console.info("DECLARING Resultset.handlers()");
         if (this.filter) dk.on(this.filter, 'collapse-done', () => this.collapse_filter());
 
         dk.on(this.table.table_data, 'fetch-info', info => {
+            console.log("ResultSet:handler:FETCH:INFO:", info);
             let count = 'many';
             const start_recnum = info.start_recnum || 1;
             const end_recnum = info.end_recnum || 1;

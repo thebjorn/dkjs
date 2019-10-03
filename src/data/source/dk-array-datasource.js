@@ -100,6 +100,7 @@ export class ArraySource extends DataSource {
      *      }
      */
     async fetch_records(request) {
+        console.log("fetch_records:", request);
         const p = request;
         p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
@@ -144,6 +145,8 @@ export class ArraySource extends DataSource {
     }
     
     get_records(request, returns) {
+        // debugger;
+        console.log("get_records:", request);
         const p = this._copy_request(request);
         p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;

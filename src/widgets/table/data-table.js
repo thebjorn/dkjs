@@ -123,6 +123,7 @@ export class DataTable extends Widget {
 
     construct() {
         // this.state = dk.page.hash.substate(this.id);
+        console.info("DataTable:construct");
 
         if (this.download) {
             const $download = dk.$(this.download);
@@ -153,6 +154,7 @@ export class DataTable extends Widget {
     }
 
     handlers() {
+        console.log("Datatable:handlers()");
         //$(this.table_data).on('fetch-data', _.bind(this.draw, this));
         //$bind('fetch-data@data -> draw@me', {data: this.table_data, me: this});
         dk.on(this.table_data, 'fetch-data-start', () => this.start_busy());
@@ -277,6 +279,7 @@ export class DataTable extends Widget {
     }
 
     draw(dataset) {
+        console.log("DataTable:draw:", dataset);
         const self = this;
 
         if (!dataset) {   // NOTE: data source consumer pattern..?  (on: data -> draw?)

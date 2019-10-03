@@ -105,7 +105,7 @@ export class DataSet extends Class {
      * @private
      */
     _new_recordset(recordset, query) {
-        // console.log("_NEW_RECORDSET:QUERY:", query.toCacheKey());
+        console.log("_NEW_RECORDSET:QUERY:", query.toCacheKey());
         const page = DataPage.create({
             query: query,
             recordset: recordset
