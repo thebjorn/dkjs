@@ -20,6 +20,14 @@ export class TableRow extends Widget {
         }, ...args);
     }
     
+    delete_widget() {
+        delete this.record;
+        delete this.table;
+        this.cells.forEach(c => c.delete_widget());
+        this.cells = [];
+        super.delete_widget();
+    }
+
     construct() {
         const record = this.record;
         const table = this.table;

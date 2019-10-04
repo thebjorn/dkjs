@@ -173,7 +173,7 @@ export class UIWidget extends BaseWidget {
     }
     
     delete_widget() {
-        console.log("DELETE:WIDGHET:", this);
+        // console.log("DELETE:WIDGHET:", this);
         if (this.id && page.widgets[this.id]) {
             this.trigger('deleting-widget', this);
 
@@ -182,7 +182,7 @@ export class UIWidget extends BaseWidget {
             // remove widget from $$ (page.widgets)
             delete page.widgets[this.id];
 
-            console.log("DELETE:WIDGHET:", Object.keys(page.widgets));
+            // console.log("DELETE:WIDGHET:", Object.keys(page.widgets));
             this.trigger('deleted-widget', this);
         }
     }
