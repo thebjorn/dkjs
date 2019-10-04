@@ -172,6 +172,21 @@ export class UIWidget extends BaseWidget {
         dk.after(this, 'render_data', fn);
     }
     
+    delete_widget() {
+        console.log("DELETE:WIDGHET:", this);
+        if (this.id && page.widgets[this.id]) {
+            this.trigger('deleting-widget', this);
+
+            this.layout.delete_layout();
+            
+            // remove widget from $$ (page.widgets)
+            delete page.widgets[this.id];
+
+            console.log("DELETE:WIDGHET:", Object.keys(page.widgets));
+            this.trigger('deleted-widget', this);
+        }
+    }
+    
     /*
      *  `construct_widget()` is called by `page.create_widget` when the
      *  page has been initialized.
@@ -195,6 +210,7 @@ export class UIWidget extends BaseWidget {
         // at this point this.widget() exists in the dom and is
         // the element onto which the widget should be created
         page.widgets[this.id] = this;
+        // dk.on(this, 'delete-widget', w => delete page.widgets[w.id]);
         // dkconsole.debug("construct_widget:", this.id);
 
         this.create_layout(this.widget(), this.template, this.structure);

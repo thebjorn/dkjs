@@ -277,6 +277,15 @@ export class DataTable extends Widget {
             self.drawn_header = true;  // only draw header once.
         }
     }
+    
+    delete_body() {
+        this.rows.forEach(r => {
+            r.delete_widget();
+        });
+        this.rows = [];
+        this.layout.clear_body();
+        
+    }
 
     draw(dataset) {
         console.log("DataTable:draw:", dataset);
@@ -288,10 +297,9 @@ export class DataTable extends Widget {
             });
         } else {
             self.draw_header(dataset);
-            dk.trigger(self, 'draw-start', self);
-            self.layout.clear_body();
-            self.rows = [];
+            this.delete_body();
 
+            dk.trigger(self, 'draw-start', self);
             dataset.page.records.forEach(function (record, rownum) {
                 const tr = self.TableRow.create(self.layout.add_row_to('tbody'), {
                     rownum: rownum,
