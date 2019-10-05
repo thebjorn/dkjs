@@ -18,7 +18,7 @@ exports[`test-pagerwidget-with-datatable-datasource-shortcut 1`] = `
       <div
         class="filterbx"
         id="dk-bx-2"
-        style="margin-right: 4px; width: 0px; padding-right: 0px;"
+        style="margin-right: 0px; width: 0px; padding-right: 0px;"
       />
       <div
         class="panel panel-default data"

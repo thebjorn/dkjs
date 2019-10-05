@@ -123,6 +123,7 @@ export class DataTable extends Widget {
 
     construct() {
         // this.state = dk.page.hash.substate(this.id);
+        // console.info("DataTable:construct");
 
         if (this.download) {
             const $download = dk.$(this.download);
@@ -153,6 +154,7 @@ export class DataTable extends Widget {
     }
 
     handlers() {
+        // console.log("Datatable:handlers()");
         //$(this.table_data).on('fetch-data', _.bind(this.draw, this));
         //$bind('fetch-data@data -> draw@me', {data: this.table_data, me: this});
         dk.on(this.table_data, 'fetch-data-start', () => this.start_busy());
@@ -174,7 +176,7 @@ export class DataTable extends Widget {
 
     set_search(terms) {
         this.table_data.set_search(terms);
-        if (this.state) this.state.set('pagedef', this.table_data.current_pagedef);
+        if (this.state && this.state.set) this.state.set('pagedef', this.table_data.current_pagedef);
     }
 
     set_filter(vals) {
@@ -275,8 +277,18 @@ export class DataTable extends Widget {
             self.drawn_header = true;  // only draw header once.
         }
     }
+    
+    delete_body() {
+        this.rows.forEach(r => {
+            r.delete_widget();
+        });
+        this.rows = [];
+        this.layout.clear_body();
+        
+    }
 
     draw(dataset) {
+        // console.log("DataTable:draw:", dataset);
         const self = this;
 
         if (!dataset) {   // NOTE: data source consumer pattern..?  (on: data -> draw?)
@@ -285,10 +297,9 @@ export class DataTable extends Widget {
             });
         } else {
             self.draw_header(dataset);
-            dk.trigger(self, 'draw-start', self);
-            self.layout.clear_body();
-            self.rows = [];
+            this.delete_body();
 
+            dk.trigger(this, 'draw-start', this);
             dataset.page.records.forEach(function (record, rownum) {
                 const tr = self.TableRow.create(self.layout.add_row_to('tbody'), {
                     rownum: rownum,
@@ -297,7 +308,7 @@ export class DataTable extends Widget {
                 });
                 self.rows.push(tr);
             });
-            dk.trigger(self, 'draw-end', self);
+            dk.trigger(this, 'draw-end', this);
         }
     }
 }

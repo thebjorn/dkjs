@@ -2,7 +2,9 @@ import dk from "../../../dk-obj";
 import {Widget} from "../../../widgetcore/dk-widget";
 import {SearchWidget} from "../../search-widget";
 import {PagerWidget} from "../../pager-widget";
-
+import {dkwarning} from "../../../lifecycle/coldboot/dkwarning";
+import {dedent} from "../../../text/template-functions";
+        
 
 export class ResultSet extends Widget {
     constructor(...args) {
@@ -74,6 +76,24 @@ export class ResultSet extends Widget {
             },
             
         }, ...args);
+        if (this.add_widget === false) delete this.structure.rowbx.data.header.commands.add;
+        if (this.download_widget === false) delete this.structure.rowbx.data.header.commands.csv;
+        
+        if (!this.dataset) dkwarning(dedent`
+            You should define .dataset on the Resultset (as opposed to inside the construct_table function):
+            
+                dk.ResultSet.create_on(.., {
+                    dataset: dk.data.DataSet.cretae({
+                        datasource: ...
+                        pagesize: 5,
+                        orphans: 4
+                    }),
+                    construct_table: function (location, downloadwidget, ds) {
+                        table_data: ds,
+                        ...
+                    }
+                });
+        `);
     }
 
     collapse_filter(size) {
@@ -90,6 +110,7 @@ export class ResultSet extends Widget {
         // override this method to attach a filter.  The default version removes the
         // filter box and stretches the data box to full width.
         location.css({
+            marginRight: 0,
             paddingRight: 0,
             width: 0
         });
@@ -103,12 +124,16 @@ export class ResultSet extends Widget {
         }
     }
 
-    // called automatically when structure.header.search have been created.
+    // Called automatically when structure.header.search have been created.
+    // (because.. structure/layout/widget work together so any structure element `foo`,
+    // will look for and call a corresponding `widget.construct_foo(location)` method...
+    // yes, magic.)
     construct_search(location) {
         return SearchWidget.create_inside(location, {});
     }
 
     construct_pager(location, state) {
+        // console.log("CONSTRUCTING_PAGER", location, state);
         this.pager = null;
         return PagerWidget.create_inside(location, state);
     }
@@ -119,66 +144,57 @@ export class ResultSet extends Widget {
     }
 
     construct() {
+        // subwidget handlers
+        if (this.dataset) dk.on(this.dataset, 'fetch-info', info => this._update_info(info));
         this.state = {}; //dk.page.hash.substate(this.id);
-        this.table = this.construct_table(this.rowbx.data.content, this.widget('.excel'));
+        this.header = this.rowbx.data.header;
+        this.table = this.construct_table(
+            this.rowbx.data.content, 
+            this.widget('.excel'), 
+            this.dataset
+        );
+        // console.log("Resultset:construct:end:construct_table");
         if (!this.table) return;
-
-        //this.filter = this.construct_filter(this.rowbx.filterbx, this.table);
         this.filter = this.construct_filter(this.rowbx.filterbx, this.table.table_data);
-        // if (this.filter) this.filter.data = this.table.table_data;  // connect filter widget to data-set.
-
         this.pager = this.construct_pager(this.rowbx.data.footer, {});
         this.table.set_pager(this.pager);
-
-        this.header = this.rowbx.data.header;
-
-        //if (this.rowbx.filterbx.is(':empty')) {
-        //    this.rowbx.data.css('width', '100%');
-        //} else {
-        //    this.rowbx.css({display: 'flex'});
-        //    this.rowbx.filterbx.css({
-        //        width: this.filter_size + "%",
-        //        paddingRight: 4
-        //    });
-        //    this.rowbx.data.css('width',  (100 - this.filter_size) + "%");
-        //}
     }
+    
+    _update_info(info) {
+        // console.log("ResultSet:handler:_update_info:", info);
+        let count = 'many';
+        const start_recnum = info.start_recnum || 0;
+        const end_recnum = info.end_recnum || 0;
+        const filter_count = info.filter_count || 0;
+        const totcount = info.totcount || 0;
+
+        if (end_recnum - start_recnum === 0) count = 'none';
+        if (end_recnum - start_recnum === 1) count = 'one';
+
+        let infotxt = '<span class="info">';
+        const total = `<span class="tot">(totalt: ${totcount})</span>`;
+        // console.log("SWITCH:", count);
+
+        switch (count) {
+            case 'none':
+                infotxt += `viser 0 av ${filter_count}`;
+                break;
+            case 'one':
+                infotxt += `post nr. ${start_recnum + 1} av ${filter_count}`;
+                break;
+            case 'many':
+                infotxt += `viser ${start_recnum + 1}&ndash;${end_recnum} av ${filter_count}`;
+                break;
+        }
+        infotxt += '</span>';
+
+        this.header.stats.html(infotxt + total);
+    }
+    
     handlers() {
-        if (this.filter) dk.on(this.filter, 'collapse-done', () => this.collapse_filter());
-
-        dk.on(this.table.table_data, 'fetch-info', info => {
-            let count = 'many';
-            const start_recnum = info.start_recnum || 1;
-            const end_recnum = info.end_recnum || 1;
-            const filter_count = info.filter_count || 0;
-            const totcount = info.totcount || 0;
-
-            if (end_recnum - start_recnum === 0) count = 'none';
-            if (end_recnum - start_recnum === 1) count = 'one';
-
-            let infotxt = '<span class="info">';
-            const total = `<span class="tot">(totalt: ${totcount})</span>`;
-
-            switch (count) {
-                case 'none':
-                    infotxt += `viser 0 av ${filter_count}`;
-                    break;
-                case 'one':
-                    if (start_recnum === 1) {
-                        infotxt += `viser 1 av ${filter_count}`;
-                    } else {
-                        infotxt += `post nr. ${start_recnum} av ${filter_count}`;
-                    }
-                    break;
-                case 'many':
-                    infotxt += `viser ${start_recnum}&ndash;${end_recnum-1} av ${filter_count}`;
-                    break;
-            }
-            infotxt += '</span>';
-
-            this.header.stats.html(infotxt + total);
-        });
-
+        // console.info("DECLARING Resultset.handlers()");
+        if (this.filter)   dk.on(this.filter, 'collapse-done', () => this.collapse_filter());
+        if (!this.dataset) dk.on(this.table.table_data, 'fetch-info', info => this._update_info(info));
 
         dk.on(this.table.table_data, 'fetch-data-start', () => this.start_busy());
         dk.on(this.table.table_data, 'fetch-data', () => this.end_busy());
@@ -189,7 +205,7 @@ export class ResultSet extends Widget {
             dk.on(this.filter.datafilter, 'filter-change', filtervals => this.table.table_data.set_filter(filtervals));
         }
         dk.on(this.table.table_data, 'fetch-page', () => this.pager.draw());
-        dk.on(this.header.search, 'search', () => this.table.set_search());
+        dk.on(this.header.search, 'search', (terms) => this.table.set_search(terms));
         dk.on(this.header.search, 'clear', () => this.table.set_search());
     }
 

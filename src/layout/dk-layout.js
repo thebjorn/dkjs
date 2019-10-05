@@ -35,6 +35,13 @@ export class Layout extends Class {
         if (self !== this) dkconsole.info('layout self = this', self === this);
         this.construct();
     }
+    
+    delete_layout() {
+        delete this.template;
+        delete this.widget.layout;
+        delete this.widget;
+        delete this.structure;
+    }
 
     construct() {}
 

@@ -27,33 +27,78 @@
         <h1 id="id-title">hello world</h1>
         <div id="dtatbl" class="table "></div>
     
-        <div style="outline: 2px solid green; padding:4px;margin:4px;">
-            <input id="dval" type="text" value="42">
-        </div>
-        <div id="input-box" style="outline: 2px solid red; padding:4px;margin:8px 4px;"></div>
+<!--        <div style="outline: 2px solid green; padding:4px;margin:4px;">-->
+<!--            <input id="dval" type="text" value="42">-->
+<!--        </div>-->
+<!--        <div id="input-box" style="outline: 2px solid red; padding:4px;margin:8px 4px;"></div>-->
     </div>
     
     <script defer>
-        const dvref = new dk.ValueRef({pk:0, field:''});
-        dk.on(dvref, 'new-value', v => $('#dval').val(v));
-        
-        const dt = dk.DataTable.create_on('#dtatbl', {
+        // const dvref = new dk.ValueRef({pk:0, field:''});
+        // dk.on(dvref, 'value-changed', v => $('#dval').val(v));
+        const ds = dk.data.DataSet.create({
             datasource: [
-                {project: 'Generelt NT', work: '1:03:57'},
-                {project: 'Tiktok',      work: '2:44:57'},
-                {project: 'FOO-support', work: '1:06:43'},
+                {project: 'first', work: '1:03:57'},
+                {project: 'aTiktok', work: '2:44:57'},
+                {project: 'bGenerelt NT', work: '1:03:57'},
+                {project: 'cTiktok', work: '2:44:57'},
+                {project: 'dGenerelt NT', work: '1:03:57'},
+                {project: 'eTiktok', work: '2:44:57'},
+                {project: 'fGenerelt NT', work: '1:03:58'},
+                {project: 'gTiktok', work: '2:44:58'},
+                {project: 'hGenerelt NT', work: '1:03:58'},
+                {project: 'iTiktok', work: '2:44:58'},
+                {project: 'jGenerelt NT', work: '1:03:58'},
+                {project: 'kTiktok', work: '2:44:58'},
+                {project: 'last', work: '1:06:43'}
             ],
-            columns: {
-                pk: {},
-                project: {},
-                work: {},
+            pagesize: 6,
+            orphans: 1
+        });
+        // dk.on(ds, 'fetch-info', d => console.log("DS:FETCH-info:", d));
+        // dk.on(ds, 'fetch-data', d => console.log("DS:FETCH-data:", d));
+        // console.log("Declaring resultset");
+
+        const dt = dk.ResultSet.create_inside("#dtatbl", {
+            add_widget: false,
+            download_widget: false,
+            
+            dataset: ds, 
+            construct_table: function (location, downloadwidget, ds) {
+                // console.info("HTML:construct_table");
+                return dk.DataTable.create_on(location, {
+                    classes: ['table table-bordered table-hover table-condensed'],
+                    download: downloadwidget,
+                    table_data: ds,
+                    columns: {
+                        project: {label: 'Prosjekt'},
+                        work: {label: 'Arbeid'}
+                    }
+                });
             }
         });
-        // 36591.97999996832
-        // 37937.84999998752
-        const w = dk.forms.TextInputWidget.create_inside('#input-box', {
-            datasource: dt.table_data.value_ref({pk:2, field:'project'})
+        dt.ready(() => {
+            dk.on(dt.table.table_data, 'fetch-data', d => console.log("FETCHED:", d));
         });
+
+        // const w = dk.forms.TextInputWidget.create_inside('#input-box', {
+        //     datasource: dt.table_data.value_ref({pk:2, field:'project'})
+        // });
+
+
+        // const dt = dk.DataTable.create_on('#dtatbl', {
+        //     datasource: [
+        //         {project: 'Generelt NT', work: '1:03:57'},
+        //         {project: 'Tiktok',      work: '2:44:57'},
+        //         {project: 'FOO-support', work: '1:06:43'},
+        //     ],
+        //     columns: {
+        //         pk: {},
+        //         project: {},
+        //         work: {},
+        //     }
+        // });
+        
         // dk.on(w, 'value-changed', newval => console.log("ON:W:...set-value...:", newval));
         // console.log("W:DATASOURCE:", w.datasource);
         // console.log("W:DATASOURCE:dataset", w.datasource.ds);

@@ -427,8 +427,4 @@ if (!String.prototype.format) {
     });
 })();
 
-// because webpack makes simple things difficult..
-// dk.globals.dk = dk;
-// export dk;    // must export default
-
 export {dk};

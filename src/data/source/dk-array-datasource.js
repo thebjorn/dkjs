@@ -100,8 +100,9 @@ export class ArraySource extends DataSource {
      *      }
      */
     async fetch_records(request) {
+        // console.log("fetch_records:", request);
         const p = request;
-        p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
+        p.end = (this.data.length - p.orphans <= p.end) ? this.data.length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
 
         this.do_sort(p);
@@ -115,7 +116,7 @@ export class ArraySource extends DataSource {
                     totcount: this.data.length,
                     filter_count: search_recs.length,
                     start_recnum: p.start,
-                    end_recnum: p.start + result_recs.length - 1
+                    end_recnum: p.start + result_recs.length
                 },
                 records: result_recs
             });
@@ -145,7 +146,8 @@ export class ArraySource extends DataSource {
     
     get_records(request, returns) {
         const p = this._copy_request(request);
-        p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
+        const length = this.data.length;
+        p.end = (length - p.orphans <= p.end) ? length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
 
         this.do_sort(p);
@@ -155,10 +157,10 @@ export class ArraySource extends DataSource {
         returns({
             fields: this.get_fields(),
             meta: {
-                totcount: this.data.length,
+                totcount: length,
                 filter_count: search_recs.length,
                 start_recnum: p.start,
-                end_recnum: p.start + result_recs.length - 1
+                end_recnum: p.start + result_recs.length
             },
             records: result_recs
         });
