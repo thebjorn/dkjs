@@ -145,21 +145,14 @@ export class ArraySource extends DataSource {
     }
     
     get_records(request, returns) {
-        console.log("get_records:", request);
         const p = this._copy_request(request);
         const length = this.data.length;
-        // console.log("LENGTH:", length);
         p.end = (length - p.orphans <= p.end) ? length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
-        // console.log("P:1:", p);
 
         this.do_sort(p);
-        // debugger;
         const search_recs = this.do_search(request);
         const result_recs = search_recs.slice(p.start, p.end);
-        // console.log("totcount:", this.data.length);
-        // console.log("filtercount:", search_recs.length);
-        // console.log("start/end:", p.start,  p.start + result_recs.length);
 
         returns({
             fields: this.get_fields(),
