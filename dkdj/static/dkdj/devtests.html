@@ -62,7 +62,7 @@
         const dt = dk.ResultSet.create_inside("#dtatbl", {
             dataset: ds, 
             construct_table: function (location, downloadwidget, ds) {
-                console.info("HTML:construct_table");
+                // console.info("HTML:construct_table");
                 return dk.DataTable.create_on(location, {
                     classes: ['table table-bordered table-hover table-condensed'],
                     download: downloadwidget,

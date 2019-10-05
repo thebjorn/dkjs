@@ -100,9 +100,9 @@ export class ArraySource extends DataSource {
      *      }
      */
     async fetch_records(request) {
-        console.log("fetch_records:", request);
+        // console.log("fetch_records:", request);
         const p = request;
-        p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
+        p.end = (this.data.length - p.orphans <= p.end) ? this.data.length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
 
         this.do_sort(p);
@@ -145,14 +145,16 @@ export class ArraySource extends DataSource {
     }
     
     get_records(request, returns) {
-        // debugger;
-        // console.log("get_records:", request);
+        console.log("get_records:", request);
         const p = this._copy_request(request);
-        p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
+        const length = this.data.length;
+        // console.log("LENGTH:", length);
+        p.end = (length - p.orphans <= p.end) ? length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
-        // console.log("P:1:", p.start, p.end);
+        // console.log("P:1:", p);
 
         this.do_sort(p);
+        debugger;
         const search_recs = this.do_search(request);
         const result_recs = search_recs.slice(p.start, p.end);
         // console.log("totcount:", this.data.length);
@@ -162,7 +164,7 @@ export class ArraySource extends DataSource {
         returns({
             fields: this.get_fields(),
             meta: {
-                totcount: this.data.length,
+                totcount: length,
                 filter_count: search_recs.length,
                 start_recnum: p.start,
                 end_recnum: p.start + result_recs.length

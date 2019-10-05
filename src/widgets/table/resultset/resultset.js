@@ -145,7 +145,7 @@ export class ResultSet extends Widget {
             this.widget('.excel'), 
             this.dataset
         );
-        console.log("Resultset:construct:end:construct_table");
+        // console.log("Resultset:construct:end:construct_table");
         if (!this.table) return;
         this.filter = this.construct_filter(this.rowbx.filterbx, this.table.table_data);
         this.pager = this.construct_pager(this.rowbx.data.footer, {});
@@ -153,7 +153,7 @@ export class ResultSet extends Widget {
     }
     
     _update_info(info) {
-        console.log("ResultSet:handler:_update_info:", info);
+        // console.log("ResultSet:handler:_update_info:", info);
         let count = 'many';
         const start_recnum = info.start_recnum || 0;
         const end_recnum = info.end_recnum || 0;
@@ -165,7 +165,7 @@ export class ResultSet extends Widget {
 
         let infotxt = '<span class="info">';
         const total = `<span class="tot">(totalt: ${totcount})</span>`;
-        console.log("SWITCH:", count);
+        // console.log("SWITCH:", count);
 
         switch (count) {
             case 'none':
@@ -189,7 +189,7 @@ export class ResultSet extends Widget {
     }
     
     handlers() {
-        console.info("DECLARING Resultset.handlers()");
+        // console.info("DECLARING Resultset.handlers()");
         if (this.filter)   dk.on(this.filter, 'collapse-done', () => this.collapse_filter());
         if (!this.dataset) dk.on(this.table.table_data, 'fetch-info', info => this._update_info(info));
 

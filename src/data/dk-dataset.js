@@ -105,7 +105,7 @@ export class DataSet extends Class {
      * @private
      */
     _new_recordset(recordset, query) {
-        console.log("_NEW_RECORDSET:QUERY:", query.toCacheKey());
+        // console.log("_NEW_RECORDSET:QUERY:", query.toCacheKey());
         const page = DataPage.create({
             query: query,
             recordset: recordset
@@ -225,7 +225,7 @@ export class DataSet extends Class {
             dk.$('#downloadFile').remove();
         }
         const url = this.datasource.url+"!get-records?fmt=csv&filename="+ filename + '&' + query.toGetParams();
-        dk.$('<a></a>')
+        dk.$('<a/>')
             .attr('id','downloadFile')
             .attr('href',url)
             .attr('target', '_blank')

@@ -123,7 +123,7 @@ export class DataTable extends Widget {
 
     construct() {
         // this.state = dk.page.hash.substate(this.id);
-        console.info("DataTable:construct");
+        // console.info("DataTable:construct");
 
         if (this.download) {
             const $download = dk.$(this.download);
@@ -154,7 +154,7 @@ export class DataTable extends Widget {
     }
 
     handlers() {
-        console.log("Datatable:handlers()");
+        // console.log("Datatable:handlers()");
         //$(this.table_data).on('fetch-data', _.bind(this.draw, this));
         //$bind('fetch-data@data -> draw@me', {data: this.table_data, me: this});
         dk.on(this.table_data, 'fetch-data-start', () => this.start_busy());
@@ -288,7 +288,7 @@ export class DataTable extends Widget {
     }
 
     draw(dataset) {
-        console.log("DataTable:draw:", dataset);
+        // console.log("DataTable:draw:", dataset);
         const self = this;
 
         if (!dataset) {   // NOTE: data source consumer pattern..?  (on: data -> draw?)
@@ -299,7 +299,7 @@ export class DataTable extends Widget {
             self.draw_header(dataset);
             this.delete_body();
 
-            dk.trigger(self, 'draw-start', self);
+            dk.trigger(this, 'draw-start', this);
             dataset.page.records.forEach(function (record, rownum) {
                 const tr = self.TableRow.create(self.layout.add_row_to('tbody'), {
                     rownum: rownum,
@@ -308,7 +308,7 @@ export class DataTable extends Widget {
                 });
                 self.rows.push(tr);
             });
-            dk.trigger(self, 'draw-end', self);
+            dk.trigger(this, 'draw-end', this);
         }
     }
 }
