@@ -154,7 +154,7 @@ export class ArraySource extends DataSource {
         // console.log("P:1:", p);
 
         this.do_sort(p);
-        debugger;
+        // debugger;
         const search_recs = this.do_search(request);
         const result_recs = search_recs.slice(p.start, p.end);
         // console.log("totcount:", this.data.length);

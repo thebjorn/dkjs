@@ -76,6 +76,9 @@ export class ResultSet extends Widget {
             },
             
         }, ...args);
+        if (this.add_widget === false) delete this.structure.rowbx.data.header.commands.add;
+        if (this.download_widget === false) delete this.structure.rowbx.data.header.commands.csv;
+        
         if (!this.dataset) dkwarning(dedent`
             You should define .dataset on the Resultset (as opposed to inside the construct_table function):
             
@@ -107,6 +110,7 @@ export class ResultSet extends Widget {
         // override this method to attach a filter.  The default version removes the
         // filter box and stretches the data box to full width.
         location.css({
+            marginRight: 0,
             paddingRight: 0,
             width: 0
         });
@@ -120,12 +124,16 @@ export class ResultSet extends Widget {
         }
     }
 
-    // called automatically when structure.header.search have been created.
+    // Called automatically when structure.header.search have been created.
+    // (because.. structure/layout/widget work together so any structure element `foo`,
+    // will look for and call a corresponding `widget.construct_foo(location)` method...
+    // yes, magic.)
     construct_search(location) {
         return SearchWidget.create_inside(location, {});
     }
 
     construct_pager(location, state) {
+        // console.log("CONSTRUCTING_PAGER", location, state);
         this.pager = null;
         return PagerWidget.create_inside(location, state);
     }
@@ -173,11 +181,6 @@ export class ResultSet extends Widget {
                 break;
             case 'one':
                 infotxt += `post nr. ${start_recnum + 1} av ${filter_count}`;
-                // if (start_recnum === 1) {
-                //     infotxt += `viser 1 av ${filter_count}`;
-                // } else {
-                //     infotxt += `post nr. ${start_recnum + 1} av ${filter_count}`;
-                // }
                 break;
             case 'many':
                 infotxt += `viser ${start_recnum + 1}&ndash;${end_recnum} av ${filter_count}`;
@@ -202,7 +205,7 @@ export class ResultSet extends Widget {
             dk.on(this.filter.datafilter, 'filter-change', filtervals => this.table.table_data.set_filter(filtervals));
         }
         dk.on(this.table.table_data, 'fetch-page', () => this.pager.draw());
-        dk.on(this.header.search, 'search', () => this.table.set_search());
+        dk.on(this.header.search, 'search', (terms) => this.table.set_search(terms));
         dk.on(this.header.search, 'clear', () => this.table.set_search());
     }
 

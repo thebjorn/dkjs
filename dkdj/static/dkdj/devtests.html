@@ -60,6 +60,9 @@
         // console.log("Declaring resultset");
 
         const dt = dk.ResultSet.create_inside("#dtatbl", {
+            add_widget: false,
+            download_widget: false,
+            
             dataset: ds, 
             construct_table: function (location, downloadwidget, ds) {
                 // console.info("HTML:construct_table");
