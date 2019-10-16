@@ -94,7 +94,7 @@ export class DataQuery extends Class {
     }
     
     toCacheKey() {
-        return Object.entries(this._axdata()).map(([k,v]) => `${k}=${v}`).join('&');
+        return Object.entries(this._axdata()).map(([k,v]) => `${k}=${JSON.stringify(v)}`).join('&');
     }
 
     toGetParams() {
