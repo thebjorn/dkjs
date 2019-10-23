@@ -92,6 +92,16 @@ export class JSONDataSource extends DataSource {
         };
     }
     
+    get_filter_data(filter_name, returns) {
+        returns(this.data.filter_data[filter_name]);
+    }
+    
+    async fetch_filter_data(filter_name) {
+        return new Promise((resolve, reject) => {
+            resolve(this.data.filter_data[filter_name]);
+        });
+    }
+    
     async fetch_records(request) {
         const p = this.get_defaults(request);
         this.data.info = {

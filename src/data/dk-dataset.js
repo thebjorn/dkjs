@@ -6,6 +6,7 @@ import {DataQuery} from "./dk-dataquery";
 import {ArraySource} from "./source/dk-array-datasource";
 import {is_ajax_url} from "../lifecycle/uri";
 import {AjaxDataSource} from "./source/dk-ajax-datasource";
+import {ValueRef} from "./source/dk-datasource-base";
 
 
 /*
@@ -42,7 +43,35 @@ export class DataSet extends Class {
         this.pages = {};
         this._filter_data = {};
     }
+    
+    get_record(pk) {
+        return this.page.get_record(pk);
+    }
 
+    set_field_value(pk, field_name, newval) {
+        const record = this.get_record(pk);
+        record[field_name] = newval;
+        dk.trigger(record, 'change', field_name, newval);
+        const field = this.page.get_field(field_name);
+        this.page.add_dirty(pk, field, newval);
+        // NOTE: it is up to the application to call this.update() - most 
+        //       likely after one or more rows have finished changing.
+        // console.log("SET_FIELD_VALUE:PAGE>DIRTYSET:", this.page.dirtyset);
+    }
+    
+    get_field_value(pk, field) {
+        return this.get_record(pk)[field];
+    }
+    
+    value_ref({pk, field}) { 
+        const vref = new ValueRef(pk, field);
+        const get_value = (page) => page ? page.get_record(pk)[field] : null;
+        vref.value = get_value(this.page);
+        dk.on(this, 'fetch-data', (self, page) => vref.value = get_value(page));
+        dk.on(vref, 'value-changed', val => this.set_field_value(pk, field, val));
+        return vref;
+    }
+    
     // synchronize dirty elements on page to datasource.
     update() {
         this.pages = {};  // clear cache
@@ -76,6 +105,7 @@ export class DataSet extends Class {
      * @private
      */
     _new_recordset(recordset, query) {
+        // console.log("_NEW_RECORDSET:QUERY:", query.toCacheKey());
         const page = DataPage.create({
             query: query,
             recordset: recordset
@@ -98,7 +128,8 @@ export class DataSet extends Class {
             }
         }
         dk.on(page, 'dirty', (...args) => this.update(...args));
-        this.page = this.pages[query] = page;
+        // console.log("_NEW_RECORDSET:setting page")
+        this.page = this.pages[query.toCacheKey()] = page;
         dk.trigger(this, 'fetch-info', page.recordset.meta, query);
         dk.trigger(this, 'fetch-data', this, page);
     }
@@ -117,14 +148,23 @@ export class DataSet extends Class {
         // dk.dir("GET-PAGE:", query.copy());
         dk.trigger(this, 'fetch-data-start');
 
-        if (!this.pages[query]) {
+        // console.log("GET:PAGE:QUERY:", query);
+        // console.log("GET:PAGE:QUERY:TOSTRING:JSON:", query.toString());
+        // console.log("GET:PAGE:QUERY:TOGETPARAMS", query.toGetParams());
+        // console.log("GET:PAGE:QUERY:axdata", query._axdata());
+        // console.log("GET:PAGE:QUERY:TOCACHEKEY", query.toCacheKey());
+        const key = query.toCacheKey();
+        if (!this.pages[key]) {
+            // dk.info("GET-PAGE... NOT cached!");
             // this.datasource.get_records(query, this.FN('_new_recordset'));
             this.datasource.get_records(query, recordset => {
+                // _new_recordset sets this.page
                 this._new_recordset(recordset, query);
             });
         } else {
-            dk.info("GET-PAGE... cached!");
-            this.page = this.pages[query];
+            // dk.info("GET-PAGE... cached!");
+            // console.log("GET_PAGE:setting page")
+            this.page = this.pages[key];
             dk.trigger(this, 'fetch-info', this.page.recordset.meta, query);
             dk.trigger(this, 'fetch-data', this, this.page);
         }
@@ -185,7 +225,7 @@ export class DataSet extends Class {
             dk.$('#downloadFile').remove();
         }
         const url = this.datasource.url+"!get-records?fmt=csv&filename="+ filename + '&' + query.toGetParams();
-        dk.$('<a></a>')
+        dk.$('<a/>')
             .attr('id','downloadFile')
             .attr('href',url)
             .attr('target', '_blank')

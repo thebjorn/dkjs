@@ -1,0 +1,3 @@
+uml:
+  t: svg
+  output: ..\_static

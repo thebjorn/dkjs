@@ -1,0 +1,49 @@
+@startuml
+Class <|-- BaseWidget
+BaseWidget <|-- UIWidget
+UIWidget <|-- DataWidget
+DataWidget <|-- ServerWidget
+ServerWidget <|-- Widget
+
+class BaseWidget {
+    state
+    on()
+    trigger()
+}
+
+class UIWidget {
+    .. properties ..
+    #node
+    .. methods ..
+    hide()
+    show()
+    toggle()
+    toggle_busy()
+    wiget() : jQuery
+    ready(fn)
+
+    construct()
+    draw(data)
+    reflow()
+    .. static ..
+    {static} create_on(location, attrs)
+    {static} create_inside(location, attrs)
+    {static} append_to(location, attrs)    
+}
+
+class DataWidget {
+    .. properties ..
+    #data
+    .. signals ..
+    +change
+    .. methods ..
+    data_changed(...)
+}
+
+class ServerWidget {
+    cache
+    .. methods ..
+    refresh()
+    fetch_json_data()
+}
+@enduml

@@ -40,7 +40,7 @@ export class PagerWidget extends Widget {
      *   Select page `n` (zero-based).
      */
     select_page(n) {
-        if (n === this.curpage) return;     // nothing to do
+        if (n === this.curpage || this.pagecount=== 0) return;     // nothing to do
         if (n < 0 || n >= this.pagecount) {
             dkconsole.debug("PagerWidget.select_page: out of bounds ", n, this);
             return;
@@ -95,9 +95,9 @@ export class PagerWidget extends Widget {
                 midrange[1] = postrange[1];
                 postrange = null;
             }
-            console.log("PRE:", prerange);
-            console.log("MID:", midrange);
-            console.log("POST:", postrange);
+            // console.log("PRE:", prerange);
+            // console.log("MID:", midrange);
+            // console.log("POST:", postrange);
             if (prerange) {
                 this.draw_range(prerange);
                 this.widget().append(dk.$('<li class="ellipsis"><span>...</span></li>'));

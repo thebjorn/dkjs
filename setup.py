@@ -15,7 +15,7 @@ Topic :: Software Development :: Libraries
 
 setuptools.setup(
     name='dkdj',
-    version='0.99.1',
+    version='3.0.0',
     packages=setuptools.find_packages(exclude=['tests']),
     install_requires=[
         'ttcal',

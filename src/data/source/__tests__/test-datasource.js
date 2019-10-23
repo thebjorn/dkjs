@@ -29,6 +29,14 @@ test("test-datasource-fetch-records", async () => {
 });
 
 
+test("test-datasource-fetch-filter-data", async () => {
+    const ds = new DataSource();
+    const fdata = await ds.fetch_filter_data("foo");
+    expect(fdata.missing).toBe('data missing');
+    expect(fdata.need_to).toBe("need to implement fetch_filter_data in datasource");
+});
+
+
 test("test-datasource-get-filter-data", () => {
     const ds = new DataSource();
     ds.get_filter_data({}, data => {

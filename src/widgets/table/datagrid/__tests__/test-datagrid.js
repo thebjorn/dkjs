@@ -104,3 +104,29 @@ test("test-datagrid-2", () => {
     expect(mydt125.table_data.page.record[0].work).toEqual('1:02:03');
     
 });
+
+
+test("example-simplest-possible-grid", () => {
+    document.body.innerHTML = `
+        <div id="work">
+            <table border=1></table>
+        </div>
+    `;
+    const work = $('#work');
+    page.initialize(document);
+
+    const dt = DataGrid.create_on(work.find('> table'), {
+        datasource: [
+            {project: 'AFR-support', work: '1:11:11'},
+            {project: 'Generelt NT', work: '2:22:11'},
+            {project: 'Tiktok', work: '3:33:11'}
+        ]
+    });
+   
+    // console.log(work.html()); 
+    
+    expect(dt.get_xy(1, 0).value).toEqual('1:11:11');
+    expect(dt.get_xy(1, 1).value).toEqual('2:22:11');
+    expect(dt.get_xy(1, 2).value).toEqual('3:33:11');
+    // expect(document.getElementById('work')).toMatchSnapshot();
+});

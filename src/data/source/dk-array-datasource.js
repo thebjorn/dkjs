@@ -28,9 +28,7 @@ export class ArraySource extends DataSource {
             this.data = arr.data;
         }
         // data source items need to have a key
-        this.data.map(function (item, i) {
-            item.pk = item.pk || i;
-        });
+        this.data.map((item, i) => item.pk = item.pk || i);
     }
 
     /*
@@ -102,8 +100,9 @@ export class ArraySource extends DataSource {
      *      }
      */
     async fetch_records(request) {
+        // console.log("fetch_records:", request);
         const p = request;
-        p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
+        p.end = (this.data.length - p.orphans <= p.end) ? this.data.length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
 
         this.do_sort(p);
@@ -117,15 +116,38 @@ export class ArraySource extends DataSource {
                     totcount: this.data.length,
                     filter_count: search_recs.length,
                     start_recnum: p.start,
-                    end_recnum: p.start + result_recs.length - 1
+                    end_recnum: p.start + result_recs.length
                 },
                 records: result_recs
             });
         });        
     }
+
+    /**
+     * One of the tests passes `{}` as the request (and this might be useful in other
+     * scenarios as well, so this ugly duplication of DataQuery.copy() is needed here...
+     * @param r
+     * @returns {{filter: (*|{}), search: (*|string), pagesize: (number|*), start: (number|*), end: *, sort: (*|Array), pagenum: (*|number|ArraySource._copy_request.props.pagenum), orphans: (number|*)}|*|AssignmentTrackerState|{filter: *, search: *, pagesize: *, start: *, end: *, sort: *, pagenum: *, orphans: *}}
+     * @private
+     */
+    _copy_request(r) {
+        if (r.copy) return r.copy();
+        return {
+            pagesize: r.pagesize,
+            pagenum: r.pagenum,
+            start: r.start,
+            end: r.end,
+            orphans: r.orphans,
+            search: r.search,
+            sort: r.sort,
+            filter: r.filter
+        };
+    }
+    
     get_records(request, returns) {
-        const p = request;
-        p.end = (this.data.length - p.orphans < p.end) ? this.data.length : p.end;
+        const p = this._copy_request(request);
+        const length = this.data.length;
+        p.end = (length - p.orphans <= p.end) ? length : p.end;
         p.start = (p.start > p.end) ? p.end : p.start;
 
         this.do_sort(p);
@@ -135,10 +157,10 @@ export class ArraySource extends DataSource {
         returns({
             fields: this.get_fields(),
             meta: {
-                totcount: this.data.length,
+                totcount: length,
                 filter_count: search_recs.length,
                 start_recnum: p.start,
-                end_recnum: p.start + result_recs.length - 1
+                end_recnum: p.start + result_recs.length
             },
             records: result_recs
         });

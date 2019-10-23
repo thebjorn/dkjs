@@ -25,11 +25,36 @@ const jsondata = () => jason.parse(JSON.stringify({
     }],
     rows: [
         {k: 1, c: [{v: 'proj-1', f: 'FOO-support'}, '@duration:13000']},
-        {k: 2, c: [{ v: 'proj-2', f: 'Generelt NT' }, '@duration:8542']},
+        {k: 2, c: [{v: 'proj-2', f: 'Generelt NT'}, '@duration:8542']},
         {k: 3, c: [{v: 'proj-2', f: 'Generelt NT'}, '@duration:8542']},
         {k: 4, c: [{v: 'proj-3', f: 'Tiktok'}, '@duration:12813']}
-    ]
+    ],
+    filter_data: {
+        filter1: {
+            hello: 'world'
+        }
+    }
 }));
+
+
+
+test("json-datasource-fetch-filter-data", async () => {
+    const ds = new JSONDataSource({
+        data: jsondata()
+    });
+    const filter1_data = await ds.fetch_filter_data('filter1');
+    expect(filter1_data).toEqual({hello: 'world'});
+});
+
+
+test("json-datasource-get-filter-data", () => {
+    const ds = new JSONDataSource({
+        data: jsondata()
+    });
+    ds.get_filter_data('filter1', filter1_data => {
+        expect(filter1_data).toEqual({hello: 'world'});
+    });
+});
 
 
 test("json-datasource-update", async () => {

@@ -74,7 +74,7 @@ export class UIWidget extends BaseWidget {
     }
 
     start_busy() {
-        dk.debug("START-BUSY: ", this.id);
+        // dk.debug("START-BUSY: ", this.id);
         if (this._widget_props.busy) return;
         // if (this.__busy) return;
         const shim_id = counter('busy-shim-');
@@ -109,7 +109,7 @@ export class UIWidget extends BaseWidget {
     }
 
     end_busy() {
-        dk.debug("END-BUSY: ", this.id);
+        // dk.debug("END-BUSY: ", this.id);
         // if (!this.__busy) return;
         if (!this._widget_props.busy) return;
         window.clearInterval(this.busyID);
@@ -172,6 +172,21 @@ export class UIWidget extends BaseWidget {
         dk.after(this, 'render_data', fn);
     }
     
+    delete_widget() {
+        // console.log("DELETE:WIDGHET:", this);
+        if (this.id && page.widgets[this.id]) {
+            this.trigger('deleting-widget', this);
+
+            this.layout.delete_layout();
+            
+            // remove widget from $$ (page.widgets)
+            delete page.widgets[this.id];
+
+            // console.log("DELETE:WIDGHET:", Object.keys(page.widgets));
+            this.trigger('deleted-widget', this);
+        }
+    }
+    
     /*
      *  `construct_widget()` is called by `page.create_widget` when the
      *  page has been initialized.
@@ -195,6 +210,7 @@ export class UIWidget extends BaseWidget {
         // at this point this.widget() exists in the dom and is
         // the element onto which the widget should be created
         page.widgets[this.id] = this;
+        // dk.on(this, 'delete-widget', w => delete page.widgets[w.id]);
         // dkconsole.debug("construct_widget:", this.id);
 
         this.create_layout(this.widget(), this.template, this.structure);
@@ -202,9 +218,12 @@ export class UIWidget extends BaseWidget {
 
         this.initialize();
         this._widget_props.visible = true;
+        // console.log("CHECKED:LEN:1", this.widget().find('input:checked').length);
 
         if (this.handlers) this.handlers();
+        // console.log("CHECKED:LEN:2", this.widget().find('input:checked').length);
         this.render_data();
+        // console.log("CHECKED:LEN:3", this.widget().find('input:checked').length);
 
         this._widget_props.ready = true;
         // this.__ready = true;
@@ -373,13 +392,14 @@ export class UIWidget extends BaseWidget {
         return this.create_on(location, attrs);
     }
 
-    static create_on(location, attrs) {
+    static create_on(loc, attrs) {
         // we _must_ generate an id for this widget, so that
         // this.widget() works.
         try {
             const w = new this(attrs);
             // if (!location.jquery) location = dk.$(location);
-            if (typeof location === 'string') location = dk.$(location);
+            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (location.length === 0) throw `Location ${loc} not found in document.`;
             page.create_widget(w, {on: location});
             return w;
         } catch (e) {
@@ -387,12 +407,13 @@ export class UIWidget extends BaseWidget {
         }
     }
 
-    static create_inside(location, attrs) {
+    static create_inside(loc, attrs) {
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
             const w = new this(attrs);
-            if (typeof location === 'string') location = dk.$(location);
+            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (location.length === 0) throw `Location ${loc} not found in document.`;
             page.create_widget(w, {inside: location});
             return w;
         } catch (e) {
@@ -400,12 +421,13 @@ export class UIWidget extends BaseWidget {
         }
     }
 
-    static append_to(location, attrs) {
+    static append_to(loc, attrs) {
         // we must not generate an id for this widget until we
         // get to the widget's construct() method.
         try {
             const w = new this(attrs);
-            if (typeof location === 'string') location = dk.$(location);
+            const location = (typeof loc === 'string') ? dk.$(loc) : loc;
+            if (location.length === 0) throw `Location ${loc} not found in document.`;
             page.create_widget(w, {inside: location, append: true});
             return w;
         } catch (e) {

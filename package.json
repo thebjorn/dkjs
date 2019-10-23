@@ -1,6 +1,6 @@
 {
   "name": "dkdj",
-  "version": "0.99.1",
+  "version": "3.0.0",
   "description": "dk widgets and more..",
   "module": "dist/dk.js",
   "scripts": {
@@ -31,7 +31,7 @@
     "@types/jest": "^24.0.0",
     "acorn": "^6.0.7",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-eslint": "^11.0.0-beta.0",
+    "babel-eslint": "^13.0.0-beta.0",
     "babel-jest": "^24.1.0",
     "babel-loader": "^8.0.5",
     "babel-preset-env": "^1.7.0",
@@ -62,7 +62,7 @@
     "@babel/runtime": "^7.3.1",
     "@babel/runtime-corejs2": "^7.4.4",
     "@webcomponents/webcomponentsjs": "^2.2.7",
-    "core-js": "2",
+    "core-js": "^3.2.1",
     "css-loader": "^2.1.0",
     "cssnano": "^4.1.10",
     "jest-haste-map": "^24.3.1",

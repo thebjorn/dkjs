@@ -53,7 +53,7 @@ test("test-data-filter-multiple", () => {
 
     work.find(':checkbox:eq(0)').click();
     work.find(':checkbox:eq(1)').click();
-    expect(set_filter_vals).toEqual({my_filter: {"1": 1, "2": 2}});
+    expect(set_filter_vals).toEqual({my_filter: ['1', '2']});
 
     // expect(utidy(work.html())).toEqual(utidy(`
     //
