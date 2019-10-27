@@ -29,6 +29,43 @@ export function _indent(curpos, s) {
     return res.join('\n');
 }
 
+// /**
+//  * Tag function for url-strings with paramters.
+//  * 
+//  * Usage::
+//  * 
+//  *      const url = urltemplate`http://localhost/${hello}/${world}/`;
+//  *      expect(url('foo', 'bar')).toEaual('http://localhost/foo/bar/');
+//  * 
+//  * @param strings       - array of strings
+//  * @param exprs         - array of expressions
+//  * @returns {function}
+//  */
+// export function urltemplate(strings, ...exprs) {
+//     console.log("srings:", strings, exprs);
+//     return (...args) => {
+//         const res = [];
+//         let curline = 0,
+//             curpos = 0;
+//
+//         for (let i = 0; i < strings.length - 1; i++) {
+//             // console.debug("STRINGS:I:", i, strings[i], curline, curpos);
+//             const lines = strings[i].split('\n');
+//             curline += lines.length - 1;
+//             if (lines.length > 1) {
+//                 curpos = lines.slice(-1).length;
+//             } else {
+//                 curpos = strings[i].length;
+//             }
+//             // console.debug("NEWPOS:", curline, curpos);
+//             res.push(strings[i]);
+//             res.push(`${args[i]}`);
+//         }
+//         res.push(strings[strings.length - 1]);
+//         return res.join('');
+//     };
+// }
+
 /**
  * Tag function for template strings.
  * 

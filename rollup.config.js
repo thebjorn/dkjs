@@ -4,8 +4,11 @@ export default {
     output: [{
         name: 'dk',
         file: 'dist/dkdj.js',
-        format: 'iife'
-    },{
+        format: 'iife',
+        globals: {
+            jquery: 'jQuery',
+        }
+    }, {
         file: 'dist/dkdj-node.js',
         format: 'cjs'
     }]

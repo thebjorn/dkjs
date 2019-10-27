@@ -2,6 +2,7 @@ import template from "lodash.template";
 import dk from "../dk-obj";
 import jason from "../data/datacore/dk-json";
 import {DataWidget} from "./data-widget";
+import {dkwarning} from "../lifecycle/coldboot/dkwarning";
 
 export class ServerWidget extends DataWidget {
     constructor(...args) {
@@ -40,21 +41,36 @@ export class ServerWidget extends DataWidget {
     }
 
     _url_is_template() {
-        return this.url.indexOf('<%') !== -1 && this.url.indexOf('%>') !== -1;
+        if (typeof this.url === "function") return true;
+
+        if (this.url.indexOf('<%') !== -1 && this.url.indexOf('%>') !== -1) {
+            dkwarning(`
+                URLs with template parameters have changed. Previous syntax:
+                
+                    url: '/ajax/poststed/<%= zipcode %>/',
+                    urldata: {
+                        zipcode: function () { return this.zipcode || undefined; }
+                    },
+                    
+                new syntax (without the backslashes before the back-ticks, which are needed
+                here since we're inside a big back-tick block):
+                
+                    url() {return \`/ajax/poststed/${this.zipcode || undefined}/\`; }
+                    
+            `);
+            throw "found old-style url-template";
+        }
+        return false;
     }
 
-    /*
-     *  Generates the url for this widget, and calls fetch_json_data to fetch
-     *  data from this url.  Automatically prevents a second refresh from starting
-     *  while the first one is still going.
-     */
-    refresh() {
+    widget_url() {
         let url;
         if (this.waiting || !this.url) return;
         if (this._url_is_template()) {
             try {
-                const urldata = this._get_urldata();
-                url = template(this.url, urldata);
+                // const urldata = this._get_urldata();
+                // url = template(this.url, urldata);
+                url = this.url();
             } catch (err) {
                 this.draw(null);
                 return;
@@ -62,7 +78,16 @@ export class ServerWidget extends DataWidget {
         } else {
             url = this.url;
         }
-        this.fetch_json_data(url);
+        return url;
+    }
+    
+    /*
+     *  Generates the url for this widget, and calls fetch_json_data to fetch
+     *  data from this url.  Automatically prevents a second refresh from starting
+     *  while the first one is still going.
+     */
+    refresh() {
+        this.fetch_json_data(this.widget_url());
     }
 
     /*
@@ -82,6 +107,7 @@ export class ServerWidget extends DataWidget {
         this.waiting = true;
         this.trigger('start-fetch-data', self);
 
+        // this.server_widget_call_ajax({
         dk.ajax({
             cache: self.cache,
             dataType: /^https?:\/\//.test(url) ? 'jsonp' : 'json',
@@ -99,7 +125,7 @@ export class ServerWidget extends DataWidget {
             error(req, status, err) {
                 self.waiting = false;
                 dk.warn("ERROR", req, status, err);
-                self.notify('fetch-data-error', req, status, err);
+                self.trigger('fetch-data-error', req, status, err);
                 throw {error: "fetch-error", message: status + ' ' + err};
             },
             converters: {
@@ -108,9 +134,19 @@ export class ServerWidget extends DataWidget {
             success(data) {
                 self.data = data;
                 self.waiting = false;
-                self.notify("fetch-data", self);
+                self.trigger("fetch-data", self);
                 self.draw(data);
             }
         });
+    }
+
+    /**
+     * Extracted to make testing easier.
+     * 
+     * @param params
+     * @private
+     */
+    server_widget_call_ajax(params) {
+        dk.ajax(params);
     }
 }
