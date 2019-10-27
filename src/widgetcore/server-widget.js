@@ -1,8 +1,9 @@
-import template from "lodash.template";
-import dk from "../dk-obj";
+
 import jason from "../data/datacore/dk-json";
 import {DataWidget} from "./data-widget";
 import {dkwarning} from "../lifecycle/coldboot/dkwarning";
+import {ajax} from "../browser/dk-client";
+import {dkconsole} from "../lifecycle/dkboot/dk-console";
 
 export class ServerWidget extends DataWidget {
     constructor(...args) {
@@ -23,40 +24,79 @@ export class ServerWidget extends DataWidget {
      *  values for all url parameters.
      */
     _get_urldata() {
-        const res = {};
-        if (!this.urldata) return res;
-        if (typeof this.urldata === 'function') {
-            return this.urldata();
-        } else {
-            for (const attr in this.urldata) {
-                //noinspection JSUnfilteredForInLoop
-                const val = this.urldata[attr];
-                //noinspection JSUnfilteredForInLoop
-                res[attr] = (typeof val === 'function') ? val.call(this) : val;
-                //noinspection JSUnfilteredForInLoop
-                if (res[attr] === undefined) throw attr;
-            }
-            return res;
-        }
+        dkwarning(`
+                URLs with template parameters have changed. Previous syntax:
+
+                    url: '/ajax/poststed/<%= zipcode %>/',
+                    urldata: {
+                        zipcode: function () { return this.zipcode || undefined; }
+                    },
+
+                new syntax (without the backslashes before the back-ticks, which are needed
+                here since we're inside a big back-tick block):
+
+                    url() {return \`/ajax/poststed/${this.zipcode || undefined}/\`; }
+
+            `);
+        return {};
+        
+        // const res = {};
+        // if (!this.urldata) return res;
+        // if (typeof this.urldata === 'function') {
+        //     return this.urldata();
+        // } else {
+        //     for (const attr in this.urldata) {
+        //         //noinspection JSUnfilteredForInLoop
+        //         const val = this.urldata[attr];
+        //         //noinspection JSUnfilteredForInLoop
+        //         res[attr] = (typeof val === 'function') ? val.call(this) : val;
+        //         //noinspection JSUnfilteredForInLoop
+        //         if (res[attr] === undefined) throw attr;
+        //     }
+        //     return res;
+        // }
     }
 
+    /*
+     *  Generates the url for this widget, and calls fetch_json_data to fetch
+     *  data from this url.  Automatically prevents a second refresh from starting
+     *  while the first one is still going.
+     */
+    // refresh() {
+    //     let url;
+    //     if (this.waiting || !this.url) return;
+    //     if (this._url_is_template()) {
+    //         try {
+    //             // const urldata = this._get_urldata();
+    //             // url = template(this.url, urldata);
+    //             url = this.url();
+    //         } catch (err) {
+    //             this.draw(null);
+    //             return;
+    //         }
+    //     } else {
+    //         url = this.url;
+    //     }
+    //     this.fetch_json_data(url);
+    // }
+    
     _url_is_template() {
         if (typeof this.url === "function") return true;
 
         if (this.url.indexOf('<%') !== -1 && this.url.indexOf('%>') !== -1) {
             dkwarning(`
                 URLs with template parameters have changed. Previous syntax:
-                
+
                     url: '/ajax/poststed/<%= zipcode %>/',
                     urldata: {
                         zipcode: function () { return this.zipcode || undefined; }
                     },
-                    
+
                 new syntax (without the backslashes before the back-ticks, which are needed
                 here since we're inside a big back-tick block):
-                
+
                     url() {return \`/ajax/poststed/${this.zipcode || undefined}/\`; }
-                    
+
             `);
             throw "found old-style url-template";
         }
@@ -64,30 +104,31 @@ export class ServerWidget extends DataWidget {
     }
 
     widget_url() {
-        let url;
         if (this.waiting || !this.url) return;
         if (this._url_is_template()) {
             try {
                 // const urldata = this._get_urldata();
                 // url = template(this.url, urldata);
-                url = this.url();
+                return this.url();
             } catch (err) {
                 this.draw(null);
-                return;
+                return null;
             }
         } else {
-            url = this.url;
+            return this.url;
         }
-        return url;
     }
-    
-    /*
-     *  Generates the url for this widget, and calls fetch_json_data to fetch
-     *  data from this url.  Automatically prevents a second refresh from starting
-     *  while the first one is still going.
-     */
+    //
+    // /*
+    //  *  Generates the url for this widget, and calls fetch_json_data to fetch
+    //  *  data from this url.  Automatically prevents a second refresh from starting
+    //  *  while the first one is still going.
+    //  */
     refresh() {
-        this.fetch_json_data(this.widget_url());
+        const url = this.widget_url();
+        if (url) {
+            this.fetch_json_data(url);
+        }
     }
 
     /*
@@ -107,14 +148,13 @@ export class ServerWidget extends DataWidget {
         this.waiting = true;
         this.trigger('start-fetch-data', self);
 
-        // this.server_widget_call_ajax({
-        dk.ajax({
+        this.server_widget_call_ajax({
             cache: self.cache,
             dataType: /^https?:\/\//.test(url) ? 'jsonp' : 'json',
             url: url,
             statusCode: {
                 404: function () {
-                    dk.debug("Page not found: " + url);
+                    dkconsole.debug("Page not found: " + url);
                 },
                 500: function () {
                     // display the server error to the user.
@@ -124,7 +164,7 @@ export class ServerWidget extends DataWidget {
             },
             error(req, status, err) {
                 self.waiting = false;
-                dk.warn("ERROR", req, status, err);
+                dkconsole.warn("ERROR", req, status, err);
                 self.trigger('fetch-data-error', req, status, err);
                 throw {error: "fetch-error", message: status + ' ' + err};
             },
@@ -147,6 +187,6 @@ export class ServerWidget extends DataWidget {
      * @private
      */
     server_widget_call_ajax(params) {
-        dk.ajax(params);
+        ajax(params);
     }
 }

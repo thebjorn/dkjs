@@ -70,7 +70,6 @@
     "jest-resolve": "^24.3.1",
     "lit-element": "^2.0.1",
     "lodash.debounce": "^4.0.8",
-    "lodash.template": "^4.4.0",
     "lodash.throttle": "^4.1.1",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",

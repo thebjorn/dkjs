@@ -16,12 +16,12 @@ test("ServerWidget.template", () => {
         world: 'world'
     });
     const mockfn = jest.fn();
-    // w.server_widget_call_ajax = mockfn;
+    w.server_widget_call_ajax = mockfn;
 
     expect(w._url_is_template()).toBeTruthy();
     expect(mockfn.mock.calls).toHaveLength(0);
     expect(w.widget_url()).toEqual('http://localhost/hello/world/');
-    expect(w._get_urldata()).toMatchObject({});
+    // expect(w._get_urldata()).toMatchObject({});
 
     w.refresh();
     expect(mockfn.mock.calls).toHaveLength(1);
