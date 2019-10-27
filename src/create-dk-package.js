@@ -64,7 +64,7 @@ import dk from "./dk-obj";
 // import Lifecycle from "./lifecycle";
 // performance('loaded-Lifecycle');
 
-import sys from "./sys";
+import sys from "./sys/index.js";
 // performance('loaded-sys');
 
 import state from "./data/state/dk-state";

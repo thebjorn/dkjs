@@ -22,6 +22,17 @@ export class datatype extends Class {
                 args[0].startsWith(this.tag));
     }
     static get_datatypes() { return _datatypes; }
+    
+    static add_datatype(cls, tag) {
+        Object.defineProperty(cls, 'tag', {
+            value: tag,
+            configurable: false,
+            enumerable: true,
+            writable: false
+        });
+        _datatypes[tag] = cls;
+    }
+    
     static extend(props) {
         const SubClass = super.extend(props);
         _datatypes[SubClass.tag] = SubClass;
@@ -72,13 +83,14 @@ export function dkdatatype({tag}) {
     };
 }
 
+const DAYS = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
 
-export @dkdatatype({tag: '@date:'})
-class DkDate extends datatype {
-    days = ['søndag', 'mandag', 'tirsdag', 'onsdag', 'torsdag', 'fredag', 'lørdag'];
+// export @dkdatatype({tag: '@date:'})
+export class DkDate extends datatype {
     
     constructor(...args) {
         super();
+        this.days = DAYS; 
         if (this._has_my_tag(args)) {
             this.value = new Date(args[0].substr(this.tag.length));
         } else if (args.length === 1 && args[0] instanceof Date) {
@@ -127,11 +139,11 @@ class DkDate extends datatype {
         return this.tag + this.value.toISOString().slice(0, 10);
     }
 }
-// _datatypes[DkDate.tag] = DkDate;
+datatype.add_datatype(DkDate, '@date:');
 
 
-export @dkdatatype({tag: '@datetime:'})
-class DateTime extends DkDate {
+// export @dkdatatype({tag: '@datetime:'})
+export class DateTime extends DkDate {
     constructor(...args) {
         // '2014-03-11T08:18:07.543000'
         super();
@@ -184,11 +196,12 @@ class DateTime extends DkDate {
         return this.tag + this.toString("Y-m-dTH:i:s") + "." + this.value.getMilliseconds();
     }
 }
+datatype.add_datatype(DateTime, '@datetime:');
 // _datatypes[DateTime.tag] = DkDate;
 
 
-export @dkdatatype({tag: '@duration:'})
-class Duration extends datatype {
+// export @dkdatatype({tag: '@duration:'})
+export class Duration extends datatype {
     constructor(v) {
         super();
         if (v instanceof Duration) {
@@ -244,6 +257,7 @@ class Duration extends datatype {
         return this.tag + this.value;
     }
 }
+datatype.add_datatype(Duration, '@duration:');
 // _datatypes[Duration.tag] = Duration;
 
 

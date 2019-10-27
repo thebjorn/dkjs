@@ -4,7 +4,9 @@ import css from "../browser/dk-css";
 import dk from "../dk-obj";
 import browser from "../browser/browser-version";
 import {fa4_icon, icon} from "./dk-icon-library";
-import styles from "../../styles/index.scss";
+// import styles from "../../styles/index";
+// import styles from "../../styles/index.scss";
+const styles = "";
 
 (function () {
     if (dk.$('style#dkdj-styles').length === 0) {
