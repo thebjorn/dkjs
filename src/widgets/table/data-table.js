@@ -101,7 +101,7 @@ export class DataTable extends Widget {
             this.table_data = new DataSet(dsprops);
         }
         if (this.table_data === null) {
-            let pagesize=25;  //default value
+            let pagesize=25;
             if (this.pagesize)
                 pagesize=this.pagesize;             
                   
