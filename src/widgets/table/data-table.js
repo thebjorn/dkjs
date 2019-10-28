@@ -101,15 +101,19 @@ export class DataTable extends Widget {
             this.table_data = new DataSet(dsprops);
         }
         if (this.table_data === null) {
-            this.data_url = (this.dk && this.dk.url)? this.dk.url : "";
+            let pagesize=25;  //default value
+            if (this.pagesize)
+                pagesize=this.pagesize;             
+                  
             //dk.info("URL", this.data_url);
             // if data is not defined, then create one
             this.table_data = new DataSet({
                 // default data source is AjaxDataSource
                 datasource: new AjaxDataSource({
                     // default url is current url
-                    url: self.data_url
-                })
+                    url: self.data_url,
+                }),
+                pagesize: pagesize
             });
         }
         if (!this.data_url) this.data_url = this.table_data.datasource.url;
