@@ -14,9 +14,9 @@
 <% for (var jsfile in htmlWebpackPlugin.files.js) { %>
     <% if (htmlWebpackPlugin.files.js[jsfile].indexOf('js/dkcss') === -1) { %>
 {% if debug %}
-    <script DEBUG LOGLEVEL="4" crossorigin="anonymous" src="{% static "dkdj/js/dkdj.min.js" %}?_=3.0.0"></script>
+    <script DEBUG LOGLEVEL="4" src="{% static "dkdj/js/dkdj.min.js" %}?_=3.0.0"></script>
 {% else %}
-    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" src="{% static "dkdj/js/<%= path.basename(htmlWebpackPlugin.files.js[jsfile]) %>" %}"></script>
+    <script DEBUG LOGLEVEL="3" src="{% static "dkdj/js/<%= path.basename(htmlWebpackPlugin.files.js[jsfile]) %>" %}"></script>
 {% endif %}
     <% } %>
 <% } %>
