@@ -32,6 +32,9 @@ export class DataTableLayout extends TableLayout {
 
 export class DataTable extends Widget {
     constructor(...args) {
+        if (args.length > 0 && args[0].data && !args[0].data_table) {
+            dkwarning("DataTable created with .data and not .data_table...");
+        }
         super({
             // type: 'datatable',
             dklayout: DataTableLayout,
