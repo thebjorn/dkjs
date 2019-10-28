@@ -39,10 +39,15 @@ export class Data extends Class {
             roots: [],          // [id1,... idk]
             cache: {},          // id -> tree|leaf
         }, ...args);
-
+        
+    }
+    map_objects({depth, height, roots, cache}) {
         const self = this;
         let item, node;
-
+        self.depth = depth;
+        self.height = height;
+        self.roots = roots;
+        self.cache = cache;
         // convert all items in cache to Tree|Leaf objects
         for (let id in this.cache) if (this.cache.hasOwnProperty(id)) {
             item = this.cache[id];
@@ -203,11 +208,7 @@ export class AjaxDataSource extends JSonDataSource {
             url: this.url,
             cache: true,
             success: function (data) {
-                self.depth = data.depth;
-                self.height = data.height;
-                self.roots = data.roots;
-                self.cache = data.cache;
-                self.init();
+                self.map_objects(data);
                 self.__in_json = false;
                 dk.trigger(self, 'fetch-data', self);
             }
