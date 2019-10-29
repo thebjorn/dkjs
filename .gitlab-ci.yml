@@ -6,6 +6,14 @@ stages:
 before_script:
   - python -V
   - pip -V
+    
+jstests:
+  stage: run
+  image: thebjorn/dknode2:latest
+  script:
+    - npm install -g jest
+    - yarn
+    - jest --coverage
 
 py27:
   stage: run
