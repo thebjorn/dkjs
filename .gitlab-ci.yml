@@ -75,7 +75,7 @@ wheel:
   script:
     - dk build-wheel
   dependencies:
-    - py27
+    - py27_dj17
   artifacts:
     paths:
       - docs/badge-wheel.rst
