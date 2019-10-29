@@ -39,7 +39,7 @@ export class Data extends Class {
             roots: [],          // [id1,... idk]
             cache: {},          // id -> tree|leaf
         }, ...args);
-        
+        if (this.roots) this.map_objects(this);
     }
     map_objects({depth, height, roots, cache}) {
         const self = this;

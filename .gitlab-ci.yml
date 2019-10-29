@@ -6,22 +6,50 @@ stages:
 before_script:
   - python -V
   - pip -V
+    
+jstests:
+  stage: run
+  image: thebjorn/dknode2:latest
+  script:
+    - npm install -g jest
+    - yarn
+    - jest --coverage
 
-py27:
+py27_dj17:
   stage: run
   image: thebjorn/dktestpackage2:latest
   script:
-    - dk testpackage --ci
+    - dk testpackage --ci --tag=py27-dj17
   allow_failure: true
   artifacts:
     paths:
       - build/*
 
-py3:
+py27_dj18:
+  stage: run
+  image: thebjorn/dktestpackage2:latest
+  script:
+    - dk testpackage --ci --django=1.8.19 --tag=py27-dj18
+  allow_failure: true
+  artifacts:
+    paths:
+      - build/*
+
+py37_dj17:
   stage: run
   image: thebjorn/dktestpackage3:latest
   script:
-    - dk testpackage --ci
+    - dk testpackage --ci --tag=py37-dj17
+  allow_failure: true
+  artifacts:
+    paths:
+      - build/*
+
+py37_dj18:
+  stage: run
+  image: thebjorn/dktestpackage3:latest
+  script:
+    - dk testpackage --ci --django=1.8.19 --tag=py37-dj18
   allow_failure: true
   artifacts:
     paths:
@@ -34,8 +62,9 @@ coverage:
     - dk combine-coverage
   coverage: '/TOTAL.+ ([0-9]{1,3}%)/'
   dependencies:
-    - py27
-    - py3
+    - py27_dj17
+    - py27_dj18
+    - py37_dj18
   artifacts:
     paths:
       - build/coverage/*
@@ -46,7 +75,7 @@ wheel:
   script:
     - dk build-wheel
   dependencies:
-    - py27
+    - py27_dj17
   artifacts:
     paths:
       - docs/badge-wheel.rst
