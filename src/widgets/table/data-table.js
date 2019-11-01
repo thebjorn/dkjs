@@ -102,8 +102,7 @@ export class DataTable extends Widget {
             if (this.orphans != null) dsprops.orphans = this.orphans;
             if (this.pagenum != null) dsprops.pagenum = this.pagenum;
             this.table_data = new DataSet(dsprops);
-        }
-        if (this.table_data === null) {
+        } else if (this.table_data === null) {
             let pagesize=25;
             if (this.pagesize)
                 pagesize=this.pagesize;             
