@@ -43,18 +43,20 @@ def publish_prod_version(c):
     if fnames:                             
         c.run('rm dkdj/static/dkdj/js/dkdj.*.min.js')
 
+    v = upversion.upversion(c)
+    c.run('git add docs/conf.py package.json setup.py src/version.js')
+
     os.environ['DKBUILD_TYPE'] = 'PRODUCTION'
     c.run('webpack')
-    
+    c.run('git add dkdj/templates/dkdj/include-scripts.html')
+    c.run('git commit -m "upversion"')
+    c.run('git tag -a v{v} -m "Version {v}"'.format(v=v))
+    c.run('git push --tags')
+
     fnames = glob.glob(r'dkdj\static\dkdj\js\dkdj.*.min.js')
     print("created new version:", fnames)    
     assert len(fnames) == 1
     fname = fnames[0]        
-    
-    c.run('git add dkdj/templates/dkdj/include-scripts.html')
-    c.run('git commit -m "new prod version"')
-
-    SRV = Path(os.environ['SRV'])
 
     # [bp] collectstatic could include way too much...
     # admin = SRV / 'www' / 'admin_datakortet'
@@ -62,6 +64,7 @@ def publish_prod_version(c):
     #     c.run('python manage.py collectstatic --noinput')
         
     # 'manual' collectstatic
+    SRV = Path(os.environ['SRV'])
     static_dkdj = SRV / 'data' / 'static' / 'dkdj' / 'js'       
     c.run('cp {src} {dst}'.format(
         src=fname,
@@ -75,12 +78,6 @@ def publish_prod_version(c):
     with bfp.cd():
         os.environ['USE_AWS_STATIC'] = '1'
         c.run('python manage.py collectstatic --noinput')
-    
-    v = upversion.upversion(c)
-    c.run('git add docs/conf.py package.json setup.py src/version.js')
-    c.run('git commit -m "upversion"')
-    c.run('git tag -a v{v} -m "Version {v}"'.format(v=v))
-    c.run('git push --tags')
     
     # now get local back to dev-mode..
     c.run('rm {}'.format(fname))
