@@ -2,6 +2,7 @@
 """
 Specialized tasks.py for dkdj.8
 """
+from __future__ import print_function
 import os
 import glob
 from invoke import task, Collection
@@ -38,7 +39,7 @@ def publish_prod_version(c):
     """Publish a production version of dkdj (the .js part).
     """
     fnames = glob.glob(r'dkdj\static\dkdj\js\dkdj.*.min.js')
-    print("FNAME:", fnames)    
+    print("deleting old versions:", fnames)    
     if fnames:                             
         c.run('rm dkdj/static/dkdj/js/dkdj.*.min.js')
 
@@ -46,7 +47,7 @@ def publish_prod_version(c):
     c.run('webpack')
     
     fnames = glob.glob(r'dkdj\static\dkdj\js\dkdj.*.min.js')
-    print("FNAME:", fnames)    
+    print("created new version:", fnames)    
     assert len(fnames) == 1
     fname = fnames[0]        
     
@@ -67,7 +68,7 @@ def publish_prod_version(c):
         dst=static_dkdj
     ))
     with static_dkdj.cd():
-        c.run('svn ci -m "collectstatic"')
+        c.run('svn ci {} -m "collectstatic"'.format(os.path.basename(fname)))
 
     # remember AWS...
     bfp = SRV / 'www' / 'batforerregisteret'
@@ -76,7 +77,7 @@ def publish_prod_version(c):
         c.run('python manage.py collectstatic --noinput')
     
     v = upversion.upversion(c)
-    c.run('git add docs/conf.py package.json setup.py')
+    c.run('git add docs/conf.py package.json setup.py src/version.js')
     c.run('git commit -m "upversion"')
     c.run('git tag -a v{v} -m "Version {v}"'.format(v=v))
     c.run('git push --tags')
