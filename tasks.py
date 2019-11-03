@@ -71,7 +71,9 @@ def publish_prod_version(c):
         dst=static_dkdj
     ))
     with static_dkdj.cd():
-        c.run('svn ci {} -m "collectstatic"'.format(os.path.basename(fname)))
+        basename = os.path.basename(fname)
+        c.run('svn add {}'.format(basename))
+        c.run('svn ci {} -m "collectstatic"'.format(basename))
 
     # remember AWS...
     bfp = SRV / 'www' / 'batforerregisteret'
