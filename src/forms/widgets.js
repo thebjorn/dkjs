@@ -151,6 +151,20 @@ function create_options(options) {
         if (options.length > 0) {  // options === []
             let [first, ...rest] = options;
             if (Array.isArray(first)) {  // (c) options === [[k,v], [k,v],...]
+                if (Number.isInteger(first[0])) dkwarning(`
+                    WARNING: Your filter received plain integers as keys. While this
+                             will work, it will not present your data in the order
+                             you sent from the server (it will look unsorted).
+                             The solution is to prepend a character, ie. instead of
+                             the datasource sending:
+                             
+                                 return [(usr.id, usr.name) for usr in ...]
+                                  
+                             instead do:
+                             
+                                 return [("u{}".format(usr.id), usr.name) for usr in ...]
+                                   
+                `);
                 options.forEach(([k, v]) => result[k] = v);
                 // order = options.map(([k, v]) => k);
             } else {   // optinos === [v1, v2, v3, ...]
@@ -301,6 +315,7 @@ export class SelectWidget extends InputWidget {
     }
 
     draw(data) {
+        // console.log("SELECT:WIDGET:DRAW:", data);
         if (data != null) {
             if (data.options && !is.isEqual(data.options, this.options)) {
                 this.options = data.options;

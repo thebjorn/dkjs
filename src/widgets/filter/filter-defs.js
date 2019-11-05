@@ -1,6 +1,7 @@
 import {UIWidget} from "../../widgetcore/ui-widget";
 import dk from "../../dk-obj";
 import {CheckboxSelectWidget, RadioSelectWidget} from "../../forms/widgets";
+import {dkconsole} from "../../lifecycle/dkboot/dk-console";
 
 /**
  * A single filter definition.
@@ -47,12 +48,13 @@ export class FilterDefBase extends UIWidget {
     handlers() {
         if (this.input) dk.on(this.input, 'change', (evt, widget) => {
             // eslint-disable-next-line no-console
-            console.info("DK:ON:CHANGE:", evt, widget);
+            // console.info("DK:ON:CHANGE:", evt, widget);
             this.trigger('change', this.value);
         });
     }
 
     draw(opts) {
+        // console.log("FILTERDEF:BASE:DRAW:", opts);
         if (this.input && this.input.draw) {
             this.input.draw(opts);
         }
@@ -65,11 +67,11 @@ export class FilterDefBase extends UIWidget {
                 this.datafilter.dataset.get_filter_data(this.name, opts => {
                     this.draw(opts);
                     // eslint-disable-next-line no-console
-                    console.info('fetch_options-1', opts);
+                    dkconsole.info('fetch_options-1', opts);
                 });
             } else {
                 // eslint-disable-next-line no-console
-                console.info('fetch_options-2', this.datafilter.dataset);
+                dkconsole.info('fetch_options-2', this.datafilter.dataset);
             }
         }
     }
@@ -136,6 +138,7 @@ export class SelectMultipleFilterDef extends FilterDefBase {
     }
 
     construct() {
+        // console.log("SELECT:MULTIPLE:FILTERDEFS:CONSTRUCT:VALUES:", this.values);
         this.input = CheckboxSelectWidget.create_on(this.filterbox.filtercontent, {
             options: this.values,
             name: this.name,
