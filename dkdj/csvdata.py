@@ -7,11 +7,11 @@ try:  # pragma: nocover
     from cStringIO import StringIO
     mkbuffer = lambda: StringIO()
     encode_csv = lambda x: x
-    encode_rows = lambda rows: [[col.encode('latin-1') for col in row] for row in rows]
+    encode_rows = lambda rows: [[col.encode('latin-1', 'ignore') for col in row] for row in rows]
 except ImportError:  # pragma: nocover
     from io import StringIO
     mkbuffer = lambda: StringIO(newline="")  # needed for cells with newlines
-    encode_csv = lambda data: data.encode('latin-1')
+    encode_csv = lambda data: data.encode('latin-1', 'ignore')
     encode_rows = lambda x: x
 import csv
 
