@@ -1,6 +1,6 @@
 {
   "name": "dkdj",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "dk widgets and more..",
   "module": "dist/dk.js",
   "scripts": {
