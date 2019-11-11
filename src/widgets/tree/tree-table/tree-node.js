@@ -1,6 +1,7 @@
 
 import dk from "../../../dk-obj";
 import {UIWidget} from "../../../widgetcore/ui-widget";
+import {icon} from "../../dk-icon-library";
 
 
 export class Node extends UIWidget {
@@ -102,7 +103,7 @@ export class Node extends UIWidget {
         this.set_cursor();
 
         if (this.have_children()) {
-            this.icon.append(dk.icon('chevron-right'));
+            this.icon.append(icon('chevron-right'));
         }
         // this.widget('td').css('minHeight', this.tree.item_height);
 

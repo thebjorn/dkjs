@@ -2,6 +2,7 @@
 import {UIWidget} from "../../../widgetcore/ui-widget";
 import {where} from "../../../collections";
 import {Generation} from "./generation";
+import {dkwarning} from "../../../lifecycle/coldboot/dkwarning";
 
 /*
  *  This is the top-most widget.
@@ -18,8 +19,11 @@ import {Generation} from "./generation";
 
 export class TableTree extends UIWidget {
     constructor(...args) {
+        if (args.length > 0 && args[0].data && !args[0].tree_data) {
+            dkwarning("TreeWidget created with .data and not .tree_data!");
+        }
         super({
-            type: 'table-tree',
+            // type: 'table-tree',
             title: 'MISSING-TITLE',
             item_height: 25,
             select: 'leaves',
@@ -59,8 +63,8 @@ export class TableTree extends UIWidget {
     }
 
     get_selected() {
-        if (! (this.data || this.data.cache)) return {};
-        return where(Object.values(this.data.cache), {selected: true});
+        if (! (this.tree_data || this.tree_data.cache)) return {};
+        return where(Object.values(this.tree_data.cache), {selected: true});
     }
 
     selection_state(node, boolval) {
@@ -96,7 +100,7 @@ export class TableTree extends UIWidget {
 
     draw(data) {
         const self = this;
-        data = data || this.data;
+        data = data || this.tree_data;
         for (let i=0; i<data.depth; i++) {
             const generation = Generation.append_to(this.widget(), {
                 depth: i,
@@ -108,9 +112,9 @@ export class TableTree extends UIWidget {
             this._generation.push(generation);
             if (i > 0) this._generation[i - 1].next = generation;
         }
-        if (true || this.data.depth > 0) {
+        if (true || this.tree_data.depth > 0) {
             this._generation[0].parent = this;
-            this._generation[0].draw(this.data.roots);
+            this._generation[0].draw(this.tree_data.roots);
         }
     }
 }

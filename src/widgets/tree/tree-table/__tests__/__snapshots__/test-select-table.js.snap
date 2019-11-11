@@ -2,7 +2,7 @@
 
 exports[`test-select-table-render 1`] = `
 "
-        <div id=\\"table-tree-1\\" class=\\"table-tree dk-tree-select\\" style=\\"display: flex; height: 125px;\\"><div id=\\"generation-1\\" class=\\"dk-tree-generation\\" style=\\"overflow-y: scroll; overflow-x: none; direction: rtl; width: 0px;\\" generation=\\"0\\"><table id=\\"node-list-1\\" class=\\"treeselect-nodelist dk-tree-nodelist table table-condensed dk-bx\\" style=\\"width: 100%;\\"><thead id=\\"dk-bx-1\\">
+        <div id=\\"table-tree-1\\" class=\\"TableTree dk-tree-select\\" style=\\"display: flex; height: 125px;\\"><div id=\\"generation-1\\" class=\\"dk-tree-generation\\" style=\\"overflow-y: scroll; overflow-x: none; direction: rtl; width: 0px;\\" generation=\\"0\\"><table id=\\"node-list-1\\" class=\\"treeselect-nodelist dk-tree-nodelist table table-condensed dk-bx\\" style=\\"width: 100%;\\"><thead id=\\"dk-bx-1\\">
 <tr id=\\"dk-table-1\\">
 <th colspan=\\"3\\" style=\\"height: 20px;\\" id=\\"dk-table-2\\">MISSING-TITLE</th>
 </tr>
@@ -12,7 +12,7 @@ exports[`test-select-table-render 1`] = `
 
 <td id=\\"dk-bx-4\\" class=\\"treeselect-node\\">Bar1</td>
 
-<td valign=\\"middle\\" id=\\"dk-bx-5\\" class=\\"treeselect-icon\\"></td>
+<td valign=\\"middle\\" id=\\"dk-bx-5\\" class=\\"treeselect-icon\\"><i class=\\"icon fa fa-chevron-right chevron-right\\" icon=\\"chevron-right\\" value=\\"chevron-right\\"></i></td>
 </tr>
 </tbody></table></div><div id=\\"generation-2\\" class=\\"dk-tree-generation\\" style=\\"overflow-y: scroll; overflow-x: none; direction: rtl; width: 0px;\\" generation=\\"1\\"><table id=\\"node-list-2\\" class=\\"treeselect-nodelist dk-tree-nodelist table table-condensed dk-bx\\" style=\\"width: 100%;\\"><thead id=\\"dk-bx-7\\">
 <tr id=\\"dk-table-4\\">

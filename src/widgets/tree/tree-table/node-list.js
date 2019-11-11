@@ -43,7 +43,7 @@ export class NodeList extends UIWidget {
             // console.info("NODEID:", node.id);
 
             this._nodes.push(Node.create_on(tr, {
-                item: this.tree.data.cache[node.id],
+                item: this.tree.tree_data.cache[node.id],
                 tree: this.tree,
                 generation: this.generation,
                 nodelist: this

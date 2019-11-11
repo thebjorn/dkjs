@@ -18,7 +18,7 @@ test("test-select-table-render", () => {
     const tree = TableTree.create_inside(work, {
         selectable: ['department', 'company'],
         multiselect: false,
-        data: JSonDataSource.create({
+        tree_data: JSonDataSource.create({
             "depth": 2,
             "height": 2,
             "cache": {
