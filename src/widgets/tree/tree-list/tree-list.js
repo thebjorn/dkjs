@@ -1,6 +1,7 @@
 
 import dk from "../../../dk-obj";
 import {UIWidget} from "../../../widgetcore/ui-widget";
+import {dkwarning} from "../../../lifecycle/coldboot/dkwarning";
 
 
 export class Leaf extends UIWidget {
@@ -108,6 +109,9 @@ export class Tree extends UIWidget {
  */
 export class TreeWidget extends UIWidget {
     constructor(...args) {
+        if (args.length > 0 && args[0].data && !args[0].tree_data) {
+            dkwarning("TreeWidget created with .data and not .tree_data!");
+        }
         super({
             type: 'dktree',
             tree_data: null,             // dk.tree.DataSource

@@ -14,7 +14,7 @@ test("test-tree-list-2", () => {
     page.initialize(document);
 
     TreeWidget.create_inside(work, {
-        data: JSonDataSource.create({
+        tree_data: JSonDataSource.create({
             "depth": 2,
             "height": 2,
             "cache": {

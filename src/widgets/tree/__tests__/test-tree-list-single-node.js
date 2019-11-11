@@ -15,7 +15,7 @@ test("test-single-node-tree-list", () => {
     page.initialize(document);
 
     TreeWidget.create_inside(work.find('.container'), {
-        data: JSonDataSource.create({
+        tree_data: JSonDataSource.create({
             depth: 1,
             height: 1,
             roots: ['c57'],
