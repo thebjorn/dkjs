@@ -7,7 +7,7 @@ export class Leaf extends UIWidget {
     constructor(...args) {
         super({
             type: 'dk-tree-list-leaf',
-            data: null,     // dk.tree.Leaf
+            tree_data: null,     // dk.tree.Leaf
             structure: {
                 classes: ['leaf']
             },
@@ -20,13 +20,13 @@ export class Leaf extends UIWidget {
     
     decorate_widget() {
         this.widget()
-            .attr('nodeid', this.data.id)
-            .attr('kind', this.data.kind)
-            .addClass(this.data.kind);
+            .attr('nodeid', this.tree_data.id)
+            .attr('kind', this.tree_data.kind)
+            .addClass(this.tree_data.kind);
     }
     construct() {
         this.decorate_widget();
-        this.widget().text(this.data.name);
+        this.widget().text(this.tree_data.name);
     }
     select() {
         //this.trigger('select', this);
@@ -43,8 +43,7 @@ export class Leaf extends UIWidget {
 export class Tree extends UIWidget {
     constructor(...args) {
         super({
-            type: 'dk-tree-list-tree',
-            data: null,                 // dk.tree.Tree (could also be Leaf iff root w/o children).
+            tree_data: null,                 // dk.tree.Tree (could also be Leaf iff root w/o children).
             animation: undefined,       // jQuery animation to pass to .hide()/.show()
             children: null,
             collapsed: false,
@@ -68,17 +67,17 @@ export class Tree extends UIWidget {
      *  Get currently correct icon.
      */
     get_icon() {
-        if (this.data.children.length === 0) return this.icons.childless;
+        if (this.tree_data.children.length === 0) return this.icons.childless;
         if (this.collapsed) return this.icons.closed;
         return this.icons.open;
     }
     construct() {
         this.widget()
-            .attr('nodeid', this.data.id)
-            .attr('kind', this.data.kind)
-            .addClass(this.data.kind);
+            .attr('nodeid', this.tree_data.id)
+            .attr('kind', this.tree_data.kind)
+            .addClass(this.tree_data.kind);
         this.icon.attr('value', this.get_icon());
-        this.label.text(this.data.name);
+        this.label.text(this.tree_data.name);
     }
     collapse(boolval) {
         const subtree = this.widget('> .subtree');
@@ -111,7 +110,7 @@ export class TreeWidget extends UIWidget {
     constructor(...args) {
         super({
             type: 'dktree',
-            data: null,             // dk.tree.DataSource
+            tree_data: null,             // dk.tree.DataSource
             animation: undefined,   // to pass to .show()/.hide()
             initial_collapse: true, // should only roots (true) be showing?
 
@@ -136,19 +135,19 @@ export class TreeWidget extends UIWidget {
     }
 
     construct() {
-        dk.on(this.data, 'fetch-data-start').run(this.FN('start_busy'));
-        dk.on(this.data, 'fetch-data').run(this.FN('draw'));
-        dk.on(this.data, 'fetch-data').run(this.FN('end_busy'));
+        dk.on(this.tree_data, 'fetch-data-start').run(this.FN('start_busy'));
+        dk.on(this.tree_data, 'fetch-data').run(this.FN('draw'));
+        dk.on(this.tree_data, 'fetch-data').run(this.FN('end_busy'));
     }
 
     draw(data) {
         const self = this;
         if (!data) {
-            this.data.fetch();
+            this.tree_data.fetch();
         } else {
             this.trigger('draw-start', this);
             dk.debug("start tree draw", new Date());
-            this.roots = this.data.roots.map(function (root) {
+            this.roots = this.tree_data.roots.map(function (root) {
                 return root.visit(self.panel_body.tree, self);
             });
             if (this.initial_collapse) {
@@ -164,14 +163,14 @@ export class TreeWidget extends UIWidget {
     // visitor methods..
     leaf(location, node) {
         const self = this;
-        const leaf = this.leafwidget.append_to(location, { data: node, tree: self });
+        const leaf = this.leafwidget.append_to(location, { tree_data: node, tree: self });
         this.nodes[node.id] = leaf;
         return leaf;
     }
     tree(location, node) {
         const self = this;
         const t = this.treewidget.append_to(location, {
-            data: node,
+            tree_data: node,
             tree: self,
             animation: this.animation
         });
