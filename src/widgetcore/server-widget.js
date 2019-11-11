@@ -99,7 +99,7 @@ export class ServerWidget extends DataWidget {
             error(req, status, err) {
                 self.waiting = false;
                 dk.warn("ERROR", req, status, err);
-                self.notify('fetch-data-error', req, status, err);
+                self.trigger('fetch-data-error', req, status, err);
                 throw {error: "fetch-error", message: status + ' ' + err};
             },
             converters: {
@@ -108,7 +108,7 @@ export class ServerWidget extends DataWidget {
             success(data) {
                 self.data = data;
                 self.waiting = false;
-                self.notify("fetch-data", self);
+                self.trigger("fetch-data", self);
                 self.draw(data);
             }
         });

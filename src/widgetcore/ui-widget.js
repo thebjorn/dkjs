@@ -5,7 +5,6 @@ import page from "./dk-page";
 import {BaseWidget} from "./dk-base-widget";
 import counter from "../core/counter";
 import {Layout} from "../layout/dk-layout";
-import {dkconsole} from "../lifecycle/dkboot/dk-console";
 import {dkwarning} from "../lifecycle/coldboot/dkwarning";
 
 
@@ -15,6 +14,7 @@ export class UIWidget extends BaseWidget {
             id: null,                   // DOM id of this widget (foo-widget-43)
             dklayout: 'Layout',
             template: {root: 'div'},
+            dom_template: null,
         };
         Array.from(attrs).forEach(obj => {
             if (obj == null) return;
@@ -187,35 +187,70 @@ export class UIWidget extends BaseWidget {
         }
     }
     
+    add_dom_template(template, template_id) {
+        const head = dk('head');
+        if (!head.querySelector('#' + template_id)) {
+            const the_template = dk.$(template);
+            the_template.prop('id', template_id);
+            dk.$('head').append(the_template);
+        }
+    }
+
+    /**
+     * Fetch the dom template identified by template_id, append it to location, and set
+     * any data-name attributes on self.
+     * 
+     * @param template_id
+     * @param location
+     * @param self
+     * @param widget_id
+     */
+    append_dom_template(template_id, location, self, widget_id) {
+        const t = dk(template_id);
+        let node = document.importNode(t.content, true);
+        node.querySelectorAll('[data-name]').forEach(n => dk.add_classes(n, n.dataset.name));
+        if (self) node.querySelectorAll('[data-name]').forEach(n => self[n.dataset.name.replace('-', '_')] = dk.$(n));
+        const newid = widget_id ? widget_id : this.constructor.next_widget_id();
+        node.firstElementChild.id = newid;
+        dk.$(location).append(dk.$(node));
+        return newid;
+    }
+    
     /*
      *  `construct_widget()` is called by `page.create_widget` when the
      *  page has been initialized.
      */
     construct_widget(location) {
         // dk.debug('construct widget', this);
-        if (location.inside) {
-            this.prepare_layout(location.inside, location.append);
-        } else if (!this.id && location.on) {
-            const locid = location.on.prop('id');
-            if (locid) {
-                this.set_widget_id(locid);
-            } else {
-                const widgetid = this.constructor.next_widget_id();
-                location.on.prop('id', widgetid);
-                this.set_widget_id(widgetid);
-            }
+        if (location.on && this.dom_template) throw `
+            You cannot use a dom_template with .create_on(..),
+            either use .create_inside(..) or .append_to(..)
+        `;
+        if (this.dom_template) {
+            const template_id = `template-${this.constructor.name}`;
+            this.add_dom_template(this.dom_template, template_id);
+            this.id = this.append_dom_template('#' + template_id, location.inside, this);
+            page.widgets[this.id] = this;
         } else {
-            this.set_widget_id(this.id);
+            if (location.inside) {
+                this.prepare_layout(location.inside, location.append);
+            } else if (!this.id && location.on) {
+                const locid = location.on.prop('id');
+                if (locid) {
+                    this.id = locid;
+                } else {
+                    const widgetid = this.constructor.next_widget_id();
+                    location.on.prop('id', widgetid);
+                    this.id = widgetid;
+                }
+            }
+            
+            // at this point this.widget() exists in the dom and is
+            // the element onto which the widget should be created
+            page.widgets[this.id] = this;
+            this.create_layout(this.widget(), this.template, this.structure);
         }
-        // at this point this.widget() exists in the dom and is
-        // the element onto which the widget should be created
-        page.widgets[this.id] = this;
-        // dk.on(this, 'delete-widget', w => delete page.widgets[w.id]);
-        // dkconsole.debug("construct_widget:", this.id);
-
-        this.create_layout(this.widget(), this.template, this.structure);
         this.construct();
-
         this.initialize();
         this._widget_props.visible = true;
         // console.log("CHECKED:LEN:1", this.widget().find('input:checked').length);
@@ -432,6 +467,7 @@ export class UIWidget extends BaseWidget {
             return w;
         } catch (e) {
             dk.error(e);
+            // throw e;
         }
     }
 }
