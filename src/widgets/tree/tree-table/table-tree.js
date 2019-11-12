@@ -1,4 +1,3 @@
-
 import {UIWidget} from "../../../widgetcore/ui-widget";
 import {where} from "../../../collections";
 import {Generation} from "./generation";
@@ -48,7 +47,7 @@ export class TableTree extends UIWidget {
             },
         }, ...args);
         if (typeof this.selectable === 'string') {
-            this.selectable = this.selectable === ''? null: this.selectable.split(',');
+            this.selectable = this.selectable === '' ? null : this.selectable.split(',');
         }
         if (typeof this.multiselect === 'string') {
             this.multiselect = (this.multiselect === '1');
@@ -57,13 +56,13 @@ export class TableTree extends UIWidget {
         this._generation = [];
         this._selected_nodes = [];
     }
-    
+
     construct() {
         this.widget().height(this.size * this.item_height);
     }
 
     get_selected() {
-        if (! (this.tree_data || this.tree_data.cache)) return {};
+        if (!(this.tree_data || this.tree_data.cache)) return {};
         return where(Object.values(this.tree_data.cache), {selected: true});
     }
 
@@ -100,21 +99,25 @@ export class TableTree extends UIWidget {
 
     draw(data) {
         const self = this;
-        data = data || this.tree_data;
-        for (let i=0; i<data.depth; i++) {
-            const generation = Generation.append_to(this.widget(), {
-                depth: i,
-                title: this.title,
-                selected: null,
-                width: Math.floor((self.widget().innerWidth() - 0.5) / data.depth),
-                tree: self
-            });
-            this._generation.push(generation);
-            if (i > 0) this._generation[i - 1].next = generation;
-        }
-        if (true || this.tree_data.depth > 0) {
-            this._generation[0].parent = this;
-            this._generation[0].draw(this.tree_data.roots);
+        if (!data) {
+            this.tree_data.fetch();
+        } else {
+            data = data || this.tree_data;
+            for (let i = 0; i < data.depth; i++) {
+                const generation = Generation.append_to(this.widget(), {
+                    depth: i,
+                    title: this.title,
+                    selected: null,
+                    width: Math.floor((self.widget().innerWidth() - 0.5) / data.depth),
+                    tree: self
+                });
+                this._generation.push(generation);
+                if (i > 0) this._generation[i - 1].next = generation;
+            }
+            if (data.roots.length > 0) {
+                this._generation[0].parent = this;
+                this._generation[0].draw(data.roots);
+            }
         }
     }
 }
