@@ -146,6 +146,7 @@ export class TreeWidget extends UIWidget {
 
     draw(data) {
         const self = this;
+        if (!data && this.tree_data.__fetched) data = this.tree_data;
         if (!data) {
             this.tree_data.fetch();
         } else {
