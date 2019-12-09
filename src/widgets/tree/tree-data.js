@@ -41,35 +41,28 @@ export class Data extends Class {
         }, ...args);
         if (this.roots) this.map_objects(this);
     }
+    
     map_objects({depth, height, roots, cache}) {
-        const self = this;
-        let item, node;
+        if (Object.values(cache).every(v => v instanceof Tree || v instanceof Leaf)) return;
         self.depth = depth;
         self.height = height;
         self.roots = roots;
         self.cache = cache;
-        // convert all items in cache to Tree|Leaf objects
-        for (let id in this.cache) if (this.cache.hasOwnProperty(id)) {
-            item = this.cache[id];
-            if (item.children.length === 0 && this.roots.indexOf(id) === -1) {
-                node = new Leaf(item);
-            } else {
-                node = new Tree(item);
-            }
-            this.cache[id] = node;
-        }
+        
+        const is_leaf = node => node.children.length === 0 && this.roots.indexOf(node.id) === -1;
 
-        const childid2obj = function (childid) { return self.cache[childid]; };
+        // convert all items in cache to Tree|Leaf objects
+        Object.values(this.cache).forEach(node => {
+            this.cache[node.id] = new (is_leaf(node) ? Leaf : Tree)(node);
+        });
+
         // convert all child-ids to child objects.
-        for (let id in this.cache) if (this.cache.hasOwnProperty(id)) {
-            item = this.cache[id];
-            item.children = item.children.map(childid2obj);
-        }
+        Object.values(this.cache).forEach(node => {
+            node.children = node.children.map(id => this.cache[id]);
+        });
 
         // convert all root-ids to objects.
-        this.roots = this.roots.map(function (rootid) {
-            return self.cache[rootid];
-        });
+        this.roots = this.roots.map(rootid => this.cache[rootid]);
     }
 }
 
@@ -183,6 +176,17 @@ export class JSonDataSource extends DataSource {
             depth: 0,
             height: 0,
         }, ...args);
+        this.__fetched = false;
+        this.fetch();
+    }
+    
+    fetch() {
+        if (this.__fetched) return;
+        dk.trigger(this, 'fetch-data-start', this);
+        this.map_objects(this);
+        this.__fetched = true;
+        dk.trigger(this, 'fetch-data', this);
+        return this;
     }
 }
 

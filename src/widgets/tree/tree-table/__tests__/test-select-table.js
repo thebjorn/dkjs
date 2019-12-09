@@ -59,6 +59,7 @@ test("test-select-table-render", () => {
             "roots": ['c57']
         })
     });
+    // console.log("WORK:", work.html());
     $('[name=Bar1] .treeselect-node').click();
     const selected = tree.get_selected();
     expect(selected).toHaveLength(1);
