@@ -2,9 +2,13 @@ _schema: https://static.datakortet.no/schema/dkbuild.schema.yaml
 
 package:
   name: dkdj
-  description: The Datakortet Javascript package
-  version: 3.0.9
-  created: 2013
+  description: dk django-javascript library
+  version: 3.0.8
+  created: 2018
+
+directories:
+  source_js: ./src
+  styles: ./styles
 
 build:
-  venv: dkdj
+  venv: dkdj36
