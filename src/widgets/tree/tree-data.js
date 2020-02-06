@@ -44,10 +44,11 @@ export class Data extends Class {
     
     map_objects({depth, height, roots, cache}) {
         if (Object.values(cache).every(v => v instanceof Tree || v instanceof Leaf)) return;
-        self.depth = depth;
-        self.height = height;
-        self.roots = roots;
-        self.cache = cache;
+        
+        this.depth = depth;
+        this.height = height;
+        this.roots = roots;
+        this.cache = cache;
         
         const is_leaf = node => node.children.length === 0 && this.roots.indexOf(node.id) === -1;
 

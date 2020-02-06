@@ -145,15 +145,14 @@ export class TreeWidget extends UIWidget {
     }
 
     draw(data) {
-        const self = this;
         if (!data && this.tree_data && this.tree_data.__fetched) data = this.tree_data;
         if (!data) {
             this.tree_data.fetch();
         } else {
             this.trigger('draw-start', this);
             dk.debug("start tree draw", new Date());
-            this.roots = this.tree_data.roots.map(function (root) {
-                return root.visit(self.panel_body.tree, self);
+            this.roots = this.tree_data.roots.map(r => {
+                return r.visit(this.panel_body.tree, this);
             });
             if (this.initial_collapse) {
                 this.roots.forEach(function (r) {
