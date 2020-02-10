@@ -59,6 +59,14 @@ dkdj.mysql\_select module
     :undoc-members:
     :show-inheritance:
 
+dkdj.serializers module
+-----------------------
+
+.. automodule:: dkdj.serializers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 dkdj.tree module
 ----------------
 

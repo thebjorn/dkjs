@@ -16,6 +16,7 @@ export class Leaf extends Class {
             root: undefined,
             children: [],
         }, ...args);
+        this.myleaf = 42;
     }
 
     visit(location, ctx) {
@@ -39,31 +40,64 @@ export class Data extends Class {
             roots: [],          // [id1,... idk]
             cache: {},          // id -> tree|leaf
         }, ...args);
-        if (this.roots) this.map_objects(this);
+        if (this.roots) {
+            this.__fetched = true;
+            this.map_objects(this);
+        }
     }
     
     map_objects({depth, height, roots, cache}) {
+        // debugger;
+        if (this.__mapped) debugger;
+        this.__mapped = true;
         if (Object.values(cache).every(v => v instanceof Tree || v instanceof Leaf)) return;
         
-        this.depth = depth;
-        this.height = height;
+        this.depth = depth;  // max path
+        this.height = height || roots.length;  
         this.roots = roots;
-        this.cache = cache;
+        // this.cache = cache;   // XXX: bad, BAD, BAD! (two different types mixed)
+        this.cache = {};
         
         const is_leaf = node => node.children.length === 0 && this.roots.indexOf(node.id) === -1;
 
         // convert all items in cache to Tree|Leaf objects
-        Object.values(this.cache).forEach(node => {
-            this.cache[node.id] = new (is_leaf(node) ? Leaf : Tree)(node);
+        Object.values(cache).forEach(node => {
+            // console.log("leaf", is_leaf(node));
+            // console.log("Leaf", Leaf);
+            if (is_leaf(node)) {
+                this.cache[node.key] = new Leaf(node);
+                // this.cache[node.id] = new Leaf(node);
+            } else {
+                this.cache[node.key] = new Tree(node);
+                // this.cache[node.id] = new Tree(node);
+            }
+            const cnode = this.cache[node.key];
+            if (cnode.id === null) cnode.id = node.id;
+            console.log("CHASE:", this.cache[node.id]);
         });
+        
+        console.log("xx-xx-CACHE:", this.cache);
 
         // convert all child-ids to child objects.
         Object.values(this.cache).forEach(node => {
-            node.children = node.children.map(id => this.cache[id]);
+            if (!node) return;
+            if (node.children) {
+                node.children = node.children.map(id => this.cache[id]);
+            } else {
+                node.children = [];
+            }
+            console.log("NODE:", node.key, node.children);
         });
 
         // convert all root-ids to objects.
-        this.roots = this.roots.map(rootid => this.cache[rootid]);
+        console.log("ROOTS:", this.roots);
+        this.roots = this.roots.map(rootid => {
+            console.log("ROOTID:", rootid);
+            console.log("CACHE[rootid]:", this.cache[rootid], this.cache[rootid] instanceof Leaf);
+            return this.cache[rootid];
+        });
+        // this.roots = this.roots.map(rootid => this.cache[rootid]);
+        console.log("ROOTS:", this.roots);
     }
 }
 
@@ -171,21 +205,25 @@ export class DataSource extends Data {
 
 export class JSonDataSource extends DataSource {
     constructor(...args) {
+        console.info("JSONDATASRC:CTOR");
+        const __fetched = false;
         super({
             cache: {},
             roots: [],
             depth: 0,
             height: 0,
         }, ...args);
-        this.__fetched = false;
         this.fetch();
     }
     
     fetch() {
         if (this.__fetched) return;
-        dk.trigger(this, 'fetch-data-start', this);
-        this.map_objects(this);
         this.__fetched = true;
+
+        dk.trigger(this, 'fetch-data-start', this);
+        console.log("JSON:DATA:SOURCE:B4");
+        this.map_objects(this);
+        console.log("JSON:DATA:SOURCE:A8");
         dk.trigger(this, 'fetch-data', this);
         return this;
     }
