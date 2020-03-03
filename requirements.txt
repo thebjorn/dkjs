@@ -11,7 +11,7 @@ pytest-django==3.1.2
 coverage==4.5.3
 more-itertools<6.0.0
 
-Django==1.7.11
+django==1.8.19
 
 -e .
 codecov
