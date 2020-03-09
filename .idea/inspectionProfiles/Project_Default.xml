@@ -17,6 +17,11 @@
         </value>
       </option>
     </inspection_tool>
+    <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <Languages>
+        <language minSize="110" name="Python" />
+      </Languages>
+    </inspection_tool>
     <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
@@ -75,7 +80,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="95">
+          <list size="99">
             <item index="0" class="java.lang.String" itemvalue="mysqlclient" />
             <item index="1" class="java.lang.String" itemvalue="django-tinymce-staticfiles" />
             <item index="2" class="java.lang.String" itemvalue="cmsplugin-facebook" />
@@ -171,6 +176,10 @@
             <item index="92" class="java.lang.String" itemvalue="selenium" />
             <item index="93" class="java.lang.String" itemvalue="multiprocessing-logging" />
             <item index="94" class="java.lang.String" itemvalue="colorama" />
+            <item index="95" class="java.lang.String" itemvalue="pytest-forked" />
+            <item index="96" class="java.lang.String" itemvalue="pytest-mock" />
+            <item index="97" class="java.lang.String" itemvalue="future" />
+            <item index="98" class="java.lang.String" itemvalue="pytest-xdist" />
           </list>
         </value>
       </option>
