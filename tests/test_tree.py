@@ -2,7 +2,7 @@
 from __future__ import print_function
 import json
 
-from dkdj import jason
+from dkjason import jason
 from dkdj.tree import TreeNode, TreeDatasource, PathTreeDataSource
 
 

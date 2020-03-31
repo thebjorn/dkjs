@@ -16,7 +16,7 @@ import pytest
 import datetime
 import decimal
 import ttcal
-from dkdj import jason
+from dkjason import jason
 DJANGO = jason.DJANGO
 
 

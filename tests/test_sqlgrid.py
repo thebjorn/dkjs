@@ -2,7 +2,7 @@
 import pytest
 from django.contrib.auth.models import User
 
-from dkdj import jason
+from dkjason import jason
 from dkdj.mysql_select import SelectStmt
 from dkdj.views import SqlGrid
 

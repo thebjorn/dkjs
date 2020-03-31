@@ -3,7 +3,7 @@ from __future__ import print_function
 import pytest
 from django.contrib.auth.models import User
 
-from dkdj import jason
+from dkjason import jason
 from dkdj.grid import Column
 from dkdj.views import ModelGrid
 
