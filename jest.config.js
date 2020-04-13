@@ -123,16 +123,16 @@ module.exports = {
 
     // The paths to modules that run some code to configure or set up the testing environment before each test
     // setupFiles: [],
-    
-    // A list of paths to modules that run some code to configure or set up the testing framework before 
-    // each test. Since setupFiles executes before the test framework is installed in the environment, 
+
+    // A list of paths to modules that run some code to configure or set up the testing framework before
+    // each test. Since setupFiles executes before the test framework is installed in the environment,
     // this script file presents you the opportunity of running some code immediately after the test
     // framework has been installed in the environment.
     // setupFilesAfterEnv: [
     //     './src/test-setup.js'
     // ],
 
-    // (deprecated, use setupFilesAfterEnv instead) The path to a module that runs some code to configure or 
+    // (deprecated, use setupFilesAfterEnv instead) The path to a module that runs some code to configure or
     // set up the testing framework before each test
     // setupTestFrameworkScriptFile: null,
 

@@ -29,7 +29,7 @@ module.exports = {
         "babel"
     ],
     "rules": {
-        "indent": [           
+        "indent": [
             "error",            // indentation problems are errors
             4, {                // 4 space indents
                 SwitchCase: 1   // case statments should be indented 1 level

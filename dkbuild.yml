@@ -7,8 +7,9 @@ package:
   created: 2018
 
 directories:
-  source_js: ./src
-  styles: ./styles
+  source_js: src
+  static_js: js
+  styles: styles
 
 build:
   venv: dkdj36
