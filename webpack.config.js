@@ -129,6 +129,32 @@ const prod_settings = merge(common_settings, {
     }
 });
 
+const npm_settings = merge(common_settings, {
+    mode: 'production',
+    // devtool: 'source-map',
+    target: 'node',
+    output: {
+        path: path.resolve(__dirname, 'lib/'),
+        filename: 'dkdj.js',
+        library: LIBRARY_NAME,
+        libraryTarget: 'umd',
+    }
+});
 
-module.exports = process.env.DKBUILD_TYPE === 'PRODUCTION' ? prod_settings : dev_settings;
 
+module.exports = (function (build) {
+    let res = null;
+    // console.log("BUILD:", build);
+    switch (build) {
+        case 'PRODUCTION':
+            res = prod_settings;
+            break;
+        case 'NPM':
+            res = npm_settings;
+            break;
+        default:
+            res = dev_settings;
+    }
+    // console.log("RES:", res);
+    return res;
+})(process.env.DKBUILD_TYPE);

@@ -33,6 +33,13 @@ from dktasklib.package import Package, package
 # 
 #     c.run(py64.format(cmd=cmd))
 
+@task
+def build_npm(c):
+    """Build npm installable version in lib/dkdj.js
+    """
+    os.environ['DKBUILD_TYPE'] = 'NPM'
+    c.run('webpack')
+
 
 @task
 def publish_prod_version(c):
@@ -43,16 +50,25 @@ def publish_prod_version(c):
     if fnames:                             
         c.run('rm dkdj/static/dkdj/js/dkdj.*.min.js')
 
+    # upversion_and_add_to_checkin
     v = upversion.upversion(c)
     c.run('git add docs/conf.py package.json setup.py src/version.js')
 
+    # build production/web version
     os.environ['DKBUILD_TYPE'] = 'PRODUCTION'
     c.run('webpack')
+    
+    # git add the django include-scripts template
     c.run('git add dkdj/templates/dkdj/include-scripts.html')
+
+    # git commit and push new version
     c.run('git commit -m "upversion"')
+
+    # git tag and push new tagged version
     c.run('git tag -a v{v} -m "Version {v}"'.format(v=v))
     c.run('git push --tags')
 
+    # report which files were built
     fnames = glob.glob(r'dkdj\static\dkdj\js\dkdj.*.min.js')
     print("created new version:", fnames)    
     assert len(fnames) == 1
@@ -65,11 +81,14 @@ def publish_prod_version(c):
         
     # 'manual' collectstatic
     SRV = Path(os.environ['SRV'])
-    static_dkdj = SRV / 'data' / 'static' / 'dkdj' / 'js'       
+    static_dkdj = SRV / 'data' / 'static' / 'dkdj' / 'js'
+    # -> copy all newly created files to static-root
     c.run('cp {src} {dst}'.format(
         src=fname,
         dst=static_dkdj
     ))
+
+    # -> add and check in all newly copied files in static-root
     with static_dkdj.cd():
         basename = os.path.basename(fname)
         c.run('svn add {}'.format(basename))
@@ -93,6 +112,7 @@ ns = Collection(
     version, upversion,
     package,
     publish_prod_version,
+    build_npm,
     # collectstatic,
     # publish,
 )
