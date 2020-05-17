@@ -84,7 +84,7 @@ class ToggleView(SubcommandView):
             self.request,
             togglemsg
         )
-        r['X-dkmsg-status'] = str(togglemsg.status.code)
+        r['X-dkmsg-status'] = str(togglemsg.status.code)   # FIXME: rfc6648
         log.debug('Sending: %r', r)
         # print("SENDING:", r)
         return r

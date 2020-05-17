@@ -14,9 +14,9 @@ function _make_global_ajax_params(params) {
     };
     const beforeSend = params.beforeSend;
     params.beforeSend = function (xhr, settings) {
-        xhr.setRequestHeader("X-dkdj", dk.version);
+        xhr.setRequestHeader("X-dkdj", dk.version);  // FIXME: rfc6648
         if (!csrf_safe(params.type)) {
-            xhr.setRequestHeader("X-CSRFToken", cookie.get('csrftoken'));
+            xhr.setRequestHeader("X-CSRFToken", cookie.get('csrftoken'));  // required by Django
         }
         if (beforeSend) {
             beforeSend.call(self, xhr, settings);
