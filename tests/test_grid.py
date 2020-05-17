@@ -90,5 +90,9 @@ def test_csv_response():
     response['Content-Disposition'] = 'attachment; filename=hello.csv'
     g.write_csv(response)
 
-    assert response.serialize() == b'Content-Type: text/csv\r\nContent-Disposition: attachment; filename=hello.csv\r\n\r\nFoo,Bar\r\nbl\xe5,b\xe6r\r\n'
+    serialized = response.serialize().decode('iso-8859-1')
+    assert 'Content-Type: text/csv' in serialized
+    assert 'Content-Disposition: attachment; filename=hello.csv' in serialized
+    assert u'Foo,Bar\r\nblå,bær\r\n' in serialized
+    # assert response.serialize() == b'Content-Type: text/csv\r\nContent-Disposition: attachment; filename=hello.csv\r\n\r\nFoo,Bar\r\nbl\xe5,b\xe6r\r\n'
 

@@ -26,7 +26,7 @@ def test_bool_toggle_datasource_update(rf):
     response = tds(request)
     # print(type(response))
     # print(dir(response))
-    res = json.loads(response.content)
+    res = json.loads(response.content.decode('u8'))
     # print(json.dumps(res, indent=4))
     assert res['status']['code'] == 201
     assert res['status']['message'] == 'update'
@@ -41,7 +41,7 @@ def test_bool_toggle_datasource_ok(rf):
     response = tds(request)
     # print(type(response))
     # print(dir(response))
-    res = json.loads(response.content)
+    res = json.loads(response.content.decode('u8'))
     # print(json.dumps(res, indent=4))
     assert res['status']['code'] == 200
     assert res['status']['text'] == 'ok'
@@ -54,7 +54,7 @@ def test_bool_toggle_datasource_value(rf):
     response = tds(request)
     # print(type(response))
     # print(dir(response))
-    res = json.loads(response.content)
+    res = json.loads(response.content.decode('u8'))
     # print(json.dumps(res, indent=4))
     assert res['status']['code'] == 200
     assert res['status']['text'] == 'ok'
@@ -69,7 +69,7 @@ def test_bool_toggle_datasource_client_state_err(rf):
     response = tds(request)
     # print(type(response))
     # print(dir(response))
-    res = json.loads(response.content)
+    res = json.loads(response.content.decode('u8'))
     print(json.dumps(res, indent=4))
     assert res['status']['code'] == 450
     assert res['status']['text'] == 'client sent invalid state'
@@ -86,7 +86,7 @@ def test_bool_toggle_datasource_server_state_err(rf):
     response = tds(request)
     # print(type(response))
     # print(dir(response))
-    res = json.loads(response.content)
+    res = json.loads(response.content.decode('u8'))
     print(json.dumps(res, indent=4))
     assert res['status']['code'] == 550
     assert res['status']['text'] == 'server has invalid state'

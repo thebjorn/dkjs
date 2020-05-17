@@ -8,8 +8,7 @@ from dkdj.grid import Column
 from dkdj.views import ModelGrid
 
 
-@pytest.mark.django_db
-def test_modelgrid(rf):
+def test_modelgrid(db, rf):
     class MG(ModelGrid):
         model = User
         columns = ['username']
@@ -17,7 +16,7 @@ def test_modelgrid(rf):
     view = MG.as_view()
     r = view(rf.get('!get-records'))
     assert r.status_code == 200
-    val = dict(jason.loads(r.content))
+    val = dict(jason.loads(r.content.decode('u8')))
     print(jason.dumps(val))
     assert val['rows'] == []
     assert len(val['cols']) == 1
@@ -25,8 +24,7 @@ def test_modelgrid(rf):
     assert val['cols'][0]['type'] == 'Char'
 
 
-@pytest.mark.django_db
-def test_modelgrid_sort(rf):
+def test_modelgrid_sort(db, rf):
     class MG(ModelGrid):
         model = User
         columns = 'username email date_joined'.split()
@@ -50,7 +48,7 @@ def test_modelgrid_sort(rf):
     view = MG.as_view()
     r = view(rf.post('!get-records', {'s': '-username,email'}))
     assert r.status_code == 200
-    val = dict(jason.loads(r.content))
+    val = dict(jason.loads(r.content.decode('u8')))
     print(jason.dumps(val))
     rows = [dict(r) for r in val['rows']]
     print("ROWS:", rows)
@@ -69,8 +67,7 @@ def test_modelgrid_sort(rf):
     assert val['cols'][3]['name'] == 'full_name'
 
 
-@pytest.mark.django_db
-def test_modelgrid_csv(rf):
+def test_modelgrid_csv(db, rf):
     class MG(ModelGrid):
         model = User
         columns = 'username email date_joined'.split()
@@ -95,7 +92,7 @@ def test_modelgrid_csv(rf):
     r = view(rf.post('!get-records', {'fmt': 'csv'}))
     assert r.status_code == 200
     print("CONTENT:", r.content)
-    # val = dict(jason.loads(r.content))
+    # val = dict(jason.loads(r.content.decode('u8')))
     # print(jason.dumps(val))
     # rows = [dict(r) for r in val['rows']]
     # print("ROWS:", rows)

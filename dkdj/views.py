@@ -8,7 +8,8 @@ import sys
 from django import http
 from django.db import connection
 from django.views.generic import View
-from . import jason, grid
+from . import grid
+from dkjason import jason
 
 
 class CORSView(View):
@@ -75,7 +76,7 @@ class CORSView(View):
         """
         if request.META.get('CONTENT_TYPE', '').startswith('application/json'):
             body = request.body
-            request.json = jason.loads(body)
+            request.json = jason.loads(body.decode('u8'))
         else:
             request.json = {}
         params = {}

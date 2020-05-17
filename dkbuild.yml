@@ -12,4 +12,4 @@ directories:
   styles: styles
 
 build:
-  venv: dkdj36
+  venv: dkdj

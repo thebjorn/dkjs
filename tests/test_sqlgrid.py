@@ -7,8 +7,7 @@ from dkdj.mysql_select import SelectStmt
 from dkdj.views import SqlGrid
 
 
-@pytest.mark.django_db
-def test_sqlgrid(rf):
+def test_sqlgrid(db, rf):
     usr = User.objects.create_user('username', 'email@example.com', 'password',
                                    first_name=u'hello', last_name=u'world')
     
@@ -28,7 +27,7 @@ def test_sqlgrid(rf):
     print("R:", r)
     assert r.status_code == 200
     
-    val = dict(jason.loads(r.content))
+    val = dict(jason.loads(r.content.decode('u8')))
     print(jason.dumps(val))
     rows = [dict(r) for r in val['rows']]
     print("ROWS:", rows)
