@@ -6,15 +6,10 @@ import pprint
 import datetime
 
 from .csvdata import rows_to_csv_data
-
-try:
-    from django.template.defaultfilters import removetags
-except ImportError:
-    def removetags(txt, _):
-        return txt
-        
+import bleach
+       
 from django.db.models.fields import FieldDoesNotExist
-from . import jason
+from dkjason import jason
 
 try:
     unicode
@@ -173,11 +168,12 @@ class _ModelFieldColumn(Column):
         super(_ModelFieldColumn, self).__init__()
         
     def _get_field(self, model, name):
-        try:
-            field, _model, _direct, _m2m = model._meta.get_field_by_name(name)
-            return field
-        except AttributeError:
-            return model._meta.get_field(name)
+        return model._meta.get_field(name)
+        # try:
+        #     field, _model, _direct, _m2m = model._meta.get_field_by_name(name)
+        #     return field
+        # except AttributeError:
+        #     return model._meta.get_field(name)
 
     def _get_datatype(self, django_field):
         try:
@@ -232,7 +228,7 @@ class Row(object):
         resrow = []
         for cell in self.cells:
             if hasattr(cell, 'fmt'):
-                val = removetags(cell.fmt, 'a small img details').strip()
+                val = bleach.clean(cell.fmt, strip=True).strip()
             else:
                 val = cell
             if isinstance(val, datetime.datetime):
