@@ -22,6 +22,7 @@ setuptools.setup(
         'dkjason',
         'six',
         'future',
+        'bleach',
     ],
     url='https://github.com/thebjorn/dkdj',
     classifiers=[line for line in classifiers.split('\n') if line],
