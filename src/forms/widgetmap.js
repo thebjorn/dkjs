@@ -1,4 +1,3 @@
-
 import {validate} from "./validators";
 import {validated_input} from "./validating_inputs";
 import {
@@ -7,7 +6,8 @@ import {
     RadioInputWidget,
     RadioSelectWidget,
     SelectWidget,
-    TextInputWidget, TriboolWidget
+    TextInputWidget,
+    TriboolWidget
 } from "./widgets";
 import {InputWidget} from "./input-widget";
 
@@ -28,9 +28,7 @@ export const wmap = {
     CheckboxSelectWidget,
     TriboolWidget,
 
-    validators: {
-        validate,
-        validated_input
-    }
+    validators: validate,
+    validated_input: validated_input 
     
 };
