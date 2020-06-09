@@ -9,7 +9,7 @@ export function validated_input() {
             validate: function () {
                 return true;
             },
-            missing_message: 'Påkrevd felt!',
+            missing_message: 'Obligatorisk felt!',
             empty_message: '',
             invalid_message: 'Ugyldig!',
             valid_message: ""
