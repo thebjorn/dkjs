@@ -30,7 +30,7 @@ export class Leaf extends UIWidget {
         this.widget().text(this.tree_data.name);
     }
     select() {
-        //this.trigger('select', this);
+        this.trigger('select', this);
     }
     handlers() {
         const self = this;

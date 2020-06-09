@@ -1,8 +1,5 @@
 {% load staticfiles %}
 
-<!-- publicPath: ../../static/dkdj/js/ -->
-<!-- chunks:      -->
-<!-- manifest:      -->
 
 <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
 
@@ -16,7 +13,7 @@
 {% if debug %}
     <script DEBUG LOGLEVEL="4" src="{% static "dkdj/js/dkdj.min.js" %}?_=3.0.0"></script>
 {% else %}
-    <script DEBUG LOGLEVEL="3" src="{% static "dkdj/js/dkdj.2dd237e053ede072cf44.min.js" %}"></script>
+    <script DEBUG LOGLEVEL="3" src="{% static "dkdj/js/dkdj.min.js" %}"></script>
 {% endif %}
     
 
