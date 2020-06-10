@@ -85,7 +85,7 @@ class CORSView(View):
         for k, v in params.items():
             if isinstance(v, list) and len(v) == 1:
                 params[k] = v[0]
-        print("PARAMS:", params)
+        # print("dkdj.views:PARAMS:", params)
         request.dkargs = params
 
     def call_method(self, request, *args, **kwargs):
