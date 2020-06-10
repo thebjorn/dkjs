@@ -74,9 +74,7 @@ const common_settings = {
                     // {loader: "css-loader", options: {sourceMap: true}},
                     {loader: "postcss-loader", options: {
                         plugins: [
-                            require('autoprefixer')({
-                                browsers: ['ie >= 11', 'last 25 versions']
-                            })
+                            require('autoprefixer')()
                         ]
                     }},
                     {loader: "sass-loader", options: {sourceMap: true}},

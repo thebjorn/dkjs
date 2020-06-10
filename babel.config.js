@@ -4,7 +4,6 @@ module.exports = function (api) {
     const presets = [
         ["@babel/preset-env", {
             "targets": {
-                "ie": 11
             },
             "useBuiltIns": "entry",
             "corejs": "2",
