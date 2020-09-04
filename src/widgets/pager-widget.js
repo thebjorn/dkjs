@@ -56,10 +56,14 @@ export class PagerWidget extends Widget {
             self.select_page(dk.$(this).data('page'));
         });
         this.widget().on('click', 'li.prev-nav', function () {
-            self.select_page(self.curpage - 1);
+            if (self.curpage > 0) {
+                self.select_page(self.curpage - 1);
+            }
         });
         this.widget().on('click', 'li.next-nav', function () {
-            self.select_page(self.curpage + 1);
+            if (self.curpage + 1 < self.pagecount) {
+                self.select_page(self.curpage + 1);
+            }
         });
     }
     _prerange(a, b) {
@@ -87,6 +91,11 @@ export class PagerWidget extends Widget {
             let midrange = [Math.max(1, this.curpage - 3), Math.min(this.pagecount, this.curpage + 3)];
             let postrange = this._postrange(this.curpage + 3, this.pagecount);
 
+            // console.log("PRE:", prerange);
+            // console.log("MID:", midrange);
+            // console.log("POST:", postrange);
+            // console.log('----after...---');
+            
             if (prerange && prerange[1] + 1 >= midrange[0]) {
                 midrange[0] = 1;
                 prerange = null;

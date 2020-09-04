@@ -69,22 +69,55 @@ export class ResultSet extends Widget {
                 root: 'section',
                 search:         '<div/>',
                 csv:   `<button class="btn excelbtn" data-loading-text="Laster ned...">
-                            <span><img height="28" alt="csv" src="//static.datakortet.no/ikn/ax/button_blue_down.png"></span>
+                            <span><img height="28" alt="csv" src="https://static.datakortet.no/ikn/ax/button_blue_down.png"></span>
                         </button>`,
-                add:            '<img class="add-button" alt="add" height="28" src="//static.datakortet.no/ikn/ax/button_blue_add.png">',
+                add:            '<img class="add-button" alt="add" height="28" src="https://static.datakortet.no/ikn/ax/button_blue_add.png">',
                 commands:       '<div class="commands"/>'
             },
             
+            command_buttons: {
+                // default command parameters
+                add: {
+                    show: true,
+                },
+                csv: {
+                    show: true,
+                    filename: 'filename.csv',
+                },
+            }
+            
         }, ...args);
-        if (this.add_widget === false) delete this.structure.rowbx.data.header.commands.add;
-        if (this.download_widget === false) delete this.structure.rowbx.data.header.commands.csv;
+
+        // XXX: make button/command handling less ugly...?
+        const cmd_btns = this.command_buttons;
+        const command_buttons = {
+            // default command parameters
+            add: {
+                show: true,
+            },
+            csv: {
+                show: true,
+                filename: 'filename.csv',
+            },
+        };
+        if (cmd_btns.add === false) command_buttons.add.show = false;
+        if (cmd_btns.add) command_buttons.add = dk.merge(command_buttons.add, cmd_btns.add);
+        if (cmd_btns.csv === false) command_buttons.csv.show = false;
+        if (cmd_btns.csv) command_buttons.csv = dk.merge(command_buttons.csv, cmd_btns.csv);
+        this.command_buttons = command_buttons;
+        if (cmd_btns.csv && cmd_btns.csv.filename && cmd_btns.csv.filename !== this.command_buttons.csv.filename) {
+            this.command_buttons.csv.filename = cmd_btns.csv.filename;
+        }
+
+        if (!this.command_buttons.add.show || this.add_widget === false) delete this.structure.rowbx.data.header.commands.add;
+        if (!this.command_buttons.csv.show || this.download_widget === false) delete this.structure.rowbx.data.header.commands.csv;
         
         if (!this.dataset) dkwarning(dedent`
             You should define .dataset on the Resultset (as opposed to inside the construct_table function):
             
                 dk.ResultSet.create_on(.., {
-                    dataset: dk.data.DataSet.cretae({
-                        datasource: ...
+                    dataset: dk.data.DataSet.create({
+                        datasource: ...e.g. url...,
                         pagesize: 5,
                         orphans: 4
                     }),
@@ -118,7 +151,7 @@ export class ResultSet extends Widget {
     }
 
     // noinspection JSUnusedLocalSymbols
-    construct_table(location, download) {
+    construct_table(location, download, ds) {
         if (!this.table) {
             return this._construction_error("you need to specify a construct_table method");
         }
@@ -153,8 +186,13 @@ export class ResultSet extends Widget {
             this.widget('.excel'), 
             this.dataset
         );
-        // console.log("Resultset:construct:end:construct_table");
         if (!this.table) return;
+        if (this.command_buttons.csv.show && !this.table.download) {
+            // we should show the csv download button, but construct_table has not initialized it...
+            this.widget('.excelbtn').on('click', () => this.table.table_data.fetch_csv(this.command_buttons.csv.filename)); 
+        }
+        // console.log("Resultset:construct:end:construct_table");
+        
         this.filter = this.construct_filter(this.rowbx.filterbx, this.table.table_data);
         this.pager = this.construct_pager(this.rowbx.data.footer, {});
         this.table.set_pager(this.pager);
@@ -173,17 +211,17 @@ export class ResultSet extends Widget {
 
         let infotxt = '<span class="info">';
         const total = `<span class="tot">(totalt: ${totcount})</span>`;
-        // console.log("SWITCH:", count);
+        // console.log("SWITCH:", count, info);
 
         switch (count) {
             case 'none':
                 infotxt += `viser 0 av ${filter_count}`;
                 break;
             case 'one':
-                infotxt += `post nr. ${start_recnum + 1} av ${filter_count}`;
+                infotxt += `post nr. ${start_recnum} av ${filter_count}`;
                 break;
             case 'many':
-                infotxt += `viser ${start_recnum + 1}&ndash;${end_recnum} av ${filter_count}`;
+                infotxt += `viser ${start_recnum}&ndash;${end_recnum-1} av ${filter_count}`;
                 break;
         }
         infotxt += '</span>';

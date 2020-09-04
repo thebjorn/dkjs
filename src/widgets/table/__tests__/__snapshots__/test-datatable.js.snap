@@ -23,7 +23,7 @@ exports[`test-datatable 1`] = `
           fieldname="project"
           id="dk-table-2"
           scope="col"
-          style="cursor: url(//static.datakortet.no/dk/sort-az.cur), pointer;"
+          style="cursor: url(\\"https://static.datakortet.no/dk/sort-az.cur\\"), pointer;"
           title=""
         >
           <div
@@ -48,7 +48,7 @@ exports[`test-datatable 1`] = `
           fieldname="work"
           id="dk-table-3"
           scope="col"
-          style="cursor: url(//static.datakortet.no/dk/sort-za.cur), pointer;"
+          style="cursor: url(\\"https://static.datakortet.no/dk/sort-za.cur\\"), pointer;"
           title=""
         >
           <div

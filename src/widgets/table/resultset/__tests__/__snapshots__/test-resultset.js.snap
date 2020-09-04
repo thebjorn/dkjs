@@ -94,7 +94,7 @@ exports[`test-resultset-render 1`] = `
               class="add-button add"
               height="28"
               id="dk-bx-13"
-              src="//static.datakortet.no/ikn/ax/button_blue_add.png"
+              src="https://static.datakortet.no/ikn/ax/button_blue_add.png"
             />
             <button
               class="btn excelbtn csv"
@@ -107,7 +107,7 @@ exports[`test-resultset-render 1`] = `
                 <img
                   alt="csv"
                   height="28"
-                  src="//static.datakortet.no/ikn/ax/button_blue_down.png"
+                  src="https://static.datakortet.no/ikn/ax/button_blue_down.png"
                 />
               </span>
               
