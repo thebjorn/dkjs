@@ -4,7 +4,7 @@
   "description": "dk widgets and more..",
   "module": "lib/dkdj.js",
   "scripts": {
-    "prepublish": "inv build-npm",
+    "xprepublish": "inv build-npm",
     "test": "jest --coverage",
     "coverage": "jest --coverage && start build/coverage/index.html",
     "docs": "jsdoc -r -P ./package.json -R ./README.md src -d ./out --verbose && start out/index.html",

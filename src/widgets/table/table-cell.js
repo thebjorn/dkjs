@@ -112,6 +112,19 @@ export class TableCell extends UIWidget {
         });
         // const rec = this.tablerow ? this.tablerow.record : null;
         const rec = this.tablerow.record;
-        w.html(this.coldef.format(val, rec, this.widget()));
+        try {
+            const fmtval = this.coldef.format(val, rec, this.widget());
+            w.html(fmtval);
+        } catch (e) {
+            dk.error(`
+                The .format() method on column ${this.coldef.name} raised an exception
+                
+                ${e}
+
+                on value ${val}
+                and record: ${rec}
+            `);
+            throw e;
+        }
     }
 }
