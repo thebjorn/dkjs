@@ -54,22 +54,22 @@ export class UIWidget extends BaseWidget {
      *  Short hand for forwarding an event, e.g. a click event on this
      *  widget into a click notification from this widget.
      */
+    retrigger(evtname) {
+        const self = this;
+        this.widget().on(evtname, function (event) {
+            self.trigger(evtname, self, event);
+        });
+    }
+
+    /*
+     *  [deprecated] Short hand for forwarding an event, e.g. a click event on this
+     *  widget into a click notification from this widget.
+     */
     notify_on(evtname) {
         dkwarning(`Widget.notify_on is deprecated, use Widget.retrigger instead`);
         const self = this;
         this.widget().on(evtname, function () {
             self.trigger(evtname, self);
-        });
-    }
-
-    /*
-     *  Short hand for forwarding an event, e.g. a click event on this
-     *  widget into a click notification from this widget.
-     */
-    retrigger(evtname) {
-        const self = this;
-        this.widget().on(evtname, function (event) {
-            self.trigger(evtname, self, event);
         });
     }
 
