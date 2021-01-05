@@ -350,12 +350,13 @@ class Resultset(GridView):
         })
 
     def run_query(self, qs, params):
+        qs_orig = qs
         info = {
             'totcount': qs.count()
         }
         qs = self.do_filter(qs, params['filter'])
-        qs = self.do_search(qs, params['search'])
-        info['filter_count'] = qs.count()
+        qs = self.do_search(qs, params['search'])        
+        info['filter_count'] = info['totcount'] if qs_orig == qs else qs.count()
         qs = self.do_sort(qs, params['sort'])
         qs = qs[params['start']:params['end']]
         object_list = list(qs)
