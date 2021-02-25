@@ -79,6 +79,7 @@ export class ResultSet extends Widget {
                 // default command parameters
                 add: {
                     show: true,
+                    url: '/',
                 },
                 csv: {
                     show: true,
@@ -94,6 +95,7 @@ export class ResultSet extends Widget {
             // default command parameters
             add: {
                 show: true,
+                url: '/',
             },
             csv: {
                 show: true,
@@ -190,6 +192,9 @@ export class ResultSet extends Widget {
         if (this.command_buttons.csv.show && !this.table.download) {
             // we should show the csv download button, but construct_table has not initialized it...
             this.widget('.excelbtn').on('click', () => this.table.table_data.fetch_csv(this.command_buttons.csv.filename)); 
+        }
+        if (this.command_buttons.add.show) {
+            this.widget('.add-button').on('click', () => location.assign(this.command_buttons.add.url));
         }
         // console.log("Resultset:construct:end:construct_table");
         
