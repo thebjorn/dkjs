@@ -29,4 +29,8 @@ webpack
 
 To develop dkdj, use `webpack --watch` instead.
 
-To build a production version run `inv build -f`
+To build a production version run `dk publish-javascript`
+
+# node-gyp / python version
+
+see https://github.com/nodejs/node-gyp/issues/524
