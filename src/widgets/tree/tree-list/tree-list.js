@@ -151,6 +151,7 @@ export class TreeWidget extends UIWidget {
         } else {
             this.trigger('draw-start', this);
             dk.debug("start tree draw", new Date());
+            this.panel_body.tree.empty();
             this.roots = this.tree_data.roots.map(r => {
                 return r.visit(this.panel_body.tree, this);
             });
