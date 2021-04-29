@@ -248,6 +248,7 @@ if (typeof customElements !== 'undefined') customElements.whenDefined('dk-load')
                     #dk-panel {margin-bottom: 0;}
                     #title-text { 
                         font-size: var(--title-size); 
+                        font-weight: var(--title-weight);
                     }
                 </style>
                 <div id="dk-panel" class="PanelWidget dk-panel panel panel-default">
