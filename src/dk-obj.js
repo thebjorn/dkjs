@@ -13,7 +13,7 @@ import {shallow_observer, deep_observer} from "./data/observable";
 import require_css from "./browser/loaders";
 import globalThis, {get_dk_script_tag} from "./lifecycle/dkglobal";
 import Class from "./lifecycle/coldboot/dk-class";
-import version from "./version";
+import {version} from "./version";
 import create_debug_environment from "./lifecycle/dkboot/lifecycle-create-debug-environment";
 import namespace from "./lifecycle/coldboot/dk-namespace";
 import setup_loaders from "./lifecycle/lifecycle-setup-loaders";
