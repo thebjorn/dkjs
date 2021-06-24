@@ -135,7 +135,7 @@ export class DataFilter extends UIWidget {
             dk.on(res, 'change', (...args) => {
                 // console.info("FILTERCLS:ON:CHANGE", args);
                 const values = this.values();
-                console.info("FILTERDATA::::::::::::::::::", values);
+                // console.info("FILTERDATA::::::::::::::::::", values);
                 if (this.data) this.data.set_filter(values);
                 this.trigger('filter-change', values);
             });
@@ -151,28 +151,28 @@ export class DataFilter extends UIWidget {
             // const filter = materialize(this.filters[filter_name]);
             // console.info("MATERIALIZE:FILTER:", materialize(filter));
             
-            console.info("DATAFILTER:filter[NAME]", filter_name);
+            // console.info("DATAFILTER:filter[NAME]", filter_name);
             // console.info("DATAFILTER:filter:", filter_name, filter);
             // console.info("DATAFILTER:filter:input:", filter.input);
             
 
             if (filter.value) {
                 // filter has defined a value on itself.. (e.g. `CustomFilterDef`'s
-                console.info("DATAFILTER:filter:direct-VALUE:", filter.value);
+                // console.info("DATAFILTER:filter:direct-VALUE:", filter.value);
                 return filter.value;
             }
             if (filter.input && filter.input.jquery) {
                 // found a jQuery object, get its .val()
-                console.info("DATAFILTER:filter:value:JQ:", filter.input.val());
+                // console.info("DATAFILTER:filter:value:JQ:", filter.input.val());
                 return filter.input.val();
             }
             if (filter.input && filter.input.value) {
                 // found a dk.form object
-                console.info("DATAFILTER:filter:value:JS:", filter.input.value);
+                // console.info("DATAFILTER:filter:value:JS:", filter.input.value);
                 return filter.input.value;
             }
         });
-        console.info("DATAFILTER:VALS:", vals);
+        // console.info("DATAFILTER:VALS:", vals);
         return zip_object(keys, vals);
     }
 }
