@@ -540,10 +540,14 @@ class PusherModelGrid(ModelGrid):
                     example json::
                         {
                             'id': 233332
-                            'fields': {
-                                'status': 'logged-in'
-                                'change_datetime': '2021-06-20 10:22:00'
-                            } 
+                            'fields': [{
+                                'fieldname': 'status',
+                                'value': 'logged-in'
+                            },
+                            {
+                                'fieldname': 'change_datetime',
+                                 'value': '2021-06-20 10:22:00'
+                            }]
                         }
                 new::
                     A new record is added and should be fetch from the db and
