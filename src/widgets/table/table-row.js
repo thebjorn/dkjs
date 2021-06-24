@@ -2,7 +2,7 @@
 /*
  *  A Data Record widget.
  */
-
+import dk from "../../dk-obj";
 import {Widget} from "../../widgetcore/dk-widget";
 import {TableCell} from "./table-cell";
 import {TableRowLayout} from "../../layout/table-layout";
@@ -42,6 +42,16 @@ export class TableRow extends Widget {
                 coldef: coldef
             });
         });
+    }
+    
+    flash() {
+        this.widget().addClass('item-flash');
+        this.widget().on('animationend', () => this.widget().removeClass('item-flash'));
+    }
+    
+    handlers() {
+        // XXX: maybe flash only changed fields?
+        dk.on(this.record, 'updated', fields => this.flash());
     }
 
     get_column_value(coldef) {
