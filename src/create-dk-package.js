@@ -124,6 +124,7 @@ import {wmap} from "./forms/widgetmap";
 import {JSONDataSource} from "./data/source/dk-json-datasource";
 import {ajax, json} from "./browser/dk-client";
 import {AjaxDataSource} from "./data/source/dk-ajax-datasource";
+import {PusherDataSource} from "./data/source/dk-pusher-datasource";
 import {DataPage} from "./data/dk-datapage";
 import {DataSet} from "./data/dk-dataset";
 import {DataTable, DataTableLayout} from "./widgets/table/data-table";
@@ -298,6 +299,7 @@ if (!String.prototype.format) {
             ArraySource,
             JSONDataSource,
             AjaxDataSource,
+            PusherDataSource,
             DataPage,
             DataSet,
             Data: DataSet,

@@ -39,6 +39,7 @@ export class DataSet extends Class {
             
         }, props));
     
+        this.datasource.live_data = this;
         this._first_fetch = true;
         this.pages = {};
         this._filter_data = {};

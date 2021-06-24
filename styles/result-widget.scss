@@ -1,4 +1,5 @@
 
+@import "variables";
 @import "utils";
 
 $resultWidgetSpace: 2px;
@@ -171,4 +172,13 @@ $resultWidgetDebugColor: darken(darkgreen, 10%);
         .Data           { @include debug-box(". ResultSet > . Data"); }
         .PagerWidget    { @include debug-box(".ResultSet > .PagerWidget"); }
     }
+}
+
+.table .record_change {
+    background-color: lighten($brand-success, 30%);
+    transition: background-color 1s;
+}
+.table .record_change_done {
+    background-color: $body-bg;
+    transition: background-color 1s;
 }

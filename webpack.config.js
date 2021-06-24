@@ -103,6 +103,7 @@ const common_settings = {
     ],
     externals: {
         jquery: 'jQuery',
+        pusher: 'Pusher',
     }
 };
 
