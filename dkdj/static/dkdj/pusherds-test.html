@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://static.datakortet.no/font/fa470/css/font-awesome.css">
+
+    <!--START dkdj SECTION-->
+    <script crossorign="anonymous" src="https://polyfill.io/v3/polyfill.js?features=fetch,es5,es6,es7,Object.entries,Element.prototype.append,DocumentFragment.prototype.append,DocumentFragment.prototype.prepend&flags=gated"></script>
+    <script crossorign="anonymous" src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.6/webcomponents-bundle.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+    <script src="https://js.pusher.com/5.0/pusher.min.js"></script>
+
+    <!--    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" name="dkk" src="js/dk.min.js"></script>-->
+    <script DEBUG LOGLEVEL="3" crossorigin="anonymous" name="dkk" src="js/dkdj.min.js"></script>
+    <!--END dkdj SECTION-->
+
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/dkdj/dkdj/static/dkdj/js/dkcss.css" type="text/css">
+</head>
+<body>
+    <div id="pt"></div>
+
+    <script>
+        const dt = dk.DataTable.create_on('#pt', {
+            classes: ['table table-bordered table-hover table-condensed'],
+
+            table_data: dk.data.Data.create({
+                pagesize: 100,
+                datasource: dk.data.PusherDataSource.create({
+                    url: 'https://xn--btfrerregisteret-dob85a.no/testleder/bjorn/candidates/progress/all/',
+                    pusher_channel: 'my-channel',
+                    pusher_key: 'fa53d99844a9be9f4259'
+                })
+            }),
+            columns: {
+                username: {
+                    label: 'Brukernavn',
+                    format: function(val, rec) {
+                        let url = `https://example.com/dkcal/profile/${rec.userid}`;
+                        return `<a target="_blank" href="${url}">${val}</a>`;
+                    }
+                },
+                age: {
+                    label: 'Alder'
+                }
+            }
+        });
+    </script>
+    
+</body>
+</html>

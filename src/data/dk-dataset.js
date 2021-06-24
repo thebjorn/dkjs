@@ -43,18 +43,62 @@ export class DataSet extends Class {
         this._first_fetch = true;
         this.pages = {};
         this._filter_data = {};
+
+        // catch-and-resend signals from the datasource
+        // (we do this so the widgets don't have to reach into
+        // the innards of dataset).
+        /*
+            The update field message has the following format:
+        
+                 {
+                    'id': 233332
+                    'fields': [
+                        {
+                            'fieldname': 'status',
+                            'value': 'logged-in'
+                        }*
+                    ]
+                }
+         */
+        dk.on(this.datasource, 'update-record', (pk, fields) => this.update_record(pk, fields));
+
+        // dk.on(this.datasource, 'reload-all', data => dk.trigger(this, 'reload-all', data));
+        // dk.on(this.datasource, 'update-record', data => dk.trigger(this, 'update-record', data));
+        // dk.on(this.datasource, 'delete-record', data => dk.trigger(this, 'delete-record', data));
     }
     
     get_record(pk) {
         return this.page.get_record(pk);
     }
 
-    set_field_value(pk, field_name, newval) {
+    /*
+    Implementation for update_/set_field_value.
+     */
+    change_field_value(pk, field_name, newval) {
         const record = this.get_record(pk);
         record[field_name] = newval;
+        return record;
+    }
+
+    /*
+    Update the field value, and signal that it was updated.
+    Intended for datasources that automagically changes values.
+     */
+    update_record(pk, fields) {
+        const record = this.get_record(pk);
+        fields.forEach(({name, value}) => record[name] = value);
+        dk.trigger(record, 'updated', fields);
+    }
+    
+    /*
+    Set a new field value based on user input. Adds the record/field to the dirty set.
+     */
+    set_field_value(pk, field_name, newval) {
+        const record = this.change_field_value(pk, field_name, newval);
         dk.trigger(record, 'change', field_name, newval);
         const field = this.page.get_field(field_name);
         this.page.add_dirty(pk, field, newval);
+
         // NOTE: it is up to the application to call this.update() - most 
         //       likely after one or more rows have finished changing.
         // console.log("SET_FIELD_VALUE:PAGE>DIRTYSET:", this.page.dirtyset);

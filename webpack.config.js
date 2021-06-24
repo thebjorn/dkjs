@@ -1,3 +1,4 @@
+
 /* global __dirname process */
 const webpack = require('webpack');
 const path = require('path');
@@ -103,7 +104,7 @@ const common_settings = {
     ],
     externals: {
         jquery: 'jQuery',
-        pusher: 'Pusher',
+        pusher: 'pusher',
     }
 };
 
