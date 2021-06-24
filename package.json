@@ -51,6 +51,7 @@
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.6.0",
+    "pusher": "^5.0.0",
     "require": "^2.4.20",
     "sass-loader": "^7.1.0",
     "webpack": "^4.29.3",
