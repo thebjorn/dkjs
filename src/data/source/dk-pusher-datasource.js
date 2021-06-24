@@ -19,18 +19,10 @@ export class PusherDataSource extends AjaxDataSource {
         this.channel = pusher.subscribe(this.pusher_channel);
     }
     set live_data(val) {
-        this.channel.bind('new', data  => {
-            this.on_new_event(data);
-        });
-        this.channel.bind('change', data  => {
-            this.on_change_event(data);
-        });
-        this.channel.bind('delete', data  => {
-            this.on_delete_event(data);
-        });
-        this.channel.bind('reload', data  => {
-            this.reload_table_data();
-        });
+        this.channel.bind('new', data  => this.on_new_event(data));
+        this.channel.bind('change', data  => this.on_change_event(data));
+        this.channel.bind('delete', data  => this.on_delete_event(data));
+        this.channel.bind('reload', data  => this.reload_table_data());
     }
     
     reload_table_data() {
@@ -43,12 +35,12 @@ export class PusherDataSource extends AjaxDataSource {
         // For now, we only update one field.
         // to-do: Loop through changed elements.
         // to-do: Surely there is an easier way of doing this?
-        let record = this.caller.table.table_data.get_record(data['id']);
-        let row = this.caller.table.rows[record.rownum];
-        let column = this.caller.table.column[data['fieldname']];
-        let cell = $("#"+row.cells[column.colnum].id);
+        const record = this.caller.table.table_data.get_record(data['id']);
+        const row = this.caller.table.rows[record.rownum];
+        const column = this.caller.table.column[data['fieldname']];
+        const cell = $("#"+row.cells[column.colnum].id);
         cell.text(data['value']);
-        let _row = $('#'+row.id);
+        const _row = $('#'+row.id);
         
         // animate the record change
         // fade-in
