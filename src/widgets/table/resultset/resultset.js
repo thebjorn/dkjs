@@ -201,8 +201,6 @@ export class ResultSet extends Widget {
         this.filter = this.construct_filter(this.rowbx.filterbx, this.table.table_data);
         this.pager = this.construct_pager(this.rowbx.data.footer, {});
         this.table.set_pager(this.pager);
-        // Simplify using the caller-object in the datasource
-        this.dataset.datasource.caller=this;
     }
     
     _update_info(info) {
