@@ -34,7 +34,8 @@ export class ColumnDef extends Class {
 
     get_value(record) {
         //dk.info("getting value from columndef", record, this, record[this.name]);
-        return record[this.name];
+        if(record)
+            return record[this.name];
     }
 
     /*

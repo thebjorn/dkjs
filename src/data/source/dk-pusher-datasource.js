@@ -38,7 +38,7 @@ export class PusherDataSource extends AjaxDataSource {
                 }
          */
         this.channel.bind('change', data  => {
-            dk.trigger(this, 'update-record', data.id, data.fields)
+            dk.trigger(this, 'update-record', data.id, data.fields);
         });
         // this.channel.bind('new', data  => this.trigger('reload-all', data));
         // this.channel.bind('delete', data  => this.trigger('delete-record', data));

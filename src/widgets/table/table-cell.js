@@ -104,7 +104,7 @@ export class TableCell extends UIWidget {
         };
         dk.on(this.tablerow.record, 'change', draw_cell);
         dk.on(this.tablerow.record, 'updated', fields => {
-            fields.forEach(({name, val}) => draw_cell(name, val));
+            fields.forEach(({fieldname, value}) => draw_cell(fieldname, value));
         });
     }
 

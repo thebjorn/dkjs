@@ -86,7 +86,7 @@ export class DataSet extends Class {
      */
     update_record(pk, fields) {
         const record = this.get_record(pk);
-        fields.forEach(({name, value}) => record[name] = value);
+        fields.forEach(({fieldname, value}) => record[fieldname] = value);
         dk.trigger(record, 'updated', fields);
     }
     
