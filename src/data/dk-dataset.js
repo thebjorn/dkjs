@@ -61,14 +61,14 @@ export class DataSet extends Class {
                 }
          */
         dk.on(this.datasource, 'update-record', (pk, fields) => this.update_record(pk, fields));
-
-        // dk.on(this.datasource, 'reload-all', data => dk.trigger(this, 'reload-all', data));
-        // dk.on(this.datasource, 'update-record', data => dk.trigger(this, 'update-record', data));
-        // dk.on(this.datasource, 'delete-record', data => dk.trigger(this, 'delete-record', data));
+        dk.on(this.datasource, 'reload-all', data => this.reload_all());
+        dk.on(this.datasource, 'reload-record', (pk) => this.get_record(pk));
     }
     
     get_record(pk) {
-        return this.page.get_record(pk);
+        const record = this.page.get_record(pk);
+        dk.trigger(record, 'updated', []);
+        return record;
     }
 
     /*
@@ -80,14 +80,25 @@ export class DataSet extends Class {
         return record;
     }
 
+    reload_all() {
+        this.pages = {};
+        this.get_page();
+    }
+    
     /*
     Update the field value, and signal that it was updated.
     Intended for datasources that automagically changes values.
      */
     update_record(pk, fields) {
         const record = this.get_record(pk);
-        fields.forEach(({fieldname, value}) => record[fieldname] = value);
-        dk.trigger(record, 'updated', fields);
+        if(record) {
+            fields.forEach(({fieldname, value}) => record[fieldname] = value);
+            dk.trigger(record, 'updated', fields);
+        }
+    }
+    delete_record(pk) {
+        const record = this.get_record(pk);
+        dk.trigger(record, 'deleted', pk);
     }
     
     /*

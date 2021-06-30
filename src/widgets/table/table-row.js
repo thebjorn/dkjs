@@ -23,7 +23,7 @@ export class TableRow extends Widget {
     delete_widget() {
         delete this.record;
         delete this.table;
-        this.cells.forEach(c => {if (c) c.delete_widget()});
+        this.cells.forEach(c => {if (c) c.delete_widget();});
         this.cells = [];
         super.delete_widget();
     }
