@@ -1,6 +1,22 @@
+__mocks__
 /build
 /dist
 /dkdj
 # lib is not here...
 /public
-/src
+# /src
+*.py
+dkbuild.yml
+dkdj.egg-info
+dkdj_generator
+tests
+visual-tests
+.*
+# js config files
+babel.config.js
+jest.config.js
+postcss.config.js
+webpack.config.js
+requirements.txt
+TODO.md
+yarn-error.log

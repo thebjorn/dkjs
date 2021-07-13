@@ -129,17 +129,54 @@ const prod_settings = merge(common_settings, {
     }
 });
 
-const npm_settings = merge(common_settings, {
+const npm_settings = {
     mode: 'production',
+    entry: {
+        dkdj: './src/index.js',
+    },
     // devtool: 'source-map',
     target: 'node',
     output: {
         path: path.resolve(__dirname, 'lib/'),
-        filename: 'dkdj.js',
+        filename: '[name].js',
         library: LIBRARY_NAME,
         libraryTarget: 'umd',
+        umdNamedDefine: true,
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true
+                    }
+                }
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    // fallback to style-loader in development
+                    // {loader: process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader},
+                    // {loader: process.env.NODE_ENV === 'production' ? 'style-loader' : MiniCssExtractPlugin.loader},
+                    // {loader: "css-loader", options: {sourceMap: true}},
+                    {loader: "postcss-loader", options: {
+                        plugins: [
+                            require('autoprefixer')()
+                        ]
+                    }},
+                    {loader: "sass-loader", options: {sourceMap: true}},
+                ]
+            }
+        ]
+    },
+    plugins: [],
+    externals: {
+        jquery: 'jQuery',
     }
-});
+};
 
 
 module.exports = (function (build) {
