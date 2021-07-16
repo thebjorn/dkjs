@@ -1,14 +1,8 @@
 
 
-
-// Box sizing
-@mixin box-sizing($boxmodel){
-    -webkit-box-sizing: $boxmodel;
-    -moz-box-sizing: $boxmodel;
-    box-sizing: $boxmodel;
+.borderbox {
+    box-sizing: border-box; 
 }
-
-.borderbox { @include box-sizing(border-box); }
 
 
 @mixin rotate($angle, $x: 50%, $y: 50%){

@@ -2,7 +2,7 @@
 /* global __dirname process */
 const webpack = require('webpack');
 const path = require('path');
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const FlowWebpackPlugin = require('flow-webpack-plugin');
@@ -73,11 +73,8 @@ const common_settings = {
                     // {loader: process.env.NODE_ENV !== 'production' ? 'style-loader' : MiniCssExtractPlugin.loader},
                     // {loader: process.env.NODE_ENV === 'production' ? 'style-loader' : MiniCssExtractPlugin.loader},
                     // {loader: "css-loader", options: {sourceMap: true}},
-                    {loader: "postcss-loader", options: {
-                        plugins: [
-                            require('autoprefixer')()
-                        ]
-                    }},
+                    "css-loader",
+                    "postcss-loader",
                     {loader: "sass-loader", options: {sourceMap: true}},
                 ]
             }
@@ -103,7 +100,7 @@ const common_settings = {
         // })
     ],
     externals: {
-        jquery: 'jQuery',
+        jquery: 'jquery',
         pusher: 'pusher',
     }
 };
@@ -112,7 +109,7 @@ const dev_settings = merge(common_settings, {
     mode: 'development',   // production, none
     //devtool: 'eval',        // generated code
     // devtool: 'eval-source-map',      // original source
-    devtool: 'cheap-module-eval-source-map',      // original source
+    devtool: 'eval-cheap-module-source-map',      // original source
 
     output: {
         filename: '[name].min.js',
@@ -164,7 +161,7 @@ const npm_settings = {
                     // {loader: "css-loader", options: {sourceMap: true}},
                     {loader: "postcss-loader", options: {
                         plugins: [
-                            require('autoprefixer')()
+                            require('autoprefixer')
                         ]
                     }},
                     {loader: "sass-loader", options: {sourceMap: true}},

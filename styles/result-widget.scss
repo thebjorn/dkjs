@@ -10,7 +10,7 @@ $resultWidgetDebugColor: darken(darkgreen, 10%);
 
 @mixin dkrs-box {
     position: relative;
-    @include box-sizing(border-box);
+    box-sizing: border-box;
 }
 
 .CheckboxSelectWidget > label,

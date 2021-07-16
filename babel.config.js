@@ -17,8 +17,6 @@ module.exports = function (api) {
         "@babel/plugin-transform-for-of",
         ["@babel/plugin-proposal-decorators", {
             "decoratorsBeforeExport": false,
-            "version": "nov-2018"
-            // "version": "jan-2019"
         }],
         "@babel/plugin-proposal-class-properties",
 
