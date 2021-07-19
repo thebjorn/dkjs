@@ -241,7 +241,7 @@ export class SelectWidget extends InputWidget {
         this.options = options;
         
         // console.log("SELECT:WIDGET:CTOR:VALUE:", value);
-        if (!Array.isArray(value)) throw `value should be an array, not ${JSON.stringify(values)}`;
+        if (!Array.isArray(value)) throw `value should be an array, not ${JSON.stringify(value)}`;
         if (!this.multiple && value.length > 1) throw "cannot have multiple values when multiple=false";
         value.forEach(k => this._selected[k] = true);
     }
@@ -275,7 +275,6 @@ export class SelectWidget extends InputWidget {
             if (this.datasource) this.datasource.value = v;
             this.trigger('value-changed', this.value);
         }
-        return v;
     }
     
     _set_value_from_selected() {

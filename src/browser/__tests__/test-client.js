@@ -26,7 +26,7 @@ test("json", () => {
     ajax_args.statusCode[500]();
     ajax_args.error("req", "status", "err");
 
-    console.dir("$AJAX:", $.ajax);
+    console.dir($.ajax);
     console.log("SUCC:ARGS:", success_args);
     console.log("AJAX:ARGS:", ajax_args);
 
@@ -55,7 +55,7 @@ test("async-json", async () => {
     ajax_args.statusCode[500]();
     ajax_args.error("req", "status", "err");
 
-    console.dir("$AJAX:", $.ajax);
+    console.dir($.ajax);
     console.log("SUCC:ARGS:", success_args);
     console.log("AJAX:ARGS:", ajax_args);
 

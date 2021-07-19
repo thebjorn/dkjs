@@ -128,9 +128,9 @@ module.exports = {
     // each test. Since setupFiles executes before the test framework is installed in the environment,
     // this script file presents you the opportunity of running some code immediately after the test
     // framework has been installed in the environment.
-    // setupFilesAfterEnv: [
-    //     './src/test-setup.js'
-    // ],
+    setupFilesAfterEnv: [
+        './src/test-setup.js'
+    ],
 
     // (deprecated, use setupFilesAfterEnv instead) The path to a module that runs some code to configure or
     // set up the testing framework before each test
@@ -140,7 +140,7 @@ module.exports = {
     // snapshotSerializers: [],
 
     // The test environment that will be used for testing
-    // testEnvironment: "jest-environment-jsdom",
+    testEnvironment: "jest-environment-jsdom",
 
     // Options that will be passed to the testEnvironment
     // testEnvironmentOptions: {},
